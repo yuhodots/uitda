@@ -15,9 +15,7 @@
 - **해야 할 일**
 
   보안 이슈 처리: https://expressjs.com/ko/advanced/best-practice-security.html#dont-use-deprecated-or-vulnerable-versions-of-express
-
   서버 관리 공부: https://blog.carbonfive.com/2014/06/02/node-js-in-production/
-
   gitignore 처리해야 하는 파일 & 디렉토리 생각하기
 
  
