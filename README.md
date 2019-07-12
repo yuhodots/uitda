@@ -2,21 +2,21 @@
 
 
 
-[**해결해야 할 보안 이슈]**
+**- 해결해야 할 보안 이슈**
 
 https://expressjs.com/ko/advanced/best-practice-security.html#dont-use-deprecated-or-vulnerable-versions-of-express
 
 
 
 
-[**서버에 대해 공부해야 할 내용]**
+**- 서버에 대해 공부해야 할 내용**
 
 https://blog.carbonfive.com/2014/06/02/node-js-in-production/
 
 
  
 
-[**유잇다 프로젝트]**
+**- 유잇다 프로젝트**
 
   우리 학교는 학부생과 대학원생을 합쳐 5천명 정도의 학생이 다니고 있고, 이 중 92퍼센트가 기숙사에 입주 해 살고있습니다. 이렇게 많은 학생이 기숙사에 입주 한 이유는 캠퍼스가 외부와 지리적으로 단절되어 있다는 특징 때문입니다. 학생들은 이 점 때문에 생기는 많은 불편함을 토로합니다.
 
