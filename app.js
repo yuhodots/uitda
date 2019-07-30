@@ -25,17 +25,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(session({
-  secret: '@jewif129@*jf1@(d',
-  resave: false,
-  saveUninitialized: true,
-  store: new MySQLStore({
-    host: '127.0.0.1',
-    user: 'dev',
-    password: '111111',
-    database: 'example'
-  })
-}));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

@@ -4,7 +4,7 @@ var sanitizeHtml = require('sanitize-html');
 var db = require('../lib/db');
 var path = require('path');
 
-/* AWS SDK */
+/* AWS SDK: multer-s3 */
 let AWS = require("aws-sdk");
 AWS.config.loadFromPath(__dirname + "/../lib/awsconfig.json");
 let s3 = new AWS.S3();
