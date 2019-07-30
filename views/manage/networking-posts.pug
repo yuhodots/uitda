@@ -1,4 +1,16 @@
 extends layout.pug
 
 block menu
-    p manage_networking-posts
+    h3 Networking
+    #create
+        a(href='/manage/networking-posts/create') [글쓰기]
+    #list
+        -if(postlist != undefined) 
+            ul
+                -for(i = 0; i < postlist.length; i++)
+                    li
+                        a(href=`/networking/${postlist[i].id}`) #{postlist[i].title}
+                        form(action=`/networking/delete` method=`post`)
+                            input(type=`hidden` name=`id` value=`${postlist[i].id}`)
+                            input(type=`submit` value=`delete`)
+                        a(href=`/manage/networking-posts/update/${postlist[i].id}`) update

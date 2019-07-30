@@ -1,0 +1,11 @@
+extends ../layout.pug
+
+block content
+    #form
+        form(action="/manage/carpool-posts/create" method="post")
+            p
+                input(type="text" name="title" placeholder="title")
+            p
+                textarea(name="description" placeholder="description")
+            p
+                input(type="submit")

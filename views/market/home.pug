@@ -1,4 +1,10 @@
 extends ../layout.pug
 
 block content
-    p [market] 준비 중 입니다...
+    h1 Market
+    #list
+        -if(postlist != undefined) 
+            ul
+                -for(i = 0; i < postlist.length; i++)
+                    li
+                        a(href=`/market/${postlist[i].id}`) #{postlist[i].title}
