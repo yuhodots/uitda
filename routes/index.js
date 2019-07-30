@@ -35,9 +35,7 @@ router.get('/market', function (req, res, next) {
   db.query(
     `SELECT * FROM market_board`,
     function (error, results) {
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
       res.render('market/home', { postlist: results });
     }
   )
@@ -47,23 +45,17 @@ router.get('/market/:id', function (req, res, next) {
   db.query(
     `SELECT * FROM market_board`,
     function (error, results) {
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
       db.query(
         `SELECT * FROM market_board WHERE id=?`,
         [req.params.id],
         function (error2, result) {
-          if (error2) {
-            throw error2;
-          }
+          if (error2) throw error2;
           db.query(
             `SELECT * FROM market_files WHERE board_id=?`,
             [req.params.id],
             function (error3, files) {
-              if (error3) {
-                throw error3;
-              }
+              if (error3) throw error3;
               res.render('market/post', { post: result[0], files: files });
             });
         })
@@ -72,7 +64,25 @@ router.get('/market/:id', function (req, res, next) {
 });
 
 router.post('/market/delete', function (req, res, next) {
-  //이미지 파일 삭제는 아직 구현하지 않았습니다. 
+  db.query(
+    `SELECT * FROM market_files WHERE board_id=?`,
+    [req.body.id],
+    function (error, files) {
+      if (error) throw error;
+      for(var i = 0; i < files.length; i++){
+        s3.deleteObject(
+          {
+            Bucket: "uitda.net",
+            Key: files[i].filename
+          },
+          (err, data) => { 
+            if (err) throw err;
+            console.log(data);
+          }
+        );
+      }
+    }
+  );
   db.query(
     'DELETE FROM market_files WHERE board_id = ?',
     [req.body.id],
@@ -95,9 +105,7 @@ router.get('/networking', function (req, res, next) {
   db.query(
     `SELECT * FROM networking_board`,
     function (error, results) {
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
       res.render('networking/home', { postlist: results });
     }
   )
@@ -107,23 +115,17 @@ router.get('/networking/:id', function (req, res, next) {
   db.query(
     `SELECT * FROM networking_board`,
     function (error, results) {
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
       db.query(
         `SELECT * FROM networking_board WHERE id=?`,
         [req.params.id],
         function (error2, result) {
-          if (error2) {
-            throw error2;
-          }
+          if (error2) throw error2;
           db.query(
             `SELECT * FROM networking_files WHERE board_id=?`,
             [req.params.id],
             function (error3, files) {
-              if (error3) {
-                throw error3;
-              }
+              if (error3) throw error3;
               res.render('networking/post', { post: result[0], files: files });
             });
         })
@@ -132,7 +134,25 @@ router.get('/networking/:id', function (req, res, next) {
 });
 
 router.post('/networking/delete', function (req, res, next) {
-  //이미지 파일 삭제는 아직 구현하지 않았습니다. 
+  db.query(
+    `SELECT * FROM networking_files WHERE board_id=?`,
+    [req.body.id],
+    function (error, files) {
+      if (error) throw error;
+      for(var i = 0; i < files.length; i++){
+        s3.deleteObject(
+          {
+            Bucket: "uitda.net",
+            Key: files[i].filename
+          },
+          (err, data) => { 
+            if (err) throw err;
+            console.log(data);
+          }
+        );
+      }
+    }
+  );
   db.query(
     'DELETE FROM networking_files WHERE board_id = ?',
     [req.body.id],
@@ -164,9 +184,7 @@ router.get('/manage/market-posts', function (req, res, next) {
   db.query(
     `SELECT * FROM market_board`,
     function (error, results) {
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
       res.render('manage/market-posts', { postlist: results });
     }
   )
@@ -185,9 +203,7 @@ router.post('/manage/market-posts/create', upload.array('userfile', 6), function
     `INSERT INTO market_board (title, description, author, created, filenum, count) VALUES(?, ?, 'yuho', NOW(), 0, 0)`,
     [title, description],
     function (error, result) {
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
     }
   )
   for (var i = 0; i < files.length; i++) {
@@ -195,9 +211,7 @@ router.post('/manage/market-posts/create', upload.array('userfile', 6), function
       `INSERT INTO market_files (board_id, file_id, filename, location) VALUES(LAST_INSERT_ID(), ?, ?, ?)`,
       [i, files[i].key, files[i].location],
       function (error, result) {
-        if (error) {
-          throw error;
-        }
+        if (error) throw error;
       }
     )
   }
@@ -208,16 +222,12 @@ router.get('/manage/market-posts/update/:id', function (req, res, next) {
   db.query(
     `SELECT * FROM market_board`,
     function (error, results) {
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
       db.query(
         `SELECT * FROM market_board WHERE id=?`,
         [req.params.id],
         function (error2, result) {
-          if (error2) {
-            throw error2;
-          }
+          if (error2) throw error2;
           res.render('manage/market-posts_update', { post: result[0] });
         })
     }
@@ -232,9 +242,7 @@ router.post(`/manage/market-posts/update/:id`, function (req, res, next) {
     'UPDATE market_board SET title=?, description=? WHERE id=?',
     [title, description, id],
     function (error, result) {
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
       res.redirect(`/market/${id}`);
     }
   )
@@ -244,9 +252,7 @@ router.get('/manage/networking-posts', function (req, res, next) {
   db.query(
     `SELECT * FROM networking_board`,
     function (error, results) {
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
       res.render('manage/networking-posts', { postlist: results });
     }
   )
@@ -265,9 +271,7 @@ router.post('/manage/networking-posts/create', upload.array('userfile', 6), func
     `INSERT INTO networking_board (title, description, author, created, filenum, count) VALUES(?, ?, 'yuho', NOW(), 0, 0)`,
     [title, description],
     function (error, result) {
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
     }
   )
   for (var i = 0; i < files.length; i++) {
@@ -275,9 +279,7 @@ router.post('/manage/networking-posts/create', upload.array('userfile', 6), func
       `INSERT INTO networking_files (board_id, file_id, filename, location) VALUES(LAST_INSERT_ID(), ?, ?, ?)`,
       [i, files[i].key, files[i].location],
       function (error, result) {
-        if (error) {
-          throw error;
-        }
+        if (error) throw error;
       }
     )
   }
@@ -288,16 +290,12 @@ router.get('/manage/networking-posts/update/:id', function (req, res, next) {
   db.query(
     `SELECT * FROM networking_board`,
     function (error, results) {
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
       db.query(
         `SELECT * FROM networking_board WHERE id=?`,
         [req.params.id],
         function (error2, result) {
-          if (error2) {
-            throw error2;
-          }
+          if (error2) throw error2;
           res.render('manage/networking-posts_update', { post: result[0] });
         })
     }
@@ -312,9 +310,7 @@ router.post(`/manage/networking-posts/update/:id`, function (req, res, next) {
     'UPDATE networking_board SET title=?, description=? WHERE id=?',
     [title, description, id],
     function (error, result) {
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
       res.redirect(`/networking/${id}`);
     }
   )
