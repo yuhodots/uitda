@@ -1,0 +1,11 @@
+extends ../layout.pug
+
+block content
+    h1 Login: register
+    form(action="/login/register" method="post")
+      p
+        input(type="text" name="username" placeholder="username")
+      p
+        input(type="password" name="password" placeholder="password")
+      p
+        input(type="submit")

@@ -1,11 +1,17 @@
 extends ../layout.pug
 
 block content
-    h1 Login
-    form(action="/login" method="post")
-        p
-            input(type="text" name="username" placeholder="username")
-        p
-            input(type="password" name="password" placeholder="password")
-        p
-            input(type="submit")
+    -if(request.user)
+        p You are already logged in.
+    -else
+        h1 Login
+        form(action="/login" method="post")
+            p
+                input(type="text" name="username" placeholder="username")
+            p
+                input(type="password" name="password" placeholder="password")
+            p
+                input(type="submit")
+            p  
+                a(href='/login/register') [register]
+    

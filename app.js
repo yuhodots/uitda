@@ -7,6 +7,8 @@ var helmet = require('helmet')
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
+var session_store_object = require('./lib/session-store');
+var passport = require('passport');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -25,6 +27,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(session({
+  secret: '1234DSFs@adf1234!@#$asd',
+  resave: false,
+  saveUninitialized: true,
+  store: new MySQLStore(session_store_object) // session-store.js 정보 로드
+}));
+app.use(passport.initialize()); // passport 사용 하도록 세팅
+app.use(passport.session()); // passport 사용 시 session을 활용
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

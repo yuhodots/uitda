@@ -6,7 +6,8 @@ block content
             p
                 input(type="text" name="title" placeholder="title")
             p
-                input(type='file' name='userfile' multiple/)
+                input(id="image_uploads" type='file' name='userfile' accept=".jpg, .jpeg, .png" multiple/)
+                label(for="image_uploads") Choose images to upload (PNG, JPG)
             p
                 textarea(name="description" placeholder="description")
             p
