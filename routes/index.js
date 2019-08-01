@@ -1,11 +1,11 @@
-/* Module loader */
+/* Module load */
 var express = require('express');
 var router = express.Router();
-var sanitizeHtml = require('sanitize-html');
-var db = require('../lib/db');
+var db = require('../config/db');
 var path = require('path');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var auth = require('../lib/auth');
 
 /* Password hasher */
 var bkfd2Password = require("pbkdf2-password");
@@ -13,7 +13,7 @@ var hasher = bkfd2Password();
 
 /* AWS SDK, multer-s3 */
 let AWS = require("aws-sdk");
-AWS.config.loadFromPath(__dirname + "/../lib/awsconfig.json");
+AWS.config.loadFromPath(__dirname + "/../config/awsconfig.json");
 let s3 = new AWS.S3();
 
 let multer = require("multer");
@@ -48,7 +48,8 @@ passport.deserializeUser(function (authId, done) { // 로그인 성공한 사용
       if (!results[0]) done(err); // 유저정보가 mysql 내 존재하지 않는 경우 2 (로그아웃 됨)
       var user = results[0]; // 적절한 유저정보가 존재하는 경우
       done(null, user);
-    });
+    }
+  );
 });
 
 passport.use(new LocalStrategy( // Local 저장 방식을 통한 인증 구현
@@ -78,7 +79,7 @@ passport.use(new LocalStrategy( // Local 저장 방식을 통한 인증 구현
 /* Category: home page. */
 router.get('/', function (req, res, next) {
   console.log(req.user);
-  res.render('index', { title : 'Uitda' , request : req });
+  res.render('index', { title: 'Uitda', request: req });
 });
 
 /* Category: market page. */
@@ -87,7 +88,7 @@ router.get('/market', function (req, res, next) {
     `SELECT * FROM market_board`,
     function (error, results) {
       if (error) throw error;
-      res.render('market/home', { postlist: results, request : req  });
+      res.render('market/home', { postlist: results, request: req });
     }
   )
 });
@@ -107,7 +108,7 @@ router.get('/market/:id', function (req, res, next) {
             [req.params.id],
             function (error3, files) {
               if (error3) throw error3;
-              res.render('market/post', { post: result[0], files: files, request : req });
+              res.render('market/post', { post: result[0], files: files, request: req });
             });
         })
     }
@@ -157,7 +158,7 @@ router.get('/networking', function (req, res, next) {
     `SELECT * FROM networking_board`,
     function (error, results) {
       if (error) throw error;
-      res.render('networking/home', { postlist: results, request : req  });
+      res.render('networking/home', { postlist: results, request: req });
     }
   )
 });
@@ -177,7 +178,7 @@ router.get('/networking/:id', function (req, res, next) {
             [req.params.id],
             function (error3, files) {
               if (error3) throw error3;
-              res.render('networking/post', { post: result[0], files: files, request : req  });
+              res.render('networking/post', { post: result[0], files: files, request: req });
             });
         })
     }
@@ -223,66 +224,103 @@ router.post('/networking/delete', function (req, res, next) {
 
 /* Category: carpool page. */
 router.get('/carpool', function (req, res, next) {
-  res.render('carpool/home',{ request : req });
+  res.render('carpool/home', { request: req });
 });
 
 /* Category: manage page. */
 router.get('/manage', function (req, res, next) {
-  res.render('manage/home',{ request : req });
+  if (!auth.isOwner(req, res)) {
+    res.render('manage/anonymous', { request: req });
+  }
+  else {
+    res.render('manage/home', { request: req });
+  }
 });
 
 router.get('/manage/market-posts', function (req, res, next) {
-  db.query(
-    `SELECT * FROM market_board`,
-    function (error, results) {
-      if (error) throw error;
-      res.render('manage/market-posts', { postlist: results , request : req });
+  if (!auth.isOwner(req, res)) {
+    res.render('manage/anonymous', { request: req });
+  }
+  else {
+    if (auth.hasPost(req,'market_board') === 0) { // 작성한 게시글이 데이터가 없는 경우
+      res.render('manage/market-posts', { postlist: undefined, request: req });
     }
-  )
+    else {
+      db.query(
+        `SELECT * FROM market_board WHERE author='${req.user.username}'`,
+        function (error, results) {
+          if (error) throw error;
+          res.render('manage/market-posts', { postlist: results, request: req });
+        }
+      )
+    }
+  }
 });
 
 router.get('/manage/market-posts/create', function (req, res, next) {
-  res.render('manage/market-posts_create',{ request : req });
+  if (!auth.isOwner(req, res)) {
+    res.render('manage/anonymous', { request: req });
+  }
+  else {
+    res.render('manage/market-posts_create', { request: req });
+  }
 });
 
 router.post('/manage/market-posts/create', upload.array('userfile', 6), function (req, res, next) {
-  var title = req.body.title;
-  var description = req.body.description;
-  var files = req.files;
+  if (!auth.isOwner(req, res)) {
+    res.render('manage/anonymous', { request: req });
+  }
+  else {
+    var title = req.body.title;
+    var description = req.body.description;
+    var files = req.files;
 
-  db.query(
-    `INSERT INTO market_board (title, description, author, created, filenum, count) VALUES(?, ?, 'yuho', NOW(), 0, 0)`,
-    [title, description],
-    function (error, result) {
-      if (error) throw error;
-    }
-  )
-  for (var i = 0; i < files.length; i++) {
     db.query(
-      `INSERT INTO market_files (board_id, file_id, filename, location) VALUES(LAST_INSERT_ID(), ?, ?, ?)`,
-      [i, files[i].key, files[i].location],
+      `INSERT INTO market_board (title, description, author, created, filenum, count) VALUES(?, ?, '${req.user.username}', NOW(), ${files.length}, 0)`,
+      [title, description],
       function (error, result) {
         if (error) throw error;
       }
     )
+    for (var i = 0; i < files.length; i++) {
+      db.query(
+        `INSERT INTO market_files (board_id, file_id, filename, location) VALUES(LAST_INSERT_ID(), ?, ?, ?)`,
+        [i, files[i].key, files[i].location],
+        function (error, result) {
+          if (error) throw error;
+        }
+      )
+    }
+    res.redirect('/manage/market-posts');
   }
-  res.redirect('/manage/market-posts');
 });
 
 router.get('/manage/market-posts/update/:id', function (req, res, next) {
-  db.query(
-    `SELECT * FROM market_board`,
-    function (error, results) {
-      if (error) throw error;
-      db.query(
-        `SELECT * FROM market_board WHERE id=?`,
-        [req.params.id],
-        function (error2, result) {
-          if (error2) throw error2;
-          res.render('manage/market-posts_update', { post: result[0], request : req });
-        })
-    }
-  )
+  if (!auth.isOwner(req, res)) {
+    res.render('manage/anonymous', { request: req });
+  }
+  else {
+    db.query(
+      `SELECT * FROM market_board`,
+      function (error, results) {
+        if (error) throw error;
+        db.query(
+          `SELECT * FROM market_board WHERE id=?`,
+          [req.params.id],
+          function (error2, result) {
+            if (error2) throw error2;
+            else {
+              if (auth.sameOwner(req, result[0].author) === 0) { // 다른 사용자의 잘못된 접근
+                res.render('cheat', { request: req });
+              }
+              else { // 올바른 사용자의 접근
+                res.render('manage/market-posts_update', { post: result[0], request: req });
+              }
+            }
+          })
+      }
+    )
+  }
 });
 
 router.post(`/manage/market-posts/update/:id`, function (req, res, next) {
@@ -302,60 +340,93 @@ router.post(`/manage/market-posts/update/:id`, function (req, res, next) {
 });
 
 router.get('/manage/networking-posts', function (req, res, next) {
-  db.query(
-    `SELECT * FROM networking_board`,
-    function (error, results) {
-      if (error) throw error;
-      res.render('manage/networking-posts', { postlist: results, request : req });
+  if (!auth.isOwner(req, res)) {
+    res.render('manage/anonymous', { request: req });
+  }
+  else {
+    if (auth.hasPost(req,'networking_board') === 0) { // 작성한 게시글이 데이터가 없는 경우
+      res.render('manage/networking-posts', { postlist: undefined, request: req });
     }
-  )
+    else {
+      db.query(
+        `SELECT * FROM networking_board WHERE author='${req.user.username}'`,
+        function (error, results) {
+          if (error) throw error;
+          res.render('manage/networking-posts', { postlist: results, request: req });
+        }
+      )
+    }
+  }
 });
 
 router.get('/manage/networking-posts/create', function (req, res, next) {
-  res.render('manage/networking-posts_create', { request : req });
+  if (!auth.isOwner(req, res)) {
+    res.render('manage/anonymous', { request: req });
+  }
+  else {
+    res.render('manage/networking-posts_create', { request: req });
+  }
 });
 
 router.post('/manage/networking-posts/create', upload.array('userfile', 6), function (req, res, next) {
-  var title = req.body.title;
-  var description = req.body.description;
-  var files = req.files;
+  if (!auth.isOwner(req, res)) {
+    res.render('manage/anonymous', { request: req });
+  }
+  else {
+    var title = req.body.title;
+    var description = req.body.description;
+    var files = req.files;
 
-  db.query(
-    `INSERT INTO networking_board (title, description, author, created, filenum, count) VALUES(?, ?, 'yuho', NOW(), 0, 0)`,
-    [title, description],
-    function (error, result) {
-      if (error) throw error;
-    }
-  )
-  for (var i = 0; i < files.length; i++) {
     db.query(
-      `INSERT INTO networking_files (board_id, file_id, filename, location) VALUES(LAST_INSERT_ID(), ?, ?, ?)`,
-      [i, files[i].key, files[i].location],
+      `INSERT INTO networking_board (title, description, author, created, filenum, count) VALUES(?, ?, '${req.user.username}', NOW(), ${files.length}, 0)`,
+      [title, description],
       function (error, result) {
         if (error) throw error;
       }
     )
+    for (var i = 0; i < files.length; i++) {
+      db.query(
+        `INSERT INTO networking_files (board_id, file_id, filename, location) VALUES(LAST_INSERT_ID(), ?, ?, ?)`,
+        [i, files[i].key, files[i].location],
+        function (error, result) {
+          if (error) throw error;
+        }
+      )
+    }
+    res.redirect('/manage/networking-posts');
   }
-  res.redirect('/manage/networking-posts');
 });
 
 router.get('/manage/networking-posts/update/:id', function (req, res, next) {
-  db.query(
-    `SELECT * FROM networking_board`,
-    function (error, results) {
-      if (error) throw error;
-      db.query(
-        `SELECT * FROM networking_board WHERE id=?`,
-        [req.params.id],
-        function (error2, result) {
-          if (error2) throw error2;
-          res.render('manage/networking-posts_update', { post: result[0], request : req });
-        })
-    }
-  )
+  if (!auth.isOwner(req, res)) {
+    res.render('manage/anonymous', { request: req });
+  }
+  else {
+    db.query(
+      `SELECT * FROM networking_board`,
+      function (error, results) {
+        if (error) throw error;
+        db.query(
+          `SELECT * FROM networking_board WHERE id=?`,
+          [req.params.id],
+          function (error2, result) {
+            if (error2) throw error2;
+            else {
+              if (auth.sameOwner(req, result[0].author) === 0) { // 다른 사용자의 잘못된 접근
+                res.render('cheat', { request: req });
+              }
+              else { // 올바른 사용자의 접근
+                res.render('manage/networking-posts_update', { post: result[0], request: req });
+              }
+            }
+          })
+      }
+    )
+  }
 });
 
 router.post(`/manage/networking-posts/update/:id`, function (req, res, next) {
+
   // 아직 파일 수정 구현은 하지 않았습니다.
 
   var title = req.body.title;
@@ -369,46 +440,92 @@ router.post(`/manage/networking-posts/update/:id`, function (req, res, next) {
       res.redirect(`/networking/${id}`);
     }
   )
+
 });
 
 router.get('/manage/carpool-posts', function (req, res, next) {
-  res.render('manage/carpool-posts', { request : req });
+  if (!auth.isOwner(req, res)) {
+    res.render('manage/anonymous', { request: req });
+  }
+  else {
+    res.render('manage/carpool-posts', { request: req });
+  }
 });
 
 router.get('/manage/carpool-posts/create', function (req, res, next) {
-  res.render('manage/carpool-posts_create', { request : req });
+  if (!auth.isOwner(req, res)) {
+    res.render('manage/anonymous', { request: req });
+  }
+  else {
+    res.render('manage/carpool-posts_create', { request: req });
+  }
 });
 
 router.post('/manage/carpool-posts/create', function (req, res, next) {
-  //아직 처리하지 않았습니다.
-  res.redirect('/manage/carpool-posts');
+  if (!auth.isOwner(req, res)) {
+    res.render('manage/anonymous', { request: req });
+  }
+  else {
+    //아직 처리하지 않았습니다.
+    res.redirect('/manage/carpool-posts');
+  }
 });
 
 router.get('/manage/proposal', function (req, res, next) {
-  res.render('manage/proposal', { request : req });
+  if (!auth.isOwner(req, res)) {
+    res.render('manage/anonymous', { request: req });
+  }
+  else {
+    res.render('manage/proposal', { request: req });
+  }
 });
 
 router.get('/manage/proposal/create', function (req, res, next) {
-  res.render('manage/proposal_create', { request : req });
+  if (!auth.isOwner(req, res)) {
+    res.render('manage/anonymous', { request: req });
+  }
+  else {
+    res.render('manage/proposal_create', { request: req });
+  }
 });
 
 router.post('/manage/proposal/create', function (req, res, next) {
-  //아직 처리하지 않았습니다.
-  res.redirect('/manage/proposal');
+  if (!auth.isOwner(req, res)) {
+    res.render('manage/anonymous', { request: req });
+  }
+  else {
+    //아직 처리하지 않았습니다.
+    res.redirect('/manage/proposal');
+  }
 });
 
 router.get('/manage/leave', function (req, res, next) {
-  res.render('manage/leave', { request : req });
+  if (!auth.isOwner(req, res)) {
+    res.render('manage/anonymous', { request: req });
+  }
+  else {
+    res.render('manage/leave', { request: req });
+  }
 });
 
 /* Category: chatting page. */
 router.get('/chatting', function (req, res, next) {
-  res.render('chatting/home', { request : req });
+  if (!auth.isOwner(req, res)) {
+    res.render('chatting/anonymous', { request: req });
+  }
+  else {
+    res.render('chatting/home', { request: req });
+  }
 });
 
 /* Category: login page. */
 router.get('/login', function (req, res, next) {
-  res.render('login/home', { request : req });
+  if (!auth.isOwner(req, res)) {
+    res.render('login/home', { request: req });
+  }
+  else {
+    res.render('cheat', { request: req });
+  }
 });
 
 router.post('/login',
@@ -423,7 +540,7 @@ router.post('/login',
 );
 
 router.get('/login/register', function (req, res, next) {
-  res.render('login/register', { request : req });
+  res.render('login/register', { request: req });
 });
 
 router.post('/login/register', function (req, res, next) {
@@ -447,9 +564,9 @@ router.post('/login/register', function (req, res, next) {
   );
 });
 
-router.get('/logout', function(req, res){
+router.get('/logout', function (req, res) {
   req.logout();
-  req.session.save(function(){
+  req.session.save(function () {
     res.redirect('/');
   });
 });

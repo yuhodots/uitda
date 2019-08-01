@@ -7,7 +7,7 @@ var helmet = require('helmet')
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
-var session_store_object = require('./lib/session-store');
+var session_store_object = require('./config/session-store');
 var passport = require('passport');
 
 var indexRouter = require('./routes/index');
