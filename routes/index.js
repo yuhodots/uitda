@@ -116,40 +116,46 @@ router.get('/market/:id', function (req, res, next) {
 });
 
 router.post('/market/delete', function (req, res, next) {
-  db.query(
-    `SELECT * FROM market_files WHERE board_id=?`,
-    [req.body.id],
-    function (error, files) {
-      if (error) throw error;
-      for (var i = 0; i < files.length; i++) {
-        s3.deleteObject(
-          {
-            Bucket: "uitda.net",
-            Key: files[i].filename
-          },
-          (err, data) => {
-            if (err) throw err;
-            console.log(data);
+  if (!auth.isOwner(req, res)) {
+    res.render('manage/anonymous', { request: req });
+  }
+  else {
+    // 아직 sameOwner 구현 안 했습니다.
+    db.query(
+      `SELECT * FROM market_files WHERE board_id=?`,
+      [req.body.id],
+      function (error, files) {
+        if (error) throw error;
+        for (var i = 0; i < files.length; i++) {
+          s3.deleteObject(
+            {
+              Bucket: "uitda.net",
+              Key: files[i].filename
+            },
+            (err, data) => {
+              if (err) throw err;
+              console.log(data);
+            }
+          );
+        }
+      }
+    );
+    db.query(
+      'DELETE FROM market_files WHERE board_id = ?',
+      [req.body.id],
+      function (error, result) {
+        if (error) throw error;
+        db.query(
+          'DELETE FROM market_board WHERE id = ?',
+          [req.body.id],
+          function (error, result) {
+            if (error) throw error;
+            res.redirect('/manage/market-posts');
           }
         );
       }
-    }
-  );
-  db.query(
-    'DELETE FROM market_files WHERE board_id = ?',
-    [req.body.id],
-    function (error, result) {
-      if (error) throw error;
-      db.query(
-        'DELETE FROM market_board WHERE id = ?',
-        [req.body.id],
-        function (error, result) {
-          if (error) throw error;
-          res.redirect('/manage/market-posts');
-        }
-      );
-    }
-  );
+    );
+  }
 });
 
 /* Category: networking page. */
@@ -186,40 +192,46 @@ router.get('/networking/:id', function (req, res, next) {
 });
 
 router.post('/networking/delete', function (req, res, next) {
-  db.query(
-    `SELECT * FROM networking_files WHERE board_id=?`,
-    [req.body.id],
-    function (error, files) {
-      if (error) throw error;
-      for (var i = 0; i < files.length; i++) {
-        s3.deleteObject(
-          {
-            Bucket: "uitda.net",
-            Key: files[i].filename
-          },
-          (err, data) => {
-            if (err) throw err;
-            console.log(data);
+  if (!auth.isOwner(req, res)) {
+    res.render('manage/anonymous', { request: req });
+  }
+  else {
+    // 아직 sameOwner 구현 안 했습니다.
+    db.query(
+      `SELECT * FROM networking_files WHERE board_id=?`,
+      [req.body.id],
+      function (error, files) {
+        if (error) throw error;
+        for (var i = 0; i < files.length; i++) {
+          s3.deleteObject(
+            {
+              Bucket: "uitda.net",
+              Key: files[i].filename
+            },
+            (err, data) => {
+              if (err) throw err;
+              console.log(data);
+            }
+          );
+        }
+      }
+    );
+    db.query(
+      'DELETE FROM networking_files WHERE board_id = ?',
+      [req.body.id],
+      function (error, result) {
+        if (error) throw error;
+        db.query(
+          'DELETE FROM networking_board WHERE id = ?',
+          [req.body.id],
+          function (error, result) {
+            if (error) throw error;
+            res.redirect('/manage/networking-posts');
           }
         );
       }
-    }
-  );
-  db.query(
-    'DELETE FROM networking_files WHERE board_id = ?',
-    [req.body.id],
-    function (error, result) {
-      if (error) throw error;
-      db.query(
-        'DELETE FROM networking_board WHERE id = ?',
-        [req.body.id],
-        function (error, result) {
-          if (error) throw error;
-          res.redirect('/manage/networking-posts');
-        }
-      );
-    }
-  );
+    );
+  }
 });
 
 /* Category: carpool page. */
@@ -242,7 +254,7 @@ router.get('/manage/market-posts', function (req, res, next) {
     res.render('manage/anonymous', { request: req });
   }
   else {
-    if (auth.hasPost(req,'market_board') === 0) { // 작성한 게시글이 데이터가 없는 경우
+    if (auth.hasPost(req, 'market_board') === 0) { // 작성한 게시글이 데이터가 없는 경우
       res.render('manage/market-posts', { postlist: undefined, request: req });
     }
     else {
@@ -317,26 +329,46 @@ router.get('/manage/market-posts/update/:id', function (req, res, next) {
                 res.render('manage/market-posts_update', { post: result[0], request: req });
               }
             }
-          })
+          }
+        )
       }
     )
   }
 });
 
 router.post(`/manage/market-posts/update/:id`, function (req, res, next) {
-  // 아직 파일 수정 구현은 하지 않았습니다.
+  if (!auth.isOwner(req, res)) {
+    res.render('manage/anonymous', { request: req });
+  }
+  else {
+    // 아직 파일 수정 구현은 하지 않았습니다.
 
-  var title = req.body.title;
-  var description = req.body.description;
-  var id = req.body.id;
-  db.query(
-    'UPDATE market_board SET title=?, description=? WHERE id=?',
-    [title, description, id],
-    function (error, result) {
-      if (error) throw error;
-      res.redirect(`/market/${id}`);
-    }
-  )
+    var title = req.body.title;
+    var description = req.body.description;
+    var id = req.body.id;
+    db.query(
+      `SELECT * FROM market_board WHERE id=?`,
+      [id],
+      function (error, result) {
+        if (error) throw error;
+        else {
+          if (auth.sameOwner(req, result[0].author) === 0) { // 다른 사용자의 잘못된 접근
+            res.render('cheat', { request: req });
+          }
+          else { // 올바른 사용자의 접근
+            db.query(
+              'UPDATE market_board SET title=?, description=? WHERE id=?',
+              [title, description, id],
+              function (error2, result) {
+                if (error2) throw error2;
+                res.redirect(`/market/${id}`);
+              }
+            )
+          }
+        }
+      }
+    )
+  }
 });
 
 router.get('/manage/networking-posts', function (req, res, next) {
@@ -344,7 +376,7 @@ router.get('/manage/networking-posts', function (req, res, next) {
     res.render('manage/anonymous', { request: req });
   }
   else {
-    if (auth.hasPost(req,'networking_board') === 0) { // 작성한 게시글이 데이터가 없는 경우
+    if (auth.hasPost(req, 'networking_board') === 0) { // 작성한 게시글이 데이터가 없는 경우
       res.render('manage/networking-posts', { postlist: undefined, request: req });
     }
     else {
@@ -419,28 +451,46 @@ router.get('/manage/networking-posts/update/:id', function (req, res, next) {
                 res.render('manage/networking-posts_update', { post: result[0], request: req });
               }
             }
-          })
+          }
+        )
       }
     )
   }
 });
 
 router.post(`/manage/networking-posts/update/:id`, function (req, res, next) {
+  if (!auth.isOwner(req, res)) {
+    res.render('manage/anonymous', { request: req });
+  }
+  else {
+    // 아직 파일 수정 구현은 하지 않았습니다.
 
-  // 아직 파일 수정 구현은 하지 않았습니다.
-
-  var title = req.body.title;
-  var description = req.body.description;
-  var id = req.body.id;
-  db.query(
-    'UPDATE networking_board SET title=?, description=? WHERE id=?',
-    [title, description, id],
-    function (error, result) {
-      if (error) throw error;
-      res.redirect(`/networking/${id}`);
-    }
-  )
-
+    var title = req.body.title;
+    var description = req.body.description;
+    var id = req.body.id;
+    db.query(
+      `SELECT * FROM networking_board WHERE id=?`,
+      [id],
+      function (error, result) {
+        if (error) throw error;
+        else {
+          if (auth.sameOwner(req, result[0].author) === 0) { // 다른 사용자의 잘못된 접근
+            res.render('cheat', { request: req });
+          }
+          else { // 올바른 사용자의 접근
+            db.query(
+              'UPDATE networking_board SET title=?, description=? WHERE id=?',
+              [title, description, id],
+              function (error2, result) {
+                if (error2) throw error2;
+                res.redirect(`/networking/${id}`);
+              }
+            )
+          }
+        }
+      }
+    )
+  }
 });
 
 router.get('/manage/carpool-posts', function (req, res, next) {
