@@ -79,7 +79,7 @@ passport.use(new LocalStrategy( // Local 저장 방식을 통한 인증 구현
 /* Category: home page. */
 router.get('/', function (req, res, next) {
   console.log(req.user);
-  res.render('index', { title: 'Uitda', request: req });
+  res.render('index', { title: 'Uitda', request: req.user? req:0 });
 });
 
 /* Category: market page. */
