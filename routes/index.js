@@ -120,39 +120,50 @@ router.post('/market/delete', function (req, res, next) {
     res.render('manage/anonymous', { request: req });
   }
   else {
-    // 아직 sameOwner 구현 안 했습니다.
     db.query(
-      `SELECT * FROM market_files WHERE board_id=?`,
-      [req.body.id],
-      function (error, files) {
-        if (error) throw error;
-        for (var i = 0; i < files.length; i++) {
-          s3.deleteObject(
-            {
-              Bucket: "uitda.net",
-              Key: files[i].filename
-            },
-            (err, data) => {
-              if (err) throw err;
-              console.log(data);
-            }
-          );
-        }
-      }
-    );
-    db.query(
-      'DELETE FROM market_files WHERE board_id = ?',
+      `SELECT * FROM market_board WHERE id=?`,
       [req.body.id],
       function (error, result) {
-        if (error) throw error;
-        db.query(
-          'DELETE FROM market_board WHERE id = ?',
-          [req.body.id],
-          function (error, result) {
-            if (error) throw error;
-            res.redirect('/manage/market-posts');
+          if (error) throw error;
+          if (auth.sameOwner(req, result[0].author) === 0) { // 다른 사용자의 잘못된 접근
+              res.render('cheat', { request: req });
           }
-        );
+          else{
+            db.query(
+              `SELECT * FROM market_files WHERE board_id=?`,
+              [req.body.id],
+              function (error, files) {
+                if (error) throw error;
+                for (var i = 0; i < files.length; i++) {
+                  s3.deleteObject(
+                    {
+                      Bucket: "uitda.net",
+                      Key: files[i].filename
+                    },
+                    (err, data) => {
+                      if (err) throw err;
+                      console.log(data);
+                    }
+                  );
+                }
+              }
+            );
+            db.query(
+              'DELETE FROM market_files WHERE board_id = ?',
+              [req.body.id],
+              function (error, result) {
+                if (error) throw error;
+                db.query(
+                  'DELETE FROM market_board WHERE id = ?',
+                  [req.body.id],
+                  function (error, result) {
+                    if (error) throw error;
+                    res.redirect('/manage/market-posts');
+                  }
+                );
+              }
+            );
+          }
       }
     );
   }
@@ -196,39 +207,50 @@ router.post('/networking/delete', function (req, res, next) {
     res.render('manage/anonymous', { request: req });
   }
   else {
-    // 아직 sameOwner 구현 안 했습니다.
     db.query(
-      `SELECT * FROM networking_files WHERE board_id=?`,
-      [req.body.id],
-      function (error, files) {
-        if (error) throw error;
-        for (var i = 0; i < files.length; i++) {
-          s3.deleteObject(
-            {
-              Bucket: "uitda.net",
-              Key: files[i].filename
-            },
-            (err, data) => {
-              if (err) throw err;
-              console.log(data);
-            }
-          );
-        }
-      }
-    );
-    db.query(
-      'DELETE FROM networking_files WHERE board_id = ?',
+      `SELECT * FROM networking_board WHERE id=?`,
       [req.body.id],
       function (error, result) {
-        if (error) throw error;
-        db.query(
-          'DELETE FROM networking_board WHERE id = ?',
-          [req.body.id],
-          function (error, result) {
-            if (error) throw error;
-            res.redirect('/manage/networking-posts');
+          if (error) throw error;
+          if (auth.sameOwner(req, result[0].author) === 0) { // 다른 사용자의 잘못된 접근
+              res.render('cheat', { request: req });
           }
-        );
+          else{
+            db.query(
+              `SELECT * FROM networking_files WHERE board_id=?`,
+              [req.body.id],
+              function (error, files) {
+                if (error) throw error;
+                for (var i = 0; i < files.length; i++) {
+                  s3.deleteObject(
+                    {
+                      Bucket: "uitda.net",
+                      Key: files[i].filename
+                    },
+                    (err, data) => {
+                      if (err) throw err;
+                      console.log(data);
+                    }
+                  );
+                }
+              }
+            );
+            db.query(
+              'DELETE FROM networking_files WHERE board_id = ?',
+              [req.body.id],
+              function (error, result) {
+                if (error) throw error;
+                db.query(
+                  'DELETE FROM networking_board WHERE id = ?',
+                  [req.body.id],
+                  function (error, result) {
+                    if (error) throw error;
+                    res.redirect('/manage/networking-posts');
+                  }
+                );
+              }
+            );
+          }
       }
     );
   }
