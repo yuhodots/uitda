@@ -611,9 +611,9 @@ router.post('/login',
   )
 );
 
-router.get('/login/register', function (req, res, next) {
-  res.render('login/register', { user: req.user? req.user:0 });
-});
+// router.get('/login/register', function (req, res, next) {
+//   res.render('login/register', { user: req.user? req.user:0 });
+// });
 
 router.post('/login/register', function (req, res, next) {
   hasher(
