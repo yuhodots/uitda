@@ -79,7 +79,7 @@ passport.use(new LocalStrategy( // Local 저장 방식을 통한 인증 구현
 /* Category: home page. */
 router.get('/', function (req, res, next) {
   console.log(req.user);
-  res.render('index', { title: 'Uitda', request: req.user? req:0 });
+  res.render('index', { title: 'Uitda', user: req.user? req.user:0 });
 });
 
 /* Category: market page. */
@@ -88,7 +88,7 @@ router.get('/market', function (req, res, next) {
     `SELECT * FROM market_board`,
     function (error, results) {
       if (error) throw error;
-      res.render('market/home', { postlist: results, request: req });
+      res.render('market/home', { postlist: results, user: req.user? req.user:0 });
     }
   )
 });
@@ -108,7 +108,7 @@ router.get('/market/:id', function (req, res, next) {
             [req.params.id],
             function (error3, files) {
               if (error3) throw error3;
-              res.render('market/post', { post: result[0], files: files, request: req });
+              res.render('market/post', { post: result[0], files: files, user: req.user? req.user:0 });
             });
         })
     }
@@ -117,7 +117,7 @@ router.get('/market/:id', function (req, res, next) {
 
 router.post('/market/delete', function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('manage/anonymous', { request: req });
+    res.render('manage/anonymous', { user: req.user? req.user:0 });
   }
   else {
     db.query(
@@ -126,7 +126,7 @@ router.post('/market/delete', function (req, res, next) {
       function (error, result) {
           if (error) throw error;
           if (auth.sameOwner(req, result[0].author) === 0) { // 다른 사용자의 잘못된 접근
-              res.render('cheat', { request: req });
+              res.render('cheat', { user: req.user? req.user:0 });
           }
           else{
             db.query(
@@ -175,7 +175,7 @@ router.get('/networking', function (req, res, next) {
     `SELECT * FROM networking_board`,
     function (error, results) {
       if (error) throw error;
-      res.render('networking/home', { postlist: results, request: req });
+      res.render('networking/home', { postlist: results, user: req.user? req.user:0 });
     }
   )
 });
@@ -195,7 +195,7 @@ router.get('/networking/:id', function (req, res, next) {
             [req.params.id],
             function (error3, files) {
               if (error3) throw error3;
-              res.render('networking/post', { post: result[0], files: files, request: req });
+              res.render('networking/post', { post: result[0], files: files, user: req.user? req.user:0 });
             });
         })
     }
@@ -204,7 +204,7 @@ router.get('/networking/:id', function (req, res, next) {
 
 router.post('/networking/delete', function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('manage/anonymous', { request: req });
+    res.render('manage/anonymous', { user: req.user? req.user:0 });
   }
   else {
     db.query(
@@ -213,7 +213,7 @@ router.post('/networking/delete', function (req, res, next) {
       function (error, result) {
           if (error) throw error;
           if (auth.sameOwner(req, result[0].author) === 0) { // 다른 사용자의 잘못된 접근
-              res.render('cheat', { request: req });
+              res.render('cheat', { user: req.user? req.user:0 });
           }
           else{
             db.query(
@@ -258,33 +258,33 @@ router.post('/networking/delete', function (req, res, next) {
 
 /* Category: carpool page. */
 router.get('/carpool', function (req, res, next) {
-  res.render('carpool/home', { request: req });
+  res.render('carpool/home', { user: req.user? req.user:0 });
 });
 
 /* Category: manage page. */
 router.get('/manage', function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('manage/anonymous', { request: req });
+    res.render('manage/anonymous', { user: req.user? req.user:0 });
   }
   else {
-    res.render('manage/home', { request: req });
+    res.render('manage/home', { user: req.user? req.user:0 });
   }
 });
 
 router.get('/manage/market-posts', function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('manage/anonymous', { request: req });
+    res.render('manage/anonymous', { user: req.user? req.user:0});
   }
   else {
     if (auth.hasPost(req, 'market_board') === 0) { // 작성한 게시글이 데이터가 없는 경우
-      res.render('manage/market-posts', { postlist: undefined, request: req });
+      res.render('manage/market-posts', { postlist: undefined, user: req.user? req.user:0 });
     }
     else {
       db.query(
         `SELECT * FROM market_board WHERE author='${req.user.username}'`,
         function (error, results) {
           if (error) throw error;
-          res.render('manage/market-posts', { postlist: results, request: req });
+          res.render('manage/market-posts', { postlist: results, user: req.user? req.user:0 });
         }
       )
     }
@@ -293,16 +293,16 @@ router.get('/manage/market-posts', function (req, res, next) {
 
 router.get('/manage/market-posts/create', function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('manage/anonymous', { request: req });
+    res.render('manage/anonymous', { user: req.user? req.user:0 });
   }
   else {
-    res.render('manage/market-posts_create', { request: req });
+    res.render('manage/market-posts_create', { user: req.user? req.user:0 });
   }
 });
 
 router.post('/manage/market-posts/create', upload.array('userfile', 6), function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('manage/anonymous', { request: req });
+    res.render('manage/anonymous', { user: req.user? req.user:0 });
   }
   else {
     var title = req.body.title;
@@ -331,7 +331,7 @@ router.post('/manage/market-posts/create', upload.array('userfile', 6), function
 
 router.get('/manage/market-posts/update/:id', function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('manage/anonymous', { request: req });
+    res.render('manage/anonymous', { user: req.user? req.user:0 });
   }
   else {
     db.query(
@@ -345,10 +345,10 @@ router.get('/manage/market-posts/update/:id', function (req, res, next) {
             if (error2) throw error2;
             else {
               if (auth.sameOwner(req, result[0].author) === 0) { // 다른 사용자의 잘못된 접근
-                res.render('cheat', { request: req });
+                res.render('cheat', { user: req.user? req.user:0 });
               }
               else { // 올바른 사용자의 접근
-                res.render('manage/market-posts_update', { post: result[0], request: req });
+                res.render('manage/market-posts_update', { post: result[0], user: req.user? req.user:0 });
               }
             }
           }
@@ -360,7 +360,7 @@ router.get('/manage/market-posts/update/:id', function (req, res, next) {
 
 router.post(`/manage/market-posts/update/:id`, function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('manage/anonymous', { request: req });
+    res.render('manage/anonymous', { user: req.user? req.user:0 });
   }
   else {
     // 아직 파일 수정 구현은 하지 않았습니다.
@@ -375,7 +375,7 @@ router.post(`/manage/market-posts/update/:id`, function (req, res, next) {
         if (error) throw error;
         else {
           if (auth.sameOwner(req, result[0].author) === 0) { // 다른 사용자의 잘못된 접근
-            res.render('cheat', { request: req });
+            res.render('cheat', { user: req.user? req.user:0 });
           }
           else { // 올바른 사용자의 접근
             db.query(
@@ -395,18 +395,18 @@ router.post(`/manage/market-posts/update/:id`, function (req, res, next) {
 
 router.get('/manage/networking-posts', function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('manage/anonymous', { request: req });
+    res.render('manage/anonymous', { user: req.user? req.user:0 });
   }
   else {
     if (auth.hasPost(req, 'networking_board') === 0) { // 작성한 게시글이 데이터가 없는 경우
-      res.render('manage/networking-posts', { postlist: undefined, request: req });
+      res.render('manage/networking-posts', { postlist: undefined, user: req.user? req.user:0 });
     }
     else {
       db.query(
         `SELECT * FROM networking_board WHERE author='${req.user.username}'`,
         function (error, results) {
           if (error) throw error;
-          res.render('manage/networking-posts', { postlist: results, request: req });
+          res.render('manage/networking-posts', { postlist: results, user: req.user? req.user:0 });
         }
       )
     }
@@ -415,16 +415,16 @@ router.get('/manage/networking-posts', function (req, res, next) {
 
 router.get('/manage/networking-posts/create', function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('manage/anonymous', { request: req });
+    res.render('manage/anonymous', { user: req.user? req.user:0 });
   }
   else {
-    res.render('manage/networking-posts_create', { request: req });
+    res.render('manage/networking-posts_create', { user: req.user? req.user:0 });
   }
 });
 
 router.post('/manage/networking-posts/create', upload.array('userfile', 6), function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('manage/anonymous', { request: req });
+    res.render('manage/anonymous', { user: req.user? req.user:0 });
   }
   else {
     var title = req.body.title;
@@ -453,7 +453,7 @@ router.post('/manage/networking-posts/create', upload.array('userfile', 6), func
 
 router.get('/manage/networking-posts/update/:id', function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('manage/anonymous', { request: req });
+    res.render('manage/anonymous', { user: req.user? req.user:0 });
   }
   else {
     db.query(
@@ -467,10 +467,10 @@ router.get('/manage/networking-posts/update/:id', function (req, res, next) {
             if (error2) throw error2;
             else {
               if (auth.sameOwner(req, result[0].author) === 0) { // 다른 사용자의 잘못된 접근
-                res.render('cheat', { request: req });
+                res.render('cheat', { user: req.user? req.user:0});
               }
               else { // 올바른 사용자의 접근
-                res.render('manage/networking-posts_update', { post: result[0], request: req });
+                res.render('manage/networking-posts_update', { post: result[0], user: req.user? req.user:0 });
               }
             }
           }
@@ -482,7 +482,7 @@ router.get('/manage/networking-posts/update/:id', function (req, res, next) {
 
 router.post(`/manage/networking-posts/update/:id`, function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('manage/anonymous', { request: req });
+    res.render('manage/anonymous', { user: req.user? req.user:0 });
   }
   else {
     // 아직 파일 수정 구현은 하지 않았습니다.
@@ -497,7 +497,7 @@ router.post(`/manage/networking-posts/update/:id`, function (req, res, next) {
         if (error) throw error;
         else {
           if (auth.sameOwner(req, result[0].author) === 0) { // 다른 사용자의 잘못된 접근
-            res.render('cheat', { request: req });
+            res.render('cheat', { user: req.user? req.user:0 });
           }
           else { // 올바른 사용자의 접근
             db.query(
@@ -517,25 +517,25 @@ router.post(`/manage/networking-posts/update/:id`, function (req, res, next) {
 
 router.get('/manage/carpool-posts', function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('manage/anonymous', { request: req });
+    res.render('manage/anonymous', { user: req.user? req.user:0 });
   }
   else {
-    res.render('manage/carpool-posts', { request: req });
+    res.render('manage/carpool-posts', { user: req.user? req.user:0 });
   }
 });
 
 router.get('/manage/carpool-posts/create', function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('manage/anonymous', { request: req });
+    res.render('manage/anonymous', { user: req.user? req.user:0 });
   }
   else {
-    res.render('manage/carpool-posts_create', { request: req });
+    res.render('manage/carpool-posts_create', { user: req.user? req.user:0 });
   }
 });
 
 router.post('/manage/carpool-posts/create', function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('manage/anonymous', { request: req });
+    res.render('manage/anonymous', { user: req.user? req.user:0 });
   }
   else {
     //아직 처리하지 않았습니다.
@@ -545,25 +545,25 @@ router.post('/manage/carpool-posts/create', function (req, res, next) {
 
 router.get('/manage/proposal', function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('manage/anonymous', { request: req });
+    res.render('manage/anonymous', { user: req.user? req.user:0 });
   }
   else {
-    res.render('manage/proposal', { request: req });
+    res.render('manage/proposal', { user: req.user? req.user:0 });
   }
 });
 
 router.get('/manage/proposal/create', function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('manage/anonymous', { request: req });
+    res.render('manage/anonymous', { user: req.user? req.user:0 });
   }
   else {
-    res.render('manage/proposal_create', { request: req });
+    res.render('manage/proposal_create', { user: req.user? req.user:0 });
   }
 });
 
 router.post('/manage/proposal/create', function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('manage/anonymous', { request: req });
+    res.render('manage/anonymous', { user: req.user? req.user:0 });
   }
   else {
     //아직 처리하지 않았습니다.
@@ -573,30 +573,30 @@ router.post('/manage/proposal/create', function (req, res, next) {
 
 router.get('/manage/leave', function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('manage/anonymous', { request: req });
+    res.render('manage/anonymous', { user: req.user? req.user:0 });
   }
   else {
-    res.render('manage/leave', { request: req });
+    res.render('manage/leave', { user: req.user? req.user:0 });
   }
 });
 
 /* Category: chatting page. */
 router.get('/chatting', function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('chatting/anonymous', { request: req });
+    res.render('chatting/anonymous', { user: req.user? req.user:0 });
   }
   else {
-    res.render('chatting/home', { request: req });
+    res.render('chatting/home', { user: req.user? req.user:0 });
   }
 });
 
 /* Category: login page. */
 router.get('/login', function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.render('login/home', { request: req });
+    res.render('login/home', { user: req.user? req.user:0 });
   }
   else {
-    res.render('cheat', { request: req });
+    res.render('cheat', { user: req.user? req.user:0 });
   }
 });
 
@@ -612,7 +612,7 @@ router.post('/login',
 );
 
 router.get('/login/register', function (req, res, next) {
-  res.render('login/register', { request: req });
+  res.render('login/register', { user: req.user? req.user:0 });
 });
 
 router.post('/login/register', function (req, res, next) {

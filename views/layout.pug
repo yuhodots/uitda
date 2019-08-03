@@ -12,8 +12,9 @@ html
       a(href='/carpool') [carpool]
       a(href='/manage') [manage]
       a(href='/chatting') [chatting]
-      -if(request.user)
-        a(href='/logout') [#{request.user.username}/logout]
+      -console.log(user);
+      -if(user)
+        a(href='/logout') [#{user.username}/logout]
       -else
         a(href='/login') [login]
     block content

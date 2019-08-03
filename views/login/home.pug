@@ -1,7 +1,7 @@
 extends ../layout.pug
 
 block content
-    -if(request.user)
+    -if(user)
         p You are already logged in.
     -else
         h1 Login
