@@ -21,8 +21,6 @@
   서버 관리 공부: https://blog.carbonfive.com/2014/06/02/node-js-in-production/
   
   gitignore 처리해야 하는 파일 & 디렉토리 생각하기
-  
-  database 패스워드 변경하기
  
 
 - **유잇다 프로젝트**
