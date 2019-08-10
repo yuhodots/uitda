@@ -41,8 +41,8 @@ app.use(function(req, res, next) { // https 리다이렉트 코드 *로컬에서
   var xForwarded = req.get('X-Forwarded-Proto');
   console.log(xForwarded);
 	if(xForwarded !== 'https') {
-      console.log('https://' + req.get('Host') + req.url)
-    	res.redirect('https://' + req.get('Host') + req.url);
+    console.log('https://' + req.get('Host') + req.url);
+    res.redirect('https://' + req.get('Host') + req.url);
 	}
 });
 app.use('/', indexRouter);
