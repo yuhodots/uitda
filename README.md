@@ -13,7 +13,7 @@
 
   \[19.08.03] 서버 컴퓨터 내 DB 구축, 회원가입 임시 차단 : [설명링크1](https://uhou.tistory.com/106?category=835403) [설멸링크2](https://uhou.tistory.com/107?category=835403)
   
-  \[19.08.09] uitda.net ACM 인증서 발급, ELB 레코드셋 생성, HTTPS 접속가능 : [설명링크1](https://uhou.tistory.com/121) [설명링크2](https://uhou.tistory.com/123)
+  \[19.08.09] uitda.net ACM 인증서 발급, ELB 레코드셋 생성, HTTPS 접속만 허용 : [설명링크1](https://uhou.tistory.com/121) [설명링크2](https://uhou.tistory.com/123)
 
 
 - **해야 할 일**
