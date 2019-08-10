@@ -9,18 +9,18 @@
 
   \[19.07.11] EC2 + Nginx + Git 서버 구축, Express 프로젝트 생성 
 
-  \[19.07.30] S3 서버 구축, 이미지 파일 연동 : [참고링크](https://uhou.tistory.com/114?category=843815)
+  \[19.07.30] S3 서버 구축, 이미지 파일 연동 : [설명링크1](https://uhou.tistory.com/114?category=843815)
 
-  \[19.08.03] 서버 컴퓨터 내 DB 구축, 회원가입 임시 차단 : [참고링크1](https://uhou.tistory.com/106?category=835403) [참고링크2](https://uhou.tistory.com/107?category=835403)
+  \[19.08.03] 서버 컴퓨터 내 DB 구축, 회원가입 임시 차단 : [설명링크1](https://uhou.tistory.com/106?category=835403) [설멸링크2](https://uhou.tistory.com/107?category=835403)
   
-  \[19.08.09] uitda.net ACM 인증서 발급, ELB 레코드셋 생성, HTTPS 접속가능 : [참고링크1](https://uhou.tistory.com/121) [참고링크2](https://uhou.tistory.com/123)
+  \[19.08.09] uitda.net ACM 인증서 발급, ELB 레코드셋 생성, HTTPS 접속가능 : [설명링크1](https://uhou.tistory.com/121) [설명링크2](https://uhou.tistory.com/123)
 
 
 - **해야 할 일**
 
-  보안 이슈 처리: https://expressjs.com/ko/advanced/best-practice-security.html#dont-use-deprecated-or-vulnerable-versions-of-express
+  보안 이슈 처리: [참고링크](https://expressjs.com/ko/advanced/best-practice-security.html#dont-use-deprecated-or-vulnerable-versions-of-express)
   
-  서버 관리 공부: https://blog.carbonfive.com/2014/06/02/node-js-in-production/
+  서버 관리 공부: [참고링크](https://blog.carbonfive.com/2014/06/02/node-js-in-production/)
   
   gitignore 처리해야 하는 파일 & 디렉토리 생각하기
  
