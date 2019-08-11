@@ -37,14 +37,14 @@ app.use(session({
 app.use(passport.initialize()); // passport 사용 하도록 세팅
 app.use(passport.session()); // passport 사용 시 session을 활용
 
-app.use(function(req, res, next) { // https 리다이렉트 코드 *로컬에서는 이 부분을 지워야 오류가 나지 않습니다. 
-  var xForwarded = req.get('X-Forwarded-Proto');
-  console.log(xForwarded);
-	if(xForwarded !== 'https') {
-    console.log('https://' + req.get('Host') + req.url);
-    res.redirect('https://' + req.get('Host') + req.url);
-	}
-});
+//app.use(function(req, res, next) { // https 리다이렉트 코드 *로컬에서는 이 부분을 지워야 오류가 나지 않습니다. 
+//  var xForwarded = req.get('X-Forwarded-Proto');
+//  console.log(xForwarded);
+//	if(xForwarded !== 'https') {
+//    console.log('https://' + req.get('Host') + req.url);
+//    res.redirect('https://' + req.get('Host') + req.url);
+//	}
+//});
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
