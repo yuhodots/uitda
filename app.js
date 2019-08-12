@@ -1,3 +1,4 @@
+/* Module load */
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -10,15 +11,29 @@ var MySQLStore = require('express-mysql-session')(session);
 var session_store_object = require('./config/session-store');
 var passport = require('passport');
 
+/* Increase event listener */
+// node는 event listener 10개 넘기면 오류로 간주하는게 default
+const EventEmitter = require('events');
+const emitter = new EventEmitter();
+emitter.setMaxListeners(15);
+
+/* Router */
 var indexRouter = require('./routes/index');
+var marketRouter = require('./routes/market');
+var networkingRouter = require('./routes/networking');
+var carpoolRouter = require('./routes/carpool');
+var manageRouter = require('./routes/manage');
+var chattingRouter = require('./routes/chatting');
+var loginRouter = require('./routes/login');
 var usersRouter = require('./routes/users');
 
 var app = express();
 
-// view engine setup
+/* View engine setup */
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+/* Middleware installation */
 app.use(helmet())
 app.use(logger('dev'));
 app.use(express.json());
@@ -45,15 +60,22 @@ app.use(passport.session()); // passport 사용 시 session을 활용
 //    res.redirect('https://' + req.get('Host') + req.url);
 //	}
 //});
+
 app.use('/', indexRouter);
+app.use('/market', marketRouter);
+app.use('/networking', networkingRouter);
+app.use('/carpool', carpoolRouter);
+app.use('/manage', manageRouter);
+app.use('/chatting', chattingRouter);
+app.use('/login', loginRouter);
 app.use('/users', usersRouter);
 
-// catch 404 and forward to error handler
+/* Catch 404 and forward to error handler */
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
+/* Error handler */
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
