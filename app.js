@@ -53,14 +53,14 @@ app.use(passport.session()); // passport 사용 시 session을 활용
 
 /* HTTPS redirection */
 // 로컬에서는 이 파트를 주석처리 해야 오류가 나지 않습니다. 
-app.use(function(req, res, next) { 
+/* app.use(function(req, res, next) { 
   var xForwarded = req.get('X-Forwarded-Proto');
   console.log(xForwarded);
 	if(xForwarded !== 'https') {
     console.log('https://' + req.get('Host') + req.url);
     res.redirect('https://' + req.get('Host') + req.url);
 	}
-});
+}); */
 
 /* Middleware installation : Router */
 app.use('/', indexRouter);
