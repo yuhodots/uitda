@@ -313,7 +313,15 @@ router.post('/proposal/create', function (req, res, next) {
         res.render('manage/anonymous', { user: req.user ? req.user : 0 });
     }
     else {
-        //아직 처리하지 않았습니다.
+        var title = req.body.title;
+        var description = req.body.description;
+        db.query(
+            `INSERT INTO proposal (title, description, author, created) VALUES(?, ?, '${req.user.username}', NOW())`,
+            [title, description],
+            function (error, result) {
+                if (error) throw error;
+            }
+        )
         res.redirect('/manage/proposal');
     }
 });
