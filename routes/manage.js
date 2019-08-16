@@ -7,6 +7,7 @@ var auth = require('../lib/auth');
 /* AWS SDK, multer-s3 */
 var multerS3 = require('../lib/multerS3')();
 var upload = multerS3.upload;
+var s3 = multerS3.s3;
 
 /* Category: manage page. */
 router.get('/', function (req, res, next) {
@@ -326,13 +327,154 @@ router.post('/proposal/create', function (req, res, next) {
     }
 });
 
-router.get('/leave', function (req, res, next) {
+router.get('/account', function (req, res, next) {
     if (!auth.isOwner(req, res)) {
         res.render('manage/anonymous', { user: req.user ? req.user : 0 });
     }
     else {
-        res.render('manage/leave', { user: req.user ? req.user : 0 });
+        res.render('manage/account', { user: req.user ? req.user : 0 });
     }
+});
+
+router.get('/account/data', function (req, res, next) {
+    if (!auth.isOwner(req, res)) {
+        res.render('manage/anonymous', { user: req.user ? req.user : 0 });
+    }
+    else {
+        res.render('manage/account_data', { user: req.user ? req.user : 0 });
+    }
+});
+
+router.post('/account/data', function (req, res, next) {
+    if (!auth.isOwner(req, res)) {
+        res.render('manage/anonymous', { user: req.user ? req.user : 0 });
+    }
+    else {
+        /* 1. Deletion of market posts */
+        var firstfunc = function (foo2) {
+            db.query(
+                `SELECT * FROM market_board WHERE author=?`,
+                [req.body.username],
+                function (error, result) {
+                    if (error) throw error;
+                    for (var i = 0; i < result.length; i++) {
+                        var id = result[i].id;
+
+                        db.query(
+                            `SELECT * FROM market_files WHERE board_id=?`,
+                            [id],
+                            function (error, files) {
+                                if (error) throw error;
+                                for (var j = 0; j < files.length; j++) {
+                                    s3.deleteObject(
+                                        {
+                                            Bucket: "uitda.net",
+                                            Key: files[j].filename
+                                        },
+                                        (err, data) => {
+                                            if (err) throw err;
+                                            console.log(data);
+                                        }
+                                    );
+                                }
+                            }
+                        );
+                        db.query(
+                            'DELETE FROM market_files WHERE board_id = ?',
+                            [id],
+                            function (error,result) {
+                                if (error) throw error;
+                                db.query(
+                                    'DELETE FROM market_board WHERE id = ?',
+                                    [id],
+                                    function (error,result) {
+                                        if (error) throw error;
+                                        foo2;
+                                    }
+                                );
+                            }
+                        );
+
+                    }
+                }
+            );
+        };
+        /* 2. Deletion of networking posts */
+        var secondfunc = function (foo3) {
+            db.query(
+                `SELECT * FROM networking_board WHERE author=?`,
+                [req.body.username],
+                function (error, result) {
+                    if (error) throw error;
+                    for (var i = 0; i < result.length; i++) {
+                        var id = result[i].id;
+
+                        db.query(
+                            `SELECT * FROM networking_files WHERE board_id=?`,
+                            [id],
+                            function (error, files) {
+                                if (error) throw error;
+                                for (var j = 0; j < files.length; j++) {
+                                    s3.deleteObject(
+                                        {
+                                            Bucket: "uitda.net",
+                                            Key: files[j].filename
+                                        },
+                                        (err, data) => {
+                                            if (err) throw err;
+                                            console.log(data);
+                                        }
+                                    );
+                                }
+                            }
+                        );
+                        db.query(
+                            'DELETE FROM networking_files WHERE board_id = ?',
+                            [id],
+                            function (error,result) {
+                                if (error) throw error;
+                                db.query(
+                                    'DELETE FROM networking_board WHERE id = ?',
+                                    [id],
+                                    function (error,result) {
+                                        if (error) throw error;
+                                        foo3;
+                                    }
+                                );
+                            }
+                        );
+
+                    }
+                }
+            );
+        };
+        /* 3. Logout */
+        var thirdfunc = function (foo4) {
+            req.logout();
+            req.session.save(function () {
+                foo4;
+            });
+        };
+        /* 4. Deletion of user data */
+        var forthfunc = function () {
+            db.query(
+                'DELETE FROM users WHERE username = ?',
+                [req.body.username],
+                function (error) {
+                    if (error) throw error;
+                }
+            );
+        };
+        /* 5. Main part */
+        if (auth.sameOwner(req, req.body.username) === 0) {
+            res.render('cheat', { user: req.user ? req.user : 0 });
+        }
+        else {
+            firstfunc(secondfunc(thirdfunc(forthfunc())));
+            res.redirect('/');
+        }
+    }
+
 });
 
 module.exports = router;

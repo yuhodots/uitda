@@ -32,9 +32,9 @@ router.post('/',
     )
 );
 
-// router.get('/login/register', function (req, res, next) {
-//   res.render('login/register', { user: req.user? req.user:0 });
-// });
+router.get('/register', function (req, res, next) {
+  res.render('login/register', { user: req.user? req.user:0 });
+});
 
 router.post('/register', function (req, res, next) {
     hasher(

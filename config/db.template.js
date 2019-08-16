@@ -1,9 +1,9 @@
 var mysql = require('mysql');
 var db = mysql.createConnection({
-  host:'',
-  user:'',
-  password:'',
-  database:''
+  host:' ',
+  user:' ',
+  password:' ',
+  database:' '
 });
 function handleDisconnect() {
   db.connect(function(err) {              // The server is either down
