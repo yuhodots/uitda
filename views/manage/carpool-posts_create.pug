@@ -4,8 +4,22 @@ block content
     #form
         form(action="/manage/carpool-posts/create" method="post")
             p
-                input(type="text" name="title" placeholder="title")
+                span 경로: 
+                input(type="text" name="origin" placeholder="origin")
+                span ->
+                input(type="text" name="destination" placeholder="destination")
             p
+                span 시간:
+                input(type="text" name="month" placeholder="month")
+                span 월 
+                input(type="text" name="day" placeholder="day")
+                span 일 
+                input(type="text" name="hour" placeholder="hour")
+                span 시 
+                input(type="text" name="min" placeholder="min")
+                span 분
+            p
+                p 장소, 하고싶은말:
                 textarea(name="description" placeholder="description")
             p
                 input(type="submit")

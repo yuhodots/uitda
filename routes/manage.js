@@ -19,6 +19,7 @@ router.get('/', function (req, res, next) {
     }
 });
 
+/* market-posts */
 router.get('/market-posts', function (req, res, next) {
     if (!auth.isOwner(req, res)) {
         res.render('manage/anonymous', { user: req.user ? req.user : 0 });
@@ -141,6 +142,7 @@ router.post(`/market-posts/update/:id`, function (req, res, next) {
     }
 });
 
+/* networking-posts */
 router.get('/networking-posts', function (req, res, next) {
     if (!auth.isOwner(req, res)) {
         res.render('manage/anonymous', { user: req.user ? req.user : 0 });
@@ -263,6 +265,7 @@ router.post(`/networking-posts/update/:id`, function (req, res, next) {
     }
 });
 
+/* carpool-posts */
 router.get('/carpool-posts', function (req, res, next) {
     if (!auth.isOwner(req, res)) {
         res.render('manage/anonymous', { user: req.user ? req.user : 0 });
@@ -286,11 +289,26 @@ router.post('/carpool-posts/create', function (req, res, next) {
         res.render('manage/anonymous', { user: req.user ? req.user : 0 });
     }
     else {
-        //아직 처리하지 않았습니다.
-        res.redirect('/manage/carpool-posts');
+        if (!auth.isOwner(req, res)) {
+            res.render('manage/anonymous', { user: req.user ? req.user : 0 });
+        }
+        else {
+            var title = req.body.origin + '->' + req.body.destination;
+            var start = '2019-' + req.body.month + '-' + req.body.day + 'T' + req.body.hour + ':' + req.body.min + ':00';
+            var description = req.body.description;
+            db.query(
+                `INSERT INTO cal_events (title, description, username, start) VALUES(?, ?, '${req.user.username}', ?)`,
+                [title, description, start],
+                function (error, result) {
+                    if (error) throw error;
+                    res.redirect('/manage/carpool-posts');
+                }
+            )
+        }
     }
 });
 
+/* proposal */
 router.get('/proposal', function (req, res, next) {
     if (!auth.isOwner(req, res)) {
         res.render('manage/anonymous', { user: req.user ? req.user : 0 });
@@ -327,6 +345,7 @@ router.post('/proposal/create', function (req, res, next) {
     }
 });
 
+/* account */
 router.get('/account', function (req, res, next) {
     if (!auth.isOwner(req, res)) {
         res.render('manage/anonymous', { user: req.user ? req.user : 0 });
