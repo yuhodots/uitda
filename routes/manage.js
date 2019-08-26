@@ -271,7 +271,18 @@ router.get('/carpool-posts', function (req, res, next) {
         res.render('manage/anonymous', { user: req.user ? req.user : 0 });
     }
     else {
-        res.render('manage/carpool-posts', { user: req.user ? req.user : 0 });
+        if (auth.hasPost_carpool(req, 'cal_events') === 0) { // 작성한 게시글이 데이터가 없는 경우
+            res.render('manage/carpool-posts', { postlist: undefined, user: req.user ? req.user : 0 });
+        }
+        else {
+            db.query(
+                `SELECT * FROM cal_events WHERE username='${req.user.username}'`,
+                function (error, results) {
+                    if (error) throw error;
+                    res.render('manage/carpool-posts', { postlist: results, user: req.user ? req.user : 0 });
+                }
+            )
+        }
     }
 });
 
@@ -305,6 +316,69 @@ router.post('/carpool-posts/create', function (req, res, next) {
                 }
             )
         }
+    }
+});
+
+router.get('/carpool-posts/update/:id', function (req, res, next) {
+    if (!auth.isOwner(req, res)) {
+        res.render('manage/anonymous', { user: req.user ? req.user : 0 });
+    }
+    else {
+        db.query(
+            `SELECT * FROM cal_events`,
+            function (error, results) {
+                if (error) throw error;
+                db.query(
+                    `SELECT * FROM cal_events WHERE id=?`,
+                    [req.params.id],
+                    function (error2, result) {
+                        if (error2) throw error2;
+                        else {
+                            if (auth.sameOwner_carpool(req, result[0].username) === 0) { // 다른 사용자의 잘못된 접근
+                                res.render('cheat', { user: req.user ? req.user : 0 });
+                            }
+                            else { // 올바른 사용자의 접근
+                                res.render('manage/carpool-posts_update', { post: result[0], user: req.user ? req.user : 0 });
+                            }
+                        }
+                    }
+                )
+            }
+        )
+    }
+});
+
+router.post(`/carpool-posts/update/:id`, function (req, res, next) {
+    if (!auth.isOwner(req, res)) {
+        res.render('manage/anonymous', { user: req.user ? req.user : 0 });
+    }
+    else {
+        var title = req.body.origin + '->' + req.body.destination;
+        var start = '2019-' + req.body.month + '-' + req.body.day + 'T' + req.body.hour + ':' + req.body.min + ':00';
+        var description = req.body.description;
+        var id = req.body.id;
+        db.query(
+            `SELECT * FROM cal_events WHERE id=?`,
+            [id],
+            function (error, result) {
+                if (error) throw error;
+                else {
+                    if (auth.sameOwner_carpool(req, result[0].username) === 0) { // 다른 사용자의 잘못된 접근
+                        res.render('cheat', { user: req.user ? req.user : 0 });
+                    }
+                    else { // 올바른 사용자의 접근
+                        db.query(
+                            'UPDATE cal_events SET title=?, start=?, description=? WHERE id=?',
+                            [title, start, description, id],
+                            function (error2, result) {
+                                if (error2) throw error2;
+                                res.redirect(`/carpool`);
+                            }
+                        )
+                    }
+                }
+            }
+        )
     }
 });
 
