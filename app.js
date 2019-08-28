@@ -9,14 +9,22 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 var session_store_object = require('./config/session-store');
-var passport = require('passport');
 var app = express();
-
+var sequelize = require('./models/index').sequelize;
+sequelize.sync();
 /* Increase event listener */
 // node는 event listener 10개 넘기면 오류로 간주하는게 default
 const EventEmitter = require('events');
 const emitter = new EventEmitter();
 emitter.setMaxListeners(15);
+
+app.use(session({
+  secret: '1234DSFs@adf1234!@#$asd',
+  resave: false,
+  saveUninitialized: true,
+  store: new MySQLStore(session_store_object) // session-store.js 정보 로드
+}));
+var passport = require('./lib/passport')(app);
 
 /* Router */
 var indexRouter = require('./routes/index');
@@ -25,7 +33,7 @@ var networkingRouter = require('./routes/networking');
 var carpoolRouter = require('./routes/carpool');
 var manageRouter = require('./routes/manage');
 var chattingRouter = require('./routes/chatting');
-var loginRouter = require('./routes/login');
+var loginRouter = require('./routes/login')(passport);
 var usersRouter = require('./routes/users');
 
 /* View engine setup */
@@ -41,15 +49,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 
-/* Middleware installation : Addition */
-app.use(session({
-  secret: '1234DSFs@adf1234!@#$asd',
-  resave: false,
-  saveUninitialized: true,
-  store: new MySQLStore(session_store_object) // session-store.js 정보 로드
-}));
-app.use(passport.initialize()); // passport 사용 하도록 세팅
-app.use(passport.session()); // passport 사용 시 session을 활용
 
 /* Middleware installation : Router */
 app.use('/api/', indexRouter);
