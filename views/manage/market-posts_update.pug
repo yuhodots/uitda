@@ -2,7 +2,7 @@ extends ../layout.pug
 
 block content
     #form
-        form(action=`/manage/market-posts/update/${post.id}` method=`post`)
+        form(action=`/api/manage/market-posts/update/${post.id}` method=`post`)
             input(type=`hidden` name=`id` value=`${post.id}`)
             p
                 input(type=`text` name=`title` placeholder=`title` value=`${post.title}`)

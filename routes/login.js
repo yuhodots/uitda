@@ -25,8 +25,8 @@ router.post('/',
     passport.authenticate(
         'local',
         {
-            successRedirect: '/', // 로그인 성공 시  
-            failureRedirect: '/login', // 로그인 실패 시 
+            successRedirect: '/api/', // 로그인 성공 시  
+            failureRedirect: '/api/login', // 로그인 실패 시 
             failureFlash: false
         }
     )
@@ -51,7 +51,7 @@ router.post('/register', function (req, res, next) {
                 user,
                 function (error, result) {
                     if (error) throw error;
-                    res.redirect('/');
+                    res.redirect('/api/');
                 });
         }
     );

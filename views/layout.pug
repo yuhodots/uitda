@@ -6,15 +6,15 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     #navi_bar
-      a(href='/') [home]
-      a(href='/market') [market]
-      a(href='/networking') [networking]
-      a(href='/carpool') [carpool]
-      a(href='/manage') [manage]
-      a(href='/chatting') [chatting]
+      a(href='/api/') [home]
+      a(href='/api/market') [market]
+      a(href='/api/networking') [networking]
+      a(href='/api/carpool') [carpool]
+      a(href='/api/manage') [manage]
+      a(href='/api/chatting') [chatting]
       -console.log(user);
       -if(user)
-        a(href='/logout') [#{user.username}/logout]
+        a(href='/api/logout') [#{user.username}/logout]
       -else
-        a(href='/login') [login]
+        a(href='/api/login') [login]
     block content

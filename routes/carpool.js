@@ -28,7 +28,7 @@ router.post('/delete', function (req, res, next) {
             [req.body.id],
             function (error, result) {
               if (error) throw error;
-              res.redirect('/manage/carpool-posts');
+              res.redirect('/api/manage/carpool-posts');
             }
           );
         }

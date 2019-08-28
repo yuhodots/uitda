@@ -74,7 +74,7 @@ router.post('/market-posts/create', upload.array('userfile', 6), function (req, 
                 }
             )
         }
-        res.redirect('/manage/market-posts');
+        res.redirect('/api/manage/market-posts');
     }
 });
 
@@ -132,7 +132,7 @@ router.post(`/market-posts/update/:id`, function (req, res, next) {
                             [title, description, id],
                             function (error2, result) {
                                 if (error2) throw error2;
-                                res.redirect(`/market/${id}`);
+                                res.redirect(`/api/market/${id}`);
                             }
                         )
                     }
@@ -197,7 +197,7 @@ router.post('/networking-posts/create', upload.array('userfile', 6), function (r
                 }
             )
         }
-        res.redirect('/manage/networking-posts');
+        res.redirect('/api/manage/networking-posts');
     }
 });
 
@@ -255,7 +255,7 @@ router.post(`/networking-posts/update/:id`, function (req, res, next) {
                             [title, description, id],
                             function (error2, result) {
                                 if (error2) throw error2;
-                                res.redirect(`/networking/${id}`);
+                                res.redirect(`/api/networking/${id}`);
                             }
                         )
                     }
@@ -312,7 +312,7 @@ router.post('/carpool-posts/create', function (req, res, next) {
                 [title, description, start],
                 function (error, result) {
                     if (error) throw error;
-                    res.redirect('/manage/carpool-posts');
+                    res.redirect('/api/manage/carpool-posts');
                 }
             )
         }
@@ -372,7 +372,7 @@ router.post(`/carpool-posts/update/:id`, function (req, res, next) {
                             [title, start, description, id],
                             function (error2, result) {
                                 if (error2) throw error2;
-                                res.redirect(`/carpool`);
+                                res.redirect(`/api/carpool`);
                             }
                         )
                     }
@@ -415,7 +415,7 @@ router.post('/proposal/create', function (req, res, next) {
                 if (error) throw error;
             }
         )
-        res.redirect('/manage/proposal');
+        res.redirect('/api/manage/proposal');
     }
 });
 
@@ -564,7 +564,7 @@ router.post('/account/data', function (req, res, next) {
         }
         else {
             firstfunc(secondfunc(thirdfunc(forthfunc())));
-            res.redirect('/');
+            res.redirect('/api/');
         }
     }
 

@@ -5,7 +5,7 @@ block menu
     p market, networking, carpool 게시글 데이터가 모두 삭제됩니다
     p 삭제된 데이터는 재가입 하더라도 복원되지 않습니다
     p 정말 탈퇴하시겠습니까?
-    form(action=`/manage/account/data` method=`post`)
+    form(action=`/api/manage/account/data` method=`post`)
         input(type=`hidden` name=`username` value=`${user.username}`)
         input(type=`submit` value=`탈퇴하기`)
-        a(href='/manage/account')  취소
+        a(href='/api/manage/account')  취소

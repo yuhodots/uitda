@@ -3,14 +3,14 @@ extends layout.pug
 block menu
     h3 Carpool
     #create
-        a(href='/manage/carpool-posts/create') [글쓰기]
+        a(href='/api/manage/carpool-posts/create') [글쓰기]
     #list
         -if(postlist != undefined) 
             ul
                 -for(i = 0; i < postlist.length; i++)
                     li
                         p [#{postlist[i].start}] #{postlist[i].title}
-                        form(action=`/carpool/delete` method=`post`)
+                        form(action=`/api/carpool/delete` method=`post`)
                             input(type=`hidden` name=`id` value=`${postlist[i].id}`)
                             input(type=`submit` value=`delete`)
-                        a(href=`/manage/carpool-posts/update/${postlist[i].id}`) update
+                        a(href=`/api/manage/carpool-posts/update/${postlist[i].id}`) update

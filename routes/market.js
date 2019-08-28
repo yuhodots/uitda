@@ -84,7 +84,7 @@ router.post('/delete', function (req, res, next) {
                                 [req.body.id],
                                 function (error, result) {
                                     if (error) throw error;
-                                    res.redirect('/manage/market-posts');
+                                    res.redirect('/api/manage/market-posts');
                                 }
                             );
                         }

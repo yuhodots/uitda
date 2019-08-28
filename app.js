@@ -52,14 +52,14 @@ app.use(passport.initialize()); // passport 사용 하도록 세팅
 app.use(passport.session()); // passport 사용 시 session을 활용
 
 /* Middleware installation : Router */
-app.use('/', indexRouter);
-app.use('/market', marketRouter);
-app.use('/networking', networkingRouter);
-app.use('/carpool', carpoolRouter);
-app.use('/manage', manageRouter);
-app.use('/chatting', chattingRouter);
-app.use('/login', loginRouter);
-app.use('/users', usersRouter);
+app.use('/api/', indexRouter);
+app.use('/api/market', marketRouter);
+app.use('/api/networking', networkingRouter);
+app.use('/api/carpool', carpoolRouter);
+app.use('/api/manage', manageRouter);
+app.use('/api/chatting', chattingRouter);
+app.use('/api/login', loginRouter);
+app.use('/api/users', usersRouter);
 
 /* Catch 404 and forward to error handler */
 app.use(function(req, res, next) {
