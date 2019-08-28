@@ -25,7 +25,7 @@ router.get('/market-posts', function (req, res, next) {
         res.render('manage/anonymous', { user: req.user ? req.user : 0 });
     }
     else {
-        if (auth.hasPost(req, 'market_board') === 0) { // 작성한 게시글이 데이터가 없는 경우
+        if (auth.hasPost(req, 'market_board','author') === 0) { // 작성한 게시글이 데이터가 없는 경우
             res.render('manage/market-posts', { postlist: undefined, user: req.user ? req.user : 0 });
         }
         else {
@@ -148,7 +148,7 @@ router.get('/networking-posts', function (req, res, next) {
         res.render('manage/anonymous', { user: req.user ? req.user : 0 });
     }
     else {
-        if (auth.hasPost(req, 'networking_board') === 0) { // 작성한 게시글이 데이터가 없는 경우
+        if (auth.hasPost(req, 'networking_board','author') === 0) { // 작성한 게시글이 데이터가 없는 경우
             res.render('manage/networking-posts', { postlist: undefined, user: req.user ? req.user : 0 });
         }
         else {
@@ -271,7 +271,7 @@ router.get('/carpool-posts', function (req, res, next) {
         res.render('manage/anonymous', { user: req.user ? req.user : 0 });
     }
     else {
-        if (auth.hasPost_carpool(req, 'cal_events') === 0) { // 작성한 게시글이 데이터가 없는 경우
+        if (auth.hasPost(req, 'cal_events','username') === 0) { // 작성한 게시글이 데이터가 없는 경우
             res.render('manage/carpool-posts', { postlist: undefined, user: req.user ? req.user : 0 });
         }
         else {

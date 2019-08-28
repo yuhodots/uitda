@@ -19,7 +19,7 @@ router.post('/delete', function (req, res, next) {
       [req.body.id],
       function (error, result) {
         if (error) throw error;
-        if (auth.sameOwner_carpool(req, result[0].username) === 0) { // 다른 사용자의 잘못된 접근
+        if (auth.sameOwner(req, result[0].username) === 0) { // 다른 사용자의 잘못된 접근
           res.render('cheat', { user: req.user ? req.user : 0 });
         }
         else {
