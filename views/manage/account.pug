@@ -3,6 +3,6 @@ extends layout.pug
 block menu
     h3 Account
     #account
-        p 로그인 ID: #{user.username}
-        p Email: #{user.username}@unist.ac.kr
+        p 이름: #{user.username}
+        p Email: #{user.email}
         a(href='/api/manage/account/data') 데이터 관리

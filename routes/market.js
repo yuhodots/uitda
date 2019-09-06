@@ -1,8 +1,10 @@
 /* Module load */
 var express = require('express');
 var router = express.Router();
-var db = require('../config/db');
 var auth = require('../lib/auth');
+const { market_board } = require('../models');
+const { market_files } = require('../models');
+
 
 /* AWS SDK, multer-s3 */
 var multerS3 = require('../lib/multerS3')();
@@ -10,35 +12,22 @@ var s3 = multerS3.s3;
 
 /* Category: market page. */
 router.get('/', function (req, res, next) {
-    db.query(
-        `SELECT * FROM market_board`,
-        function (error, results) {
-            if (error) throw error;
-            res.render('market/home', { postlist: results, user: req.user ? req.user : 0 });
-        }
-    )
+    market_board.findAll().then(function(projects){
+      res.render('market/home', { postlist: projects, user: req.user ? req.user : 0 });
+    }).catch(function(err){throw err;});
 });
 
 router.get('/:id', function (req, res, next) {
-    db.query(
-        `SELECT * FROM market_board`,
-        function (error, results) {
-            if (error) throw error;
-            db.query(
-                `SELECT * FROM market_board WHERE id=?`,
-                [req.params.id],
-                function (error2, result) {
-                    if (error2) throw error2;
-                    db.query(
-                        `SELECT * FROM market_files WHERE board_id=?`,
-                        [req.params.id],
-                        function (error3, files) {
-                            if (error3) throw error3;
-                            res.render('market/post', { post: result[0], files: files, user: req.user ? req.user : 0 });
-                        });
-                })
-        }
-    );
+    market_board.findOne({where : {id : req.params.id}}).then(function(content){
+      market_files.findAll({where : {board_id : req.params.id}}).then(function(files){
+          console.log(files);
+        res.render('market/post', { post: content, files: files, user: req.user ? req.user : 0 });
+      }).catch(function(err){
+        throw err;
+      });
+    }).catch(function(err){
+      throw err;
+    });
 });
 
 router.post('/delete', function (req, res, next) {
@@ -46,52 +35,25 @@ router.post('/delete', function (req, res, next) {
         res.render('manage/anonymous', { user: req.user ? req.user : 0 });
     }
     else {
-        db.query(
-            `SELECT * FROM market_board WHERE id=?`,
-            [req.body.id],
-            function (error, result) {
-                if (error) throw error;
-                if (auth.sameOwner(req, result[0].author) === 0) { // 다른 사용자의 잘못된 접근
-                    res.render('cheat', { user: req.user ? req.user : 0 });
-                }
-                else {
-                    db.query(
-                        `SELECT * FROM market_files WHERE board_id=?`,
-                        [req.body.id],
-                        function (error, files) {
-                            if (error) throw error;
-                            for (var i = 0; i < files.length; i++) {
-                                s3.deleteObject(
-                                    {
-                                        Bucket: "uitda.net",
-                                        Key: files[i].filename
-                                    },
-                                    (err, data) => {
-                                        if (err) throw err;
-                                        console.log(data);
-                                    }
-                                );
-                            }
-                        }
-                    );
-                    db.query(
-                        'DELETE FROM market_files WHERE board_id = ?',
-                        [req.body.id],
-                        function (error, result) {
-                            if (error) throw error;
-                            db.query(
-                                'DELETE FROM market_board WHERE id = ?',
-                                [req.body.id],
-                                function (error, result) {
-                                    if (error) throw error;
-                                    res.redirect('/api/manage/market-posts');
-                                }
-                            );
-                        }
-                    );
-                }
-            }
-        );
+      market_board.destroy({where : {id:req.body.id}}).catch(function(err){throw err;});
+      market_files.findAll({where :{board_id:req.body.id}}).then(function(content){
+        if(content.length){
+          for (var i = 0; i < content.length; i++) {
+              s3.deleteObject(
+                  {
+                      Bucket: "uitda.net",
+                      Key: content[i].filename
+                  },
+                  (err, data) => {
+                      if (err) throw err;
+                      console.log(data);
+                  }
+              );
+          }
+          market_files.destroy({where:{board_id:req.body.id}}).catch(function(err){throw err;})
+        }
+      }).catch(function(err){throw err;})
+      res.redirect('/api/manage/market-posts');
     }
 });
 
