@@ -62,7 +62,7 @@ router.get('/', function (req, res, next) {
                 postlist.push(post);
                 if((i+1)===projects.length){
                   console.log(postlist);
-                  res.json({ postlist: postlist, user: req.user ? req.user : 0 });
+                  res.render('market/home', { postlist: postlist, user: req.user ? req.user : 0 });
                 }
               }).catch(function(err){throw err;})
             }).catch(function(err){
@@ -71,7 +71,7 @@ router.get('/', function (req, res, next) {
           })(i);
         }
       } else{
-        res.json({postlist: undefined,  user: req.user ? req.user : 0 });
+        res.render('market/home', {postlist: undefined,  user: req.user ? req.user : 0 });
       }
     }).catch(function(err){throw err;});
 });
@@ -85,7 +85,7 @@ router.get('/:id', function (req, res, next) {
           var time = moment(content.created,'YYYY년MM월DD일HH시mm분ss초').fromNow();
           var post = make_ob(content.id,content.title,writer,time,content.price,content.condition,content.description,filelist);
           console.log(post);
-          res.json({ post: post, user: req.user ? req.user : 0 });
+          res.render('market/post', { post: post, user: req.user ? req.user : 0 });
         }).catch(function(err){throw err;})
       }).catch(function(err){
         throw err;
@@ -97,7 +97,7 @@ router.get('/:id', function (req, res, next) {
 
 router.post('/delete', function (req, res, next) {
     if (!auth.isOwner(req, res)) {
-        res.json({ user: req.user ? req.user : 0 });
+        res.render('manage/anonymous', { user: req.user ? req.user : 0 });
     }
     else {
       market_board.destroy({where : {id:req.body.id}}).catch(function(err){throw err;});
@@ -118,7 +118,7 @@ router.post('/delete', function (req, res, next) {
           market_files.destroy({where:{board_id:req.body.id}}).catch(function(err){throw err;})
         }
       }).catch(function(err){throw err;})
-      res.redirect('/api/manage/market-posts');
+      res.redirect('/view/manage/market-posts');
     }
 });
 

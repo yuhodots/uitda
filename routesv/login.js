@@ -10,10 +10,10 @@ var passport = require('../lib/passport')(router);
 module.exports = function(passport){
   router.get('/', function (req, res, next) {
       if (!auth.isOwner(req, res)) {
-          res.json('login/home', { user: req.user ? req.user : 0 });
+          res.render('login/home', { user: req.user ? req.user : 0 });
       }
       else {
-          res.json('cheat', { user: req.user ? req.user : 0 });
+          res.render('cheat', { user: req.user ? req.user : 0 });
       }
   });
   router.post('/',

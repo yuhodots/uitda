@@ -60,7 +60,7 @@ router.get('/', function (req, res, next) {
               postlist.push(post);
               if((i+1)===projects.length){
                 console.log(postlist);
-                res.json({ postlist: postlist, user: req.user ? req.user : 0 });
+                res.render('networking/home', { postlist: postlist, user: req.user ? req.user : 0 });
               }
             }).catch(function(err){throw err;})
           }).catch(function(err){
@@ -69,7 +69,7 @@ router.get('/', function (req, res, next) {
         })(i);
       }
     } else{
-      res.json({postlist: undefined,  user: req.user ? req.user : 0 });
+      res.render('networking/home', {postlist: undefined,  user: req.user ? req.user : 0 });
     }
   }).catch(function(err){throw err;});
 });
@@ -83,7 +83,7 @@ router.get('/:id', function (req, res, next) {
         var time = moment(content.created,'YYYY년MM월DD일HH시mm분ss초').fromNow();
         var post = make_ob(content.id,content.title,writer,time,content.condition,content.description,filelist);
         console.log(post);
-        res.json({ post: post, user: req.user ? req.user : 0 });
+        res.render('networking/post', { post: post, user: req.user ? req.user : 0 });
       }).catch(function(err){throw err;})
     }).catch(function(err){
       throw err;
@@ -95,7 +95,7 @@ router.get('/:id', function (req, res, next) {
 
 router.post('/delete', function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-      res.json({ user: req.user ? req.user : 0 });
+      res.render('networking/anonymous', { user: req.user ? req.user : 0 });
   }
   else {
     networking_board.destroy({where : {id:req.body.id}}).catch(function(err){throw err;});
@@ -116,7 +116,7 @@ router.post('/delete', function (req, res, next) {
         networking_files.destroy({where:{board_id:req.body.id}}).catch(function(err){throw err;})
       }
     }).catch(function(err){throw err;})
-    res.redirect('/api/manage/networking-posts');
+    res.redirect('/view/manage/networking-posts');
   }
 });
 

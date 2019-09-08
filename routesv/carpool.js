@@ -6,12 +6,12 @@ var auth = require('../lib/auth');
 
 /* Category: carpool page. */
 router.get('/', function (req, res, next) {
-  res.json({ user: req.user ? req.user : 0 });
+  res.render('carpool/home', { user: req.user ? req.user : 0 });
 });
 
 router.post('/delete', function (req, res, next) {
   if (!auth.isOwner(req, res)) {
-    res.json({ user: req.user ? req.user : 0 });
+    res.render('manage/anonymous', { user: req.user ? req.user : 0 });
   }
   else {
     db.query(
@@ -20,7 +20,7 @@ router.post('/delete', function (req, res, next) {
       function (error, result) {
         if (error) throw error;
         if (auth.sameOwner(req, result[0].username) === 0) { // 다른 사용자의 잘못된 접근
-          res.json({ user: req.user ? req.user : 0 });
+          res.render('cheat', { user: req.user ? req.user : 0 });
         }
         else {
           db.query(
@@ -28,7 +28,7 @@ router.post('/delete', function (req, res, next) {
             [req.body.id],
             function (error, result) {
               if (error) throw error;
-              res.redirect('/api/manage/carpool-posts');
+              res.redirect('/view/manage/carpool-posts');
             }
           );
         }
