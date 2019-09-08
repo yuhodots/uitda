@@ -20,10 +20,13 @@ return sequelize.define('networking_board', {
   allowNull: false
   },
   created: {
-    type:DataTypes.DATE,
-  //  type: 'TIMESTAMP',
-//    defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+    type:DataTypes.STRING(30),
     allowNull: false
+  },
+  condition:{
+    type:DataTypes.ENUM('구인 중', '거래 중','구인 완료'),
+    defaultValue:'구인 중',
+    allowNull:false
   },
   filenum: {
   type: DataTypes.INTEGER(10),

@@ -16,6 +16,14 @@ return sequelize.define('users', {
   type: DataTypes.STRING(60),
   allowNull: false,
   unique: true
+  },
+  profile_picture: {//프로필 사진
+  type: DataTypes.STRING(70),
+  allowNull: true
+  },
+  pic_location: {
+  type: DataTypes.TEXT,
+  allowNull: true
   }
 },{
     timestamps: false,

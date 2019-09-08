@@ -12,30 +12,38 @@ return sequelize.define('market_board', {
     allowNull: false
   },
   description: {
-  type: DataTypes.TEXT,
-  allowNull: true
+    type: DataTypes.TEXT,
+    allowNull: true
   },
   author: {
-  type: DataTypes.STRING(30),
-  allowNull: false
+    type: DataTypes.STRING(30),
+    allowNull: false
   },
   created: {
-    type:DataTypes.DATE,
-//  type: 'TIMESTAMP',
-//  defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
-  allowNull: false
+    type:DataTypes.STRING(30),
+    allowNull: false
+  },
+  price:{
+    type:DataTypes.STRING(10),
+    allowNull:false,
+    defaultValue:'0'
+  },
+  condition:{
+    type:DataTypes.ENUM('판매 중', '거래 중','판매 완료'),
+    defaultValue:'판매 중',
+    allowNull:false
   },
   filenum: {
-  type: DataTypes.INTEGER(10),
-  allowNull: false
+    type: DataTypes.INTEGER(10),
+    allowNull: false
   },
   count: {
-  type: DataTypes.INTEGER(11),
-  allowNull: false
+    type: DataTypes.INTEGER(11),
+    allowNull: false
   },
   class: {
-  type: DataTypes.STRING(30),
-  allowNull: true
+    type: DataTypes.STRING(30),
+    allowNull: true
   }
   },{
     timestamps: false,
