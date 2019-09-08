@@ -3,14 +3,14 @@ extends layout.pug
 block menu
     h3 Market
     #create
-        a(href='/api/manage/market-posts/create') [글쓰기]
+        a(href='/view/manage/market-posts/create') [글쓰기]
     #list
-        -if(postlist != undefined) 
+        -if(postlist != undefined)
             ul
                 -for(i = 0; i < postlist.length; i++)
                     li
-                        a(href=`/api/market/${postlist[i].id}`) #{postlist[i].title}
-                        form(action=`/api/market/delete` method=`post`)
+                        a(href=`/view/market/${postlist[i].id}`) #{postlist[i].title}
+                        form(action=`/view/market/delete` method=`post`)
                             input(type=`hidden` name=`id` value=`${postlist[i].id}`)
                             input(type=`submit` value=`delete`)
-                        a(href=`/api/manage/market-posts/update/${postlist[i].id}`) update
+                        a(href=`/view/manage/market-posts/update/${postlist[i].id}`) update

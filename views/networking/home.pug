@@ -3,8 +3,8 @@ extends ../layout.pug
 block content
     h1 Networking
     #list
-        -if(postlist != undefined) 
+        -if(postlist != undefined)
             ul
                 -for(i = 0; i < postlist.length; i++)
                     li
-                        a(href=`/api/networking/${postlist[i].id}`) #{postlist[i].title}
+                        a(href=`/view/networking/${postlist[i].id}`) #{postlist[i].title}

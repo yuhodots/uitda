@@ -2,20 +2,20 @@ extends ../layout.pug
 
 block content
     #form
-        form(action="/api/manage/carpool-posts/create" method="post")
+        form(action="/view/manage/carpool-posts/create" method="post")
             p
-                span 경로: 
+                span 경로:
                 input(type="text" name="origin" placeholder="origin")
                 span ->
                 input(type="text" name="destination" placeholder="destination")
             p
                 span 시간:
                 input(type="text" name="month" placeholder="month")
-                span 월 
+                span 월
                 input(type="text" name="day" placeholder="day")
-                span 일 
+                span 일
                 input(type="text" name="hour" placeholder="hour")
-                span 시 
+                span 시
                 input(type="text" name="min" placeholder="min")
                 span 분
             p
