@@ -10,9 +10,8 @@ const { networking_board } = require('../models');
 const { networking_files } = require('../models');
 const { proposal } = require('../models');
 //const { cal_events } = require('../models');
-const hey = require('../models/index');
 var moment = require('moment');
-var time = moment().format();
+moment.locale('ko');
 
 
 /* AWS SDK, multer-s3 */
@@ -68,7 +67,7 @@ router.post('/market-posts/create', upload.array('userfile', 6), function (req, 
         var description = req.body.description;
         var files = req.files;
         market_board.create({
-          title: title, description:description, author:req.user.username, created:moment().format(),filenum:files.length, count: 0
+          title: title, description:description, author:req.user.username, created:moment().format('YYYY년MM월DD일HH시mm분ss초'),filenum:files.length, count: 0
         }).then(function(){
           if(files.length){
             var board_id = 0;
@@ -124,7 +123,7 @@ router.post(`/market-posts/update/:id`, function (req, res, next) {
               res.render('cheat', { user: req.user ? req.user : 0 });
           } else { // 올바른 사용자의 접근
             market_board.update({
-              title :title, description:description, created:moment().format()
+              title :title, description:description, created:moment('YYYY년MM월DD일HH시mm분ss초').format()
             },{where:{id : id}}).then(function(){
               res.redirect(`/api/market/${id}`);
             })
@@ -174,7 +173,7 @@ router.post('/networking-posts/create', upload.array('userfile', 6), function (r
         var description = req.body.description;
         var files = req.files;
         networking_board.create({
-          title: title, description:description, author:req.user.username, created:moment().format(),filenum:files.length, count: 0
+          title: title, description:description, author:req.user.username, created:moment().format('YYYY년MM월DD일HH시mm분ss초'),filenum:files.length, count: 0
         }).then(function(){
           if(files.length){
             var board_id = 0;
@@ -230,7 +229,7 @@ router.post(`/networking-posts/update/:id`, function (req, res, next) {
               res.render('cheat', { user: req.user ? req.user : 0 });
           } else { // 올바른 사용자의 접근
           networking_board.update({
-            title :title, description:description,created:moment().format()
+            title :title, description:description,created:moment().format('YYYY년MM월DD일HH시mm분ss초')
           },{where:{id : id}}).then(function(){
             res.redirect(`/api/networking/${id}`);
           }).catch(function(err){

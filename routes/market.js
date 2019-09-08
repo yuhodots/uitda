@@ -4,24 +4,89 @@ var router = express.Router();
 var auth = require('../lib/auth');
 const { market_board } = require('../models');
 const { market_files } = require('../models');
+const { users} =require('../models');
+var moment = require('moment');
+moment.locale('ko');
 
 
 /* AWS SDK, multer-s3 */
 var multerS3 = require('../lib/multerS3')();
 var s3 = multerS3.s3;
+function make_writer(username,profile_picture,pic_location){
+  var writer ={
+    username: username,
+    profile_picture:profile_picture,
+    pic_location:pic_location
+  }
+  return writer;
+}
+function make_file(files, num){
+  var file = [];
+  for ( i = 0;i<num;i++){
+    file.push(files[i].dataValues);
+  }
+  return file;
+}
+function make_ob(id,title,user,created,price,condition,description,filelist){
+  var post ={
+    id:id,
+    title:title,
+    user:user,
+    created:created,
+    price:price,
+    condition:condition,
+    description:description,
+    filelist:filelist
+  }
+  return post;
+}
 
 /* Category: market page. */
 router.get('/', function (req, res, next) {
     market_board.findAll().then(function(projects){
-      res.render('market/home', { postlist: projects, user: req.user ? req.user : 0 });
+      if(projects.length){
+        var contents = make_file(projects,projects.length);
+        var postlist = [];
+        for(var i=0;i<projects.length;i++){
+          (function(i){
+            var content = contents[i];
+            market_files.findAll({where : {board_id : content.id}}).then(function(files){
+              users.findOne({where:{username : content.author}}).then(function(user){
+                var writer = make_writer(user.username,user.profile_picture,user.pic_location);
+                var filelist = [];
+                if(files.length>0){
+                    filelist = make_file(files,files.length);
+                }
+                var time = moment(content.created,'YYYY년MM월DD일HH시mm분ss초').fromNow();
+                var post = make_ob(content.id,content.title,writer,time,content.price,content.condition,content.description,filelist);
+                postlist.push(post);
+                if((i+1)===projects.length){
+                  console.log(postlist);
+                  res.render('market/home', { postlist: postlist, user: req.user ? req.user : 0 });
+                }
+              }).catch(function(err){throw err;})
+            }).catch(function(err){
+              throw err;
+            });
+          })(i);
+        }
+      } else{
+        res.render('market/home', {postlist: undefined,  user: req.user ? req.user : 0 });
+      }
     }).catch(function(err){throw err;});
 });
 
 router.get('/:id', function (req, res, next) {
     market_board.findOne({where : {id : req.params.id}}).then(function(content){
       market_files.findAll({where : {board_id : req.params.id}}).then(function(files){
-          console.log(files);
-        res.render('market/post', { post: content, files: files, user: req.user ? req.user : 0 });
+        users.findOne({where:{username : content.author}}).then(function(user){
+          var writer = make_writer(user.username,user.profile_picture,user.pic_location);
+          var filelist = make_file(files,files.length);
+          var time = moment(content.created,'YYYY년MM월DD일HH시mm분ss초').fromNow();
+          var post = make_ob(content.id,content.title,writer,time,content.price,content.condition,content.description,filelist);
+          console.log(post);
+          res.render('market/post', { post: post, user: req.user ? req.user : 0 });
+        }).catch(function(err){throw err;})
       }).catch(function(err){
         throw err;
       });
