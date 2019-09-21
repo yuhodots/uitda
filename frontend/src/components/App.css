@@ -1,0 +1,9 @@
+* {
+    box-sizing: border-box;
+}
+
+.MainTemplate {
+    margin-left: 15rem;
+    position: relative;
+}
+

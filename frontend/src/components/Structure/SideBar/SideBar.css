@@ -1,0 +1,35 @@
+.SideBar {
+    background-color: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 15rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.SideBar .LogoContainer {
+    height: 4.5rem;
+    width: 100%;
+    line-height: 4.5rem;
+    text-align: center;
+    border-bottom: 2px solid #F4F4F4;
+}
+
+.SideBar .LogoContainer .logo-Image {
+    height: 3.25rem;
+    vertical-align: middle;
+}
+
+.SideBar .UpperItemContainer {
+    margin-top: 2.5rem;
+}
+
+.SideBar .BottomItemContainer {
+    position: absolute;
+    bottom: 2rem;
+    width: 100%;
+    padding-top: 2rem;
+    border-top: 2px solid #f4f4f4;
+}

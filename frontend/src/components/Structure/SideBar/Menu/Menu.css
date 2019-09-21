@@ -1,0 +1,31 @@
+.Menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.Menu .CategoryItem {
+    margin: 0;
+    display: block;
+    height: 3rem;
+    width: 100%;
+}
+
+.Menu .CategoryItem.Active {
+    border-right: 4px solid #1E90FF;
+}
+
+.Menu .CategoryItem :hover {
+    background-color: #F4F4F4;
+}
+
+.Menu .CategoryItem .CategoryText {
+    text-decoration: none;
+    color: black;
+    font-size: 1.25rem;
+    display: block;
+    height: 100%;
+    width: 100%;
+    line-height: 3rem;
+    padding-left: 4rem;
+}
