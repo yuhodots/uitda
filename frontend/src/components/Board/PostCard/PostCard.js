@@ -5,24 +5,56 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 
-import { BasicCard, FakeCard } from "./Cards";
+import { MarketCard, FakeCard } from "./Cards";
 import './PostCard.css';
 
 class PostCard extends Component {
 
     _renderCard() {
-        return (
-            <BasicCard
-                id = {this.props.id}
-                title = {this.props.title}
-                user = {this.props.user}
-                created = {this.props.created}
-                description = {this.props.description}
-                condition = {this.props.condition}
-                filelist = {this.props.filelist}
 
-                price = {this.props.price}
-            />
+        let isMarketCard;
+        
+        switch (this.props.boardName) {
+            case 'market':
+                isMarketCard = true;
+                break;
+        
+            case 'networking':
+                isMarketCard = false;
+                break;
+
+            default:
+                break;
+        }
+
+        return (
+            <div>
+                { 
+                    isMarketCard ?
+                    <MarketCard
+                        id = {this.props.id}
+                        title = {this.props.title}
+                        user = {this.props.user}
+                        created = {this.props.created}
+                        description = {this.props.description}
+                        condition = {this.props.condition}
+                        filelist = {this.props.filelist}
+
+                        price = {this.props.price}
+                    /> :
+                    <MarketCard
+                        id = {this.props.id}
+                        title = {this.props.title}
+                        user = {this.props.user}
+                        created = {this.props.created}
+                        description = {this.props.description}
+                        condition = {this.props.condition}
+                        filelist = {this.props.filelist}
+
+                        price = {this.props.price}
+                    />
+                }
+            </div>   
         )
     }
 
@@ -48,6 +80,7 @@ PostCard.propTypes = {
     condition: PropTypes.string,            // 게시글의 상태 정보 (판매 중, 거래 완료 ...)
     description: PropTypes.string,          // 상세 정보
     filelist: PropTypes.array,              // 사진 데이터 리스트
+    boardName: PropTypes.string.isRequired, // 무슨 보드인지
     isFake: PropTypes.bool.isRequired,      // fake 카드인지
 
     price: PropTypes.string,                // [market] 가격 정보

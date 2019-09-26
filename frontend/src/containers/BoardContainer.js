@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 // 컴포넌트
 import Board from "../components/Board";
 import SearchIcon from "../components/Structure/SearchIcon";
+import LoadingBar from "../components/Structure/LoadingBar";
 
 // 액션
 import {
@@ -83,13 +84,17 @@ class BoardContainer extends Component {
             search,
             isHeaderOn,
             isGetSuccess,
+            isLoading,
 
             // methods
             headerOn,
         } = this.props;
 
+        console.log(isLoading);
+
         return (
             <div>
+                <LoadingBar isLoading={isLoading} />
                 {
                     isGetSuccess ?
                 

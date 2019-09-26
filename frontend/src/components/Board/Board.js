@@ -48,7 +48,9 @@ class Board extends Component {
     }
 
 
-    _renderMarketPostList = (postlist) => {
+    _renderPostList = (postlist) => {
+        const boardName = this.props.boardName;
+
         return postlist.map( (post, idx) => {
             return (
                 <PostCard
@@ -60,48 +62,16 @@ class Board extends Component {
                     filelist = {post.filelist}
                     condition = {post.condition}
                     price = {post.price}
+                    boardName={boardName}
                     isFake = {post.isFake}
                     key = {idx}
                 />
             )
         })
     }
-
-    _renderNetworkingPostList = (postlist) => {
-        return postlist.map( (post, idx) => {
-            return (
-                <PostCard
-                    id = {post.id}
-                    title = {post.title}
-                    user = {post.user}
-                    created = {post.created}
-                    description = {post.description}
-                    filelist = {post.filelist}
-                    condition= {post.condition}
-                    isFake = {post.isFake}
-                    key = {idx}
-                />
-            )
-        })
-    }
-
 
     render() {
         const postlist = this._makeStandardList(this.props.postlist);
-        let renderPostList;
-
-        switch (this.props.boardName) {
-            case 'market':
-                renderPostList = this._renderMarketPostList;
-                break;
-        
-            case 'networking':
-                renderPostList = this._renderNetworkingPostList;
-                break;
-
-            default:
-                break;
-        }
 
         return (
             <div className="BoardTemplate">
@@ -112,7 +82,7 @@ class Board extends Component {
                     </div> :
                     ''
                 }
-                {renderPostList(postlist)}
+                {this._renderPostList(postlist)}
             </div>
         )
     }

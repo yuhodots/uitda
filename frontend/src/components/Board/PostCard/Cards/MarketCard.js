@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import ContentBox from "./ContentBox";
 
-const BasicCard = ({id, title, user, created, description, filelist}) => {
+const MarketCard = ({id, title, user, created, description, filelist}) => {
     return (
         <div className="Basic">
             <PhotoBox filelist={filelist}/>
@@ -32,4 +32,4 @@ const PhotoBox = ({filelist}) => {
     )
 }
 
-export default BasicCard;
+export default MarketCard;
