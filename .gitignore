@@ -1,3 +1,7 @@
 .DS_Store
-BackEnd/.DS_Store
+*.DS_Store
+*/.DS_Store
+
 uitda.code-workspace
+
+frontend/node_modules
