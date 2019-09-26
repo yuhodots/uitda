@@ -6,6 +6,8 @@ const { market_board } = require('../models');
 const { market_files } = require('../models');
 const { users} =require('../models');
 var moment = require('moment');
+require('moment-timezone'); 
+moment.tz.setDefault("Asia/Seoul"); 
 moment.locale('ko');
 
 
@@ -43,7 +45,18 @@ function make_ob(id,title,user,created,price,condition,description,filelist){
 
 /* Category: market page. */
 router.get('/', function (req, res, next) {
-    market_board.findAll().then(function(projects){
+  var num_of_data = 6;
+  var scroll = Number(req.query.scroll); // 프론트 엔드에서 넘겨줘야 하는 값
+  market_board.count().then(function(count){
+    if(count < num_of_data * scroll){
+      res.render('market/home', {postlist: undefined,  user: req.user ? req.user : 0 });
+    }
+    var scrollEnd = (count < num_of_data * scroll + num_of_data)? 1 : 0;
+    market_board.findAndCountAll({
+      offset: (scrollEnd)? 0 : count - num_of_data * (scroll + 1),
+      limit: (scrollEnd)? count%num_of_data : num_of_data 
+    }).then(function(projects){
+      projects = projects["rows"]; // fincAndCountAll 메소드는 객체 정보를 count, row 키로 보내기 떄문에 이와같이 수정해 줘야함
       if(projects.length){
         var contents = make_file(projects,projects.length);
         var postlist = [];
@@ -52,16 +65,15 @@ router.get('/', function (req, res, next) {
             var content = contents[i];
             market_files.findAll({where : {board_id : content.id}}).then(function(files){
               users.findOne({where:{username : content.author}}).then(function(user){
-                var writer = make_writer(user.username,user.profile_picture,user.pic_location);
                 var filelist = [];
                 if(files.length>0){
                     filelist = make_file(files,files.length);
                 }
+                var writer = make_writer(user.username,user.profile_picture,user.pic_location);
                 var time = moment(content.created,'YYYY년MM월DD일HH시mm분ss초').fromNow();
-                var post = make_ob(content.id,content.title,writer,time,content.price,content.condition,content.description,filelist);
-                postlist.push(post);
+                var post = make_ob(content.id, content.title, writer, time, content.price, content.condition, content.description, filelist);
+                postlist[i] = post;
                 if((i+1)===projects.length){
-                  console.log(postlist);
                   res.render('market/home', { postlist: postlist, user: req.user ? req.user : 0 });
                 }
               }).catch(function(err){throw err;})
@@ -74,6 +86,7 @@ router.get('/', function (req, res, next) {
         res.render('market/home', {postlist: undefined,  user: req.user ? req.user : 0 });
       }
     }).catch(function(err){throw err;});
+  });
 });
 
 router.get('/:id', function (req, res, next) {
