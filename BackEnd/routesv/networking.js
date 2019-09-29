@@ -47,7 +47,7 @@ router.get('/', function (req, res, next) {
   var scroll = Number(req.query.scroll); // 프론트 엔드에서 넘겨줘야 하는 값
   networking_board.count().then(function(count){
     if(count < num_of_data * scroll){
-      res.render('networking/home', {postlist: undefined,  user: req.user ? req.user : 0 });
+      res.render('networking/home', {postlist: undefined,  user: req.user ? req.user : 0, isLast:true });
     }
     var scrollEnd = (count < num_of_data * scroll + num_of_data)? 1 : 0;
     networking_board.findAndCountAll({
@@ -72,7 +72,7 @@ router.get('/', function (req, res, next) {
                 var post = make_ob(content.id, content.title, writer, time, content.price, content.condition, content.description, filelist);
                 postlist[i] = post;
                 if((i+1)===projects.length){
-                  res.render('networking/home',{ postlist: postlist, user: req.user ? req.user : 0 });
+                  res.render('networking/home',{ postlist: postlist, user: req.user ? req.user : 0, isLast: (scrollEnd)? true:false });
                 }
               }).catch(function(err){throw err;})
             }).catch(function(err){
@@ -81,7 +81,7 @@ router.get('/', function (req, res, next) {
           })(i);
         }
       } else{
-        res.render('networking/home',{postlist: undefined,  user: req.user ? req.user : 0 });
+        res.render('networking/home',{postlist: undefined,  user: req.user ? req.user : 0, isLast:true });
       }
     }).catch(function(err){throw err;});
   });
