@@ -15,11 +15,12 @@ const InitialState = {
     search: '',             // 검색어 데이터
 
     isLoading: false,       // Scroll GET 대기 여부
+    isLast: false,          // 마지막 요소인 지
 
     err: '',                // 에러
 }
 
-export default function market (state = InitialState, action) {
+export default function board (state = InitialState, action) {
 
     switch (action.type) {
         
@@ -35,6 +36,7 @@ export default function market (state = InitialState, action) {
                 ...state,
                 isGetSuccess: true,
                 postlist: [...state.postlist, ...action.postlist],
+                isLast: action.isLast,
                 scroll: state.scroll + 1,
                 search: action.search,
             }
@@ -46,6 +48,8 @@ export default function market (state = InitialState, action) {
                 err: action.err
             }
 
+
+        // 보드 스크롤 GET 액션
         case BOARD_SCROLL_GET:
             return {
                 ...state,
@@ -57,6 +61,7 @@ export default function market (state = InitialState, action) {
                 ...state,
                 isLoading: false,
                 postlist: [...state.postlist, ...action.postlist],
+                isLast: action.isLast,
                 scroll: state.scroll + 1,
                 search: action.search,
             }

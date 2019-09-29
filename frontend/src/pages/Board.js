@@ -4,24 +4,26 @@
 // 상위 컴포넌트: App.js
 
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import BoardContainer from "../containers/BoardContainer";
-import MarketDetailContainer from '../containers/MarketDetailContainer';
+import BoardDetailContainer from '../containers/BoardDetailContainer';
+import NotFound from "./NotFound";
 
 const Board = () => {
-
     return (
         <div>
+            
             <Route exact path='/board/market' render={ () => 
                 <BoardContainer boardName='market' />
             } />
-            <Route path='/board/market/:id' component={MarketDetailContainer} />
 
             <Route exact path='/board/networking' render={ () => 
                 <BoardContainer boardName='networking' />
             } />
-            <Route path='/board/networking/:id' component={MarketDetailContainer} />
+
+            <Route path='/board/:boardName/:id' component={BoardDetailContainer} />
+            
         </div>
     )
 }

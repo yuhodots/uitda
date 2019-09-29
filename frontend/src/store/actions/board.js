@@ -35,10 +35,9 @@ export function getBoardRequest(boardName, scroll, search, successAction = getBo
         return axios.get(GETurl)
         
         // 성공하면, postlist 데이터를 가져와서 성공 액션을 dispatch 하고,
-        .then(res => res.data.postlist)
-        .then(postlist => {
-            console.log(postlist)
-            dispatch(successAction(search, postlist))
+        .then(res => res.data)
+        .then(data => {
+            dispatch(successAction(search, data.postlist, data.isLast))
         })
         
         // 실패하면, 실패 액션을 dispatch 한다.
@@ -48,11 +47,12 @@ export function getBoardRequest(boardName, scroll, search, successAction = getBo
     }
 }
 
-export function getBoardSuccess(search = '', postlist) {
+export function getBoardSuccess(search = '', postlist, isLast) {
     return {
         type: BOARD_GET_SUCCESS,
         search,
-        postlist
+        postlist,
+        isLast
     }
 }
 
@@ -79,11 +79,12 @@ export function getBoardByScroll() {
     }
 }
 
-export function getBoardByScrollSuccess(search = '', postlist) {
+export function getBoardByScrollSuccess(search = '', postlist, isLast) {
     return {
         type: BOARD_SCROLL_GET_SUCCESS,
         search,
-        postlist
+        postlist,
+        isLast
     }
 }
 
