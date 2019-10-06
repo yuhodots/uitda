@@ -94,7 +94,17 @@
     line-height: 4rem;
 }
 
-.PostCard .ContentBox .ContentHead .InfoBox .user-photo .Photo{
+/* .PostCard .ContentBox .ContentHead .InfoBox .user-photo .Photo{
+    height: 100%;
+    width: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+} */
+
+.UserPhoto{
     height: 100%;
     width: 100%;
     display: block;
@@ -145,7 +155,7 @@
     margin-bottom: 1rem;
 }
 
-.PostCard .ContentBox .ContentHead .PostTitle{
+.PostTitle{
     text-decoration: none;
     color: black;
 }

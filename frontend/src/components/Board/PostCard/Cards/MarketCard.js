@@ -1,7 +1,10 @@
-import React from "react";
-import { Link } from 'react-router-dom';
+// 상위 컴포넌트: PosatCard.js
 
-import ContentBox from "./ContentBox";
+import React from "react";
+
+import PhotoBox from './CardCompoents/PhotoBox';
+import ContentBox from "./CardCompoents/ContentBox";
+
 
 const MarketCard = ({id, title, user, created, description, filelist}) => {
     return (
@@ -15,20 +18,6 @@ const MarketCard = ({id, title, user, created, description, filelist}) => {
                 description = {description}
             />
         </div>
-    )
-}
-
-const PhotoBox = ({filelist}) => {
-    return (
-        <Link to='/' className="photo-wrapper">
-            {
-                filelist[0] ?
-                <img src={filelist[0].location} className='Photo' alt="" /> :
-                ''
-            }
-            
-            <div className='white-mask'></div>
-        </Link>
     )
 }
 

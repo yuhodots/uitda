@@ -52,21 +52,24 @@ class Board extends Component {
         const boardName = this.props.boardName;
 
         return postlist.map( (post, idx) => {
-            return (
-                <PostCard
-                    id = {post.id}
-                    title = {post.title}
-                    user = {post.user}
-                    created = {post.created}
-                    description = {post.description}
-                    filelist = {post.filelist}
-                    condition = {post.condition}
-                    price = {post.price}
-                    boardName={boardName}
-                    isFake = {post.isFake}
-                    key = {idx}
-                />
-            )
+            if(post.id){
+                return (
+                    <PostCard
+                        id = {post.id}
+                        title = {post.title}
+                        user = {post.user}
+                        created = {post.created}
+                        description = {post.description}
+                        filelist = {post.filelist}
+                        condition = {post.condition}
+                        price = {post.price}
+                        boardName={boardName}
+                        isFake = {post.isFake}
+                        key = {idx}
+                    />
+                )
+            }
+            return null;
         })
     }
 

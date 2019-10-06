@@ -59,7 +59,6 @@ class PostCard extends Component {
     }
 
     render() {
-
         return (
             <div className="PostCard">
                 {

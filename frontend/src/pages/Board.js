@@ -4,11 +4,10 @@
 // 상위 컴포넌트: App.js
 
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import BoardContainer from "../containers/BoardContainer";
 import BoardDetailContainer from '../containers/BoardDetailContainer';
-import NotFound from "./NotFound";
 
 const Board = () => {
     return (
