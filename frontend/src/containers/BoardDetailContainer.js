@@ -4,29 +4,34 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import BoardDetail from "../components/BoardDetail";
 
-import {
-    headerOff,
-} from "../store/actions/structure"
-
+import { getBoardDetailRequest } from '../store/actions/board';
+import { headerOff } from "../store/actions/structure"
+import { topicSelect } from "../store/actions/topic";
 
 class BoardDetailContainer extends Component {
 
     componentDidMount () {
+
+        const { boardName, id } = this.props.match.params;
+
         this.props.headerOff();                              // 헤더 On
+        this.props.topicSelect(boardName);
+
+        this.props.getBoardDetailRequest(boardName, id);
     }
 
 
     render() {
-
-        const style = {
-            height: 200,
-            
-        }
+        const { isGetSuccess, post } = this.props;
 
         return (
-            <div style={style}>
-                {this.props.boardName} Detail id: {this.props.match.params.id}
+            isGetSuccess ?
+            <BoardDetail post={post} /> :
+            <div>
+                {/* 앗, 이런..
+                페이지 로딩 중 오류가 발생했습니다 :( */}
             </div>
         )
     }
@@ -39,6 +44,8 @@ BoardDetailContainer.propTypes = {
 
 const mapStateToProps = (state) => {
     return {
+        isGetSuccess: state.board.isGetSuccess,                     // GET 요청이 성공했는 지 여부
+        post: state.board.post,                                     // 포스팅 데이터
     }
 }
 
@@ -46,6 +53,12 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         headerOff: () => {dispatch(headerOff())},                   // 헤더를 사라지게 하는 메서드
+        topicSelect: (boardName) => {                               // 토픽을 설정함
+            dispatch(topicSelect(boardName))
+        },              
+        getBoardDetailRequest: (boardName, id) => {                 // backend 서버에 GET 요청
+            dispatch(getBoardDetailRequest(boardName, id))
+        }
     }
 }
 

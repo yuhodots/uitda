@@ -144,7 +144,7 @@ class PhotoBox extends Component {
             containerWidth: this.container.offsetWidth,
             isHover: false
         })
-        window.addEventListener('resize', this._handleResize)
+        window.addEventListener('resize', this._handleResize)       // 브라우저 창(window)의 크기가 변화되는 이벤트를 받음.
     }
 
     componentWillUnmount() {
@@ -183,7 +183,7 @@ class PhotoBox extends Component {
     }
 
     _renderContents() {
-        const { filelist } = this.props;
+        const { filelist, boardName, postId } = this.props;
         const { photoOrder, containerWidth, isHover } = this.state;
         let hasPhoto = filelist.length !== 0;
 
@@ -197,9 +197,11 @@ class PhotoBox extends Component {
         let isPrevButtonOn = hasPhoto && (photoOrder !== 0);
         let isNextButtonOn = hasPhoto && (photoOrder !== (filelist.length - 1));
 
+        let postURL = `/board/${boardName}/${postId}`;
+
         return (
             <PhotoWrapper>
-                <PhotoLink hasPhoto={hasPhoto} href='/'>
+                <PhotoLink hasPhoto={hasPhoto} href={postURL}>
                     {
                         // 사진 리스트
                         hasPhoto &&
@@ -255,7 +257,9 @@ class PhotoBox extends Component {
 }
 
 PhotoBox.propTypes = {
-    filelist: PropTypes.array.isRequired
+    filelist: PropTypes.array.isRequired,
+    boardName: PropTypes.string.isRequired,
+    postId: PropTypes.number.isRequired,
 }
 
 export default PhotoBox;

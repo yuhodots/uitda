@@ -39,6 +39,7 @@ class PostCard extends Component {
                         description = {this.props.description}
                         condition = {this.props.condition}
                         filelist = {this.props.filelist}
+                        boardName = {this.props.boardName}
 
                         price = {this.props.price}
                     /> :
