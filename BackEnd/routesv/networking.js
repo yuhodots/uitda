@@ -69,7 +69,7 @@ router.get('/', function (req, res, next) {
                 }
                 var writer = make_writer(user.username,user.profile_picture,user.pic_location);
                 var time = moment(content.created,'YYYY년MM월DD일HH시mm분ss초').fromNow();
-                var post = make_ob(content.id, content.title, writer, time, content.price, content.condition, content.description, filelist);
+                var post = make_ob(content.id, content.title, writer, time, content.condition, content.description, filelist);
                 postlist[i] = post;
                 if((i+1)===projects.length){
                   res.render('networking/home',{ postlist: postlist, user: req.user ? req.user : 0, isLast: (scrollEnd)? true:false });
