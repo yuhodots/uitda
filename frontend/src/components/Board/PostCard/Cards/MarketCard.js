@@ -1,4 +1,4 @@
-// 상위 컴포넌트: PosatCard.js
+// 상위 컴포넌트: PostCard.js
 
 import React from "react";
 import PropTypes from 'prop-types';
