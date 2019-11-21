@@ -16,7 +16,7 @@ class BoardDetailContainer extends Component {
 
         const { boardName, id } = this.props.match.params;
 
-        this.props.headerOff();                              // 헤더 On
+        this.props.headerOff();                              // 헤더 Off
         this.props.topicSelect(boardName);
 
         this.props.getBoardDetailRequest(boardName, id);

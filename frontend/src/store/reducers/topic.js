@@ -2,14 +2,14 @@ import {
     TOPIC_HOME,
     TOPIC_MARKET,
     TOPIC_CARPOOL,
-    TOPIC_NETWORK
+    TOPIC_NETWORKING
 } from "../actions/ActionTypes";
 
 import { 
     HOME,
     MARKET,
     CARPOOL,
-    NETWORK
+    NETWORKING
 } from "../actions/topic";
 
 
@@ -38,16 +38,14 @@ export default function topic(state = InitialState, action) {
                 topic: CARPOOL
             }
 
-        case TOPIC_NETWORK:
+        case TOPIC_NETWORKING:
             return {
                 ...state,
-                topic: NETWORK
+                topic: NETWORKING
             }
     
         default:
             return state
     }
-
-
 
 }

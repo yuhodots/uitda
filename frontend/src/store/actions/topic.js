@@ -2,14 +2,14 @@ import {
     TOPIC_HOME,
     TOPIC_MARKET,
     TOPIC_CARPOOL,
-    TOPIC_NETWORK
+    TOPIC_NETWORKING
 } from "./ActionTypes";
 
 
 export const HOME = 'home';
 export const MARKET = 'market';
 export const CARPOOL = 'carpool';
-export const NETWORK = 'networking';
+export const NETWORKING = 'networking';
 
 
 export function topicSelect(topic) {
@@ -29,9 +29,9 @@ export function topicSelect(topic) {
                 type: TOPIC_CARPOOL
             }
     
-        case NETWORK:
+        case NETWORKING:
             return {
-                type: TOPIC_NETWORK
+                type: TOPIC_NETWORKING
             }
 
         default:
@@ -39,26 +39,26 @@ export function topicSelect(topic) {
     }
 }
 
-export function topicHome() {
-    return {
-        type: TOPIC_HOME
-    }
-}
+// export function topicHome() {
+//     return {
+//         type: TOPIC_HOME
+//     }
+// }
 
-export function topicMarket() {
-    return {
-        type: TOPIC_MARKET
-    }
-}
+// export function topicMarket() {
+//     return {
+//         type: TOPIC_MARKET
+//     }
+// }
 
-export function topicCarpool() {
-    return {
-        type: TOPIC_CARPOOL
-    }
-}
+// export function topicCarpool() {
+//     return {
+//         type: TOPIC_CARPOOL
+//     }
+// }
 
-export function topicNetwork() {
-    return {
-        type: TOPIC_NETWORK
-    }
-}
+// export function topicNetworking() {
+//     return {
+//         type: TOPIC_NETWORKING
+//     }
+// }

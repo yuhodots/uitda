@@ -13,7 +13,6 @@ import {
 
 
 // Board 초기화 액션 생성자
-
 export function initiateBoard() {
     return {
         type: BOARD_INIT
@@ -22,7 +21,6 @@ export function initiateBoard() {
 
 
 // Board Data GET 액션 생성자
-
 export function getBoardRequest(boardName, scroll, search, successAction = getBoardSuccess, failureAction = getBoardFailure) {
     return (dispatch) => {
 

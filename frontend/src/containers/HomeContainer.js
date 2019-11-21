@@ -11,7 +11,7 @@ import {
     categoryOff
  } from "../store/actions/structure";
  
- import { topicHome } from "../store/actions/topic";
+ import { topicSelect } from "../store/actions/topic";
 
 class HomeContainer extends Component {    
 
@@ -19,7 +19,9 @@ class HomeContainer extends Component {
         this.props.headerOn();
         this.props.searchBarOff();
         this.props.categoryOff();
-        this.props.topicHome();
+
+        
+        this.props.topicSelect('home');
     }
 
     render() {
@@ -41,7 +43,9 @@ const mapDispatchToProps = (dispatch) => {
         searchBarOff : () => {dispatch(searchBarOff())},    // Header에 검색바가 안 나오게 하는 메서드
         categoryOff : () => {dispatch(categoryOff())},      // Header에 카테고리 창이 안 나오게 하는 메서드
 
-        topicHome : () => {dispatch(topicHome())},          // App의 topic state를 HOME으로 설정
+        topicSelect : (topic) => {                          // App의 topic state를 HOME으로 설정
+            dispatch(topicSelect(topic))
+        },          
     }
 }
 

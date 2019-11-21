@@ -14,7 +14,7 @@ import {
     categoryOff
 } from "../store/actions/structure";
 
-import { topicCarpool } from "../store/actions/topic";
+import { topicSelect } from "../store/actions/topic";
 
 
 class CarpoolContainer extends Component {    
@@ -23,7 +23,8 @@ class CarpoolContainer extends Component {
         this.props.headerOn();
         this.props.searchBarOff();
         this.props.categoryOff();
-        this.props.topicCarpool();
+
+        this.props.topicSelect('carpool');
     }
 
     render() {
@@ -45,7 +46,7 @@ const mapDispatchToProps = (dispatch) => {
         searchBarOff : () => {dispatch(searchBarOff())},
         categoryOff : () => {dispatch(categoryOff())},
 
-        topicCarpool : () => {dispatch(topicCarpool())},    // App의 topic state를 CARPOOL로 설정
+        topicSelect : (topic) => {dispatch(topicSelect(topic))},    // App의 topic state를 CARPOOL로 설정
     }
 }
 

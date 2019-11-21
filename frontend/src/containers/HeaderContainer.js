@@ -7,10 +7,13 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 
+/* 액션들 */
 import { 
     getStatusRequest,
     logoutRequest 
 } from "../store/actions/auth";
+import { getBoardRequest } from "../store/actions/board";
+
 import Header from "../components/Structure/Header";
 
 class HeaderContainer extends Component {    
@@ -20,16 +23,31 @@ class HeaderContainer extends Component {
     }
     
     render() {
+        const {
+            isHeaderOn,
+            isSearchBarOn,
+            isCategoryOn,
+            isLoggedIn,
+            userInfo,
+            topic,
+
+            logoutRequest,
+            getStatusRequest,
+            getBoardRequest
+        } = this.props;
+
         return (
             <Header 
-                isHeaderOn={this.props.isHeaderOn}
-                isSearchBarOn={this.props.isSearchBarOn}
-                isCategoryOn={this.props.isCategoryOn}
-                isLoggedIn={this.props.isLoggedIn}
-                user={this.props.userInfo}
+                isHeaderOn={isHeaderOn}
+                isSearchBarOn={isSearchBarOn}
+                isCategoryOn={isCategoryOn}
+                isLoggedIn={isLoggedIn}
+                user={userInfo}
+                topic={topic}
                 
-                handleLogout={this.props.logoutRequest}
-                getStatus={this.props.getStatusRequest}
+                handleLogout={logoutRequest}
+                getStatus={getStatusRequest}
+                getBoardRequest={getBoardRequest}
             />
         )
     }
@@ -42,13 +60,17 @@ const mapStateToProps = (state) => {
         isCategoryOn: state.structure.isCategoryOn,     // 카테고리 창을 나타낼지,
         isLoggedIn: state.auth.isLoggedIn,              // 로그인 되어있는지,
         userInfo: state.auth.userInfo,                  // 유저 정보 객체
+        topic: state.topic.topic,                       // 현재 무슨 topic인지
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         getStatusRequest: () => {dispatch(getStatusRequest())},
-        logoutRequest: () => {dispatch(logoutRequest())}
+        logoutRequest: () => {dispatch(logoutRequest())},
+        getBoardRequest: (boardName, scroll, search) => {           // 검색 시, get request를 보냄
+            dispatch(getBoardRequest(boardName, scroll, search))
+        }
     }
 }
 

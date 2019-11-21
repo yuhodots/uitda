@@ -15,9 +15,20 @@ class Header extends Component {
 
     render() {
 
+        const { 
+            isSearchBarOn,
+            isHeaderOn,
+            isLoggedIn,
+            isCategoryOn,
+            topic,
+
+            handleLogout,
+            getBoardRequest
+        } = this.props;
+
         return (
             <div className={
-                this.props.isHeaderOn ?
+                isHeaderOn ?
                 "Header" :
                 "Header hidden"
             }>
@@ -29,8 +40,11 @@ class Header extends Component {
                 
                 <div className="SearchBarContainer">
                     {
-                        this.props.isSearchBarOn ?
-                        <SearchBar/> :
+                        isSearchBarOn ?
+                        <SearchBar 
+                            getBoardRequest={getBoardRequest} 
+                            board={topic}
+                        /> :
                         ''
                     }
                 </div>
@@ -38,12 +52,12 @@ class Header extends Component {
                 <div className="EmptyContainer"></div>
 
                 {
-                    this.props.isLoggedIn ? 
-                    <a onClick={this.props.handleLogout} href='/' className='LogItem'>Logout</a> : 
+                    isLoggedIn ? 
+                    <a onClick={handleLogout} href='/' className='LogItem'>Logout</a> : 
                     <Link to='/auth/login' className='LogItem'>Login</Link>
                 }
                 {
-                    this.props.isCategoryOn ?
+                    isCategoryOn ?
                     <div></div> :
                     ""
                 }
@@ -59,9 +73,11 @@ Header.propTypes = {
     isCategoryOn: PropTypes.bool.isRequired,    // 카테고리 창을 나타낼지,
     isLoggedIn: PropTypes.bool.isRequired,      // 로그인 되어있는지,
     user: PropTypes.object,                     // 유저 객체
+    topic: PropTypes.string.isRequired,         // 무슨 topic 인지 
 
     // Methods
-    handleLogout: PropTypes.func.isRequired // 로그아웃 메서드
+    handleLogout: PropTypes.func.isRequired,    // 로그아웃 메서드
+    getBoardRequest: PropTypes.func,            // board에서 검색 시, get 요청을 하는 매서드 
 }
 
 Header.defaultProps = {
