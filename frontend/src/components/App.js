@@ -3,7 +3,7 @@
 
 // 상위 컴포넌트: Root
 
-import React, { Component } from 'react';
+import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 // 컴포넌트
@@ -13,31 +13,30 @@ import {
     Auth,
     Board,
     Carpool,
+    Manage,
 } from "../pages";
 import SideBarContainer from "../containers/SideBarContainer";
 import HeaderContainer from '../containers/HeaderContainer';
 
 import './App.css';
 
-class App extends Component {
-
-    render() {
-        return (
-            <div>
-                <HeaderContainer />
-                <div className="MainTemplate">
-                    <SideBarContainer />
-                    <Switch>
-                        <Route exact path='/' component={Home}/>
-                        <Route path='/auth/:kind' component={Auth}/>
-                        <Route path='/board' component={Board} />
-                        <Route path='/carpool' component={Carpool} />
-                        <Route component={NotFound}/>
-                    </Switch>
-                </div>
+const App = () => {
+    return (
+        <div>
+            <HeaderContainer />
+            <div className="MainTemplate">
+                <SideBarContainer />
+                <Switch>
+                    <Route exact path='/' component={Home} />
+                    <Route path='/auth/:kind' component={Auth} />
+                    <Route path='/board' component={Board} />
+                    <Route path='/carpool' component={Carpool} />
+                    <Route path='/manage' component={Manage} />
+                    <Route component={NotFound}/>
+                </Switch>
             </div>
-        )
-    }
+        </div>
+    )
 }
 
 export default App;

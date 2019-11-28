@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import BoardDetail from "../components/BoardDetail";
+import NotFound from '../components/NotFound';
 
 import { getBoardDetailRequest } from '../store/actions/board';
 import { headerOff } from "../store/actions/structure"
@@ -14,6 +15,9 @@ class BoardDetailContainer extends Component {
 
     componentDidMount () {
 
+        console.log(this.props);
+
+        // const { boardName } = this.props;
         const { boardName, id } = this.props.match.params;
 
         this.props.headerOff();                              // 헤더 Off
@@ -29,10 +33,7 @@ class BoardDetailContainer extends Component {
         return (
             isGetSuccess ?
             <BoardDetail post={post} /> :
-            <div>
-                {/* 앗, 이런..
-                페이지 로딩 중 오류가 발생했습니다 :( */}
-            </div>
+            <NotFound />
         )
     }
 }
