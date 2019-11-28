@@ -1,8 +1,8 @@
 import axios from "axios";
 
 import {
-    MANAGE_GET_MY_POST_SUCCESS,
-    MANAGE_GET_MY_POST_FAILURE,
+    MANAGE_GET_MY_POSTS_SUCCESS,
+    MANAGE_GET_MY_POSTS_FAILURE,
     MANAGE_EDIT_GET_POST_SUCCESS,
     MANAGE_EDIT_GET_POST_FAILURE,
     MANAGE_EDIT_CREATE_POST_SUCCESS,
@@ -41,14 +41,14 @@ export function getMyPostRequest (boardName) {
 
 export function getMyPostSuccess (postlist) {
     return {
-        type: MANAGE_GET_MY_POST_SUCCESS,       // postlist GET요청 성공
+        type: MANAGE_GET_MY_POSTS_SUCCESS,       // postlist GET요청 성공
         postlist
     }
 }
 
 export function getMyPostFailure (err) {
     return {
-        type: MANAGE_GET_MY_POST_FAILURE,       // postlist GET요청 실패
+        type: MANAGE_GET_MY_POSTS_FAILURE,       // postlist GET요청 실패
         err
     }
 }
@@ -69,12 +69,7 @@ export function getUpdatePostRequest(board, id) {
         /* 성공하면, data 안의 (제목, 글 내용, 사진 리스트)를 받아서 성공 액션으로 dispatch */
         .then(res => res.data)
         .then(data => {
-            const {
-                title,
-                content,
-                fileList
-            } = data;
-            dispatch(getUpdatePostSuccess(title, content, fileList));
+            dispatch(getUpdatePostSuccess(data.post));
         })
 
         /* 실패하면, err를 실패 액션으로 dispatch */
@@ -84,12 +79,10 @@ export function getUpdatePostRequest(board, id) {
     }
 }
 
-export function getUpdatePostSuccess(title, content, fileList) {
+export function getUpdatePostSuccess(post) {
     return {
         type: MANAGE_EDIT_GET_POST_SUCCESS,     // edit 페이지의 get 요청 성공
-        title,
-        content,
-        fileList,
+        post,
     }
 }
 
