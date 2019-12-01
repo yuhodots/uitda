@@ -98,7 +98,7 @@ export function getUpdatePostFailure() {
 /* '/manage/edit/'에서의 POST 메서드로 글 생성 및 없데이트 액션 
    id의 여부에 따라 update/create를 구분 (id 있으면 update, 없으면 create) */
 
-export function EditPostRequest (board, title, content, fileList, id) {       // post 요청이 필요로하는 data 물어보기 !
+export function EditPostRequest (board, title, content, fileList, id) {
     return (dispatch) => {
 
         /* POST 요청 시 사용되는 url */
