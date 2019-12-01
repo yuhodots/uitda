@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import RegisterForm from "../components/Register/RegisterForm";
+import RegisterForm from "../components/Auth/Register/RegisterForm";
 import { 
     getStatusRequest,
     registerRequest,

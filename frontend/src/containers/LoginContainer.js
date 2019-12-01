@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import LoginForm from "../components/Login/LoginForm";
+import LoginForm from "../components/Auth/Login/LoginForm";
 import { 
     getStatusRequest,
     loginRequest 
