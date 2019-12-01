@@ -1,24 +1,24 @@
-// 상위 컴포넌트
+// 상위 컴포넌트: pages/manage.js
 
 
 import React, { Component } from 'react';
 
+/* Components */
+import {
+    Header, Body
+} from '../../components/Manage/ManageStructure'
 
-class EditContainer extends Component {
+
+
+class ManageContainer extends Component {
 
     render() {
         return(
             <div>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                Hello, world!
-                This is ManageContainer :)
+                <Header />
+                <Body>
+                    
+                </Body>
             </div>
         )
     }
@@ -26,4 +26,4 @@ class EditContainer extends Component {
 }
 
 
-export default EditContainer;
+export default ManageContainer;
