@@ -6,6 +6,10 @@ import styled from 'styled-components';
 
 import {colors} from '../../../../styles/variables'
 
+import {
+    Sidebar, ContentArea
+} from '../'
+
 /* Styled Components */
 const BodyArea = styled.div`
     min-height: 40rem;
@@ -13,6 +17,9 @@ const BodyArea = styled.div`
     margin: 0;
     
     padding: 2rem;
+
+    display: flex;
+    flex-flow: row nowrap;
 `;
 
 
@@ -22,7 +29,12 @@ class ManageBody extends Component {
     render () {
         return (
             <BodyArea>
-                Hi, Body
+                <Sidebar>
+
+                </Sidebar>
+                <ContentArea>
+                    
+                </ContentArea>
             </BodyArea>
         )
     }

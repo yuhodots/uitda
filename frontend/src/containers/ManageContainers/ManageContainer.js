@@ -2,10 +2,11 @@
 
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 /* Components */
 import {
-    Header, Body
+    Header, Body,
 } from '../../components/Manage/ManageStructure'
 
 
@@ -13,11 +14,12 @@ import {
 class ManageContainer extends Component {
 
     render() {
+
+
         return(
             <div>
-                <Header />
+                <Header isEdit={false} />
                 <Body>
-                    
                 </Body>
             </div>
         )
@@ -25,5 +27,8 @@ class ManageContainer extends Component {
 
 }
 
+ManageContainer.propTypes = {
+    match: PropTypes.object.isRequired,     // url을 통해 주는 정보.
+}
 
 export default ManageContainer;
