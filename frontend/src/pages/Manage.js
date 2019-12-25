@@ -16,6 +16,16 @@ import ManageContainer from '../containers/ManageContainers/ManageContainer';
 import EditContainer from "../containers/ManageContainers/EditContainer";
 
 
+/* Kinds */
+export const POSTS = 'posts'
+export const MARKET = 'market'
+export const NETWORKING = 'networking'
+export const COMMENTS = 'comments'
+export const LIKEPOSTS = 'likeposts'
+export const MYCARPOOL = 'mycarpool'
+export const NOTIFICATIONS = 'notifications'
+
+
 const Manage = () => {
     return (
         <Switch>
@@ -34,10 +44,10 @@ const Manage = () => {
             <Route path='/manage/posts/:board' component={ManageContainer} />
 
             {/*  */}
-            <Route path='/manage/comments' component={ManagePathWithParams} />
-            <Route path='/manage/likeposts' component={ManagePathWithParams} />
-            <Route path='/manage/mycarpool' component={ManagePathWithParams} />
-            <Route path='/manage/notifications' component={ManagePathWithParams} />
+            <Route path={`/manage/${COMMENTS}`} component={ManagePathWithParams} />
+            <Route path={`/manage/${LIKEPOSTS}`} component={ManagePathWithParams} />
+            <Route path={`/manage/${MYCARPOOL}`} component={ManagePathWithParams} />
+            <Route path={`/manage/${NOTIFICATIONS}`} component={ManagePathWithParams} />
 
             {/* 그 외는 404 NotFound를 render한다. */}
             <Route component={NotFound} />

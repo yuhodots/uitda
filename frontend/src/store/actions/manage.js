@@ -13,6 +13,9 @@ import {
     MANAGE_DELETE_POST_FAILURE,
 } from './ActionTypes';
 
+/* Error Types */
+export const NO_USER = "NO_USER"        // 유저 정보가 없는 경우 (not login)
+
 
 ////////////////////////////////////////////////////////////
 /* '/manage/post/:board' 에서 내 포스팅 데이터를 get 요청하는 액션 */
@@ -21,7 +24,8 @@ export function getMyPostRequest (boardName) {
     return (dispatch) => {
 
         /* get 요청을 보낼 URL */
-        const GETurl = `/api/manage/${boardName}`;
+        // const GETurl = `/api/manage/${boardName}`;
+        const GETurl = `/api/manage/${boardName}-posts`;
 
         /* get 요청 보내기 */
         return axios.get(GETurl)
@@ -29,7 +33,9 @@ export function getMyPostRequest (boardName) {
         /* 성공하면 res.data.postlist를 성공 액션으로 보낸다. */
         .then(res => res.data)
         .then(data => {
-            dispatch(getMyPostSuccess(data.postlist))
+            data.user ?
+            dispatch(getMyPostSuccess(data.postlist, data.user)) :
+            dispatch(getMyPostFailure(NO_USER))
         })
 
         /* 실패하면 error내용을 실패 액션으로 보낸다. */
@@ -39,10 +45,11 @@ export function getMyPostRequest (boardName) {
     }
 }
 
-export function getMyPostSuccess (postlist) {
+export function getMyPostSuccess (postlist, user) {
     return {
         type: MANAGE_GET_MY_POSTS_SUCCESS,       // postlist GET요청 성공
-        postlist
+        postlist,
+        user
     }
 }
 
@@ -86,7 +93,7 @@ export function getUpdatePostSuccess(post) {
     }
 }
 
-export function getUpdatePostFailure() {
+export function getUpdatePostFailure(err) {
     return {
         type: MANAGE_EDIT_GET_POST_FAILURE,     // edit 페이지의 get 요청 실패
         err,
@@ -183,7 +190,7 @@ export function deletePostSuccess () {
     }
 }
 
-export function deletePostFailure (errr) {
+export function deletePostFailure (err) {
     return {
         type: MANAGE_DELETE_POST_FAILURE,   // 포스팅 삭제 실패
         err,

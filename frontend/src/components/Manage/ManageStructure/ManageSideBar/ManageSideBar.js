@@ -3,8 +3,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import {colors} from '../../../../styles/variables'
-
 import CategoryBox from './CategoryBox'
 import PictureBox from './PictureBox'
 
@@ -14,7 +12,7 @@ const SideArea = styled.div`
     margin-right: 2rem;
 
     height: 40rem;
-    
+    /* width: 14rem; */
     flex: 1;
 
     display: flex;
@@ -27,9 +25,16 @@ class ManageSidebar extends Component {
 
 
     render () {
+
+        const {
+            user
+        } = this.props
+
         return (
             <SideArea>
-                <PictureBox />
+                <PictureBox 
+                    user={user}
+                />
                 <CategoryBox />
             </SideArea>
         )

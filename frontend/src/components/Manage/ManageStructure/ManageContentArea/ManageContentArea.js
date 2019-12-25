@@ -5,8 +5,12 @@ import styled from 'styled-components';
 
 import {colors} from '../../../../styles/variables'
 
+import ErrorPage from '../../ManageContents/ErrorPage'
+import ManagePost from '../../ManageContents/ManagePost'
+
+
 /* Styled Components */
-const ContentArea = styled.div`
+const ContentBox = styled.div`
 
     margin: 0;
     padding: 2rem;
@@ -19,17 +23,32 @@ const ContentArea = styled.div`
 `;
 
 
-class ManageContentArea extends Component {
+class ManageContentBox extends Component {
 
 
 
     render () {
+
+        const {
+            err,
+            // kind, 
+            // board,
+
+            postList
+        } = this.props
+    
         return (
-            <ContentArea>
-                Hi, this is ____.
-            </ContentArea>
+            <ContentBox>
+                {
+                    err ?
+                    <ErrorPage /> :
+                    <ManagePost 
+                        postList={postList}
+                    />
+                }
+            </ContentBox>
         )
     }
 }
 
-export default ManageContentArea;
+export default ManageContentBox;
