@@ -14,7 +14,9 @@ import {
 } from './ActionTypes';
 
 /* Error Types */
-export const NO_USER = "NO_USER"        // 유저 정보가 없는 경우 (not login)
+import {
+    NO_USER
+} from '../../constants/error_types'
 
 
 ////////////////////////////////////////////////////////////
