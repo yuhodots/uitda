@@ -15,7 +15,7 @@ class ManagePost extends Component{
 
     render() {
 
-        console.log(this.props.postList)
+        // console.log(this.props.postList)
 
         return (
             <div>
