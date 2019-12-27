@@ -15,16 +15,15 @@ import NotFound from './NotFound';
 import ManageContainer from '../containers/ManageContainers/ManageContainer';
 import EditContainer from "../containers/ManageContainers/EditContainer";
 
+import {
+    MANAGE_COMMENTS,
+    MANAGE_LIKEPOSTS,
+    MANAGE_MYCARPOOL,
+    MANAGE_NOTIFICATIONS,
 
-/* Kinds */
-export const POSTS = 'posts'
-export const MARKET = 'market'
-export const NETWORKING = 'networking'
-export const COMMENTS = 'comments'
-export const LIKEPOSTS = 'likeposts'
-export const MYCARPOOL = 'mycarpool'
-export const NOTIFICATIONS = 'notifications'
-
+    MANAGE_POSTS_MARKET,
+    MANAGE_POSTS_NETWORKING,
+} from '../constants/manage_category';
 
 const Manage = () => {
     return (
@@ -40,22 +39,30 @@ const Manage = () => {
             } />
             <Route path='/manage/edit/:boardName/:id' component={EditContainer} />
 
-            {/*  */}
-            <Route path='/manage/posts/:board' component={ManageContainer} />
-
-            {/*  */}
-            <Route path={`/manage/${COMMENTS}`} component={ManagePathWithParams} />
-            <Route path={`/manage/${LIKEPOSTS}`} component={ManagePathWithParams} />
-            <Route path={`/manage/${MYCARPOOL}`} component={ManagePathWithParams} />
-            <Route path={`/manage/${NOTIFICATIONS}`} component={ManagePathWithParams} />
+            {/* 카테고리 별 해당 kind를 넘겨주기 */}
+            <Route path={`/manage/posts/market`} component={() => 
+                <ManageContainer kind={MANAGE_POSTS_MARKET} />
+            } />
+            <Route path={`/manage/posts/networking`} component={() => 
+                <ManageContainer kind={MANAGE_POSTS_NETWORKING} />
+            } />
+            <Route path={`/manage/${MANAGE_COMMENTS}`} component={() => 
+                <ManageContainer kind={MANAGE_COMMENTS} />
+            } />
+            <Route path={`/manage/${MANAGE_LIKEPOSTS}`} component={() => 
+                <ManageContainer kind={MANAGE_LIKEPOSTS} />
+            } />
+            <Route path={`/manage/${MANAGE_MYCARPOOL}`} component={() => 
+                <ManageContainer kind={MANAGE_MYCARPOOL} />
+            } />
+            <Route path={`/manage/${MANAGE_NOTIFICATIONS}`} component={() => 
+                <ManageContainer kind={MANAGE_NOTIFICATIONS} />
+            } />
 
             {/* 그 외는 404 NotFound를 render한다. */}
             <Route component={NotFound} />
         </Switch>
     )
 }
-
-const ManagePathWithParams = () => <Route path='/manage/:kind' component={ManageContainer} />
-
 
 export default Manage;

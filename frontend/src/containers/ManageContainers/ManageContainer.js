@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
 /* Components */
 import {
@@ -12,71 +13,100 @@ import {
 
 /* Actions */
 import {
-    /* Error Types */
-    // NO_USER,            // User가 없는 error (not login)
-
-    /* action 생성자 */
-    getMyPostRequest,   // Posts GET request 함수  
+    getMyPostRequest    // Posts GET request 함수  
 } from '../../store/actions/manage'
 
-/* Content Constant */
+/* Constants */
 import {
-    POSTS,
-    COMMENTS,
-    LIKEPOSTS,
-    MYCARPOOL,
-    NOTIFICATIONS
-} from '../../pages/Manage'
+    MANAGE_POSTS_MARKET,
+    MANAGE_POSTS_NETWORKING,
+    MANAGE_COMMENTS,
+    MANAGE_LIKEPOSTS,
+    MANAGE_MYCARPOOL,
+    MANAGE_NOTIFICATIONS,
+} from '../../constants/manage_category'
+
+import {
+    MARKET,
+    NETWORKING,
+} from '../../constants/board_name'
+
+import {
+    NO_USER,
+} from '../../constants/error_types'
+
 
 
 class ManageContainer extends Component {
 
-    state = {}
-
     componentDidMount() {
         const {
-            kind, board
-        } = this.props.match.params
+            kind
+        } = this.props
+
+        let board;
 
         switch(kind) {
-            case COMMENTS:
+
+            /* 게시글 관리 */
+            case MANAGE_POSTS_MARKET:
+                board = MARKET;
+                // eslint-disable-next-line
+            case MANAGE_POSTS_NETWORKING:
+                if(!board) { board = NETWORKING; }
+
+                console.log(`posts/${board}`);
+                this.props.getMyPostRequest(board);
                 break;
-            case LIKEPOSTS:
+
+            /* 댓글 관리 */
+            case MANAGE_COMMENTS:
+                console.log('comment category');
                 break;
-            case MYCARPOOL:
-                break;    
-            case NOTIFICATIONS:
+
+            /* 좋아요 표시한 게시글 */
+            case MANAGE_LIKEPOSTS:
+                console.log('likeposts category');
+                break;
+
+            /* 내 카풀 일정 */
+            case MANAGE_MYCARPOOL:
+                console.log('mycarpool category');
+                break;   
+                
+            /* 지난 알림 보기 */
+            case MANAGE_NOTIFICATIONS:
+                console.log('notification category');
                 break;
             
             /* kind가 post인 경우 */
             default:
-                this.setState({
-                    ...this.state,
-                    kind: POSTS,
-                    board
-                })
-                this.props.getMyPostRequest(board);
+                break;
         }
 
     }
 
 
     render() {
-        
-        const {
-            kind,
-            board
-        } = this.state
 
         const {
             // isGetSuccess,
-            err,
             user,
+            kind,
+            err,
 
             postList
         } = this.props;
     
-        // console.log(err)
+        
+        /* 에러 처리 */
+        /* 유저가 없는 경우, 로그인 페이지로 이동 */
+        if (err === NO_USER) {
+            return (
+                <Redirect to='/auth/login' />
+            )
+        }
+
 
         return(
             <div>
@@ -85,11 +115,8 @@ class ManageContainer extends Component {
                     user={user}
                 />
                 <Body 
-                    err={err} 
-
                     user={user}
                     kind={kind}
-                    board={board}
 
                     postList={postList}
                 />
