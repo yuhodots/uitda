@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import CategoryBox from './CategoryBox'
 import PictureBox from './PictureBox'
@@ -20,14 +21,15 @@ const SideArea = styled.div`
 `;
 
 
-class ManageSidebar extends Component {
+class ManageSideBox extends Component {
 
 
 
     render () {
 
         const {
-            user
+            user,
+            kind,    
         } = this.props
 
         return (
@@ -35,10 +37,17 @@ class ManageSidebar extends Component {
                 <PictureBox 
                     user={user}
                 />
-                <CategoryBox />
+                <CategoryBox 
+                    kind={kind}
+                />
             </SideArea>
         )
     }
 }
 
-export default ManageSidebar;
+ManageSideBox.propTypes = {
+    user: PropTypes.object.isRequired,      // 유저 정보
+    kind: PropTypes.string.isRequired,      // 매니지 카테고리 정보
+}
+
+export default ManageSideBox;

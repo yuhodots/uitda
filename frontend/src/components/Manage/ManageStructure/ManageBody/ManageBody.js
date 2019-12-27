@@ -3,8 +3,9 @@
 
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
-import {colors} from '../../../../styles/variables'
+import { colors } from '../../../../styles/variables'
 
 import {
     SideBox, ContentBox
@@ -42,11 +43,8 @@ class ManageBody extends Component {
     render () {
 
         const {
-            err,
-
             user,
             kind,
-            board,
 
             /* posts */
             postList
@@ -60,17 +58,20 @@ class ManageBody extends Component {
                 <WholeBox>
                     <SideBox
                         user={user}
+                        kind={kind}
                     />
                     <ContentBox 
-                        err={err}
                         kind={kind}
-                        board={board}
                         postList={postList}
                     />
                 </WholeBox>
             </BodyArea>
         )
     }
+}
+
+ManageBody.propTypes = {
+    kind: PropTypes.string.isRequired,      // 메니지 카테고리 정보
 }
 
 export default ManageBody;
