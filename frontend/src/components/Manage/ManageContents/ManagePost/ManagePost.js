@@ -2,28 +2,118 @@
 
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
+import { colors } from '../../../../styles/variables'
 
 /* Styled Components */
-const PostItem = styled.div`
+/* 전체 포스팅 관리 박스 영역 */
+const WholeBox = styled.div`
+    width: 100%;
+    padding: 0 1rem;
 
+    position: relative;
+
+    display: flex;
+    flex-flow: column nowrap;
+`;
+
+/* //////////////////////////////// */
+/* 제목, 글 개수, 글쓰기 항목 담는 div 태그 */
+const HeaderBox = styled.div`
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: baseline;
+`;
+
+/* 관리 페이지 제목 (~~ 글 관리) */
+const Title = styled.div`
+    font-size: 1.75rem;
+`;
+
+/* 글 개수 정보 */
+const SubInfo = styled.div`
+    margin-left: 2rem;
+    font-size: 1.125rem;
+`;
+
+/* 글 쓰기 버튼 */
+const CreateButton = styled.div`
+    padding: 0.375rem 1rem;
+    background-color: ${colors.white};
+    border: 1px solid ${colors.gray_line};
+
+    color: ${colors.font_darkgray};
+    font-size: 0.875rem;
+
+    cursor: pointer;
+
+    position: absolute;
+    right: 1rem;
 `
+///////////////////////////
+
+/*  */
+const BodyBox = styled.div`
+`;
+
+const NoPostItem = styled.div`
+`;
 
 
+/* React Component */
 class ManagePost extends Component{
 
 
+    _renderPostItems = () => {
+
+    }
+
     render() {
 
-        // console.log(this.props.postList)
+        const {
+            board,
+            postList
+        } = this.props;
+
+        let postsNum = postList.length;
+        let title = (board==='market') ? '다판다' : '잉력시장';
 
         return (
             <div>
-                hello
+                <WholeBox>
+                    <HeaderBox>
+                        <Title>{title} 글 관리</Title>
+                        <SubInfo>{postsNum} 개</SubInfo>
+                        <CreateButton>글쓰기</CreateButton>
+                    </HeaderBox>
+                    <BodyBox>
+                        {
+                            postsNum ?
+                            this._renderPostItems(postList) :
+                            <NoPostItem>
+                                아직 작성된 글이 없어요.
+                                글 쓰기 버튼을 눌러서 새로운 글을 작성하세요 !
+                            </NoPostItem>
+                        }
+                    </BodyBox>
+                </WholeBox>
+                
             </div>
         )
     }
 
 }
+
+ManagePost.propTypes = {
+    postList: PropTypes.array,              // 게시글 리스트
+    board: PropTypes.string.isRequired,     // 어떤 게시판인지 정보
+
+}
+
+ManagePost.defaultProps = {
+    postList: []
+}
+
 
 export default ManagePost
