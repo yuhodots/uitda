@@ -13,7 +13,7 @@ const BoxArea = styled.div`
     height: 16rem;
 
     background-color: ${colors.white};
-    /* border: 1px solid ${colors.gray_line}; */
+    border: 1px solid ${colors.gray_line};
 
     display: flex;
     flex-flow: column nowrap;
