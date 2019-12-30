@@ -1,19 +1,18 @@
+
+
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import { colors } from '../../../../../styles/variables'
+import { BoxTemplate } from '../../../../../styles/templates/manage'
 
 /* Styled Components */
-const BoxArea = styled.div`
-
+const BoxArea = styled(BoxTemplate)`
     margin-bottom: 2rem;
     padding: 1rem;
 
     width: 100%;
     height: 16rem;
-
-    background-color: ${colors.white};
-    border: 1px solid ${colors.gray_line};
 
     display: flex;
     flex-flow: column nowrap;

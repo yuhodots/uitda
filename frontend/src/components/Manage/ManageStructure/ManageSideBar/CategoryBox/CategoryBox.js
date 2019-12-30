@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'
 
 import { colors } from '../../../../../styles/variables'
+import { BoxTemplate } from '../../../../../styles/templates/manage'
 
 import {
     MANAGE_POSTS_MARKET,
@@ -20,15 +21,13 @@ import {
 
 /* Styled Components */
 
-const BoxArea = styled.div`
+/* Category 박스 전체를 의미 */
+const BoxArea = styled(BoxTemplate)`
     margin: 0;
     padding: 1.5rem;
 
     width: 100%;
     height: 32rem;
-
-    background-color: ${colors.white};
-    border: 1px solid ${colors.gray_line};
 
     display: flex;
     flex-flow: column nowrap;
