@@ -53,30 +53,30 @@ class ManageContainer extends Component {
                 board = MARKET;
                 // eslint-disable-next-line
             case MANAGE_POSTS_NETWORKING:
-                if(!board) { board = NETWORKING; }
+                board = board ? MARKET : NETWORKING;
 
-                console.log(`posts/${board}`);
+                // console.log(`posts/${board}`);
                 this.props.getMyPostRequest(board);
                 break;
 
             /* 댓글 관리 */
             case MANAGE_COMMENTS:
-                console.log('comment category');
+                // console.log('comment category');
                 break;
 
             /* 좋아요 표시한 게시글 */
             case MANAGE_LIKEPOSTS:
-                console.log('likeposts category');
+                // console.log('likeposts category');
                 break;
 
             /* 내 카풀 일정 */
             case MANAGE_MYCARPOOL:
-                console.log('mycarpool category');
+                // console.log('mycarpool category');
                 break;   
                 
             /* 지난 알림 보기 */
             case MANAGE_NOTIFICATIONS:
-                console.log('notification category');
+                // console.log('notification category');
                 break;
             
             /* kind가 post인 경우 */
