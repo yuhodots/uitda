@@ -22,6 +22,8 @@ const WholeBox = styled.div`
 /* //////////////////////////////// */
 /* 제목, 글 개수, 글쓰기 항목 담는 div 태그 */
 const HeaderBox = styled.div`
+    margin-bottom: 2rem;
+    
     display: flex;
     flex-flow: row nowrap;
     align-items: baseline;
@@ -52,64 +54,158 @@ const CreateButton = styled(BoxTemplate)`
 `
 ///////////////////////////
 
-/*  */
+/* NoPostBox / PostBox 처리를 위한 div 태그 */
 const BodyBox = styled.div`
     width: 100%;
-
-    display: flex;
-    flex-flow: column nowrap;
 `;
 
-const NoPostItem = styled(BoxTemplate)`
-    margin-top: 2rem;
+/* 포스트 아이템이 없는 경우 render되는 박스 */
+const NoPostBox = styled(BoxTemplate)`
     padding: 2rem;
 
     color: ${colors.font_lightgray};
     text-align: center;
-
 `;
 
+/* 포스트 아이템이 있는 경우 render되는 박스
+   PostItems + BoardOrderBox */
+const PostsBox = styled.div`
+    display: flex;
+    flex-flow: column nowrap;
+`;
+
+/* PostItem */
+const PostItem = styled(BoxTemplate)`
+    padding: 2rem;
+    border-bottom: ${props => {
+        if(!props.isLast) {return 'none'}
+    }};
+`;
+
+/* 게시판 번호를 담은 박스 */
+const BoardOrderBox = styled.div`
+    margin-top: 1rem;
+    width: 100%;
+    
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;  
+`;
+
+/* 게시판 번호 테그 */
+const BoardOrder = styled.p`
+    margin: 0 0.5rem;
+
+    /* font 속성 */
+    color: ${props => {
+        return props.isHighLight ? colors.font_darkgray : colors.font_lightgray
+    }};
+
+    cursor: pointer;
+`;
+
+//////////////////////////////////////
 
 /* React Component */
 class ManagePost extends Component{
 
-
-    _renderPostItems = () => {
-
+    state = {
+        curOrder: 1     // 현재 게시판 번호
     }
 
+    /* 게시판 번호 클릭 시의 헨들러 함수 */
+    _onClickOrder = (order) => {
+        /* 인자로 받는 order 값으로 state의 curOrder를 세팅 */
+        this.setState({
+            ...this.state,
+            curOrder: order
+        })
+    }
+
+    /* Post Item을 render하는 함수 */
+    _renderPostItems = (postList) => {
+        return postList.map((post, idx) => {
+            return <PostItem isLast={(idx + 1) === postList.length}>왜우</PostItem>
+        })
+    }
+
+    /* 게시판 번호를 render하는 함수 */
+    _renderOrders = (curOrder, maxOrder) => {
+        /* 게시판 번호를 담은 리스트 ([1, 2, ... maxOrder]) */
+        let orderList = [...Array(maxOrder).keys()].map(x => x + 1);
+
+        return orderList.map((order, idx) => {
+            return <BoardOrder
+                        isHighLight={order === curOrder} 
+                        onClick={() => this._onClickOrder(order)}
+                        key={idx} 
+                    >
+                        {order}
+                    </BoardOrder>
+        })
+    }
+
+
     render() {
+
+        const MAX_ITEM = 7;     // 화면에 보이는 최대 포스팅 아이템 개수
 
         const {
             board,
             postList
         } = this.props;
 
-        // let postsNum = postList.length;
-        let postsNum = 0;
-        let title = (board==='market') ? '다판다' : '잉력시장';
+        const {
+            curOrder
+        } = this.state;
+
+        /* 전체 작성한 글의 개수 */
+        let postsNum = postList.length;
+        // let postsNum = 0;    // post가 없는 경우 테스트용
+        
+        /* 게시판 순서의 최댓값 */
+        let maxOrder = Math.ceil(postsNum / MAX_ITEM);
+
+        /* 게시판 제목 */
+        let title = (board === 'market') ? '다판다' : '잉력시장';
+
+        /* 게시판 페이지에 해당되는 리스트만 뽑은 리스트 */
+        let parsedList = postList.slice((curOrder - 1) * MAX_ITEM, curOrder * MAX_ITEM);
 
         return (
-            <div>
-                <WholeBox>
-                    <HeaderBox>
-                        <Title>{title} 글 관리</Title>
-                        <SubInfo>{postsNum} 개</SubInfo>
-                        <CreateButton>글쓰기</CreateButton>
-                    </HeaderBox>
-                    <BodyBox>
-                        {
-                            postsNum ?
-                            this._renderPostItems(postList) :
-                            <NoPostItem>
-                                아직 작성된 글이 없어요.<br /><br />
-                                글 쓰기 버튼을 눌러서 새로운 글을 작성하세요 !
-                            </NoPostItem>
-                        }
-                    </BodyBox>
-                </WholeBox>
-                
-            </div>
+            <WholeBox>
+                <HeaderBox>
+                    <Title>{title} 글 관리</Title>
+                    <SubInfo>{postsNum} 개</SubInfo>
+                    <CreateButton>글쓰기</CreateButton>
+                </HeaderBox>
+                <BodyBox>
+                    {
+                        /* post가 있으면 PostBox, 없으면 NoPostBox */
+                        postsNum ?
+                        <PostsBox>
+                            {
+                                this._renderPostItems(parsedList)
+                            }
+                            {
+                                /* maxOrder가 1보다 크면 BoardOrderBox render */
+                                maxOrder > 1 ?
+                                <BoardOrderBox>
+                                    {
+                                        this._renderOrders(curOrder, maxOrder)
+                                    }
+                                </BoardOrderBox> :
+                                ''
+                            }
+                        </PostsBox> :
+
+                        <NoPostBox>
+                            아직 작성된 글이 없어요.<br /><br />
+                            글 쓰기 버튼을 눌러서 새로운 글을 작성하세요 !
+                        </NoPostBox>
+                    }
+                </BodyBox>
+            </WholeBox>
         )
     }
 
@@ -118,7 +214,6 @@ class ManagePost extends Component{
 ManagePost.propTypes = {
     postList: PropTypes.array,              // 게시글 리스트
     board: PropTypes.string.isRequired,     // 어떤 게시판인지 정보
-
 }
 
 ManagePost.defaultProps = {
