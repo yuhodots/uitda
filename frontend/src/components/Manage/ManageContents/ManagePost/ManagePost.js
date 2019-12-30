@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import { colors } from '../../../../styles/variables'
+import { BoxTemplate } from '../../../../styles/templates/manage'
 
 /* Styled Components */
 /* 전체 포스팅 관리 박스 영역 */
@@ -38,12 +39,10 @@ const SubInfo = styled.div`
 `;
 
 /* 글 쓰기 버튼 */
-const CreateButton = styled.div`
+const CreateButton = styled(BoxTemplate)`
     padding: 0.375rem 1rem;
-    background-color: ${colors.white};
-    border: 1px solid ${colors.gray_line};
 
-    color: ${colors.font_darkgray};
+    color: ${colors.font_gray};
     font-size: 0.875rem;
 
     cursor: pointer;
@@ -55,9 +54,19 @@ const CreateButton = styled.div`
 
 /*  */
 const BodyBox = styled.div`
+    width: 100%;
+
+    display: flex;
+    flex-flow: column nowrap;
 `;
 
-const NoPostItem = styled.div`
+const NoPostItem = styled(BoxTemplate)`
+    margin-top: 2rem;
+    padding: 2rem;
+
+    color: ${colors.font_lightgray};
+    text-align: center;
+
 `;
 
 
@@ -76,7 +85,8 @@ class ManagePost extends Component{
             postList
         } = this.props;
 
-        let postsNum = postList.length;
+        // let postsNum = postList.length;
+        let postsNum = 0;
         let title = (board==='market') ? '다판다' : '잉력시장';
 
         return (
@@ -92,7 +102,7 @@ class ManagePost extends Component{
                             postsNum ?
                             this._renderPostItems(postList) :
                             <NoPostItem>
-                                아직 작성된 글이 없어요.
+                                아직 작성된 글이 없어요.<br /><br />
                                 글 쓰기 버튼을 눌러서 새로운 글을 작성하세요 !
                             </NoPostItem>
                         }
