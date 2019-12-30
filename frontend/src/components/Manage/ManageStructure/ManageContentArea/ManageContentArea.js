@@ -31,7 +31,6 @@ const ContentBoxArea = styled.div`
     margin: 0;
     padding: 0;
 
-    height: 50rem;
     flex: 4;
 `;
 
