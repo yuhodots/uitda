@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import { colors } from '../../../../styles/variables'
 import { BoxTemplate } from '../../../../styles/templates/manage'
@@ -54,6 +55,7 @@ const CreateButton = styled(BoxTemplate)`
 `
 ///////////////////////////
 
+/*///////////////////////////////////// */
 /* NoPostBox / PostBox 처리를 위한 div 태그 */
 const BodyBox = styled.div`
     width: 100%;
@@ -74,13 +76,62 @@ const PostsBox = styled.div`
     flex-flow: column nowrap;
 `;
 
+//////////////
 /* PostItem */
 const PostItem = styled(BoxTemplate)`
-    padding: 2rem;
+    padding: 1rem 2rem;
     border-bottom: ${props => {
         if(!props.isLast) {return 'none'}
     }};
+
+    display: flex;
+    flex-flow: row nowrap;
 `;
+
+/* Post의 ID */
+const PostID = styled.div`
+    height: 3rem;
+    width: 2rem;
+
+    line-height: 3rem;
+    font-size: 1.25rem;
+`;
+
+/* Title + subInfo (작성시간 + 덧글 수) */
+const TextBox = styled.div`
+    margin-left: 1rem;
+    height: 3rem;
+
+    flex: 1;
+    
+    display: flex;
+    flex-flow: column nowrap;
+`
+
+/* Post Title 영역 div 태그 */
+const PostTitle = styled.div`
+    height: 1.625rem;
+
+    line-height: 1.625rem;
+`;
+
+/* Title 텍스트 Link 태그 */
+const TitleLink = styled(Link)`
+    text-decoration: none;
+    color: ${colors.font_darkgray};
+`;
+
+/* 작성시간 + 덧글 수 정보 */
+const PostSubInfo = styled.div`
+    margin-top: 0.25rem;
+    height: 1.125rem;
+
+    line-height: 1.125rem;
+    font-size: 0.875rem;
+    color: ${colors.font_lightgray};
+`;
+
+///////////////////////
 
 /* 게시판 번호를 담은 박스 */
 const BoardOrderBox = styled.div`
@@ -123,9 +174,22 @@ class ManagePost extends Component{
     }
 
     /* Post Item을 render하는 함수 */
-    _renderPostItems = (postList) => {
+    _renderPostItems = (postList, board) => {
         return postList.map((post, idx) => {
-            return <PostItem isLast={(idx + 1) === postList.length}>왜우</PostItem>
+            // console.log(post);
+
+            /* posting 게시글 URL */
+            const postURL = `/board/${board}/${post.id}`;
+
+            return (
+                <PostItem isLast={(idx + 1) === postList.length}>
+                    <PostID>{post.postId}</PostID>
+                    <TextBox>
+                        <PostTitle> <TitleLink to={postURL} >{post.title}</TitleLink> </PostTitle>
+                        <PostSubInfo> {post.created} </PostSubInfo>
+                    </TextBox>
+                </PostItem>
+            )
         })
     }
 
@@ -172,6 +236,11 @@ class ManagePost extends Component{
         /* 게시판 페이지에 해당되는 리스트만 뽑은 리스트 */
         let parsedList = postList.slice((curOrder - 1) * MAX_ITEM, curOrder * MAX_ITEM);
 
+        /* parse list에 글 번호 주기 */
+        parsedList.forEach((post, i) => {
+            post.postId = postsNum - ((curOrder - 1) * MAX_ITEM) - i
+        })
+
         return (
             <WholeBox>
                 <HeaderBox>
@@ -185,7 +254,7 @@ class ManagePost extends Component{
                         postsNum ?
                         <PostsBox>
                             {
-                                this._renderPostItems(parsedList)
+                                this._renderPostItems(parsedList, board)
                             }
                             {
                                 /* maxOrder가 1보다 크면 BoardOrderBox render */
