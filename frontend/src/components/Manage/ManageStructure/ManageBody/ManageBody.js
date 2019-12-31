@@ -5,7 +5,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import { colors } from '../../../../styles/variables'
+// import { colors } from '../../../../styles/variables'
+import { BGTemplate } from '../../../../styles/templates/manage'
 
 import {
     SideBox, ContentBox
@@ -16,9 +17,7 @@ import {
 
 /* Body Area를 정의하는 div 태그
    backgrond color를 가지고, 전체를 덮는 크기를 정함 */
-const BodyArea = styled.div`
-    min-height: 40rem;
-    background-color: ${colors.gray_bg};
+const BodyArea = styled(BGTemplate)`
     margin: 0;
     padding: 2.5rem;
 `;
@@ -51,7 +50,7 @@ class ManageBody extends Component {
 
         } = this.props
 
-        console.log(user)
+        // console.log(user)s
 
         return (
             <BodyArea>
