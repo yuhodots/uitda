@@ -87,52 +87,94 @@ const PostItem = styled(BoxTemplate)`
         if(!props.isLast) {return 'none'}
     }};
 
+    position: relative;
+
     display: flex;
     flex-flow: row nowrap;
 `;
 
-/* Post의 ID */
-const PostID = styled.div`
-    height: 3rem;
-    width: 2rem;
+    /* Post의 ID */
+    const PostID = styled.div`
+        height: 3rem;
+        width: 2rem;
 
-    line-height: 3rem;
-    font-size: 1.25rem;
-`;
+        line-height: 3rem;
+        font-size: 1.25rem;
+    `;
 
-/* Title + subInfo (작성시간 + 덧글 수) */
-const TextBox = styled.div`
-    margin-left: 1rem;
-    height: 3rem;
+    /* Title + subInfo (작성시간 + 덧글 수) */
+    const TextBox = styled.div`
+        margin-left: 1rem;
+        height: 3rem;
 
-    flex: 1;
-    
-    display: flex;
-    flex-flow: column nowrap;
-`
+        flex: 1;
+        
+        display: flex;
+        flex-flow: column nowrap;
+    `
 
-/* Post Title 영역 div 태그 */
-const PostTitle = styled.div`
-    height: 1.625rem;
+        /* Post Title 영역 div 태그 */
+        const PostTitle = styled.div`
+            height: 1.625rem;
 
-    line-height: 1.625rem;
-`;
+            line-height: 1.625rem;
+        `;
 
-/* Title 텍스트 Link 태그 */
-const TitleLink = styled(Link)`
-    text-decoration: none;
-    color: ${colors.font_darkgray};
-`;
+        /* Title 텍스트 Link 태그 */
+        const TitleLink = styled(Link)`
+            text-decoration: none;
+            color: ${colors.font_darkgray};
+        `;
 
-/* 작성시간 + 덧글 수 정보 */
-const PostSubInfo = styled.div`
-    margin-top: 0.25rem;
-    height: 1.125rem;
+        /* 작성시간 + 덧글 수 정보 */
+        const PostSubInfo = styled.div`
+            margin-top: 0.25rem;
+            height: 1.125rem;
 
-    line-height: 1.125rem;
-    font-size: 0.875rem;
-    color: ${colors.font_lightgray};
-`;
+            line-height: 1.125rem;
+            font-size: 0.875rem;
+            color: ${colors.font_lightgray};
+        `;
+
+    /* 수정하기, 삭제하기, 상태 변경 버튼 */
+    const ButtonBox = styled.div`
+        position: absolute;
+        right: 2rem;
+
+        height: 3rem;
+
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+    `
+
+        const EditButton = styled(LinkBoxTemplate)`
+            padding: 0.5rem 1rem;
+            height: 2rem;
+            margin: 0 0.5rem;
+
+            color: ${colors.font_darkgray};
+        `;
+
+        const DeleteButton = styled(BoxTemplate)`
+            padding: 0.5rem 1rem;
+            height: 2rem;
+            margin: 0 0.5rem;
+
+            color: ${colors.font_red};
+
+            cursor: pointer;
+        `;
+
+        const SelectButton = styled(BoxTemplate)`
+            padding: 0.5rem 1rem;
+            height: 2rem;
+            margin: 0 0.5rem;
+
+            color: ${colors.font_darkgray};
+
+            cursor: pointer;
+        `;
 
 ///////////////////////
 
@@ -184,6 +226,9 @@ class ManagePost extends Component{
             /* posting 게시글 URL */
             const postURL = `/board/${board}/${post.id}`;
 
+            /* 해당 포스팅 edit 페이지 URL */
+            const editURL = `/manage/edit/${board}/${post.id}`;
+
             return (
                 <PostItem isLast={(idx + 1) === postList.length}>
                     <PostID>{post.postId}</PostID>
@@ -191,6 +236,11 @@ class ManagePost extends Component{
                         <PostTitle> <TitleLink to={postURL} >{post.title}</TitleLink> </PostTitle>
                         <PostSubInfo> {post.created} </PostSubInfo>
                     </TextBox>
+                    <ButtonBox>
+                        <EditButton to={editURL} >수정</EditButton>
+                        <DeleteButton>삭제</DeleteButton>
+                        <SelectButton> {post.condition} </SelectButton>
+                    </ButtonBox>
                 </PostItem>
             )
         })
