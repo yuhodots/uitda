@@ -6,7 +6,10 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { colors } from '../../../../styles/variables'
-import { BoxTemplate } from '../../../../styles/templates/manage'
+import { 
+    BoxTemplate,
+    LinkBoxTemplate
+ } from '../../../../styles/templates/manage'
 
 /* Styled Components */
 /* 전체 포스팅 관리 박스 영역 */
@@ -42,7 +45,7 @@ const SubInfo = styled.div`
 `;
 
 /* 글 쓰기 버튼 */
-const CreateButton = styled(BoxTemplate)`
+const CreateButton = styled(LinkBoxTemplate)`
     padding: 0.375rem 1rem;
 
     color: ${colors.font_gray};
@@ -246,7 +249,7 @@ class ManagePost extends Component{
                 <HeaderBox>
                     <Title>{title} 글 관리</Title>
                     <SubInfo>{postsNum} 개</SubInfo>
-                    <CreateButton>글쓰기</CreateButton>
+                    <CreateButton to='/manage/edit/newpost' >글쓰기</CreateButton>
                 </HeaderBox>
                 <BodyBox>
                     {
