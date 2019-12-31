@@ -14,7 +14,8 @@ export const BoxTemplate = styled.div`
     border: 1px solid ${colors.gray_line};
 `;
 
-/* Link 태그를 상속하기 위해 만든 탬플릿 */
+/* Link 태그를 상속하기 위해 만든 탬플릿
+   사용되는 파일: ManagePost.js */
 export const LinkBoxTemplate = styled(Link)`
     background-color: ${colors.white};
     border: 1px solid ${colors.gray_line};
@@ -23,8 +24,17 @@ export const LinkBoxTemplate = styled(Link)`
 `;
 
 /* Body의 배경 템플릿
-   배경색, 최소 높이길이 설정 */
+   배경색, 최소 높이길이 설정
+   사용되는 파일: EditBody.js */
 export const BGTemplate = styled.div`
     background-color: ${colors.gray_bg};
-    min-height: 40rem;
+    min-height: 50rem;
+`;
+
+/* 흰색 바탕에 그림자 효과를 가진 div 태그
+   Manage에서는 Edit의 글 작성 영역을 나타내는 태그로 사용 됨.
+   사용되는 파일: EditBody.js */
+export const PaperTemplate = styled.div`
+    background-color: ${colors.white};
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
 `;
