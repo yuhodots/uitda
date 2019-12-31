@@ -27,7 +27,7 @@ export function getMyPostRequest (boardName) {
 
         /* get 요청을 보낼 URL */
         // const GETurl = `/api/manage/${boardName}`;
-        const GETurl = `/api/manage/${boardName}-posts`;
+        const GETurl = `/api/manage/${boardName}-posts`;        // 수정 전 버전 url
 
         /* get 요청 보내기 */
         return axios.get(GETurl)
