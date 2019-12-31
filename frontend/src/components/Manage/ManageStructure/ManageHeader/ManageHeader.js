@@ -18,6 +18,11 @@ const HeaderBox = styled.div`
     background-color: ${colors.white};
     line-height: 4rem;
 
+    position: relative;
+    z-index: 100;
+    box-shadow: 0 0 5px rgba(0,0,0,.05);
+    /* border-bottom: 1px solid ${colors.gray_line}; */
+
     display: flex;
     flex-flow: row nowrap;
 `; 
@@ -56,7 +61,11 @@ class ManageHeader extends Component {
 }
 
 ManageHeader.propTypes = {
-    isEdit: PropTypes.bool.isRequired,      // 에디터형의 header인지 아닌지
+    isEdit: PropTypes.bool,      // 에디터형의 header인지 아닌지
+}
+
+ManageHeader.defaultProps = {
+    isEdit: false
 }
 
 export default ManageHeader;
