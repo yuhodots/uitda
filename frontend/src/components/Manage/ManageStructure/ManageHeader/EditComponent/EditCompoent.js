@@ -23,6 +23,7 @@ class EditComponent extends Component {
     render () {
         return (
             <HeaderBox>
+                Edit Header
             </HeaderBox>
         )
     }
