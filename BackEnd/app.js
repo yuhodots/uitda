@@ -36,16 +36,6 @@ var chattingRouter = require('./routes/chatting');
 var loginRouter = require('./routes/login')(passport);
 var usersRouter = require('./routes/users');
 
-/* Router: view */
-var indexRouterv = require('./routesv/index');
-var marketRouterv = require('./routesv/market');
-var networkingRouterv = require('./routesv/networking');
-var carpoolRouterv = require('./routesv/carpool');
-var manageRouterv = require('./routesv/manage');
-var chattingRouterv = require('./routesv/chatting');
-var loginRouterv = require('./routesv/login')(passport);
-var usersRouterv = require('./routesv/users');
-
 /* View engine setup */
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -59,7 +49,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 
-
 /* Middleware installation : Router */
 app.use('/api/', indexRouter);
 app.use('/api/market', marketRouter);
@@ -69,16 +58,6 @@ app.use('/api/manage', manageRouter);
 app.use('/api/chatting', chattingRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/users', usersRouter);
-
-/* Middleware installation : Router: view */
-app.use('/view/', indexRouterv);
-app.use('/view/market', marketRouterv);
-app.use('/view/networking', networkingRouterv);
-app.use('/view/carpool', carpoolRouterv);
-app.use('/view/manage', manageRouterv);
-app.use('/view/chatting', chattingRouterv);
-app.use('/view/login', loginRouterv);
-app.use('/view/users', usersRouterv);
 
 /* Catch 404 and forward to error handler */
 app.use(function(req, res, next) {

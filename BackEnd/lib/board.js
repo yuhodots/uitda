@@ -58,6 +58,22 @@ function make_networking_ob(id, title, user, created, condition, description, fi
     }
     return post;
 }
+function type_board_assign(type) {
+    if (type == 'market') {
+        return market_board;
+    }
+    else if (type == 'networking') {
+        return networking_board;
+    }
+}
+function type_files_assign(type) {
+    if (type == 'market') {
+        return market_files;
+    }
+    else if (type == 'networking') {
+        return networking_files;
+    }
+}
 
 /* Board method */
 module.exports = {
@@ -79,16 +95,12 @@ module.exports = {
             /* 변수 값 할당 */
             function (callback) {
                 q = req.query.q;
-                scroll = Number(req.query.scroll);
+                (req.query.scroll) ?
+                    scroll = Number(req.query.scroll) :
+                    scroll = 0;
                 num_of_data = 6;
-                if (type == 'market') {
-                    type_board = market_board;
-                    type_files = market_files;
-                }
-                else if (type == 'networking') {
-                    type_board = networking_board;
-                    type_files = networking_files;
-                }
+                type_board = type_board_assign(type);
+                type_files = type_files_assign(type);
                 callback(null);
             },
 
@@ -188,14 +200,8 @@ module.exports = {
 
             /* 변수 값 할당 */
             function (callback) {
-                if (type == 'market') {
-                    type_board = market_board;
-                    type_files = market_files;
-                }
-                else if (type == 'networking') {
-                    type_board = networking_board;
-                    type_files = networking_files;
-                }
+                type_board = type_board_assign(type);
+                type_files = type_files_assign(type);
                 callback(null);
             },
 
@@ -231,68 +237,183 @@ module.exports = {
         });
     },
 
+    /* create 메소드: post 생성 */
+    create: function (type, req, res) {
+
+        /* 변수 선언 */
+        let type_board; // market_board | networking board
+        let type_files; // market_board | networking board
+        let title;
+        let description;
+        let files;
+
+        async.waterfall([
+
+            /* 변수 값 할당 */
+            function (callback) {
+                title = req.body.title;
+                description = req.body.description;
+                files = req.files;
+                type_board = type_board_assign(type);
+                type_files = type_files_assign(type);
+                callback(null);
+            },
+
+            /* 로그인한 사람의 요청인지 확인 */
+            function (callback) {
+                (!auth.isOwner(req, res)) ?
+                    res.json({ user: req.user ? req.user : 0 }) :
+                    callback(null);
+            },
+
+            /* 게시글 text data 생성 */
+            function (callback) {
+                type_board.create({
+                    title: title, description: description, author: req.user.username, created: moment().format('YYYY년MM월DD일HH시mm분ss초'), filenum: files.length, count: 0
+                }).then(function () {
+                    callback(null)
+                }).catch(function (err) { throw err; });
+            },
+
+            /* 게시글 image data 생성 */
+            function (callback) {
+                if (files.length) {
+                    let board_id = 0;
+                    type_board.max('id').then(function (max) { board_id = max; }).then(function () {
+                        for (let i = 0; i < files.length; i++) {
+                            type_files.create({
+                                board_id: board_id, file_id: i, filename: files[i].key, location: files[i].location
+                            }).catch(function (err) { throw err; });
+                        }
+                    }).catch(function (error) { throw error; });
+                }
+                callback(null);
+            },
+
+            /* Redirection */
+            function (callback) {
+                res.redirect(`/api/manage/${type}`);
+                callback(null);
+            }
+
+        ], function (err) {
+            if (err) throw (err);
+        });
+    },
+
+    /* update 메소드: post 수정 */
+    update: function (type, req, res) {
+
+        /* 변수 선언 */
+        let type_board; // market_board | networking board
+        let type_files; // market_board | networking board
+        let title;
+        let description;
+        let files;
+        let id;
+
+        async.waterfall([
+
+            /* 변수 값 할당 */
+            function (callback) {
+                title = req.body.title;
+                description = req.body.description;
+                files = req.files;
+                id = req.params.id;
+                type_board = type_board_assign(type);
+                type_files = type_files_assign(type);
+                callback(null);
+            },
+
+            /* 로그인한 사람의 요청인지 확인 */
+            function (callback) {
+                (!auth.isOwner(req, res)) ?
+                    res.json({ user: req.user ? req.user : 0 }) :
+                    callback(null);
+            },
+
+            /* 작성자인지 확인 */
+            function (callback) {
+                // 아직 파일 수정 구현은 하지 않았습니다.
+                type_board.findOne({ where: { id: id } }).then(function (content) {
+                    (auth.sameOwner(req, content.author) === 0) ?
+                        res.json({ user: req.user ? req.user : 0 }) :
+                        callback(null);
+                }).catch(function (err) { throw err; });
+            },
+
+            /* 게시글 수정 */
+            function (callback) {
+                type_board.update({
+                    title: title, description: description, created: moment().format('YYYY년MM월DD일HH시mm분ss초')
+                }, { where: { id: id } }).then(function () {
+                    callback(null);
+                }).catch(function (err) { throw err; });
+            },
+
+            /* Redirection */
+            function (callback) {
+                res.redirect(`/api/${type}/${id}`);
+                callback(null);
+            }
+
+        ], function (err) {
+            if (err) throw (err);
+        });
+    },
+
     /* delete 메소드: post 삭제요청을 수행 */
     delete: function (type, req, res) {
 
         /* 변수 선언 */
         let type_board; // market_board | networking board
         let type_files; // market_board | networking board
+        let id;
 
         async.waterfall([
 
             /* 변수 값 할당 */
             function (callback) {
-                if (type == 'market') {
-                    type_board = market_board;
-                    type_files = market_files;
-                }
-                else if (type == 'networking') {
-                    type_board = networking_board;
-                    type_files = networking_files;
-                }
+                id = req.params.id;
+                type_board = type_board_assign(type);
+                type_files = type_files_assign(type);
                 callback(null);
             },
 
             /* 로그인한 사람의 요청인지 확인 */
             function (callback) {
-                if (!auth.isOwner(req, res)) {
-                    res.json({ user: req.user ? req.user : 0 });
-                }
-                callback(null);
+                (!auth.isOwner(req, res)) ?
+                    res.json({ user: req.user ? req.user : 0 }) :
+                    callback(null);
             },
 
-            /* 게시글 정보 검색 */
+            /* 작성자인지 확인 */
             function (callback) {
-                type_board.findOne({ where: { id: req.body.id } }).then(function (content) {
-                    callback(null, content);
+                type_board.findOne({ where: { id: id } }).then(function (content) {
+                    (auth.sameOwner(req, content.author) === 0) ?
+                        res.json({ user: req.user ? req.user : 0 }) :
+                        callback(null);
                 }).catch(function (err) { throw err; });
             },
 
             /* 게시글 삭제 수행 */
-            function (content, callback) {
-                /* 다른 사용자의 잘못된 접근 */
-                if (auth.sameOwner(req, content.author) === 0) {
-                    res.json({ user: req.user ? req.user : 0 });
-                }
-                /* 올바른 사용자의 접근 */
-                else {
-                    type_board.destroy({ where: { id: req.body.id } }).catch(function (err) { throw err; });
-                    type_files.findAll({ where: { board_id: req.body.id } }).then(function (filelist) {
-                        if (filelist.length) {
-                            for (let i = 0; i < filelist.length; i++) {
-                                s3.deleteObject(
-                                    { Bucket: "uitda.net", Key: filelist[i].filename },
-                                    (err, data) => {
-                                        if (err) throw err;
-                                        console.log(data);
-                                    }
-                                );
-                            }
-                            type_files.destroy({ where: { board_id: req.body.id } }).catch(function (err) { throw err; })
+            function (callback) {
+                type_board.destroy({ where: { id: id } }).catch(function (err) { throw err; });
+                type_files.findAll({ where: { board_id: id } }).then(function (filelist) {
+                    if (filelist.length) {
+                        for (let i = 0; i < filelist.length; i++) {
+                            s3.deleteObject(
+                                { Bucket: "uitda.net", Key: filelist[i].filename },
+                                (err, data) => {
+                                    if (err) throw err;
+                                    console.log(data);
+                                }
+                            );
                         }
-                    }).catch(function (err) { throw err; })
-                    res.redirect(`/api/manage/${type}-posts`);
-                }
+                        type_files.destroy({ where: { board_id: id } }).catch(function (err) { throw err; })
+                    }
+                }).catch(function (err) { throw err; })
+                res.redirect(`/api/manage/${type}`);
                 callback(null);
             }
         ], function (err) {
