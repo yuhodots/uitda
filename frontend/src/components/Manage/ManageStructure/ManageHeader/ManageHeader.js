@@ -16,7 +16,6 @@ import DefaultCompoent from './DefaultComponent'
 const HeaderBox = styled.div`
     height: 4rem;
     background-color: ${colors.white};
-    line-height: 4rem;
 
     position: relative;
     z-index: 100;
@@ -44,14 +43,19 @@ class ManageHeader extends Component {
 
     render () {
 
-        const { isEdit } = this.props;
+        const { 
+            isEdit,
+            EditPostRequest
+        } = this.props;
 
         return (
             <HeaderBox>
                 <HomeLink to='/'></HomeLink>
                 { 
                     isEdit ?
-                    <EditComponent /> :
+                    <EditComponent 
+                        EditPostRequest={EditPostRequest}
+                    /> :
                     <DefaultCompoent />
                 }
                 {/* 유저, 알림, 메시지 */}
@@ -61,11 +65,17 @@ class ManageHeader extends Component {
 }
 
 ManageHeader.propTypes = {
-    isEdit: PropTypes.bool,      // 에디터형의 header인지 아닌지
+    isEdit: PropTypes.bool,             // Edit header인지 아닌지
+
+    /* Edit Header를 위한 props */
+    EditPostRequest: PropTypes.func,    // Post Create / Update function
 }
 
 ManageHeader.defaultProps = {
-    isEdit: false
+    isEdit: false,
+
+    /* Edit Header를 위한 props */
+    EditPostRequest: null
 }
 
 export default ManageHeader;

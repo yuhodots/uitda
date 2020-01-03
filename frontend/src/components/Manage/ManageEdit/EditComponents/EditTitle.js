@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Input } from 'antd'
 
-
 /* Styled Components */
 const TitleTextArea = styled(Input.TextArea)`
     margin-bottom: 3rem;
@@ -15,6 +14,11 @@ const TitleTextArea = styled(Input.TextArea)`
     resize: none;
     border: none;
     outline: 0;
+
+    :focus {
+        border: none;
+        box-shadow: none;
+    }
 `
 
 

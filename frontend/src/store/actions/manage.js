@@ -26,8 +26,8 @@ export function getMyPostRequest (boardName) {
     return (dispatch) => {
 
         /* get 요청을 보낼 URL */
-        // const GETurl = `/api/manage/${boardName}`;
-        const GETurl = `/api/manage/${boardName}-posts`;        // 수정 전 버전 url
+        const GETurl = `/api/manage/${boardName}`;
+        // const GETurl = `/api/manage/${boardName}-posts`;        // 수정 전 버전 url
 
         /* get 요청 보내기 */
         return axios.get(GETurl)
@@ -107,7 +107,7 @@ export function getUpdatePostFailure(err) {
 /* '/manage/edit/'에서의 POST 메서드로 글 생성 및 없데이트 액션 
    id의 여부에 따라 update/create를 구분 (id 있으면 update, 없으면 create) */
 
-export function EditPostRequest (board, title, content, fileList, id) {
+export function EditPostRequest (board, title, discription, files, id) {
     return (dispatch) => {
 
         /* POST 요청 시 사용되는 url */
@@ -128,8 +128,8 @@ export function EditPostRequest (board, title, content, fileList, id) {
         /* create POST 요청 */
         return axios.post(POSTurl, {
             title,          // 글 제목
-            content,        // 글 내용
-            fileList,       // 사진 리스트
+            discription,    // 글 내용
+            files,          // 사진 리스트
             /* 추가하기 */
         })
 
