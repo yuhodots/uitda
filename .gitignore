@@ -3,5 +3,6 @@
 */.DS_Store
 
 frontend/node_modules/
+BackEnd/node_modules/
 
 uitda.code-workspace
