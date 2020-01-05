@@ -194,7 +194,7 @@ const BoardOrder = styled.p`
 
     /* font 속성 */
     color: ${props => {
-        return props.isHighLight ? colors.font_darkgray : colors.font_lightgray
+        return props.isSelected ? colors.font_darkgray : colors.font_lightgray
     }};
 
     cursor: pointer;
@@ -230,7 +230,7 @@ class ManagePost extends Component{
             const editURL = `/manage/edit/${board}/${post.id}`;
 
             return (
-                <PostItem isLast={(idx + 1) === postList.length}>
+                <PostItem isLast={(idx + 1) === postList.length} key={idx}>
                     <PostID>{post.postId}</PostID>
                     <TextBox>
                         <PostTitle> <TitleLink to={postURL} >{post.title}</TitleLink> </PostTitle>
@@ -253,7 +253,7 @@ class ManagePost extends Component{
 
         return orderList.map((order, idx) => {
             return <BoardOrder
-                        isHighLight={order === curOrder} 
+                        isSelected={order === curOrder} 
                         onClick={() => this._onClickOrder(order)}
                         key={idx} 
                     >
