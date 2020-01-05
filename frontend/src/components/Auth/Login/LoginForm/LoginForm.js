@@ -1,50 +1,72 @@
 import React, { Component } from "react";
-import './LoginForm.css';
+import styled from 'styled-components';
+import { Link, Redirect } from 'react-router-dom';
+
+import { colors } from '../../../../styles/variables'
+
+/* Styled Components */
+const BackGround = styled.div`
+    min-height: ${props => {
+        return `${props.minHeight}px`
+    }};
+    width: 100%;
+    background-color: ${colors.gray_bg};
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+/*  */
+const Container = styled.div`
+    width: 20rem;
+    padding: 2rem;
+
+    background-color: ${colors.white};
+`;
+
+const LoginButton = styled.div`
+    cursor: pointer;
+`;
+
+const HomeLink = styled(Link)`
+
+`;
+
 
 class LoginForm extends Component {
 
-    state = {
-        id: '',
-        password: ''
-    }
+    state = {}
 
-    _handleInput = (e) => {
-        let nextState = {};
-        nextState[e.target.name] = e.target.value;
-        this.setState(nextState)
-    }
+    componentDidMount () {
+        const windowHeight = window.innerHeight;
 
-    _handleClick = () => {
-        this.props.postLoginData(
-            this.state.id,
-            this.state.password
-        )
+        this.setState({
+            ...this.state,
+            windowHeight
+        })
     }
 
     render() {
+
+        const {
+            windowHeight
+        } = this.state;
+
+        const {
+            loginRequest,
+            isLoggedIn
+        } = this.props;
+
         return (
-            <div>
-                <h2>로그인 페이지</h2>
-                <p>
-                    아이디
-                    <input 
-                        type='text' 
-                        name='id'
-                        onChange={this._handleInput}>
-                    </input>
-                </p>
-                
-                <p>
-                    비밀번호 
-                    <input 
-                        type='password' 
-                        name='password'
-                        onChange={this._handleInput}>
-                    </input>
-                </p>
-                
-                <button onClick={this._handleClick}>로그인</button>
-            </div>
+            isLoggedIn ?
+            <Redirect to='/' /> :
+            <BackGround minHeight={windowHeight}>
+                <Container>
+                    <LoginButton onClick={loginRequest} >로그인</LoginButton>
+                    <HomeLink to='/'>홈으로</HomeLink>
+                </Container>
+            </BackGround>
         )
     }
 }

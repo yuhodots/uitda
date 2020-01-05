@@ -76,22 +76,29 @@ export function registerFailure() {
 
 // 로그인 액션 생성자
 
-export function loginRequest(username, password) {
+// export function loginRequest(username, password) {
+//     return (dispatch) => {
+//         return axios.post('/login', {
+//             username, password
+//         })
+//         .then(res => {
+//             return res.data.user})
+//         .then(user => dispatch(loginSuccess(user)))
+//         .catch(res => dispatch(loginFailure()))
+//     }
+// }
+
+export function loginRequest () {
     return (dispatch) => {
-        return axios.post('/login', {
-            username, password
-        })
-        .then(res => {
-            return res.data.user})
-        .then(user => dispatch(loginSuccess(user)))
-        .catch(res => dispatch(loginFailure()))
+        return axios.get('/api/login/outlook')
+        .then(res => dispatch(loginSuccess()))
+        .catch(err => dispatch(loginFailure()))
     }
 }
 
-export function loginSuccess(userInfo) {
+export function loginSuccess() {
     return {
         type: AUTH_LOGIN_SUCCESS,
-        userInfo
     }
 }
 
@@ -105,7 +112,7 @@ export function loginFailure() {
 
 export function logoutRequest() {
     return (dispatch) => {
-        return axios.post('/logout')
+        return axios.get('/api/logout')
         .then((res) => {
             dispatch(logout());
         });
