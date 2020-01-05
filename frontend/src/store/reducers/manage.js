@@ -4,6 +4,11 @@ import {
     MANAGE_GET_MY_POSTS_FAILURE,
     MANAGE_EDIT_GET_POST_SUCCESS,
     MANAGE_EDIT_GET_POST_FAILURE,
+    MANAGE_EDIT_STORE_TITLE_DATA,
+    MANAGE_EDIT_STORE_FILE_DATA,
+    MANAGE_EDIT_STORE_DESCRIPTION_DATA,
+    MANAGE_EDIT_CREATE_POST_SUCCESS,
+    MANAGE_EDIT_UPDATE_POST_SUCCESS,
 } from '../actions/ActionTypes'
 
 
@@ -15,11 +20,13 @@ const InitialState = {
     user: 0,
 
     /* 'post' states */
-    postList: [],       // 포스팅 데이터 리스트
+    postList: [],           // 포스팅 데이터 리스트
 
     /* 'edit' states */
-    post: {},           // 포스팅 데이터 객체
-
+    editedTitle: '',        // 작성한 제목 데이터
+    editedFiles: [],        // 업로드할 파일 데이터 리스트
+    editedDescription: '',  // 작성한 설명 부분 데이터
+    editSuccess: false,     // 작성 완료
 }
 
 /* manage reducer */
@@ -48,7 +55,8 @@ export default function manage (state = InitialState, action) {
         case MANAGE_EDIT_GET_POST_SUCCESS:
             return {
                 ...state,
-                post: action.post,
+                editedTitle: action.title,
+                editedDescription: action.description,
                 isGetSuccess: true,
             }
         
@@ -57,6 +65,38 @@ export default function manage (state = InitialState, action) {
                 ...state,
                 err: action.err,
                 isGetSuccess: false,
+            }
+
+        /* Edit page에서 데이터 입력 시, 앱 state로 저장하는 액션들 */
+        case MANAGE_EDIT_STORE_TITLE_DATA:
+            return {
+                ...state,
+                editedTitle: action.editedTitle
+            }
+        
+        case MANAGE_EDIT_STORE_FILE_DATA:
+            return {
+                ...state,
+                editedFiles: action.editedFiles
+            }
+
+        case MANAGE_EDIT_STORE_DESCRIPTION_DATA:
+            return {
+                ...state,
+                editedDescription: action.editedDescription
+            }
+
+        /* 작성 성공 되었음을 알리는 액션들 */
+        case MANAGE_EDIT_CREATE_POST_SUCCESS:
+            return {
+                ...state,
+                editSuccess: true,
+            }
+
+        case MANAGE_EDIT_UPDATE_POST_SUCCESS:
+            return {
+                ...state,
+                editSuccess: true,
             }
 
         default:

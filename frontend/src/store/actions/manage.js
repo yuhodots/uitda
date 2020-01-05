@@ -9,6 +9,9 @@ import {
     MANAGE_EDIT_CREATE_POST_FAILURE,
     MANAGE_EDIT_UPDATE_POST_SUCCESS,
     MANAGE_EDIT_UPDATE_POST_FAILURE,
+    MANAGE_EDIT_STORE_TITLE_DATA,
+    MANAGE_EDIT_STORE_FILE_DATA,
+    MANAGE_EDIT_STORE_DESCRIPTION_DATA,
     MANAGE_DELETE_POST_SUCCESS,
     MANAGE_DELETE_POST_FAILURE,
 } from './ActionTypes';
@@ -89,9 +92,11 @@ export function getUpdatePostRequest(board, id) {
 }
 
 export function getUpdatePostSuccess(post) {
+    console.log(post)
     return {
         type: MANAGE_EDIT_GET_POST_SUCCESS,     // edit 페이지의 get 요청 성공
-        post,
+        title: post.title,
+        description: post.description,
     }
 }
 
@@ -107,13 +112,18 @@ export function getUpdatePostFailure(err) {
 /* '/manage/edit/'에서의 POST 메서드로 글 생성 및 없데이트 액션 
    id의 여부에 따라 update/create를 구분 (id 있으면 update, 없으면 create) */
 
-export function EditPostRequest (board, title, discription, files, id) {
+export function EditPostRequest (board, title, description, files, id) {
     return (dispatch) => {
 
         /* POST 요청 시 사용되는 url */
         const POSTurl = id ?
         `/api/${board}/update/${id}`:   // id가 있으면 update
         `/api/${board}/create`;         // id가 없으면 create
+
+        /* POST 요청에 사용되는 Form Data */
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('description', description);
 
         /* POST 요청 성공 시 보내지는 액션 생성자 */
         const successAction = id ?
@@ -126,15 +136,12 @@ export function EditPostRequest (board, title, discription, files, id) {
         createPostFailure ;
 
         /* create POST 요청 */
-        return axios.post(POSTurl, {
-            title,          // 글 제목
-            discription,    // 글 내용
-            files,          // 사진 리스트
-            /* 추가하기 */
-        })
+        return axios.post(POSTurl, formData)
 
         /* 성공, 실패 시 각각에 맞는 액션을 dispatch하기 */
-        .then(res => {dispatch(successAction())})
+        .then(res => {
+            // console.log(res);
+            return (dispatch(successAction()))})
         .catch(err => {dispatch(failureAction(err))})
     }
 }
@@ -164,6 +171,30 @@ export function updatePostFailure (err) {
     return {
         type: MANAGE_EDIT_UPDATE_POST_FAILURE,  // 글 업데이트 POST 요청 실패
         err,
+    }
+}
+
+/* Edit 페이지에서 작성 내용을 앱 state에 기록하는 함수들 */
+export function storeEditTitleData (editedTitle) {
+    // console.log(`EditTitle: ${editedTitle}`)
+    return {
+        type: MANAGE_EDIT_STORE_TITLE_DATA,
+        editedTitle
+    }
+}
+
+export function storeEditFileData (editedFiles) {
+    return {
+        type: MANAGE_EDIT_STORE_FILE_DATA,
+        editedFiles
+    }
+}
+
+export function storeEditDescriptionData (editedDescription) {
+    // console.log(`EditDescription: ${editedDescription}`)
+    return {
+        type: MANAGE_EDIT_STORE_DESCRIPTION_DATA,
+        editedDescription
     }
 }
 
