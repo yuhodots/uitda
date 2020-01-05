@@ -45,6 +45,12 @@ class ManageHeader extends Component {
 
         const { 
             isEdit,
+
+            title,
+            files,
+            description,
+            editSuccess,
+
             EditPostRequest
         } = this.props;
 
@@ -54,6 +60,11 @@ class ManageHeader extends Component {
                 { 
                     isEdit ?
                     <EditComponent 
+                        title={title}
+                        files={files}
+                        description={description}
+                        editSuccess={editSuccess}
+
                         EditPostRequest={EditPostRequest}
                     /> :
                     <DefaultCompoent />
@@ -68,6 +79,11 @@ ManageHeader.propTypes = {
     isEdit: PropTypes.bool,             // Edit header인지 아닌지
 
     /* Edit Header를 위한 props */
+    title: PropTypes.string,            // Title Data
+    files: PropTypes.array,             // Files Data
+    description: PropTypes.string,      // Description Data
+    editSuccess: PropTypes.bool,        // 작성 완료를 알리는 데이터
+
     EditPostRequest: PropTypes.func,    // Post Create / Update function
 }
 
@@ -75,7 +91,12 @@ ManageHeader.defaultProps = {
     isEdit: false,
 
     /* Edit Header를 위한 props */
-    EditPostRequest: null
+    title: '',            
+    files: [],             
+    description: '',
+    editSuccess: false,
+
+    EditPostRequest: undefined,
 }
 
 export default ManageHeader;
