@@ -46,7 +46,7 @@ class ManageSideBox extends Component {
 }
 
 ManageSideBox.propTypes = {
-    user: PropTypes.object.isRequired,      // 유저 정보
+    // user: PropTypes.object.isRequired,      // 유저 정보
     kind: PropTypes.string.isRequired,      // 매니지 카테고리 정보
 }
 
