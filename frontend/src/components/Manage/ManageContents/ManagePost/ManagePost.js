@@ -55,6 +55,11 @@ const CreateButton = styled(LinkBoxTemplate)`
 
     position: absolute;
     right: 1rem;
+
+    :hover {
+        color: ${colors.font_darkgray};
+        box-shadow: 0 0 3px rgba(0,0,0,.2);
+    }
 `
 ///////////////////////////
 
@@ -149,31 +154,44 @@ const PostItem = styled(BoxTemplate)`
     `
 
         const EditButton = styled(LinkBoxTemplate)`
-            padding: 0.5rem 1rem;
-            height: 2rem;
+            padding: 0.375rem 1rem;
             margin: 0 0.5rem;
+            font-size: 0.875rem;
 
             color: ${colors.font_darkgray};
+
+            :hover {
+                color: ${colors.font_darkgray};
+                box-shadow: 0 0 3px rgba(0,0,0,.2);
+            }
         `;
 
         const DeleteButton = styled(BoxTemplate)`
-            padding: 0.5rem 1rem;
-            height: 2rem;
+            padding: 0.375rem 1rem;
             margin: 0 0.5rem;
+            font-size: 0.875rem;
 
             color: ${colors.font_red};
 
             cursor: pointer;
+
+            :hover {
+                box-shadow: 0 0 3px rgba(0,0,0,.2);
+            }
         `;
 
         const SelectButton = styled(BoxTemplate)`
-            padding: 0.5rem 1rem;
-            height: 2rem;
+            padding: 0.375rem 1rem;
             margin: 0 0.5rem;
+            font-size: 0.875rem;
 
             color: ${colors.font_darkgray};
 
             cursor: pointer;
+
+            :hover {
+                box-shadow: 0 0 3px rgba(0,0,0,.2);
+            }
         `;
 
 ///////////////////////
