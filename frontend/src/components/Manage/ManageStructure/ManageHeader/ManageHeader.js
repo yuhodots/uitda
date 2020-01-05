@@ -45,6 +45,9 @@ class ManageHeader extends Component {
 
         const { 
             isEdit,
+            isNew,
+            id,
+            board,
 
             title,
             files,
@@ -60,6 +63,10 @@ class ManageHeader extends Component {
                 { 
                     isEdit ?
                     <EditComponent 
+                        isNew={isNew}
+                        id={id}
+                        defaultBoard={board}
+
                         title={title}
                         files={files}
                         description={description}
@@ -79,6 +86,10 @@ ManageHeader.propTypes = {
     isEdit: PropTypes.bool,             // Edit header인지 아닌지
 
     /* Edit Header를 위한 props */
+    isNew: PropTypes.bool,              // Create / Update 여부
+    id: PropTypes.number,               // Update의 경우 해당 글의 id
+    board: PropTypes.string,
+
     title: PropTypes.string,            // Title Data
     files: PropTypes.array,             // Files Data
     description: PropTypes.string,      // Description Data
@@ -91,6 +102,9 @@ ManageHeader.defaultProps = {
     isEdit: false,
 
     /* Edit Header를 위한 props */
+    isNew: true,
+    id: 0,
+
     title: '',            
     files: [],             
     description: '',

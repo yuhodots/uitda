@@ -8,6 +8,7 @@ import { Header } from '../../components/Manage/ManageStructure'
 import EditBody from '../../components/Manage/ManageEdit'
 
 import { 
+    initEditPage,
     getUpdatePostRequest,
     EditPostRequest,
     storeEditTitleData,
@@ -24,8 +25,16 @@ class EditContainer extends Component {
             isNew,
             match,
 
+            initEditPage,
             getPostRequest
         } = this.props;
+
+        initEditPage();
+        setTimeout(() => {
+            this.setState({
+                getSuccess: true
+            })
+        }, 50);
 
         if(!isNew) {
             const {
@@ -35,12 +44,13 @@ class EditContainer extends Component {
 
             getPostRequest(boardName, id);
             
-            /* 동기화 잘 쓰게 되면 수정할 것 */
+            /* 동기화 잘 쓰게 되면 수정할 것
+               수정 권장: GetRequest에 success 여부를 앱 state에 저장하기 */
             setTimeout(() => {
                 this.setState({
                     getSuccess: true
                 })
-            }, 100);
+            }, 50);
         }
     }
 
@@ -49,7 +59,9 @@ class EditContainer extends Component {
         const { getSuccess } = this.state;
 
         const {
+            /* create / update 구분 props */
             isNew,
+            match,
 
             /* App States */
             title,
@@ -59,20 +71,26 @@ class EditContainer extends Component {
 
             /* App Methods */
             EditPostRequest,
-            deletePostRequest,
             storeEditTitleData,
             storeEditFileData,
             storeEditDescriptionData
         } = this.props;
 
+        const id = isNew ? 0 : match.params.id;
+        const board = isNew ? '' : match.params.boardName;
+
         // console.log(`title: ${title}, description: ${description}`)
 
         return(
-            (!isNew && !getSuccess) ?
+            (!getSuccess) ?
             'loading' : 
             <div>
                 <Header 
                     isEdit={true}                       // Edit 페이지 헤더임을 알려주는 props
+                    isNew={isNew}                       // Create / Update 여부
+                    id={id}                             // Update의 경우 해당 글의 id
+                    board={board}                       
+
                     title={title}                       // Edit 페이지에서 작성한 Title 데이터
                     files={files}                       // Edit 페이지에서 업로드한 사진 데이터
                     description={description}           // Eidt 페이지에서 작성한 Description 데이터
@@ -117,6 +135,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        initEditPage: () => {dispatch(initEditPage())},
         EditPostRequest: (board, title, discription, files, id) => {
             dispatch(EditPostRequest(board, title, discription, files, id))
         },

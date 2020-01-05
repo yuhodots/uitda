@@ -3,6 +3,7 @@ import axios from "axios";
 import {
     MANAGE_GET_MY_POSTS_SUCCESS,
     MANAGE_GET_MY_POSTS_FAILURE,
+    MANAGE_EDIT_INIT_PAGE,
     MANAGE_EDIT_GET_POST_SUCCESS,
     MANAGE_EDIT_GET_POST_FAILURE,
     MANAGE_EDIT_CREATE_POST_SUCCESS,
@@ -65,6 +66,13 @@ export function getMyPostFailure (err) {
     }
 }
 
+////////////
+/* Edit Page 데이터 초기화 액션 */
+export function initEditPage() {
+    return {
+        type: MANAGE_EDIT_INIT_PAGE
+    }
+}
 
 ////////////////////////////////////////////////////////////////////////////
 /* '/manage/update/:board/:id' 에서 해당 페이지에 알맞는 데이터를 불러오는 (GET) 액션 */

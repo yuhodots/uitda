@@ -63,17 +63,32 @@ class EditComponent extends Component {
         })
     }
 
-    render () {
-
+    _handleClick = () => {
+        const{ board } = this.state;
+        
         const { 
-            defaultBoard,
+            id,
 
             title,
             files,
             description,
-            editSuccess,
 
             EditPostRequest
+        } = this.props;
+
+        console.log(`id ${id}, title ${title}, description: ${description}, board: ${board}`)
+        id ?
+        EditPostRequest(board, title, description, files, id) :
+        EditPostRequest(board, title, description, files)
+    }
+
+    render () {
+
+        const { 
+            isNew,
+
+            defaultBoard,
+            editSuccess
         } = this.props;
 
         const { board } = this.state;
@@ -86,16 +101,30 @@ class EditComponent extends Component {
             editSuccess ? 
             <Redirect to={redirerctURL} /> :    // 작성 완료 시, Redirect함
             <HeaderBox>
-                <CategorySelectBox 
-                    defaultValue={defaultBoard} 
-                    onChange={this._handleSelect}
-                >
-                    <Option value={MARKET} >다판다</Option>
-                    <Option value={NETWORKING} >잉력시장</Option>
-                </CategorySelectBox>
-
-                <CreateButton onClick={() => EditPostRequest(board, title, description, files)} >
-                    글 생성
+                {
+                    isNew ?
+                    <CategorySelectBox 
+                        defaultValue={defaultBoard} 
+                        onChange={this._handleSelect}
+                    >
+                        <Option value={MARKET} >다판다</Option>
+                        <Option value={NETWORKING} >잉력시장</Option>
+                    </CategorySelectBox> :
+                    <CategorySelectBox 
+                        defaultValue={defaultBoard} 
+                        disabled
+                    >
+                        <Option value={MARKET} >다판다</Option>
+                        <Option value={NETWORKING} >잉력시장</Option>
+                    </CategorySelectBox>
+                }
+                
+                <CreateButton onClick={this._handleClick} >
+                    {
+                        isNew?
+                        '글 생성' :
+                        '글 수정'
+                    }
                 </CreateButton>
             </HeaderBox>
         )
@@ -105,17 +134,22 @@ class EditComponent extends Component {
 EditComponent.propTypes = {
     defaultBoard: PropTypes.string,                 // Default Category 값
 
+    isNew: PropTypes.bool,                          // Create / Update 여부
+    id: PropTypes.number,                           // Update의 경우 해당 글의 id
+    editSuccess: PropTypes.bool.isRequired,         // 작성 완료를 알리는 데이터
+
     /* 글 내용에 대한 데이터 */
     title: PropTypes.string.isRequired,             // Title Data
     files: PropTypes.array.isRequired,              // Files Data
     description: PropTypes.string.isRequired,       // Description Data
-    editSuccess: PropTypes.bool.isRequired,         // 작성 완료를 알리는 데이터
 
     EditPostRequest: PropTypes.func.isRequired,     // Post Create / Update function
 }
 
 EditComponent.defaultProps = {
     defaultBoard: MARKET,
+    isNew: true,
+    id: 0,
 }
 
 export default EditComponent;
