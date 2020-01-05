@@ -218,6 +218,13 @@ class ManagePost extends Component{
         })
     }
 
+    _handleDelete = (board, id) => {
+        const { deletePost } = this.props;
+        
+        deletePost(board, id)
+        window.location.reload();
+    }
+
     /* Post Item을 render하는 함수 */
     _renderPostItems = (postList, board) => {
         return postList.map((post, idx) => {
@@ -238,7 +245,7 @@ class ManagePost extends Component{
                     </TextBox>
                     <ButtonBox>
                         <EditButton to={editURL} >수정</EditButton>
-                        <DeleteButton>삭제</DeleteButton>
+                        <DeleteButton onClick={() => this._handleDelete(board, post.id)} >삭제</DeleteButton>
                         <SelectButton> {post.condition} </SelectButton>
                     </ButtonBox>
                 </PostItem>
@@ -269,11 +276,12 @@ class ManagePost extends Component{
 
         const {
             board,
-            postList
+            postList,
+            deletePost,
         } = this.props;
 
         const {
-            curOrder
+            curOrder,
         } = this.state;
 
         /* 전체 작성한 글의 개수 */
@@ -307,7 +315,7 @@ class ManagePost extends Component{
                         postsNum ?
                         <PostsBox>
                             {
-                                this._renderPostItems(parsedList, board)
+                                this._renderPostItems(parsedList, board, deletePost)
                             }
                             {
                                 /* maxOrder가 1보다 크면 BoardOrderBox render */
@@ -336,6 +344,8 @@ class ManagePost extends Component{
 ManagePost.propTypes = {
     postList: PropTypes.array,              // 게시글 리스트
     board: PropTypes.string.isRequired,     // 어떤 게시판인지 정보
+
+    deletePost: PropTypes.func.isRequired,  // Post 지우는 함수
 }
 
 ManagePost.defaultProps = {

@@ -13,7 +13,8 @@ import {
 
 /* Actions */
 import {
-    getMyPostRequest    // Posts GET request 함수  
+    getMyPostRequest,   // Posts GET request 함수
+    deletePostRequest,  // Post Delete Post request 함수  
 } from '../../store/actions/manage'
 
 /* Constants */
@@ -95,7 +96,9 @@ class ManageContainer extends Component {
             kind,
             err,
 
-            postList
+            postList,
+
+            deletePostRequest,
         } = this.props;
     
         
@@ -119,6 +122,7 @@ class ManageContainer extends Component {
                     kind={kind}
 
                     postList={postList}
+                    deletePost={deletePostRequest}
                 />
             </div>
         )
@@ -127,7 +131,7 @@ class ManageContainer extends Component {
 }
 
 ManageContainer.propTypes = {
-    match: PropTypes.object.isRequired,     // url을 통해 주는 정보.
+    kind: PropTypes.string,
 }
 
 const mapStateToProps = (state) => {
@@ -144,6 +148,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getMyPostRequest: (board) => {dispatch(getMyPostRequest(board))},
+        deletePostRequest: (board, id) => {dispatch(deletePostRequest(board, id))},
     }
 }
 

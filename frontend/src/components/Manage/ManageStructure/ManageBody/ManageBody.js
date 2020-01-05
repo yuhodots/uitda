@@ -46,8 +46,8 @@ class ManageBody extends Component {
             kind,
 
             /* posts */
-            postList
-
+            postList,
+            deletePost,
         } = this.props
 
         // console.log(user)s
@@ -62,6 +62,7 @@ class ManageBody extends Component {
                     <ContentBox 
                         kind={kind}
                         postList={postList}
+                        deletePost={deletePost}
                     />
                 </WholeBox>
             </BodyArea>
@@ -71,6 +72,9 @@ class ManageBody extends Component {
 
 ManageBody.propTypes = {
     kind: PropTypes.string.isRequired,      // 메니지 카테고리 정보
+
+    postList: PropTypes.array,              // Posts 데이터 리스트
+    deletePost: PropTypes.func,             // Post를 지우는 함수
 }
 
 export default ManageBody;
