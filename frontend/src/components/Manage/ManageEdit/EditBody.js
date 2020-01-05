@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import styled from 'styled-components';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import {
     Title,
@@ -53,21 +53,46 @@ class EditBody extends Component {
 
     render() {
 
-        const { windowHeight } = this.state;
+        const { 
+            windowHeight,
+        } = this.state;
+
+        const {
+            title,
+            files,
+            description,
+
+            storeTitleData,
+            storeFilesData,
+            storeDescriptionData,
+        } = this.props;
 
         return (
             <BackGround minHeight={windowHeight} >
                 <EditPaper minHeight={windowHeight}>
-                    <Title />
-                    <DropZone />
-                    <Description />
+                    <Title title={title} storeTitleData={storeTitleData} />
+                    <DropZone files={files} storeFilesData={storeFilesData} />
+                    <Description description={description} storeDescriptionData={storeDescriptionData} />
                 </EditPaper>
             </BackGround>
         )
     }
 }
 
-// EditBody.propTypes = {
-// }
+EditBody.propTypes = {
+    title: PropTypes.string,                            // Edit 페이지에서 작성한 Title 데이터
+    files: PropTypes.array,                             // Edit 페이지에서 업로드한 사진 데이터
+    description: PropTypes.string,                      // Eidt 페이지에서 작성한 Description 데이터
+
+    storeTitleData: PropTypes.func.isRequired,          // Title 데이터를 App State로 저장하는 함수
+    storeFilesData: PropTypes.func.isRequired,          // Files 데이터를 App State로 저장하는 함수
+    storeDescriptionData: PropTypes.func.isRequired,    // Description 데이터를 App State로 저장하는 함수
+}
+
+EditBody.defaultProps = {
+    title: '',                            
+    files: [],                             
+    description: '',
+}
 
 export default EditBody;

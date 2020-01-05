@@ -1,8 +1,9 @@
 
 
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Input } from 'antd'
+import { Input } from 'antd';
+import PropTypes from 'prop-types';
 
 /* Styled Components */
 const TitleTextArea = styled(Input.TextArea)`
@@ -15,26 +16,35 @@ const TitleTextArea = styled(Input.TextArea)`
     border: none;
     outline: 0;
 
+    /* Ant-Design 속성 무효화를 위해 */
     :focus {
         border: none;
         box-shadow: none;
     }
 `
 
-
 /* React Component */
-class EditTitle extends Component {
+const EditTitle = ({title, storeTitleData}) => {
+    console.log(title);
+    
+    return (
+        <TitleTextArea
+            defaultValue={title}
+            placeholder="제목을 입력 하세요."
+            autoSize={true}
+            onChange={(e) => storeTitleData(e.target.value)}
+        />
+    )
+}
 
-    state={}
 
-    render() {
-        return (
-            <TitleTextArea
-                placeholder="제목을 입력 하세요."
-                autoSize={true}
-            />
-        )
-    }
+EditTitle.propTypes = {
+    title: PropTypes.string,
+    storeTitleData: PropTypes.func.isRequired
+}
+
+EditTitle.defaultProps = {
+    title: ''
 }
 
 export default EditTitle;

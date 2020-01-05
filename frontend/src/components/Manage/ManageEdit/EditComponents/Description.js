@@ -1,8 +1,9 @@
 
 
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Input } from 'antd'
+import { Input } from 'antd';
+import PropTypes from 'prop-types';
 
 import { colors } from '../../../../styles/variables'
 
@@ -29,18 +30,27 @@ const DescriptionTextArea = styled(Input.TextArea)`
     }
 `
 
-class Description extends Component {
+/* React Component */
+const Description = ({description, storeDescriptionData}) => {
+    return (
+        <DescriptionBox>
+            <DescriptionTextArea
+                defaultValue={description}
+                placeholder="설명을 입력 하세요."
+                autoSize={true}
+                onChange={(e) => storeDescriptionData(e.target.value)}
+            />
+        </DescriptionBox>
+    )
+}
 
-    render() {
-        return (
-            <DescriptionBox>
-                <DescriptionTextArea
-                    placeholder="설명을 입력 하세요."
-                    autoSize={true}
-                />
-            </DescriptionBox>
-        )
-    }
+Description.propTypes = {
+    description: PropTypes.string,
+    storeDescriptionData: PropTypes.func.isRequired,   // Description 데이터를 App State로 저장하는 함수
+}
+
+Description.defaultProps = {
+    description: ''
 }
 
 export default Description;
