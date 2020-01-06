@@ -16,7 +16,7 @@ const initialState = {
     },
 
     // 로그인 성공 여부
-    loginSuccess: true,
+    loginSuccess: false,
 
     // 회원가입 성공 여부
     registerSuccess: false,
@@ -68,10 +68,6 @@ export default function auth (state = initialState, action) {
             return {
                 ...state,
                 isLoggedIn: true,
-                userInfo: {
-                    id: action.userInfo.id,
-                    username: action.userInfo.username
-                },
                 loginSuccess: true,
             }
 

@@ -256,7 +256,12 @@ module.exports = {
                 files = req.files;
                 type_board = type_board_assign(type);
                 type_files = type_files_assign(type);
+                
+                console.log(`[create!!] title: ${title}, description: ${description}`)
+                console.log(`[create!!] a:${Object.keys(req)}, b:${Object.keys(req.body)}`)
+
                 callback(null);
+                
             },
 
             /* 로그인한 사람의 요청인지 확인 */
@@ -327,6 +332,10 @@ module.exports = {
                 id = req.params.id;
                 type_board = type_board_assign(type);
                 type_files = type_files_assign(type);
+
+                console.log(`[update!!] title: ${title}, description: ${description}`)
+                console.log(`[update!!] a:${Object.keys(req)}, b:${Object.keys(req.body)}`)
+                
                 callback(null);
             },
 

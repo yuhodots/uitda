@@ -1,0 +1,9 @@
+extends ../layout.pug
+
+block content
+    -if(user)
+        p You are already logged in.
+    -else
+        h1 Login
+            p
+                a(href='/api/login/outlook') [outlook]

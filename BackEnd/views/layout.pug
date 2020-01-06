@@ -1,0 +1,20 @@
+doctype html
+html
+  head
+    title Uitda
+    meta(charset='utf-8')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    #navi_bar
+      a(href='/view/') [home]
+      a(href='/view/market') [market]
+      a(href='/view/networking') [networking]
+      a(href='/view/carpool') [carpool]
+      a(href='/view/manage') [manage]
+      a(href='/view/chatting') [chatting]
+      -console.log(user);
+      -if(user)
+        a(href='/view/logout') [#{user.username}/logout]
+      -else
+        a(href='/view/login') [login]
+    block content

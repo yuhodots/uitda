@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Route } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import {
     ErrorPage,
@@ -45,6 +46,12 @@ class ManageContentArea extends Component {
             isPost,         // Post
             board;          // Market or Networking
 
+        const {
+            /* Posts */
+            postList,
+            deletePost,
+        } = this.props;
+
         switch (kind) {
             case MANAGE_POSTS_MARKET:
                 board = MARKET;
@@ -53,8 +60,6 @@ class ManageContentArea extends Component {
                 board = board ? MARKET : NETWORKING;
                 isPost = true;
                 component = ManagePost;
-
-                var { postList } = this.props;
                 break;
 
             case MANAGE_COMMENTS:
@@ -83,6 +88,7 @@ class ManageContentArea extends Component {
             return <ManagePost 
                         board={board} 
                         postList={postList}
+                        deletePost={deletePost}
                     />
         }} /> :
 
@@ -105,6 +111,13 @@ class ManageContentArea extends Component {
             </ContentBoxArea>
         )
     }
+}
+
+ManageContentArea.propTypes = {
+    kind: PropTypes.string.isRequired,      // 메니지 카테고리 정보
+
+    postList: PropTypes.array,              // Posts 데이터 리스트
+    deletePost: PropTypes.func,             // Post를 지우는 함수
 }
 
 export default ManageContentArea;

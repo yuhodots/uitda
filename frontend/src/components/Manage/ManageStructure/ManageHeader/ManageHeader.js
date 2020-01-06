@@ -16,7 +16,6 @@ import DefaultCompoent from './DefaultComponent'
 const HeaderBox = styled.div`
     height: 4rem;
     background-color: ${colors.white};
-    line-height: 4rem;
 
     position: relative;
     z-index: 100;
@@ -44,14 +43,37 @@ class ManageHeader extends Component {
 
     render () {
 
-        const { isEdit } = this.props;
+        const { 
+            isEdit,
+            isNew,
+            id,
+            board,
+
+            title,
+            files,
+            description,
+            editSuccess,
+
+            EditPostRequest
+        } = this.props;
 
         return (
             <HeaderBox>
                 <HomeLink to='/'></HomeLink>
                 { 
                     isEdit ?
-                    <EditComponent /> :
+                    <EditComponent 
+                        isNew={isNew}
+                        id={id}
+                        defaultBoard={board}
+
+                        title={title}
+                        files={files}
+                        description={description}
+                        editSuccess={editSuccess}
+
+                        EditPostRequest={EditPostRequest}
+                    /> :
                     <DefaultCompoent />
                 }
                 {/* 유저, 알림, 메시지 */}
@@ -61,11 +83,34 @@ class ManageHeader extends Component {
 }
 
 ManageHeader.propTypes = {
-    isEdit: PropTypes.bool,      // 에디터형의 header인지 아닌지
+    isEdit: PropTypes.bool,             // Edit header인지 아닌지
+
+    /* Edit Header를 위한 props */
+    isNew: PropTypes.bool,              // Create / Update 여부
+    id: PropTypes.number,               // Update의 경우 해당 글의 id
+    board: PropTypes.string,
+
+    title: PropTypes.string,            // Title Data
+    files: PropTypes.array,             // Files Data
+    description: PropTypes.string,      // Description Data
+    editSuccess: PropTypes.bool,        // 작성 완료를 알리는 데이터
+
+    EditPostRequest: PropTypes.func,    // Post Create / Update function
 }
 
 ManageHeader.defaultProps = {
-    isEdit: false
+    isEdit: false,
+
+    /* Edit Header를 위한 props */
+    isNew: true,
+    id: 0,
+
+    title: '',            
+    files: [],             
+    description: '',
+    editSuccess: false,
+
+    EditPostRequest: undefined,
 }
 
 export default ManageHeader;

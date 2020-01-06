@@ -36,6 +36,11 @@ var chattingRouter = require('./routes/chatting');
 var loginRouter = require('./routes/login')(passport);
 var usersRouter = require('./routes/users');
 
+/* Soogeun's Debug Code */
+var indexRouterv = require('./routesv/index');
+var loginRouterv = require('./routesv/login')(passport);
+//////////////////////////
+
 /* View engine setup */
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -58,6 +63,11 @@ app.use('/api/manage', manageRouter);
 app.use('/api/chatting', chattingRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/users', usersRouter);
+
+/* Soogeun's Debug Code */
+app.use('/view/', indexRouterv);
+app.use('/view/login', loginRouterv);
+//////////////////////////
 
 /* Catch 404 and forward to error handler */
 app.use(function(req, res, next) {

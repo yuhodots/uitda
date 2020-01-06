@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import LoginForm from "../components/Auth/Login/LoginForm";
@@ -14,26 +14,20 @@ class LoginContainer extends Component {
         this.props.getStatusRequest();
     }
 
-    _renderLogin = () => {
-        return (
-            <div>
-                <LoginForm postLoginData={this.props.loginRequest}/>
-                <Link to="/auth/register">회원가입</Link>
-            </div>
-            
-        )
-    }
-
     render() {
 
+        const { 
+            isLoggedIn,
+            loginRequest
+        } = this.props
+
         return(
-            <div>
-                {
-                    this.props.isLoggedIn ?
-                    <Redirect to='/'/> :
-                    this._renderLogin()
-                }
-            </div>
+            isLoggedIn ?
+            <Redirect to='/'/> :
+            <LoginForm 
+                loginRequest={loginRequest} 
+                isLoggedIn={isLoggedIn}
+            />
         )
     }
 }

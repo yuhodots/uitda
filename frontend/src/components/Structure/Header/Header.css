@@ -42,9 +42,12 @@
 
 .Header .SearchBarContainer {
     flex-grow: 4;
-    display: inline-block;
     line-height: 4.5rem;
     text-align: center;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* 유저 부분 */

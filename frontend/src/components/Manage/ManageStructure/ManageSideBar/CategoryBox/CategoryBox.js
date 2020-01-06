@@ -44,6 +44,8 @@ const SubGroup = styled.div`
 /* 카테고리 그룹 제목 */
 const SubTitle = styled.div`
     margin-bottom: 1rem;
+
+    font-size: 1rem;
 `;
 
 /* 카테고리 링크 */

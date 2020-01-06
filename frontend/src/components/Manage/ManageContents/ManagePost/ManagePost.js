@@ -55,6 +55,11 @@ const CreateButton = styled(LinkBoxTemplate)`
 
     position: absolute;
     right: 1rem;
+
+    :hover {
+        color: ${colors.font_darkgray};
+        box-shadow: 0 0 3px rgba(0,0,0,.2);
+    }
 `
 ///////////////////////////
 
@@ -149,31 +154,44 @@ const PostItem = styled(BoxTemplate)`
     `
 
         const EditButton = styled(LinkBoxTemplate)`
-            padding: 0.5rem 1rem;
-            height: 2rem;
+            padding: 0.375rem 1rem;
             margin: 0 0.5rem;
+            font-size: 0.875rem;
 
             color: ${colors.font_darkgray};
+
+            :hover {
+                color: ${colors.font_darkgray};
+                box-shadow: 0 0 3px rgba(0,0,0,.2);
+            }
         `;
 
         const DeleteButton = styled(BoxTemplate)`
-            padding: 0.5rem 1rem;
-            height: 2rem;
+            padding: 0.375rem 1rem;
             margin: 0 0.5rem;
+            font-size: 0.875rem;
 
             color: ${colors.font_red};
 
             cursor: pointer;
+
+            :hover {
+                box-shadow: 0 0 3px rgba(0,0,0,.2);
+            }
         `;
 
         const SelectButton = styled(BoxTemplate)`
-            padding: 0.5rem 1rem;
-            height: 2rem;
+            padding: 0.375rem 1rem;
             margin: 0 0.5rem;
+            font-size: 0.875rem;
 
             color: ${colors.font_darkgray};
 
             cursor: pointer;
+
+            :hover {
+                box-shadow: 0 0 3px rgba(0,0,0,.2);
+            }
         `;
 
 ///////////////////////
@@ -194,7 +212,7 @@ const BoardOrder = styled.p`
 
     /* font 속성 */
     color: ${props => {
-        return props.isHighLight ? colors.font_darkgray : colors.font_lightgray
+        return props.isSelected ? colors.font_darkgray : colors.font_lightgray
     }};
 
     cursor: pointer;
@@ -218,6 +236,13 @@ class ManagePost extends Component{
         })
     }
 
+    _handleDelete = (board, id) => {
+        const { deletePost } = this.props;
+        
+        deletePost(board, id)
+        window.location.reload();
+    }
+
     /* Post Item을 render하는 함수 */
     _renderPostItems = (postList, board) => {
         return postList.map((post, idx) => {
@@ -230,7 +255,7 @@ class ManagePost extends Component{
             const editURL = `/manage/edit/${board}/${post.id}`;
 
             return (
-                <PostItem isLast={(idx + 1) === postList.length}>
+                <PostItem isLast={(idx + 1) === postList.length} key={idx}>
                     <PostID>{post.postId}</PostID>
                     <TextBox>
                         <PostTitle> <TitleLink to={postURL} >{post.title}</TitleLink> </PostTitle>
@@ -238,7 +263,7 @@ class ManagePost extends Component{
                     </TextBox>
                     <ButtonBox>
                         <EditButton to={editURL} >수정</EditButton>
-                        <DeleteButton>삭제</DeleteButton>
+                        <DeleteButton onClick={() => this._handleDelete(board, post.id)} >삭제</DeleteButton>
                         <SelectButton> {post.condition} </SelectButton>
                     </ButtonBox>
                 </PostItem>
@@ -253,7 +278,7 @@ class ManagePost extends Component{
 
         return orderList.map((order, idx) => {
             return <BoardOrder
-                        isHighLight={order === curOrder} 
+                        isSelected={order === curOrder} 
                         onClick={() => this._onClickOrder(order)}
                         key={idx} 
                     >
@@ -269,11 +294,12 @@ class ManagePost extends Component{
 
         const {
             board,
-            postList
+            postList,
+            deletePost,
         } = this.props;
 
         const {
-            curOrder
+            curOrder,
         } = this.state;
 
         /* 전체 작성한 글의 개수 */
@@ -307,7 +333,7 @@ class ManagePost extends Component{
                         postsNum ?
                         <PostsBox>
                             {
-                                this._renderPostItems(parsedList, board)
+                                this._renderPostItems(parsedList, board, deletePost)
                             }
                             {
                                 /* maxOrder가 1보다 크면 BoardOrderBox render */
@@ -336,6 +362,8 @@ class ManagePost extends Component{
 ManagePost.propTypes = {
     postList: PropTypes.array,              // 게시글 리스트
     board: PropTypes.string.isRequired,     // 어떤 게시판인지 정보
+
+    deletePost: PropTypes.func.isRequired,  // Post 지우는 함수
 }
 
 ManagePost.defaultProps = {

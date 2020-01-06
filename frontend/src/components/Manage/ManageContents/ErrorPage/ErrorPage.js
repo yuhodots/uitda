@@ -5,7 +5,7 @@ const ErrorPage = () => {
     console.log('hi')
     return (
         <div>
-            로그인을 하십시오.
+            준비 중 입니다.
         </div>
     )
 }
