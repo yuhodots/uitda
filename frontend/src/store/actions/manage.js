@@ -132,6 +132,9 @@ export function EditPostRequest (board, title, description, files, id) {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('description', description);
+        files.forEach(file => {
+            formData.append('userfile', file);
+        });
 
         /* POST 요청 성공 시 보내지는 액션 생성자 */
         const successAction = id ?
@@ -144,7 +147,9 @@ export function EditPostRequest (board, title, description, files, id) {
         createPostFailure ;
 
         /* create POST 요청 */
-        return axios.post(POSTurl, formData)
+        return axios.post(POSTurl, formData, {
+            headers: { 'Content-Type': 'multipart/form-data'}
+        })
 
         /* 성공, 실패 시 각각에 맞는 액션을 dispatch하기 */
         .then(res => {

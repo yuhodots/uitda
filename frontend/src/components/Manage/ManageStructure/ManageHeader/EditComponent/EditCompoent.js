@@ -76,7 +76,7 @@ class EditComponent extends Component {
             EditPostRequest
         } = this.props;
 
-        console.log(`id ${id}, title ${title}, description: ${description}, board: ${board}`)
+        // console.log(`id ${id}, title ${title}, description: ${description}, board: ${board}`)
         id ?
         EditPostRequest(board, title, description, files, id) :
         EditPostRequest(board, title, description, files)
