@@ -15,7 +15,7 @@ db.market_board = require('./market_board')(sequelize, Sequelize);
 db.market_files = require('./market_files')(sequelize, Sequelize);
 db.networking_board = require('./networking_board')(sequelize, Sequelize);
 db.networking_files = require('./networking_files')(sequelize, Sequelize);
-//db.cal_events = require('./cal_events')(sequelize, Sequelize);
+db.cal_events = require('./cal_events')(sequelize, Sequelize);
 db.proposal = require('./proposal')(sequelize, Sequelize);
 /*
 db.market_board.hasMany(db.market_files,{

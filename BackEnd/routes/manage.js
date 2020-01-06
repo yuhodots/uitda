@@ -61,7 +61,7 @@ router.get('/carpool', function (req, res) {
         `SELECT * FROM cal_events WHERE username='${req.user.username}'`,
         function (error, results) {
           if (error) throw error;
-          res.json({ postlist: results, user: req.user ? req.user : 0 });
+          res.json({ events: results, user: req.user ? req.user : 0 });
         }
       )
 });

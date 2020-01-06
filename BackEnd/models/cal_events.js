@@ -22,6 +22,10 @@ return sequelize.define('cal_events', {
   start: {
   type: DataTypes.DATE,
   allowNull: false
+  },
+  end: {
+  type: DataTypes.DATE,
+  allowNull: false
   }
   },{
     timestamps: false,

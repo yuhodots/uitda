@@ -292,7 +292,12 @@ module.exports = {
 
             /* Redirection */
             function (callback) {
-                res.redirect(`/api/manage/${type}`);
+                let id;
+                type_board.max('id').then(function (max) { id = max; }).then(function () {
+                    type_board.findOne({ where: { id: id } }).then(function (content) {
+                        res.json({ post: content, user: req.user ? req.user : 0 });
+                    }).catch(function (err) { throw err; });
+                });
                 callback(null);
             }
 
@@ -353,7 +358,9 @@ module.exports = {
 
             /* Redirection */
             function (callback) {
-                res.redirect(`/api/${type}/${id}`);
+                type_board.findOne({ where: { id: id } }).then(function (content) {
+                    res.json({ post: content, user: req.user ? req.user : 0 });
+                }).catch(function (err) { throw err; });
                 callback(null);
             }
 
