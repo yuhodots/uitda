@@ -98,7 +98,7 @@ module.exports = {
                 (req.query.scroll) ?
                     scroll = Number(req.query.scroll) :
                     scroll = 0;
-                num_of_data = 6;
+                num_of_data = 12;
                 type_board = type_board_assign(type);
                 type_files = type_files_assign(type);
                 callback(null);
@@ -154,10 +154,13 @@ module.exports = {
                 if (projects.length) {
                     let contents = make_file(projects, projects.length);
                     let postlist = [];
+                    let counter = 0;
                     for (let i = 0; i < projects.length; i++) {
                         (function (i) {
                             let content = contents[i];
                             type_files.findAll({ where: { board_id: content.id } }).then(function (files) {
+                                console.log(`\nIteration: ${i}\n`);
+                                console.log(`\Counter: ${counter}\n`);
                                 users.findOne({ where: { username: content.author } }).then(function (user) {
                                     let filelist = [];
                                     if (files.length > 0) {
@@ -165,14 +168,14 @@ module.exports = {
                                     }
                                     let writer = make_writer(user.username, user.profile_picture, user.pic_location);
                                     let time = moment(content.created, 'YYYY년MM월DD일HH시mm분ss초').fromNow();
-                                    let post;
                                     (type == 'market') ?
                                         post = make_market_ob(content.id, content.title, writer, time, content.price, content.condition, content.description, filelist) :
                                         post = make_networking_ob(content.id, content.title, writer, time, content.condition, content.description, filelist);
                                     postlist[i] = post;
-                                    if ((i + 1) === projects.length) {
+                                    if ((counter + 1) == projects.length) {
                                         res.json({ postlist: postlist, user: req.user ? req.user : 0, isLast: (scrollEnd) ? true : false });
                                     }
+                                    counter++;
                                 }).catch(function (err) { throw err; });
                             }).catch(function (err) { throw err; });
                         })(i);
@@ -256,12 +259,7 @@ module.exports = {
                 files = req.files;
                 type_board = type_board_assign(type);
                 type_files = type_files_assign(type);
-                
-                console.log(`[create!!] title: ${title}, description: ${description}`)
-                console.log(`[create!!] a:${Object.keys(req)}, b:${Object.keys(req.body)}`)
-
                 callback(null);
-                
             },
 
             /* 로그인한 사람의 요청인지 확인 */
@@ -332,10 +330,6 @@ module.exports = {
                 id = req.params.id;
                 type_board = type_board_assign(type);
                 type_files = type_files_assign(type);
-
-                console.log(`[update!!] title: ${title}, description: ${description}`)
-                console.log(`[update!!] a:${Object.keys(req)}, b:${Object.keys(req.body)}`)
-                
                 callback(null);
             },
 

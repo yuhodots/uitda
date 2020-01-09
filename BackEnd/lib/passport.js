@@ -59,7 +59,7 @@ module.exports = function (app) {
       passport.authenticate('windowslive', {failureRedirect: '/api/login'}),
       (req, res) => {
         req.session.save(() => {
-          res.redirect('/api/');
+          res.redirect('http://localhost:4000/');
         })
     });
 
