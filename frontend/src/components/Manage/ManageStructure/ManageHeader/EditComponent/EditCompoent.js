@@ -24,11 +24,13 @@ const HeaderBox = styled.div`
     align-items: center;
 `; 
 
+/* 카테고리 선택 태그 (ant-design) */
 const CategorySelectBox = styled(Select)`
     width: 8rem;
 `
 
-const CreateButton = styled.div`
+/* 글 생성 / 수정 버튼 */
+const EndButton = styled.div`
     height: 2rem;
     padding: 0.5625rem 1rem;
     margin: 0 1rem;
@@ -63,7 +65,8 @@ class EditComponent extends Component {
         })
     }
 
-    _handleClick = () => {
+    /* 글 생성 / 수정 버튼 액션 */
+    _handleEndClick = () => {
         const{ board } = this.state;
         
         const { 
@@ -76,8 +79,7 @@ class EditComponent extends Component {
             EditPostRequest
         } = this.props;
 
-        // console.log(`id ${id}, title ${title}, description: ${description}, board: ${board}`)
-        id ?
+        id ?    // id가 있으면 수정 액션, 없으면 생성 액션
         EditPostRequest(board, title, description, files, id) :
         EditPostRequest(board, title, description, files)
     }
@@ -102,7 +104,10 @@ class EditComponent extends Component {
             <Redirect to={redirerctURL} /> :    // 작성 완료 시, Redirect함
             <HeaderBox>
                 {
+                    /* 카테고리 선택 박스 */
                     isNew ?
+
+                    /* 새 글의 경우, 활성화 */
                     <CategorySelectBox 
                         defaultValue={defaultBoard} 
                         onChange={this._handleSelect}
@@ -110,6 +115,8 @@ class EditComponent extends Component {
                         <Option value={MARKET} >다판다</Option>
                         <Option value={NETWORKING} >잉력시장</Option>
                     </CategorySelectBox> :
+
+                    /* 글 수정의 경우, 비활성화 */
                     <CategorySelectBox 
                         defaultValue={defaultBoard} 
                         disabled
@@ -118,14 +125,13 @@ class EditComponent extends Component {
                         <Option value={NETWORKING} >잉력시장</Option>
                     </CategorySelectBox>
                 }
-                
-                <CreateButton onClick={this._handleClick} >
-                    {
-                        isNew?
-                        '글 생성' :
-                        '글 수정'
-                    }
-                </CreateButton>
+
+
+
+                {/* 글 수정 / 생성 버튼 */}
+                <EndButton onClick={this._handleEndClick} >
+                    { isNew ? '글 생성' : '글 수정' }
+                </EndButton>
             </HeaderBox>
         )
     }
