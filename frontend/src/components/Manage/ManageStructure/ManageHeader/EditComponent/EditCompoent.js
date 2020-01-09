@@ -4,8 +4,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Select } from 'antd'
-import 'antd/es/select/style/css'
+import { Select, Popover, Icon, Divider } from 'antd'
+// import 'antd/es/select/style/css'
+// import 'antd/es/divider/style/css'
 
 import { colors } from '../../../../../styles/variables'; 
 import { MARKET, NETWORKING } from '../../../../../constants/board_name'
@@ -27,22 +28,50 @@ const HeaderBox = styled.div`
 /* 카테고리 선택 태그 (ant-design) */
 const CategorySelectBox = styled(Select)`
     width: 8rem;
-`
+`;
 
-/* 글 생성 / 수정 버튼 */
-const EndButton = styled.div`
-    height: 2rem;
-    padding: 0.5625rem 1rem;
-    margin: 0 1rem;
+/* 글 작성에 관련된 기능을 담은 박스 */
+const EditFuncBox = styled.div`
+    margin: 0 2rem;
+    height: 100%;
 
-    border: 1px solid ${colors.gray_line};
-    border-radius: 1rem;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+`;
 
-    line-height: 0.875rem;
-    font-size: 0.875rem;
+    /*  */
+    const FuncDescriptor = styled(Popover)`
+        transition: 0s all !important;
+    `;
 
-    cursor: pointer;
-`
+    const FontSizeSelect = styled(Select)`
+        margin: 0 0.5rem !important;
+    `;
+
+    /* Icon 공통 속성 (ant-design) */
+    const EditIcon = styled(Icon)`
+        margin: 0 0.5rem;
+        font-size: 1rem;
+
+        cursor: pointer;
+    `;
+
+
+    /* 글 생성 / 수정 버튼 */
+    const EndButton = styled.div`
+        height: 2rem;
+        padding: 0.5625rem 1rem;
+        margin: 0 1rem;
+
+        border: 1px solid ${colors.gray_line};
+        border-radius: 1rem;
+
+        line-height: 0.875rem;
+        font-size: 0.875rem;
+
+        cursor: pointer;
+    `
 
 /* react component */
 class EditComponent extends Component {
@@ -126,7 +155,49 @@ class EditComponent extends Component {
                     </CategorySelectBox>
                 }
 
+                <EditFuncBox>
+                    {/* font-size */}
+                    <FuncDescriptor content='글자 크기' >
+                        <FontSizeSelect
+                            defaultValue={10} 
+                        >
+                            <Option value={8} >8 pt</Option>
+                            <Option value={9} >9 pt</Option>
+                            <Option value={10} >10 pt</Option>
+                            <Option value={12} >12 pt</Option>
+                            <Option value={14} >14 pt</Option>
+                            <Option value={18} >18 pt</Option>
+                            <Option value={24} >24 pt</Option>
+                        </FontSizeSelect>
+                    </FuncDescriptor>
+                    
+                    {/* 글꼴 ? */}
 
+                    <Divider type='vertical' />
+
+                    <FuncDescriptor content='굵게'>
+                        <EditIcon type="bold" />
+                    </FuncDescriptor>
+                    <FuncDescriptor content='기울이기'>
+                        <EditIcon type="italic" />
+                    </FuncDescriptor>
+                    <FuncDescriptor content='밑줄' >
+                        <EditIcon type="underline" />
+                    </FuncDescriptor>
+                    <FuncDescriptor content='취소선' >
+                        <EditIcon type="strikethrough" />
+                    </FuncDescriptor>
+                    <FuncDescriptor content='글자색' >
+                        <EditIcon type="font-colors" />
+                    </FuncDescriptor>
+                    
+                    <Divider type="vertical" />
+                    
+                    <EditIcon type="align-left" />
+                    <EditIcon type="align-center" />
+                    <EditIcon type="align-right" />
+                    {/* text-align: justify 아이콘 */}
+                </EditFuncBox>
 
                 {/* 글 수정 / 생성 버튼 */}
                 <EndButton onClick={this._handleEndClick} >
