@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-// import 'antd/dist/antd.css'
+import 'antd/dist/antd.css'
 
 // 컴포넌트
 import { 
