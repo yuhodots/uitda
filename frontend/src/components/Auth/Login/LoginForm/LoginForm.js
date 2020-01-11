@@ -25,8 +25,7 @@ const Container = styled.div`
     background-color: ${colors.white};
 `;
 
-const LoginButton = styled.div`
-    cursor: pointer;
+const LoginButton = styled.a`
 `;
 
 const HomeLink = styled(Link)`
@@ -54,7 +53,6 @@ class LoginForm extends Component {
         } = this.state;
 
         const {
-            loginRequest,
             isLoggedIn
         } = this.props;
 
@@ -63,7 +61,7 @@ class LoginForm extends Component {
             <Redirect to='/' /> :
             <BackGround minHeight={windowHeight}>
                 <Container>
-                    <LoginButton onClick={loginRequest} >로그인</LoginButton>
+                    <LoginButton href='http://localhost:3000/api/login/outlook' >로그인</LoginButton><br />
                     <HomeLink to='/'>홈으로</HomeLink>
                 </Container>
             </BackGround>
