@@ -4,6 +4,7 @@
 
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom'; // Home 페이지 구현 이전에 market을 default로 하기 위함
 
 import { 
     headerOn,
@@ -26,9 +27,7 @@ class HomeContainer extends Component {
 
     render() {
         return (
-            <div>
-                Home
-            </div>
+            <Redirect to='/board/market' />
         )
     }
 }
