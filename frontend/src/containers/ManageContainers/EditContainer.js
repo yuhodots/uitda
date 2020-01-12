@@ -12,7 +12,8 @@ import {
     getUpdatePostRequest,
     EditPostRequest,
     storeEditTitleData,
-    storeEditFileData,
+    addFileData,
+    deleteFileData,
     storeEditDescriptionData,
 } from '../../store/actions/manage'
 
@@ -72,7 +73,8 @@ class EditContainer extends Component {
             /* App Methods */
             EditPostRequest,
             storeEditTitleData,
-            storeEditFileData,
+            addFileData,
+            deleteFileData,
             storeEditDescriptionData
         } = this.props;
 
@@ -104,7 +106,8 @@ class EditContainer extends Component {
                     description={description}           // Eidt 페이지에서 작성한 Description 데이터
 
                     storeTitleData={storeEditTitleData}
-                    storeFilesData={storeEditFileData}
+                    addFileData={addFileData}
+                    deleteFileData={deleteFileData}
                     storeDescriptionData={storeEditDescriptionData}
                 />
             </div>
@@ -142,7 +145,8 @@ const mapDispatchToProps = (dispatch) => {
         getPostRequest: (board, id) => dispatch(getUpdatePostRequest(board, id)),
 
         storeEditTitleData: (title) => dispatch(storeEditTitleData(title)),
-        storeEditFileData: (files) => dispatch(storeEditFileData(files)),
+        addFileData: (file) => dispatch(addFileData(file)),
+        deleteFileData: (file) => dispatch(deleteFileData(file)),
         storeEditDescriptionData: (description) => dispatch(storeEditDescriptionData(description)),
     }
 }

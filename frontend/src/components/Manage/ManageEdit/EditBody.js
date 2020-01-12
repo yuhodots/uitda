@@ -63,7 +63,8 @@ class EditBody extends Component {
             description,
 
             storeTitleData,
-            storeFilesData,
+            addFileData,
+            deleteFileData,
             storeDescriptionData,
         } = this.props;
 
@@ -71,7 +72,7 @@ class EditBody extends Component {
             <BackGround minHeight={windowHeight} >
                 <EditPaper minHeight={windowHeight}>
                     <Title title={title} storeTitleData={storeTitleData} />
-                    <DropZone files={files} storeFilesData={storeFilesData} />
+                    <DropZone files={files} addFileData={addFileData} deleteFileData={deleteFileData} />
                     <Description description={description} storeDescriptionData={storeDescriptionData} />
                 </EditPaper>
             </BackGround>
@@ -85,7 +86,8 @@ EditBody.propTypes = {
     description: PropTypes.string,                      // Eidt 페이지에서 작성한 Description 데이터
 
     storeTitleData: PropTypes.func.isRequired,          // Title 데이터를 App State로 저장하는 함수
-    storeFilesData: PropTypes.func.isRequired,          // Files 데이터를 App State로 저장하는 함수
+    addFileData: PropTypes.func.isRequired,             // Files 데이터를 App State로 저장하는 함수
+    deleteFileData: PropTypes.func.isRequired,          // App State에 있는 파일 데이터 중 해당 파일을 지우는 함수
     storeDescriptionData: PropTypes.func.isRequired,    // Description 데이터를 App State로 저장하는 함수
 }
 

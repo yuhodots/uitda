@@ -11,7 +11,8 @@ import {
     MANAGE_EDIT_UPDATE_POST_SUCCESS,
     MANAGE_EDIT_UPDATE_POST_FAILURE,
     MANAGE_EDIT_STORE_TITLE_DATA,
-    MANAGE_EDIT_STORE_FILE_DATA,
+    MANAGE_EDIT_ADD_FILE_DATA,
+    MANAGE_EDIT_DELETE_FILE_DATA,
     MANAGE_EDIT_STORE_DESCRIPTION_DATA,
     MANAGE_DELETE_POST_SUCCESS,
     MANAGE_DELETE_POST_FAILURE,
@@ -132,6 +133,7 @@ export function EditPostRequest (board, title, description, files, id) {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('description', description);
+        console.log(files);
         files.forEach(file => {
             formData.append('userfile', file);
         });
@@ -189,22 +191,27 @@ export function updatePostFailure (err) {
 
 /* Edit 페이지에서 작성 내용을 앱 state에 기록하는 함수들 */
 export function storeEditTitleData (editedTitle) {
-    // console.log(`EditTitle: ${editedTitle}`)
     return {
         type: MANAGE_EDIT_STORE_TITLE_DATA,
         editedTitle
     }
 }
 
-export function storeEditFileData (editedFiles) {
+export function addFileData (file) {
     return {
-        type: MANAGE_EDIT_STORE_FILE_DATA,
-        editedFiles
+        type: MANAGE_EDIT_ADD_FILE_DATA,
+        file
+    }
+}
+
+export function deleteFileData (file) {
+    return {
+        type: MANAGE_EDIT_DELETE_FILE_DATA,
+        file
     }
 }
 
 export function storeEditDescriptionData (editedDescription) {
-    // console.log(`EditDescription: ${editedDescription}`)
     return {
         type: MANAGE_EDIT_STORE_DESCRIPTION_DATA,
         editedDescription

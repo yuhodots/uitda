@@ -6,7 +6,8 @@ import {
     MANAGE_EDIT_GET_POST_SUCCESS,
     MANAGE_EDIT_GET_POST_FAILURE,
     MANAGE_EDIT_STORE_TITLE_DATA,
-    MANAGE_EDIT_STORE_FILE_DATA,
+    MANAGE_EDIT_ADD_FILE_DATA,
+    MANAGE_EDIT_DELETE_FILE_DATA,
     MANAGE_EDIT_STORE_DESCRIPTION_DATA,
     MANAGE_EDIT_CREATE_POST_SUCCESS,
     MANAGE_EDIT_UPDATE_POST_SUCCESS,
@@ -91,10 +92,19 @@ export default function manage (state = InitialState, action) {
                 editedTitle: action.editedTitle
             }
         
-        case MANAGE_EDIT_STORE_FILE_DATA:
+        case MANAGE_EDIT_ADD_FILE_DATA:
             return {
                 ...state,
-                editedFiles: action.editedFiles
+                editedFiles: [...state.editedFiles, action.file]
+            }
+
+        case MANAGE_EDIT_DELETE_FILE_DATA:
+            const index = state.editedFiles.indexOf(action.file);
+            const newFileList = state.editedFiles.slice();
+            newFileList.splice(index, 1);
+            return {
+                ...state,
+                editedFiles: newFileList
             }
 
         case MANAGE_EDIT_STORE_DESCRIPTION_DATA:
