@@ -5,6 +5,7 @@ const { market_board } = require('../models');
 const { market_files } = require('../models');
 const { networking_board } = require('../models');
 const { networking_files } = require('../models');
+const { comment } = require('../models');
 const { users } = require('../models');
 const sequelize = require("sequelize");
 const Op = sequelize.Op;
@@ -73,6 +74,19 @@ function type_files_assign(type) {
     else if (type == 'networking') {
         return networking_files;
     }
+}
+function make_comment_ob(id, type_board, board_id, description, user, created, is_re_comment, parent_comment) {
+    let comment_ob = {
+        id: id,
+        type_board: type_board,
+        board_id: board_id,
+        description: description,
+        user: user,
+        created: created,
+        is_re_comment: is_re_comment,
+        parent_comment: parent_comment
+    }
+    return comment_ob;
 }
 
 /* Board method */
@@ -198,6 +212,9 @@ module.exports = {
         /* 변수 선언 */
         let type_board; // market_board | networking board
         let type_files; // market_board | networking board
+        let board_id;
+        let commentlist;
+        let comment_type_board;
 
         async.waterfall([
 
@@ -205,21 +222,42 @@ module.exports = {
             function (callback) {
                 type_board = type_board_assign(type);
                 type_files = type_files_assign(type);
+                board_id = req.params.id;
+                commentlist = [];
+                (type == 'market') ?
+                    comment_type_board = 'market':
+                    comment_type_board = 'networking';
+                callback(null);
+            },
+
+            /* commentlist 객체 생성 */
+            function (callback) {
+                comment.findAll({ where: { board_id: board_id, type_board: comment_type_board } }).then(function(comments){
+                    for (let i = 0; i < comments.length; i++) {
+                        users.findOne({ where: { username: comments[i].author } }).then(function (user) {
+                            let writer = make_writer(user.username, user.profile_picture, user.pic_location);
+                            let time = moment(comments[i].created, 'YYYY년MM월DD일HH시mm분ss초').fromNow();
+                            comment_ob = make_comment_ob(comments[i].id, comments[i].type_board, comments[i].board_id,
+                                comments[i].description, writer, time, comments[i].is_re_comment, comments[i].parent_comment);
+                            commentlist[i] = comment_ob;
+                        }).catch(function (err) { throw err; });
+                    }
+                })
                 callback(null);
             },
 
             /* 게시글 정보 검색 */
             function (callback) {
-                type_board.findOne({ where: { id: req.params.id } }).then(function (content) {
+                type_board.findOne({ where: { id: board_id } }).then(function (content) {
                     callback(null, content);
                 }).catch(function (err) {
                     throw err;
                 });
-            },
+            },            
 
             /* post response 객체 생성 & 응답 */
             function (content, callback) {
-                type_files.findAll({ where: { board_id: req.params.id } }).then(function (files) {
+                type_files.findAll({ where: { board_id: board_id } }).then(function (files) {
                     users.findOne({ where: { username: content.author } }).then(function (user) {
                         let writer = make_writer(user.username, user.profile_picture, user.pic_location);
                         let filelist = make_file(files, files.length);
@@ -228,7 +266,7 @@ module.exports = {
                         (type == 'market') ?
                             post = make_market_ob(content.id, content.title, writer, time, content.price, content.condition, content.description, filelist) :
                             post = make_networking_ob(content.id, content.title, writer, time, content.condition, content.description, filelist);
-                        res.json({ post: post, user: req.user ? req.user : 0 });
+                        res.json({ post: post, commentlist: commentlist, user: req.user ? req.user : 0 });
                     }).catch(function (err) { throw err; })
                 }).catch(function (err) {
                     throw err;

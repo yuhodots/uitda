@@ -1,6 +1,5 @@
 
 /* sequelize\models\index.js */
-
 const Sequelize = require('sequelize');
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config.json')[env];
@@ -8,6 +7,7 @@ const db = {};
 const sequelize = new Sequelize(
   config.database, config.username, config.password,config
 );
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 db.users = require('./users')(sequelize, Sequelize);
@@ -17,15 +17,7 @@ db.networking_board = require('./networking_board')(sequelize, Sequelize);
 db.networking_files = require('./networking_files')(sequelize, Sequelize);
 db.cal_events = require('./cal_events')(sequelize, Sequelize);
 db.proposal = require('./proposal')(sequelize, Sequelize);
-/*
-db.market_board.hasMany(db.market_files,{
-  foreignKey: 'boardid'}
-);
-
-db.market_files.belongsTo(db.market_board,{
-  foreignKey: 'boardid'}
-);
-*/
+db.comment = require('./comment')(sequelize, Sequelize);
 
 module.exports = db;
 
