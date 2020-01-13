@@ -25,8 +25,6 @@ const TitleTextArea = styled(Input.TextArea)`
 
 /* React Component */
 const EditTitle = ({title, storeTitleData}) => {
-    console.log(title);
-    
     return (
         <TitleTextArea
             defaultValue={title}

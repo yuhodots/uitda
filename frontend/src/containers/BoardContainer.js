@@ -90,8 +90,6 @@ class BoardContainer extends Component {
             headerOn,
         } = this.props;
 
-        console.log(boardName)
-
         return (
             <div>
                 <LoadingBar isLoading={isLoading} />

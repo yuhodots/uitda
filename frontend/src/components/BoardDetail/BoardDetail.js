@@ -86,7 +86,7 @@ class BoardDetail extends Component {
 
         } = this.props.post;
 
-        let isPhoto = filelist.length;  // filelist에 원소가 하나라도 있으면 true
+        let isPhoto = filelist;     // filelist에 원소가 하나라도 있으면 true
 
         const commentList = [
             {

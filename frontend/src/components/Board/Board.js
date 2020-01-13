@@ -3,12 +3,49 @@
 // 상위 컴포넌트: BoardContainer
 
 import React, { Component } from "react";
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import './Board.css';
 import PostCard from "./PostCard";
+import { colors } from '../../styles/variables'
 
+
+/* Styled Components */
+const BoardTemplate = styled.div`
+    width: 100%;
+    min-height: ${props => {
+        return `${props.minHeight}px`
+    }};
+    padding: 0.875rem;
+    padding-top: 5.375rem;
+    background-color: ${colors.gray_bg};
+    
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-content: flex-start;
+`;
+
+/* 검색 시, 검색어를 안내하는 테그를 담는 박스 */
+const SearchInfoBox = styled.div`
+    width: 100%;
+    padding: 2rem;
+`;
+
+
+/* React Compoent */
 class Board extends Component {
+
+    state = {}
+
+    componentDidMount() {
+        const innerHeight = window.innerHeight;
+
+        this.setState({
+            innerHeight
+        })
+    }
 
     _makeStandardList = (postlist) => {
         // Postlist의 Post 개수를 3의 배수에 맞도록
@@ -74,19 +111,24 @@ class Board extends Component {
     }
 
     render() {
+
+        const { innerHeight } = this.state;
+
+        const { search } = this.props;
+
         const postlist = this._makeStandardList(this.props.postlist);
 
         return (
-            <div className="BoardTemplate">
+            <BoardTemplate minHeight={innerHeight} >
                 {
-                    this.props.search ?
-                    <div className='SearchInfoBox'>
-                        <h2>{this.props.search} 검색</h2>
-                    </div> :
+                    search ?
+                    <SearchInfoBox>
+                        <h2>{search} 검색</h2>
+                    </SearchInfoBox> :
                     ''
                 }
                 {this._renderPostList(postlist)}
-            </div>
+            </BoardTemplate>
         )
     }
 }
