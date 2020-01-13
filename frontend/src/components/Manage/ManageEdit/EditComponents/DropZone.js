@@ -7,6 +7,8 @@ import { Upload, Icon, Modal } from 'antd';
 
 import { colors } from '../../../../styles/variables'
 
+import './DropZone.css'
+
 /* Upload 중 DropZone인 Dragger 사용 */
 const { Dragger } = Upload;
 
@@ -23,9 +25,8 @@ const getBase64 = file => {
 /* Styled Components */
 /* 전체 영역 */
 const Container = styled.div`
-    height: 27rem;
     margin-bottom: 3rem;
-    padding: 0 2rem;
+    padding: 2rem;
 
     border: 2px dashed ${colors.gray_line};
     border-radius: 12px;
@@ -37,7 +38,7 @@ const Container = styled.div`
 
 /* 드레그 영역 */
 const DropArea = styled(Dragger)`
-    margin: 2rem auto 1rem auto;
+    margin: 1rem auto;
 
     height: 15rem !important;
     width: 40rem !important;
@@ -107,14 +108,14 @@ class DropZone extends Component {
           };
 
         return (
-            <Container>
+            <Container className='photo-list-box' >
                 <DropArea {...props}>
                 <p className="ant-upload-drag-icon">
                     <Icon type="inbox" />
                 </p>
                 <p className="ant-upload-text">클릭 또는 드래그를 통해 사진을 업로드하세요</p>
                 <p className="ant-upload-hint">
-                    문구 추천 좀...
+                    업로드한 사진들은 아래에 나타납니다.
                 </p>
                 </DropArea>
                 <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>

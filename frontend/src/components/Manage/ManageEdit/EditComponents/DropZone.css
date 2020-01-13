@@ -1,0 +1,9 @@
+.photo-list-box .ant-upload-list {
+    margin: 0 auto;
+    max-width: 40rem;
+    overflow: scroll;
+
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+}
