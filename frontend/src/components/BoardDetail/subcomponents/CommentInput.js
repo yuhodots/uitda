@@ -106,7 +106,9 @@ class CommentInput extends Component {
         const {
             board,
             post_id,
-            createComment
+            createComment,
+
+            parent_comment,     // subComment의 경우에만 존재
         } = this.props;
 
         const { content } = this.state;
@@ -117,7 +119,13 @@ class CommentInput extends Component {
             return
         }
 
-        createComment(content, board, post_id);
+        /* Create Comment Action */
+        if (parent_comment) {
+            createComment(content, board, post_id, parent_comment);
+        }
+        else {
+            createComment(content, board, post_id);
+        }
 
         /* 현재는 새로고침으로 요청 보냄.
            나중에는 socket.io를 이용해서 자동으로 업데이트되도록 하기 */
@@ -160,10 +168,12 @@ CommentInput.propTypes = {
     board: PropTypes.string.isRequired,
     post_id: PropTypes.number.isRequired,
     createComment: PropTypes.func.isRequired,
+    parent_comment: PropTypes.number,
 }
 
 CommentInput.defaultProps = {
-    isReplySee: true                            // SubComment가 아닌 경우 isReplySee가 없고 항상 display되기 때문에 true값을 준다.
+    isReplySee: true,                           // SubComment가 아닌 경우 isReplySee가 없고 항상 display되기 때문에 true값을 준다.
+    parent_comment: 0,
 }
 
 

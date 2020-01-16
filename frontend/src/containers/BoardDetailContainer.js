@@ -11,6 +11,7 @@ import {
     initiateDetailPage,
     getBoardDetailRequest,
     createComment,
+    deleteComment,
 } from '../store/actions/board';
 import { headerOff } from "../store/actions/structure"
 import { topicSelect } from "../store/actions/topic";
@@ -44,6 +45,7 @@ class BoardDetailContainer extends Component {
             commentList,
             
             createComment,
+            deleteComment,
         } = this.props;
 
         /* 게시판 정보 */
@@ -57,6 +59,7 @@ class BoardDetailContainer extends Component {
                 commentList={commentList} 
 
                 createComment={createComment}
+                deleteComment={deleteComment}
             /> :
             <NotFound /> // default는 loading 페이지, get요청이 실패한 경우에는 페이즐 찾을 수 없습니다. url링크를 확인해주세요.
         )
@@ -89,7 +92,8 @@ const mapDispatchToProps = (dispatch) => {
         },
         createComment: (description, type_board, board_id, parent_comment) => {         // 댓글을 생성하는 메서드
             dispatch(createComment(description, type_board, board_id, parent_comment))
-        }
+        },
+        deleteComment: (comment_id) => {dispatch(deleteComment(comment_id))},           // 댓글 삭제 메서드
     }
 }
 

@@ -56,28 +56,35 @@ class CommentBox extends Component {
     // map을 이용해 array 데이터를 render하는 함수
     _renderComments = (commentList) => {
 
-        /* CommentInput에 전해줄 속성 */
         const { 
+            deleteComment,
+
+            /* CommentInput에 전해줄 속성 */
             board,
             post_id,
             createComment, 
         } = this.props;
 
-        return commentList.map((comment, idx) => {
+        return commentList.map((comment) => {
             const {
+                id,
                 user,
                 description,
                 created,
                 subCommentList
             } = comment;
 
+            // console.log(comment)
+
             return (
                 <CommentItem
+                    comment_id={id}
                     user={user}
                     description={description}
                     created={created}
                     subCommentList={subCommentList}
-                    key={idx}
+                    deleteComment={deleteComment}
+                    key={id}
 
                     /* CommentInput에 전해줄 속성 */
                     board={board}
@@ -141,6 +148,7 @@ CommentBox.propTypes = {
     commentList: PropTypes.array.isRequired,        // 댓글 데이터를 가지고 있는 array
 
     createComment: PropTypes.func.isRequired,       // 댓글 생성 메서드
+    deleteComment: PropTypes.func.isRequired,       // 댓글 삭제 메서드
 }
 
 // CommentBox.defaultProps = {

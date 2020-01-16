@@ -93,6 +93,7 @@ class BoardDetail extends Component {
             commentList,        // comment data
 
             createComment,      // 댓글 생성 메서드
+            deleteComment,      // 댓글 삭제 메서드
         } = this.props;
 
         // console.log(commentList);
@@ -114,6 +115,7 @@ class BoardDetail extends Component {
                         post_id={id}
                         commentList={commentList} 
                         createComment={createComment}
+                        deleteComment={deleteComment}
                     />
                 </ContainerDiv>
             </BackgroundDiv>
@@ -127,6 +129,7 @@ BoardDetail.propTypes = {
     commentList: PropTypes.array,               // 댓글 데이터
 
     createComment: PropTypes.func.isRequired,   // 댓글 생성 메서드
+    deleteComment: PropTypes.func.isRequired,   // 댓글 삭제 메서드
 }
 
 BoardDetail.defaultProps = {

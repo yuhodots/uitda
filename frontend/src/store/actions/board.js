@@ -150,8 +150,8 @@ export function createComment (description, type_board, board_id, parent_comment
 
         const POSTurl = `/api/comment/create`
         const is_re_comment = parent_comment ? true : false;
-        const requestBody = { description, type_board, board_id, is_re_comment }
-        if (parent_comment) { requestBody.append('parent_comment', parent_comment); }
+        let requestBody = { description, type_board, board_id, is_re_comment }
+        if (parent_comment) { requestBody = {...requestBody, parent_comment} }
         const config = {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }
@@ -172,3 +172,14 @@ export function createComment (description, type_board, board_id, parent_comment
 // export function createCommentFalse () {
 
 // }
+
+export function deleteComment (comment_id) {
+    return (dispatch) => {
+        
+        console.log(comment_id)
+
+        const POSTurl = `/api/comment/delete/${comment_id}`;
+
+        return axios.post(POSTurl)
+    }
+}
