@@ -103,7 +103,7 @@ const Price = styled.h3`
 
 const HeaderBox = ({title, user, created, condition, price}) => {
 
-    let doesUserHavePhoto = user.photo;
+    let doesUserHavePhoto = user.profile_picture;
 
     return (
         <HeaderArea>

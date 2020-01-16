@@ -179,6 +179,9 @@ class PhotoBox extends Component {
         const { photoOrder } = this.state;
 
         return (
+            /* 사진이 있는 글인지, 아닌지 */
+            filelist[0] ?
+
             <BoxArea>
                 <BoxContainer>
                     <PhotoAndButtonDiv>
@@ -194,7 +197,9 @@ class PhotoBox extends Component {
                         {this._renderSmallPhoto(filelist)}
                     </SmallPhotoList>
                 </BoxContainer>
-            </BoxArea>
+            </BoxArea> :
+
+            <div />
         )
     }
 }
