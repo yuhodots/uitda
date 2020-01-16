@@ -1,4 +1,5 @@
 import axios from 'axios';
+import qs from 'qs';
 
 import { 
     BOARD_INIT,
@@ -7,6 +8,7 @@ import {
     BOARD_SCROLL_GET,
     BOARD_SCROLL_GET_SUCCESS,
     BOARD_SCROLL_GET_FAILURE,
+    BOARD_DETAIL_INIT,
     BOARD_DETAIL_GET_SUCCESS,
     BOARD_DETAIL_GET_FAILURE
 } from "./ActionTypes";
@@ -98,6 +100,13 @@ export function getBoardByScrollFailure(err) {
 //////////////////////////////////////////////////////
 // Board Detail Actions //
 
+export function initiateDetailPage() {
+    return {
+        type: BOARD_DETAIL_INIT
+    }
+}
+
+
 export function getBoardDetailRequest(boardName, id) {
     return (dispatch) => {
         // GET 요청을 보낼 url
@@ -110,7 +119,7 @@ export function getBoardDetailRequest(boardName, id) {
         // 성공하면, post 데이터를 가져와서 성공 액션을 dispatch 하고,
         .then(res => res.data)
         .then(data => {
-            dispatch(getBoardDetailSuccess(data.post))
+            dispatch(getBoardDetailSuccess(data.post, data.commentlist))
         })
         
         // 실패하면, 실패 액션을 dispatch 한다.
@@ -120,10 +129,11 @@ export function getBoardDetailRequest(boardName, id) {
     }
 }
 
-export function getBoardDetailSuccess (post) {
+export function getBoardDetailSuccess (post, commentlist) {
     return {
         type: BOARD_DETAIL_GET_SUCCESS,
-        post
+        post,
+        commentlist
     }
 }
 
@@ -133,3 +143,32 @@ export function getBoardDetailFailure (err) {
         err
     }
 }
+
+/* Comment Actions */
+export function createComment (description, type_board, board_id, parent_comment) {
+    return (dispatch) => {
+
+        const POSTurl = `/api/comment/create`
+        const is_re_comment = parent_comment ? true : false;
+        const requestBody = { description, type_board, board_id, is_re_comment }
+        if (parent_comment) { requestBody.append('parent_comment', parent_comment); }
+        const config = {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }
+
+        return axios.post(POSTurl, qs.stringify(requestBody), config)
+        
+        // .then(res => {dispatch(createCommentSuccess())})
+        // .catch(err => {dispatch(createCommentFalse(err))})
+    }
+}
+
+// export function createCommentSuccess () {
+//     return {
+//         type: 'hi'
+//     }
+// }
+
+// export function createCommentFalse () {
+
+// }

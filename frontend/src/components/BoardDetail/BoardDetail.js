@@ -83,45 +83,19 @@ class BoardDetail extends Component {
             price,              // Market Post만이 가지고 있는 가격 정보
 
             /* CommentBox에 전해줄 속성 */
-
+            id,                 // 게시글 정보
         } = this.props.post;
 
-        let isPhoto = filelist;     // filelist에 원소가 하나라도 있으면 true
+        let isPhoto = filelist[0];     // filelist에 원소가 하나라도 있으면 true
 
-        const commentList = [
-            {
-                username:'정유호',
-                content:'안 사요.',
-                created:'10시간 전',
-                subCommentList:[
-                    {username: '박수근', content:'너무해 ㅠㅠ', created:'21분 전'},
-                    {username: '박수근', content:'ㅠㅠ', created:'21분 전'},
-                    {username: '박수근', content:'ㅠㅠ', created:'20분 전'},
-                    {username: '정유호', content:'으...', created:'방금 전'}
-                ]
-            },
-            {
-                username:'황희원',
-                content:'감귤 사세요 !!!!',
-                created:'6시간 전',
-                subCommentList:[
-                    {username: '정유호', content:'한라봉도 파나요 ??', created:'3시간 전'}
-                ]
-            },
-            {
-                username:'박수근',
-                content:'기이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이인그으으으으으으으으으으으으으으으으으으으으으으으으으으을',
-                created:'22분 전',
-                subCommentList:[
-                    {username: '박수근', content:'기이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이이인답그으으으으으으으으으으으으으으으으으으으으으으으으으으을', created:'20분 전'}
-                ]
-            },
-            {
-                username:'박수근',
-                content:'으아아아ㅏㅏ',
-                created:'3분 전'
-            }
-        ]
+        const {
+            board,              // 게시판 정보 
+            commentList,        // comment data
+
+            createComment,      // 댓글 생성 메서드
+        } = this.props;
+
+        // console.log(commentList);
 
         return (
             <BackgroundDiv>
@@ -135,7 +109,12 @@ class BoardDetail extends Component {
                     />
                     { isPhoto ? <PhotoBox filelist={filelist} /> : '' }
                     <DescriptionBox description={description} />
-                    <CommentBox commentList={commentList} />
+                    <CommentBox 
+                        board={board}
+                        post_id={id}
+                        commentList={commentList} 
+                        createComment={createComment}
+                    />
                 </ContainerDiv>
             </BackgroundDiv>
         )
@@ -143,7 +122,15 @@ class BoardDetail extends Component {
 }
 
 BoardDetail.propTypes = {
-    post: PropTypes.object.isRequired
+    board: PropTypes.string.isRequired,         // 게시판 정보
+    post: PropTypes.object.isRequired,          // 포스팅 데이터
+    commentList: PropTypes.array,               // 댓글 데이터
+
+    createComment: PropTypes.func.isRequired,   // 댓글 생성 메서드
+}
+
+BoardDetail.defaultProps = {
+    commentList: [],
 }
 
 export default BoardDetail;

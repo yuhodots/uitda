@@ -146,8 +146,8 @@ class CommentItem extends Component {
     _renderSubComment = (subCommentList) => {
         return subCommentList.map((subComment, idx) => {
             const {
-                username,
-                content,
+                user,
+                description,
                 created,
             } = subComment;
 
@@ -157,7 +157,7 @@ class CommentItem extends Component {
                 <SubCommentLeaf isDisplay={isReplySee} key={idx} >
                     <CommentItemPhoto />
                     <TextZoneForSub>
-                        <CommentItemText><b>{username}</b> {content}</CommentItemText>
+                        <CommentItemText><b>{user.username}</b> {description}</CommentItemText>
                         <CreatedDivForSub>
                             <HiddenDiv>{created}</HiddenDiv> 
                             <DivForPosition>{created}</DivForPosition>
@@ -182,10 +182,14 @@ class CommentItem extends Component {
     render() {
 
         const {
-            username,
-            content,
+            user,
+            description,
             created,
-            subCommentList
+            subCommentList,
+
+            board,
+            post_id,
+            createComment,
         } = this.props;
 
         const { isReplySee } = this.state;
@@ -199,7 +203,7 @@ class CommentItem extends Component {
                     <PhotoTextItem>
                         <CommentItemPhoto />
                         <TextZone>
-                            <CommentItemText><b>{username}</b> {content}</CommentItemText>
+                            <CommentItemText><b>{user.username}</b> {description}</CommentItemText>
                         </TextZone>
                     </PhotoTextItem>
                     <AdditionalFuncDiv>
@@ -232,6 +236,10 @@ class CommentItem extends Component {
                 <CommentInput
                     isSubComment={true}
                     isReplySee={isReplySee}
+
+                    board={board}
+                    post_id={post_id}
+                    createComment={createComment}
                 />
 
             </CommentStem>
@@ -243,10 +251,15 @@ class CommentItem extends Component {
 /* propTypes, defaultProps */
 
 CommentItem.propTypes = {
-    username: PropTypes.string.isRequired,      // 작성자 정보
-    content: PropTypes.string.isRequired,       // 댓글 데이터
+    user: PropTypes.object.isRequired,          // 작성자 정보
+    description: PropTypes.string.isRequired,   // 댓글 데이터
     created: PropTypes.string.isRequired,       // 작성일 정보
     subCommentList: PropTypes.array,            // 답글들의 데이터 array
+
+    /* CommentInput에 전해줄 속성 */
+    board: PropTypes.string.isRequired,         // 게시판 정보
+    post_id: PropTypes.number.isRequired,       // 포스팅 id          
+    createComment: PropTypes.func.isRequired,   // 댓글 생성 메서드
 }
 
 CommentItem.defaultProps = {

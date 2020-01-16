@@ -55,21 +55,34 @@ class CommentBox extends Component {
 
     // map을 이용해 array 데이터를 render하는 함수
     _renderComments = (commentList) => {
+
+        /* CommentInput에 전해줄 속성 */
+        const { 
+            board,
+            post_id,
+            createComment, 
+        } = this.props;
+
         return commentList.map((comment, idx) => {
             const {
-                username,
-                content,
+                user,
+                description,
                 created,
                 subCommentList
             } = comment;
 
             return (
                 <CommentItem
-                    username={username}
-                    content={content}
+                    user={user}
+                    description={description}
                     created={created}
                     subCommentList={subCommentList}
                     key={idx}
+
+                    /* CommentInput에 전해줄 속성 */
+                    board={board}
+                    post_id={post_id}
+                    createComment={createComment}
                 />
             )
         })
@@ -77,8 +90,16 @@ class CommentBox extends Component {
 
     render() {
 
-        const { commentList } = this.props;
+        const { 
+            board,
+            post_id,
+            commentList,
+
+            createComment, 
+        } = this.props;
         const numOfComments = commentList.length;
+
+        console.log(commentList);
 
         return (
             <CommentArea>
@@ -90,7 +111,11 @@ class CommentBox extends Component {
 
                 {/* 댓글 작성 란 */}
                 <CommentInput 
-                    isSubComment={false}
+                    isSubComment={false} 
+                    
+                    board={board}
+                    post_id={post_id}
+                    createComment={createComment}
                 />
 
                 {/* 댓글 입력란 밑의 영역 및 흰색 선 */}
@@ -111,11 +136,15 @@ class CommentBox extends Component {
 
 
 CommentBox.propTypes = {
-    commentList: PropTypes.array,       // 댓글 데이터를 가지고 있는 array
+    board: PropTypes.string.isRequired,             // 게시판 정보
+    post_id: PropTypes.number.isRequired,           // 포스팅 id          
+    commentList: PropTypes.array.isRequired,        // 댓글 데이터를 가지고 있는 array
+
+    createComment: PropTypes.func.isRequired,       // 댓글 생성 메서드
 }
 
-CommentBox.defaultProps = {
-    commentList: []
-}
+// CommentBox.defaultProps = {
+//     commentList: []
+// }
 
 export default CommentBox;

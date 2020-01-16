@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import TextareaAutosize from 'react-textarea-autosize';
+import { message } from 'antd';
 
 import SendIcon from './resources/SendIcon_Blue.png';
 import { CommentItemPhoto } from "./CommentItem";
@@ -88,11 +89,39 @@ const SendButton = styled.button`
 class CommentInput extends Component {
 
     // state에 text 내용 저장하기
+    state = { content: '' }
+
+    /* 입력 시, 데이터를 state에 저장하는 함수 */
+    _handleChange = (e) => {
+        this.setState({
+            content: e.target.value
+        })
+
+        console.log(this.state.content);
+    }
 
     /* 버튼을 누르면 POST 요청을 통해 DB 서버에 전송하고,
        Post Detail 페이지에 대한 GET 요청을 다시 한다. or 리다이렉션 */
-    _handleClick() {
+    _handleCreate = () => {
+        const {
+            board,
+            post_id,
+            createComment
+        } = this.props;
 
+        const { content } = this.state;
+
+        /* 내용이 없으면 경고창 띄우고 종료 */
+        if(!content) { 
+            message.warning('댓글 내용을 입력하세요')
+            return
+        }
+
+        createComment(content, board, post_id);
+
+        /* 현재는 새로고침으로 요청 보냄.
+           나중에는 socket.io를 이용해서 자동으로 업데이트되도록 하기 */
+        window.location.reload();
     }
 
     render() {
@@ -110,11 +139,11 @@ class CommentInput extends Component {
                 <CommentItemPhoto />
                 <CommentInputTextArea>
                     <TextAreaDiv>
-                        <TextArea />
+                        <TextArea onChange={this._handleChange} />
                     </TextAreaDiv>
                     <SendButton 
                         ImgURL={SendIcon} 
-                        onClick={this._handleClick}
+                        onClick={this._handleCreate}
                     />                   
                 </CommentInputTextArea>
             </CommentInputArea>
@@ -126,6 +155,11 @@ class CommentInput extends Component {
 CommentInput.propTypes = {
     isSubComment: PropTypes.bool.isRequired,    // SubComment인지. 답글이라면 margin-left 값이 추가된다.
     isReplySee: PropTypes.bool,                 // SubComment의 경우 답글 보기의 여부에 따라 CommentInput가 display none이 결정된다.
+
+    /* 댓글 생성 액션 관련 props */
+    board: PropTypes.string.isRequired,
+    post_id: PropTypes.number.isRequired,
+    createComment: PropTypes.func.isRequired,
 }
 
 CommentInput.defaultProps = {

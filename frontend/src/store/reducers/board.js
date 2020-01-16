@@ -6,7 +6,8 @@ import {
     BOARD_SCROLL_GET_SUCCESS,
     BOARD_SCROLL_GET_FAILURE,
     BOARD_DETAIL_GET_SUCCESS,
-    BOARD_DETAIL_GET_FAILURE
+    BOARD_DETAIL_GET_FAILURE,
+    BOARD_DETAIL_INIT
 } from "../actions/ActionTypes";
 
 
@@ -25,6 +26,7 @@ const InitialState = {
 
     /* Board detail state */
     post: {},               // 포스팅에 대한 정보를 담은 객체
+    commentList: [],        // 포스팅에 대한 comments 데이터
 }
 
 export default function board (state = InitialState, action) {
@@ -81,13 +83,23 @@ export default function board (state = InitialState, action) {
                 err: action.err
             }
 
+        /* Detail 페이지 초기화 액션 */
+        case BOARD_DETAIL_INIT:
+            return {
+                ...state,
+                isGetSuccess: false,
+                post: {},
+                commentList: []
+            }
 
         //  Board Detail GET 액션
         case BOARD_DETAIL_GET_SUCCESS:
+            const newCommentList = convertCommentList(action.commentlist)
             return {
                 ...state,
                 isGetSuccess: true,
-                post: action.post
+                post: action.post,
+                commentList: newCommentList
             }
 
         case BOARD_DETAIL_GET_FAILURE:
@@ -100,4 +112,27 @@ export default function board (state = InitialState, action) {
         default:
             return state
     }
+}
+
+const convertCommentList = (commentList) => {
+
+    /* Initialization. subCommentList 프로퍼티 생성 */
+    commentList.forEach( comment => { comment.subCommentList = [] });
+
+    /* 1. subComment를 찾아서
+       2. 해당 subComment의 부모 comment를 찾고,
+       3. 부모 comment에 subComment를 추가 한 뒤,
+       4. subComment를 원래의 commentList에서 제거한다. */
+    for ( let i = 0 ; i < commentList.length ; i++) {
+        if (commentList[i].is_re_comment) {
+            let subComment = commentList[i];                                                        // 1
+            let parent = commentList.find(comment => comment.id === subComment.parent_comment);     // 2
+            parent.subCommentList = [...parent.subCommentList, subComment];                         // 3
+
+            commentList.splice(i, 1);                                                               // 4
+            i -= 1;
+        }
+    }
+
+    return commentList;
 }
