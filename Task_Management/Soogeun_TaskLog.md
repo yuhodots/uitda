@@ -62,6 +62,15 @@
 
 
 
+### 1.22 (수)
+
+* 댓글 삭제 modal을 confirm 형태로 바꿈으로써 state의 visible property를 없애고, 관련 함수를 줄이고
+  popover의 visible을 추가하면서 modal의 visible 값이 제대로 변경되지 않던 오류를 해결 
+
+
+
+
+
 
 
 
@@ -105,7 +114,18 @@
 #### Login FrontEnd
 
 * Login 페이지 디자인
+
 * Outlook 로그아웃 한 상태로, 데스크탑으로 Login 기능 확인
+
+* 로그인 시 아래의 에러가 뜨면서 로그인이 안됨
+
+  ```
+  Error: Failed to lookup view "error" in views directory "/Users/soogeun/Documents/GitHub/uitda/BackEnd/views"
+  ```
+
+* 로그인 완료 후 로그인 페이지로 오기 이전에 페이지로 redirect하기
+
+
 
 
 
