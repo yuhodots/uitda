@@ -3,9 +3,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Icon, Tooltip, Popover, Modal } from 'antd';
 
 import CommentInput from "./CommentInput";
+import CommentUD from "./Comment_UD";
 import { colors } from "../../../styles/variables";
 
 
@@ -70,22 +70,6 @@ const PhotoTextItem = styled.div`
         display: inline-block;
     `;
 
-    /* 삭제 및 수정하기 버튼 기능을 열 수 있는 아이콘 */
-    const MoreIcon = styled(Icon)`
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    `
-
-        /* Popover Content의 Text Style */
-        const PopoverContentText = styled.p`
-            margin: 0.25rem 0;
-            word-spacing: 0.5rem;
-            
-            cursor: pointer;
-        `;
-
-
 /* 댓글달기, 시간정보를 담은 영역 */
 const AdditionalFuncDiv = styled.div`
     margin: 0;
@@ -121,36 +105,35 @@ const SubCommentLeaf = styled.div`
     flex-flow: row nowrap;
 `;
 
-/* SubComment의 경우 TextZone에 시간정보를 담은 애도 있기 때문에
-   CommentItemText + CreatedDivForSub 를 가진 flex box로 만들어야 한다. */
-const TextZoneForSub = styled(TextZone)`
-    display: flex;
-    flex-flow: row nowrap;
-`;
+    /* SubComment의 경우 TextZone에 시간정보를 담은 애도 있기 때문에
+    CommentItemText + CreatedDivForSub 를 가진 flex box로 만들어야 한다. */
+    const TextZoneForSub = styled(TextZone)`
+        display: flex;
+        flex-flow: row nowrap;
+    `;
 
-/* Sub Leaf의 생성시간을 담는 Div 영역 */
-const CreatedDivForSub = styled.div`
-    position: relative;
-    height: 100%;
-    line-height: 1.33em;
-    font-size: 0.75rem;
-    color: ${colors.gray_fontColor};
-    margin-left: 0.5rem;
-    white-space: nowrap;            /* 줄바꿈을 없애는 속성 !! */
+    /* Sub Leaf의 생성시간을 담는 Div 영역 */
+    const CreatedDivForSub = styled.div`
+        position: relative;
+        height: 100%;
+        line-height: 1.33em;
+        font-size: 0.75rem;
+        color: ${colors.gray_fontColor};
+        white-space: nowrap;            /* 줄바꿈을 없애는 속성 !! */
 
-    flex: 1 auto;
-`;
+        flex: 1 auto;
+    `;
 
-/* position: absolute 태그를 대신에 크기를 차지하되, 보이지는 않는 div 태그 */
-const HiddenDiv = styled.div`
-    visibility: hidden;             /* 공간은 차지하되 보이지는 않게 함 !! */
-`;
+    /* position: absolute 태그를 대신에 크기를 차지하되, 보이지는 않는 div 태그 */
+    const HiddenDiv = styled.div`
+        visibility: hidden;             /* 공간은 차지하되 보이지는 않게 함 !! */
+    `;
 
-/* created를 나타내는 영역이 전체 위치를 기준으로 아래에 위치하도록 하는 div 태그 */
-const DivForPosition = styled.div`
-    position: absolute;
-    bottom: 0.5em;
-`;
+    /* created를 나타내는 영역이 전체 위치를 기준으로 아래에 위치하도록 하는 div 태그 */
+    const DivForPosition = styled.div`
+        position: absolute;
+        bottom: 0.5em;
+    `;
 
 //////////////////////////////////////
 
@@ -162,6 +145,7 @@ class CommentItem extends Component {
     state = {
         isReplySee: false,              // 답글 보기 True / False
         deleteModalVisible: false,      // 댓글 삭제 Modal의 visible
+        isUDVisible: false,             // 수정 삭제 버튼 visible
     }
 
     /* subCommentList를 map함수를 통해 render하는 함수 */
@@ -246,6 +230,21 @@ class CommentItem extends Component {
         window.location.reload();
     }
 
+    /* */
+    _handleMouseEnter = () => {
+        this.setState({
+            ...this.state,
+            isUDVisible: true
+        })
+    }
+
+    _handleMouseLeave = () => {
+        this.setState({
+            ...this.state,
+            isUDVisible: false
+        })
+    }
+    ///////////////////
 
     render() {
 
@@ -255,58 +254,37 @@ class CommentItem extends Component {
             description,
             created,
             subCommentList,
+            deleteComment,
 
             board,
             post_id,
             createComment,
         } = this.props;
 
-        const { isReplySee } = this.state;
+        const { isReplySee, isUDVisible } = this.state;
 
         let NumOfSubComment = subCommentList.length;
-
-        /* Popover Content */
-        const PopoverContent = (
-            <div>
-                <PopoverContentText><Icon type='edit' /> 수정하기</PopoverContentText>                
-                <PopoverContentText onClick={this._showDeleteModal} ><Icon type='delete' /> 삭제하기</PopoverContentText>
-                
-                {/* 삭제 버튼 클릭 시 뜨는 Modal 화면 */}
-                <Modal
-                    title="삭제"
-                    visible={this.state.deleteModalVisible}
-                    onOk={this._handleDelete}
-                    onCancel={this._handleCancle}
-                >
-                    {
-                        /* 답글이 있는 지 확인 */
-                        subCommentList[0] ?
-                        '이 댓글을 삭제하면 모든 답글도 삭제됩니다.' :
-                        '이 댓글을 삭제하시겠습니까?'
-                    }
-                </Modal>
-            </div>
-        )
 
         return (
             <CommentStem isReplySee={isReplySee} >
                 {/* 기본 댓글 */}
                 <CommentLeaf>
-                    <PhotoTextItem>
+                    <PhotoTextItem
+                        onMouseEnter={this._handleMouseEnter}
+                        onMouseLeave={this._handleMouseLeave}
+                    >
                         <CommentItemPhoto />
                         <TextZone>
                             <CommentItemText><b>{user.username}</b> {description}</CommentItemText>
-                            <Tooltip title='수정 또는 삭제' mouseEnterDelay={0} mouseLeaveDelay={0}>
-                                <Popover
-                                    trigger="click"
-                                    content={PopoverContent}
-                                    placement='bottom'
-                                >                                    
-                                    <MoreIcon type="more" rotate='90' />
-                                </Popover>
-                            </Tooltip>
+                            <CommentUD 
+                                comment_id={comment_id} 
+                                subCommentList={subCommentList} 
+                                deleteComment={deleteComment}
+                                isVisible={isUDVisible}
+                            />
                         </TextZone>
                     </PhotoTextItem>
+
                     <AdditionalFuncDiv>
                         <span>{created}</span>
                         <ReplySeeButton onClick={this._handleReplySee} >

@@ -86,6 +86,9 @@ class BoardDetail extends Component {
             id,                 // 게시글 정보
         } = this.props.post;
 
+        console.log(this.props.post);
+        // console.log(filelist);
+
         let isPhoto = filelist[0];     // filelist에 원소가 하나라도 있으면 true
 
         const {
