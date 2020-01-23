@@ -90,7 +90,9 @@ class MoreButton extends Component {
 
         const {
             subCommentList,
-            isVisible
+            isVisible,
+
+            setUpdateMode
         } = this.props;
 
         const {
@@ -104,7 +106,11 @@ class MoreButton extends Component {
         /* Popover Content */
         const PopoverContent = (
             <div>
-                <PopoverContentText><Icon type='edit' /> 수정하기</PopoverContentText>                
+                <PopoverContentText
+                    onClick={setUpdateMode}
+                >
+                    <Icon type='edit' /> 수정하기
+                </PopoverContentText>                
                 <PopoverContentText 
                     onClick={() => this._showDeleteConfirm(deleteMessage)} 
                 >
@@ -141,6 +147,8 @@ MoreButton.propTypes = {
     subCommentList: PropTypes.array,            // 답글들의 데이터 array
     deleteComment: PropTypes.func.isRequired,   // 댓글 삭제 메서드
     isVisible: PropTypes.bool,                  // 보이기 안 보이기
+
+    setUpdateMode: PropTypes.func.isRequired,   // 수정 모드로 변경하는 메서드
 }
 
 MoreButton.defaultProps = {

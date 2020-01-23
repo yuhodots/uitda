@@ -58,6 +58,7 @@ class CommentBox extends Component {
         const { 
             curUser,
 
+            updateComment,
             deleteComment,
 
             /* CommentInput에 전해줄 속성 */
@@ -86,6 +87,7 @@ class CommentBox extends Component {
                     description={description}
                     created={created}
                     subCommentList={subCommentList}
+                    updateComment={updateComment}
                     deleteComment={deleteComment}
                     key={id}
 
@@ -150,7 +152,7 @@ class CommentBox extends Component {
 
 
 CommentBox.propTypes = {
-    curUser: PropTypes.oneOfType([                 // 유저 정보
+    curUser: PropTypes.oneOfType([                  // 유저 정보
         PropTypes.number,
         PropTypes.object
     ]).isRequired,
@@ -160,6 +162,7 @@ CommentBox.propTypes = {
     commentList: PropTypes.array.isRequired,        // 댓글 데이터를 가지고 있는 array
 
     createComment: PropTypes.func.isRequired,       // 댓글 생성 메서드
+    updateComment: PropTypes.func.isRequired,       // 댓글 수정 메서드
     deleteComment: PropTypes.func.isRequired,       // 댓글 삭제 메서드
 }
 

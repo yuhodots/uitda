@@ -145,9 +145,9 @@ export function getBoardDetailFailure (err) {
 }
 
 /* Comment Actions */
+/* Comment Create Action */
 export function createComment (description, type_board, board_id, parent_comment) {
     return (dispatch) => {
-
         const POSTurl = `/api/comment/create`
         const is_re_comment = parent_comment ? true : false;
         let requestBody = { description, type_board, board_id, is_re_comment }
@@ -157,29 +157,26 @@ export function createComment (description, type_board, board_id, parent_comment
         }
 
         return axios.post(POSTurl, qs.stringify(requestBody), config)
-        
-        // .then(res => {dispatch(createCommentSuccess())})
-        // .catch(err => {dispatch(createCommentFalse(err))})
     }
 }
 
-// export function createCommentSuccess () {
-//     return {
-//         type: 'hi'
-//     }
-// }
+/* Comment Update Action */
+export function updateComment (comment_id, description) {
+    return (dispatch) => {
+        const POSTurl = `/api/comment/update/${comment_id}`
+        const requestBody = { description };
+        const config = {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }
 
-// export function createCommentFalse () {
+        return axios.post(POSTurl, qs.stringify(requestBody), config)
+    }
+}
 
-// }
-
+/* Comment Delete Action */
 export function deleteComment (comment_id) {
     return (dispatch) => {
-        
-        console.log(comment_id)
-
         const POSTurl = `/api/comment/delete/${comment_id}`;
-
         return axios.post(POSTurl)
     }
 }

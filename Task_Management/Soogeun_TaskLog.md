@@ -78,6 +78,9 @@
 * 답글에 대한 코드를 subCommentItem 컴포넌트로 뽑아냄 (코드 리팩토링)
 * 답글에도 update / delete UI 뜨도록 함
 * 답글 delete action 완료
+* 댓글 update 액션 생성
+* 댓글 update 액션 적용
+* 댓글 수정하기 클릭 시, 이전 내용이 default 값으로 담기게 하기
 
 
 
@@ -108,11 +111,7 @@
 
   
   
-* UD 컴포넌트 답글에도 나타나도록 디자인
-
-* 답글 삭제 액션 적용
-
-* 수정하기 클릭 시, Comment Input으로 변경
+* 답글에도 수정하기 적용
 
 * 수정 시 (수정 됨) 을 추가하기
 
@@ -221,4 +220,6 @@
 * username 정규표현식을 통해서 이름만 저장되도록 하기
 * user의 profile_picture, pic_location의 차이 ? 의미 ? 묻기
 * market, networking delete 시, 해당 게시글의 댓글도 삭제되도록 backend 처리하기
+* comment model에 수정됨 여부 field 추가
+* comment, board의 시간을 작성 시간 기준으로 할 지, 수정 시간을 기준으로 할 지
 

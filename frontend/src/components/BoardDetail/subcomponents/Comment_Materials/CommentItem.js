@@ -31,7 +31,7 @@ const CommentLeaf = styled.div`
 const PhotoTextItem = styled.div`
    width: 100%;
    margin: 0;
-   margin-bottom: 0.5rem;
+   /* margin-bottom: 0.5rem; */
 
    display: flex;
    flex-direction: row;
@@ -74,16 +74,20 @@ const PhotoTextItem = styled.div`
 /* 댓글달기, 시간정보를 담은 영역 */
 const AdditionalFuncDiv = styled.div`
     margin: 0;
+    margin-top: 0.5rem;
     margin-left: 3.75rem;
    
     height: 1rem;
     line-height: 1.33em;
     font-size: 0.75rem;
     color: ${colors.gray_fontColor};
+
+    display: flex;
+    flex-flow: row nowrap;
 `;
 
     /* 답글보기 버튼 */
-    const ReplySeeButton = styled.button`
+    const TextButton = styled.button`
         margin-left: 2em;
 
         border: none;
@@ -92,6 +96,10 @@ const AdditionalFuncDiv = styled.div`
         background-color: ${colors.gray_bg};
         cursor: pointer;
     `;
+
+    const UpdateInfo = styled.div`
+    `;
+
 
 //////////////////////////////////////
 
@@ -102,6 +110,7 @@ class CommentItem extends Component {
     state = {
         isReplySee: false,              // 답글 보기 True / False
         isUDVisible: false,             // 수정 삭제 버튼 visible
+        isUpdateMode: false,            // 수정 모드 인지
     }
 
     /* subCommentList를 map함수를 통해 render하는 함수 */
@@ -111,7 +120,7 @@ class CommentItem extends Component {
             deleteComment 
         } = this.props;
 
-        console.log(subCommentList)
+        // console.log(subCommentList)
 
         return subCommentList.map((subComment, idx) => {
             const {
@@ -175,6 +184,22 @@ class CommentItem extends Component {
     }
     ///////////////////
 
+    /* 수정 모드로 변경하는 메서드 */
+    _setUpdateMode = () => {
+        this.setState({
+            ...this.state,
+            isUpdateMode: true
+        })
+    }
+
+    /* 수정 모드 취소하는 메서드 */
+    _handleUpdateCancle = () => {
+        this.setState({
+            ...this.state,
+            isUpdateMode: false
+        })
+    }
+
 
     render() {
 
@@ -191,37 +216,56 @@ class CommentItem extends Component {
             board,
             post_id,
             createComment,
+            updateComment,
         } = this.props;
 
-        const { isReplySee, isUDVisible } = this.state;
+        const { isReplySee, isUDVisible, isUpdateMode } = this.state;
 
         let NumOfSubComment = subCommentList.length;
 
         // console.log(typeof(isUDVisible))
 
         return (
-            <CommentStem isReplySee={isReplySee} >
-                {/* 기본 댓글 */}
+            /* Comment Stem: 댓글 + 답글 리스트 전체를 포함하는 줄기 */
+            <CommentStem isReplySee={isReplySee} > 
+                {/* Comment Leaf: 댓글 부분 + 하단의 세부 정보 */}
                 <CommentLeaf>
-                    <PhotoTextItem
-                        onMouseEnter={this._handleMouseEnter}
-                        onMouseLeave={this._handleMouseLeave}
-                    >
-                        <CommentItemPhoto />
-                        <TextZone>
-                            <CommentItemText><b>{user.username}</b> {description}</CommentItemText>
-                            <CommentUD 
-                                comment_id={comment_id} 
-                                subCommentList={subCommentList} 
-                                deleteComment={deleteComment}
-                                isVisible={isUDVisible}
-                            />
-                        </TextZone>
-                    </PhotoTextItem>
+                    {
+                        /* update 모드의 경우 Input 태그를 render하고
+                           일반 모드의 경우 댓글 Photo + Text 컴포넌트를 render함 */
+                        isUpdateMode ?
+                        
+                        <CommentInput
+                            curUser={curUser}
+                            isUpdateMode={isUpdateMode} 
+                            updateComment={updateComment}
+                            comment_id={comment_id}
+                            defaultValue={description}
+                        /> :
 
+                        <PhotoTextItem
+                            onMouseEnter={this._handleMouseEnter}
+                            onMouseLeave={this._handleMouseLeave}
+                        >
+                            <CommentItemPhoto />
+                            <TextZone>
+                                <CommentItemText><b>{user.username}</b> {description}</CommentItemText>
+                                <CommentUD 
+                                    comment_id={comment_id} 
+                                    subCommentList={subCommentList} 
+                                    deleteComment={deleteComment}
+                                    isVisible={isUDVisible}
+
+                                    setUpdateMode={this._setUpdateMode}
+                                />
+                            </TextZone>
+                        </PhotoTextItem>
+                    }
+                    
+                    {/* 작성 시각 + 답글에 대한 정보 + 수정 여부 */}
                     <AdditionalFuncDiv>
                         <span>{created}</span>
-                        <ReplySeeButton onClick={this._handleReplySee} >
+                        <TextButton onClick={this._handleReplySee} >
                             {
                                 /* 답글 보기 상태: '답글 닫기'
                                    답글 보기 아닌 상태: 
@@ -234,7 +278,17 @@ class CommentItem extends Component {
                                     `${NumOfSubComment}개의 답글 보기` :
                                     '답글 달기'
                             }
-                        </ReplySeeButton>
+                        </TextButton>
+
+                        {/* 수정 모드의 경우 취소버튼,
+                            일반 댓글 모드의 겨우 수정 여부 정보 */}
+                        <UpdateInfo>
+                            {
+                                isUpdateMode ?
+                                <TextButton onClick={this._handleUpdateCancle}>취소</TextButton> :
+                                ''
+                            }
+                        </UpdateInfo>
                     </AdditionalFuncDiv>
                 </CommentLeaf>
 
@@ -278,6 +332,7 @@ CommentItem.propTypes = {
     created: PropTypes.string.isRequired,       // 작성일 정보
     subCommentList: PropTypes.array,            // 답글들의 데이터 array
     deleteComment: PropTypes.func.isRequired,   // 댓글 삭제 메서드
+    updateComment: PropTypes.func.isRequired,   // 댓글 수정 메서드
 
     /* CommentInput에 전해줄 속성 */
     board: PropTypes.string.isRequired,         // 게시판 정보

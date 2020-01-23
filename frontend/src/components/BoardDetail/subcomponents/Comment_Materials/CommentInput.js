@@ -97,13 +97,17 @@ class CommentInput extends Component {
             content: e.target.value
         })
 
-        console.log(this.state.content);
+        // console.log(this.state.content);
     }
 
     /* 버튼을 누르면 POST 요청을 통해 DB 서버에 전송하고,
        Post Detail 페이지에 대한 GET 요청을 다시 한다. or 리다이렉션 */
-    _handleCreate = () => {
+    _handleClick = () => {
         const {
+            isUpdateMode,
+            updateComment,
+            comment_id,
+
             curUser,
 
             board,
@@ -115,25 +119,33 @@ class CommentInput extends Component {
 
         const { content } = this.state;
 
-        /* 내용이 없으면 경고창 띄우고 종료 */
-        if(!content) { 
-            message.warning('댓글 내용을 입력하세요')
-            return
-        }
-
         /* 로그인되어 있지 않은 경우, 로그인을 하라는 안내를 하고 종료 */
         if(!curUser) {
             message.warn('로그인을 해주세요')
             return
         }
 
+        /* 내용이 없으면 경고창 띄우고 종료 */
+        if(!content) { 
+            message.warning('댓글 내용을 입력하세요')
+            return
+        }
+
+        /* Update Comment Action */
+        if (isUpdateMode) {
+            updateComment(comment_id, content);
+        }
+
         /* Create Comment Action */
-        if (parent_comment) {
-            createComment(content, board, post_id, parent_comment);
-        }
         else {
-            createComment(content, board, post_id);
+            if (parent_comment) {
+                createComment(content, board, post_id, parent_comment);
+            }
+            else {
+                createComment(content, board, post_id);
+            }
         }
+        
 
         /* 현재는 새로고침으로 요청 보냄.
            나중에는 socket.io를 이용해서 자동으로 업데이트되도록 하기 */
@@ -144,7 +156,9 @@ class CommentInput extends Component {
         
         const { 
             isSubComment,
-            isReplySee 
+            isReplySee,
+
+            defaultValue
         } = this.props;
 
         return (
@@ -155,11 +169,12 @@ class CommentInput extends Component {
                 <CommentItemPhoto />
                 <CommentInputTextArea>
                     <TextAreaDiv>
-                        <TextArea onChange={this._handleChange} />
+                        {/* <TextArea onChange={this._handleChange} /> */}
+                        <TextArea onChange={this._handleChange} defaultValue={defaultValue} />
                     </TextAreaDiv>
                     <SendButton 
                         ImgURL={SendIcon} 
-                        onClick={this._handleCreate}
+                        onClick={this._handleClick}
                     />                   
                 </CommentInputTextArea>
             </CommentInputArea>
@@ -171,12 +186,17 @@ class CommentInput extends Component {
 CommentInput.propTypes = {
     isSubComment: PropTypes.bool.isRequired,        // SubComment인지. 답글이라면 margin-left 값이 추가된다.
     isReplySee: PropTypes.bool,                     // SubComment의 경우 답글 보기의 여부에 따라 CommentInput가 display none이 결정된다.
+    isUpdateMode: PropTypes.bool,                   // 댓글 수정 Input 컴포넌트인지
 
     /* 댓글 생성 액션 관련 props */
     board: PropTypes.string.isRequired,
     post_id: PropTypes.number.isRequired,
-    createComment: PropTypes.func.isRequired,
     parent_comment: PropTypes.number,
+
+    createComment: PropTypes.func,                  // 댓글 생성 메서드
+    updateComment: PropTypes.func,                  // 댓글 수정 메서드
+    comment_id: PropTypes.number,                   // 댓글 수정의 경우, 해당 댓글의 id
+    defaultValue: PropTypes.string,                 // 댓글 수정의 경우, 해당 댓글의 이전 값
 
     curUser: PropTypes.oneOfType([                  // 유저 정보
         PropTypes.number,
@@ -186,7 +206,10 @@ CommentInput.propTypes = {
 
 CommentInput.defaultProps = {
     isReplySee: true,                           // SubComment가 아닌 경우 isReplySee가 없고 항상 display되기 때문에 true값을 준다.
+    isUpdateMode: false,
     parent_comment: 0,
+    comment_id: 0,
+    defaultValue: '',
 }
 
 
