@@ -56,6 +56,8 @@ class CommentBox extends Component {
     _renderComments = (commentList) => {
 
         const { 
+            curUser,
+
             deleteComment,
 
             /* CommentInput에 전해줄 속성 */
@@ -77,6 +79,8 @@ class CommentBox extends Component {
 
             return (
                 <CommentItem
+                    curUser={curUser}
+
                     comment_id={id}
                     user={user}
                     description={description}

@@ -141,10 +141,8 @@ const SubCommentLeaf = styled.div`
 
 class CommentItem extends Component {
 
-    // state = { isReplySee } : 답글 보기 True / False
     state = {
         isReplySee: false,              // 답글 보기 True / False
-        deleteModalVisible: false,      // 댓글 삭제 Modal의 visible
         isUDVisible: false,             // 수정 삭제 버튼 visible
     }
 
@@ -186,58 +184,22 @@ class CommentItem extends Component {
         })
     }
 
-    /* 댓글 삭제 액션 */
-    _showDeleteModal = () => {
-        this.setState({
-            ...this.state,
-            deleteModalVisible: true
-        })
-    }
-
-    _handleCancle = () => {
-        this.setState({
-            ...this.state,
-            deleteModalVisible: false
-        })
-    }
-
-    _handleDelete = () => {
-
-        const { 
-            comment_id, 
-            deleteComment, 
-            subCommentList,
+    /* 댓글 영역에 마우스를 올릴 때,
+       해당 댓글을 쓴 작성자의 경우 update, delete 아이콘이 뜨도록 하기 */
+    _handleMouseEnter = () => {
+        const {
+            user, curUser
         } = this.props;
 
-        /* 답글이 있는 경우, 답글들 모두 삭제함 */
-        if ( subCommentList[0] ) {
-            subCommentList.forEach( subComment => {
-                deleteComment(subComment.id)
+        if (user.username === curUser.username) {
+            this.setState({
+                ...this.state,
+                isUDVisible: true
             })
         }
-
-        /* 댓글 삭제 액션 */
-        deleteComment(comment_id);        
-
-        /* Model visible false */
-        this.setState({
-            ...this.state,
-            deleteModalVisible: false
-        })
-
-        /* 현재는 새로고침으로 하기
-           나중에 socket.io를 이용해서 자동으로 업데이트 되도록 하기 */
-        window.location.reload();
     }
 
-    /* */
-    _handleMouseEnter = () => {
-        this.setState({
-            ...this.state,
-            isUDVisible: true
-        })
-    }
-
+    /* 댓글 영역에서 마우스가 벗어나면 visible: false */
     _handleMouseLeave = () => {
         this.setState({
             ...this.state,
@@ -246,6 +208,7 @@ class CommentItem extends Component {
     }
     ///////////////////
 
+    
     render() {
 
         const {
@@ -333,6 +296,11 @@ class CommentItem extends Component {
 /* propTypes, defaultProps */
 
 CommentItem.propTypes = {
+    curUser: PropTypes.oneOfType([              // 유저 정보
+        PropTypes.number,
+        PropTypes.object
+    ]).isRequired,
+
     comment_id: PropTypes.number.isRequired,    // 댓글 ID
     user: PropTypes.object.isRequired,          // 작성자 정보
     description: PropTypes.string.isRequired,   // 댓글 데이터
