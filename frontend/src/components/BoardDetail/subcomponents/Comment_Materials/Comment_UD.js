@@ -14,7 +14,7 @@ const MoreIcon = styled(Icon)`
     align-items: center;
     justify-content: center;
     visibility: ${ props => {
-        return props.isVisible ? 'visible' : 'hidden'
+        return props.visible ? 'visible' : 'hidden'
     }};
 `
 
@@ -113,6 +113,9 @@ class MoreButton extends Component {
             </div>
         )
 
+        // console.log(typeof(visible))
+        // console.log(isVisible.toString())
+
         return (
             <Tooltip title='수정 또는 삭제' mouseEnterDelay={0} mouseLeaveDelay={0}>
                 <Popover
@@ -125,7 +128,7 @@ class MoreButton extends Component {
                     <MoreIcon 
                         type="more" 
                         rotate='90' 
-                        isVisible={isVisible} 
+                        visible={isVisible} 
                     />
                 </Popover>
             </Tooltip>

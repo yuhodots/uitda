@@ -4,8 +4,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import CommentItem from './CommentItem';
-import CommentInput from './CommentInput';
+import { CommentItem, CommentInput } from './Comment_Materials'
 import { colors } from "../../../styles/variables";
 
 /* Styled Components */
@@ -106,7 +105,7 @@ class CommentBox extends Component {
         } = this.props;
         const numOfComments = commentList.length;
 
-        console.log(commentList);
+        // console.log(commentList);
 
         return (
             <CommentArea>
