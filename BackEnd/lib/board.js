@@ -185,7 +185,7 @@ module.exports = {
                                     (type == 'market') ?
                                         post = make_market_ob(content.id, content.title, writer, time, content.price, content.condition, content.description, filelist) :
                                         post = make_networking_ob(content.id, content.title, writer, time, content.condition, content.description, filelist);
-                                    postlist[i] = post;
+                                    postlist[projects.length - 1 - i] = post;
                                     if ((counter + 1) == projects.length) {
                                         res.json({ postlist: postlist, user: req.user ? req.user : 0, isLast: (scrollEnd) ? true : false });
                                     }
@@ -357,6 +357,7 @@ module.exports = {
         let description;
         let files;
         let id;
+        let deleted_files;
 
         async.waterfall([
 
@@ -368,6 +369,9 @@ module.exports = {
                 id = req.params.id;
                 type_board = type_board_assign(type);
                 type_files = type_files_assign(type);
+                (req.body.deleted_files) ?
+                    deleted_files = req.body.deleted_files:
+                    deleted_files = [];
                 callback(null);
             },
 
@@ -380,28 +384,65 @@ module.exports = {
 
             /* 작성자인지 확인 */
             function (callback) {
-                // 아직 파일 수정 구현은 하지 않았습니다.
-                type_board.findOne({ where: { id: id } }).then(function (content) {
+                type_board.findOne({ where: { id: id } })
+                .then(function (content) {
                     (auth.sameOwner(req, content.author) === 0) ?
                         res.json({ user: req.user ? req.user : 0 }) :
                         callback(null);
-                }).catch(function (err) { throw err; });
+                })
+                .catch(function (err) { throw err; });
             },
 
-            /* 게시글 수정 */
+            /* 게시글 제목, 내용 수정 */
             function (callback) {
-                type_board.update({
-                    title: title, description: description, created: moment().format('YYYY년MM월DD일HH시mm분ss초')
-                }, { where: { id: id } }).then(function () {
-                    callback(null);
-                }).catch(function (err) { throw err; });
+                type_board.update({ title: title, description: description, created: moment().format('YYYY년MM월DD일HH시mm분ss초') }, { where: { id: id } })
+                .then(function () { callback(null); })
+                .catch(function (err) { throw err; });
             },
+
+            /* 파일 삭제 수행 */
+            function (callback) {
+                for (let i = 0;  i < deleted_files.length; i++){
+                    type_files.findOne({ where: { id: deleted_files[i] } })
+                    .then(function (file) {
+                        s3.deleteObject(
+                            { Bucket: "uitda.net", Key: file.filename },
+                            (err, data) => {
+                                if (err) throw err;
+                                console.log(data);
+                            }
+                        );
+                    })
+                    .then(function (){ type_files.destroy({ where: { id: deleted_files[i] } }) })
+                    .catch(function (err) { throw err; })
+                }
+                callback(null);
+            },
+
+            /* 파일 추가 수행 */
+            function (callback) {
+                let max_id = 0;
+                if (files.length) {
+                    type_files.max('file_id', { where: { board_id : id } })
+                    .then(function (max) { if(max) { max_id = max } })
+                    .then(function(){
+                        for (let i = 0; i < files.length; i++) {
+                            type_files.create({ board_id: id, file_id: max_id+1+i , filename: files[i].key, location: files[i].location });
+                        }
+                    })
+                    .catch(function (err) { throw err; })
+                }
+                callback(null);
+            },
+
+            /* filenum 값 수정 */
+            // 아직 처리하지 못했습니다.
 
             /* Redirection */
             function (callback) {
-                type_board.findOne({ where: { id: id } }).then(function (content) {
-                    res.json({ post: content, user: req.user ? req.user : 0 });
-                }).catch(function (err) { throw err; });
+                type_board.findOne({ where: { id: id } })
+                .then(function (content) { res.json({ post: content, user: req.user ? req.user : 0 }); })
+                .catch(function (err) { throw err; });
                 callback(null);
             }
 

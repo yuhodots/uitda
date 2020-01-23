@@ -109,7 +109,7 @@ module.exports = {
 
             /* Redirection */
             function (callback) {
-                res.redirect(`/api/`); // 수정해야함
+                res.end()
                 callback(null);
             }
 
@@ -160,7 +160,7 @@ module.exports = {
 
             /* Redirection */
             function (callback) {
-                res.redirect(`/api/`); // 수정해야함
+                res.end()
                 callback(null);
             }
 
@@ -201,7 +201,7 @@ module.exports = {
             /* 댓글 삭제 */
             function (callback) {
                 comment.destroy({ where: { id: id } }).catch(function (err) { throw err; });
-                res.redirect(`/api/`); // 수정해야함
+                res.end()
                 callback(null);
             }
         ], function (err) {
