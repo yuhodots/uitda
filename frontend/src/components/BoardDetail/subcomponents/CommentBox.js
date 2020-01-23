@@ -97,6 +97,8 @@ class CommentBox extends Component {
     render() {
 
         const { 
+            curUser,
+
             board,
             post_id,
             commentList,
@@ -119,6 +121,8 @@ class CommentBox extends Component {
                 <CommentInput 
                     isSubComment={false} 
                     
+                    curUser={curUser}
+
                     board={board}
                     post_id={post_id}
                     createComment={createComment}
@@ -142,6 +146,11 @@ class CommentBox extends Component {
 
 
 CommentBox.propTypes = {
+    curUser: PropTypes.oneOfType([                 // 유저 정보
+        PropTypes.number,
+        PropTypes.object
+    ]).isRequired,
+
     board: PropTypes.string.isRequired,             // 게시판 정보
     post_id: PropTypes.number.isRequired,           // 포스팅 id          
     commentList: PropTypes.array.isRequired,        // 댓글 데이터를 가지고 있는 array

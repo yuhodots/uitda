@@ -104,6 +104,8 @@ class CommentInput extends Component {
        Post Detail 페이지에 대한 GET 요청을 다시 한다. or 리다이렉션 */
     _handleCreate = () => {
         const {
+            curUser,
+
             board,
             post_id,
             createComment,
@@ -116,6 +118,12 @@ class CommentInput extends Component {
         /* 내용이 없으면 경고창 띄우고 종료 */
         if(!content) { 
             message.warning('댓글 내용을 입력하세요')
+            return
+        }
+
+        /* 로그인되어 있지 않은 경우, 로그인을 하라는 안내를 하고 종료 */
+        if(!curUser) {
+            message.warn('로그인을 해주세요')
             return
         }
 
@@ -161,14 +169,19 @@ class CommentInput extends Component {
 
 
 CommentInput.propTypes = {
-    isSubComment: PropTypes.bool.isRequired,    // SubComment인지. 답글이라면 margin-left 값이 추가된다.
-    isReplySee: PropTypes.bool,                 // SubComment의 경우 답글 보기의 여부에 따라 CommentInput가 display none이 결정된다.
+    isSubComment: PropTypes.bool.isRequired,        // SubComment인지. 답글이라면 margin-left 값이 추가된다.
+    isReplySee: PropTypes.bool,                     // SubComment의 경우 답글 보기의 여부에 따라 CommentInput가 display none이 결정된다.
 
     /* 댓글 생성 액션 관련 props */
     board: PropTypes.string.isRequired,
     post_id: PropTypes.number.isRequired,
     createComment: PropTypes.func.isRequired,
     parent_comment: PropTypes.number,
+
+    curUser: PropTypes.oneOfType([                  // 유저 정보
+        PropTypes.number,
+        PropTypes.object
+    ]).isRequired,
 }
 
 CommentInput.defaultProps = {

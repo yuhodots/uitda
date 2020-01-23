@@ -102,7 +102,7 @@ class BoardDetail extends Component {
         } = this.props;
 
         // console.log(commentList);
-        console.log(curUser)
+        // console.log(curUser)
 
         return (
             <BackgroundDiv>
@@ -117,6 +117,7 @@ class BoardDetail extends Component {
                     { isPhoto ? <PhotoBox filelist={filelist} /> : '' }
                     <DescriptionBox description={description} />
                     <CommentBox 
+                        curUser={curUser}
                         board={board}
                         post_id={id}
                         commentList={commentList} 

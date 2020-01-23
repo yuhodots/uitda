@@ -72,7 +72,8 @@
 ### 1.23 (목)
 
 * CommentBox 컴포넌트를 이루는 sub 컴포넌트 (Input, Item, UD)를 Comment_Materials 디렉토리에 따로 보관 함으로써 구조를 깔끔하게 변경함
-* 
+* getStatusRequest 액션 만들고, BoardDeatilContainer와 ManageContainer에서 해당 메서드를 통해 user 객체를 auth reducer에 저장하도록 함
+* Comment Create 시, 로그인이 되어 있지 않으면, 로그인 안내 메시지만 띄우고 Create 액션을 보내지 않기
 
 
 
@@ -84,6 +85,7 @@
 
 #### Board FrontEnd
 
+* 디테일 페이지에서 뒤로가기 했을 때, render가 안되는 오류 (아주 가끔 ?)
 * 검색창에 자동완성 기능 추가
 * 사진 넘기기 아이콘 ant-design 적용
 * 사진 Ant Design의 Carousel Component 검토
@@ -209,5 +211,14 @@
   * 로그 아웃 시, 아웃룩까지 로그 아웃 가능 ?
   * 로그인 시, 아웃룩에 이 아이디로 로그인 하실 것인가요 묻기 가능 ?
 
-  
+* 
+
+
+
+
+
+### 요청 사항
+
+* username 정규표현식을 통해서 이름만 저장되도록 하기
+* 
 
