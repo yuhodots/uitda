@@ -98,11 +98,12 @@ class BoardDetail extends Component {
             commentList,        // comment data
 
             createComment,      // 댓글 생성 메서드
+            updateComment,      // 댓글 수정 메서드
             deleteComment,      // 댓글 삭제 메서드
         } = this.props;
 
         // console.log(commentList);
-        console.log(curUser)
+        // console.log(curUser)
 
         return (
             <BackgroundDiv>
@@ -117,10 +118,12 @@ class BoardDetail extends Component {
                     { isPhoto ? <PhotoBox filelist={filelist} /> : '' }
                     <DescriptionBox description={description} />
                     <CommentBox 
+                        curUser={curUser}
                         board={board}
                         post_id={id}
                         commentList={commentList} 
                         createComment={createComment}
+                        updateComment={updateComment}
                         deleteComment={deleteComment}
                     />
                 </ContainerDiv>
@@ -140,6 +143,7 @@ BoardDetail.propTypes = {
     commentList: PropTypes.array,               // 댓글 데이터
 
     createComment: PropTypes.func.isRequired,   // 댓글 생성 메서드
+    updateComment: PropTypes.func.isRequired,   // 댓글 수정 메서드
     deleteComment: PropTypes.func.isRequired,   // 댓글 삭제 메서드
 }
 

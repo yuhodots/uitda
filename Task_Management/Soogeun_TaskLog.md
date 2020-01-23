@@ -72,7 +72,15 @@
 ### 1.23 (목)
 
 * CommentBox 컴포넌트를 이루는 sub 컴포넌트 (Input, Item, UD)를 Comment_Materials 디렉토리에 따로 보관 함으로써 구조를 깔끔하게 변경함
-* 
+* getStatusRequest 액션 만들고, BoardDeatilContainer와 ManageContainer에서 해당 메서드를 통해 user 객체를 auth reducer에 저장하도록 함
+* Comment Create 시, 로그인이 되어 있지 않으면, 로그인 안내 메시지만 띄우고 Create 액션을 보내지 않기
+* 댓글 작성자와 접속된 유저가 일치한 경우에만 해당 댓글에 update/delete 아이콘이 뜨도록 함
+* 답글에 대한 코드를 subCommentItem 컴포넌트로 뽑아냄 (코드 리팩토링)
+* 답글에도 update / delete UI 뜨도록 함
+* 답글 delete action 완료
+* 댓글 update 액션 생성
+* 댓글 update 액션 적용
+* 댓글 수정하기 클릭 시, 이전 내용이 default 값으로 담기게 하기
 
 
 
@@ -84,6 +92,7 @@
 
 #### Board FrontEnd
 
+* 디테일 페이지에서 뒤로가기 했을 때, render가 안되는 오류 (아주 가끔 ?)
 * 검색창에 자동완성 기능 추가
 * 사진 넘기기 아이콘 ant-design 적용
 * 사진 Ant Design의 Carousel Component 검토
@@ -100,19 +109,19 @@
 * console 창에 뜨는 props 타입 관련 에러 메시지 -> type script로 변경하지 않는 이상 해결되지 않을 것 같음. (혹은 콘솔 에러 메시지를 없애기 위해 지저분한 코드를 만들어야 함.)
   기능상에 문제는 전혀 없기 때문에 넘어갑시다.
 
-* UD 컴포넌트 본인이 쓴 댓글만 뜨도록
+  
+  
+* 답글에도 수정하기 적용
 
-* 더보기 답글에도 나타나도록 디자인
+* 수정 시 (수정 됨) 을 추가하기
 
-* create할 때, create Action 보내지 않고 user 없으면 경고창 뜨도록 하기
+* board에서 글 들어갔다가 뒤로가기 후 매니지의 아무 글 클릭하면 post에 데이터가 담기지 않는 에러
 
-* 수정하기 클릭 시, Comment Input으로 변경
+  일단 뒤로가기로는 componentWillUnmount 실행되지 않음.
 
-* 수정 시 수정 내역 보이게
+* 
 
-* update 액션
-
-* update front
+  
 
 * 사진이 없는 글 디자인 고려
 
@@ -130,12 +139,6 @@
 
 * 유저 이름 앞 뒤에 불필요한 요소 제거
 
-* board에서 글 들어갔다가 뒤로가기 후 매니지의 아무 글 클릭하면 post에 데이터가 담기지 않는 에러
-
-  일단 뒤로가기로는 componentWillUnmount 실행되지 않음.
-
-* 
-
 
 
 #### Login FrontEnd
@@ -152,7 +155,6 @@
 
 * 로그인 완료 후 로그인 페이지로 오기 이전에 페이지로 redirect하기
 
-* user의 profile_picture, pic_location의 차이 ? 의미 ? 묻기
 
 
 
@@ -177,8 +179,6 @@
 * Edit update 시, 삭제되는 이미지는 id, 새로 추가되는 이미지는 이전처럼 보내주기
 * 사진 업로드 최대 개수 (현재 6개)
 * 사진 순서 변경 기능
-
-
 
 
 
@@ -209,5 +209,17 @@
   * 로그 아웃 시, 아웃룩까지 로그 아웃 가능 ?
   * 로그인 시, 아웃룩에 이 아이디로 로그인 하실 것인가요 묻기 가능 ?
 
-  
+* 
+
+
+
+
+
+### 요청 사항
+
+* username 정규표현식을 통해서 이름만 저장되도록 하기
+* user의 profile_picture, pic_location의 차이 ? 의미 ? 묻기
+* market, networking delete 시, 해당 게시글의 댓글도 삭제되도록 backend 처리하기
+* comment model에 수정됨 여부 field 추가
+* comment, board의 시간을 작성 시간 기준으로 할 지, 수정 시간을 기준으로 할 지
 
