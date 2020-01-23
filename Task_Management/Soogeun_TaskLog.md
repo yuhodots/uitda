@@ -62,6 +62,20 @@
 
 
 
+### 1.22 (수)
+
+* 댓글 삭제 modal을 confirm 형태로 바꿈으로써 state의 visible property를 없애고, 관련 함수를 줄이고
+  popover의 visible을 추가하면서 modal의 visible 값이 제대로 변경되지 않던 오류를 해결 
+
+
+
+### 1.23 (목)
+
+* CommentBox 컴포넌트를 이루는 sub 컴포넌트 (Input, Item, UD)를 Comment_Materials 디렉토리에 따로 보관 함으로써 구조를 깔끔하게 변경함
+* 
+
+
+
 
 
 
@@ -82,30 +96,65 @@
 #### Detail FrontEnd
 
 * 댓글 create, delete시 뜨는 proxy 에러 원인 찾기 -> reload를 실행해서 그러함. socket.io를 이용한다면 해결될 문제.
-* 삭제 modal이 안사라지는 이유좀
-* 더보기 UI 본인이 쓴 댓글만 뜨도록
+
+* console 창에 뜨는 props 타입 관련 에러 메시지 -> type script로 변경하지 않는 이상 해결되지 않을 것 같음. (혹은 콘솔 에러 메시지를 없애기 위해 지저분한 코드를 만들어야 함.)
+  기능상에 문제는 전혀 없기 때문에 넘어갑시다.
+
+* UD 컴포넌트 본인이 쓴 댓글만 뜨도록
+
 * 더보기 답글에도 나타나도록 디자인
+
 * create할 때, create Action 보내지 않고 user 없으면 경고창 뜨도록 하기
+
 * 수정하기 클릭 시, Comment Input으로 변경
+
 * 수정 시 수정 내역 보이게
+
 * update 액션
+
 * update front
+
 * 사진이 없는 글 디자인 고려
+
 * 사진 Ant Design의 Carousel Component 검토
+
 * Detail Container 렌더링 시, 로딩 페이지를 만들기
+
 * 댓글 더보기 기능
+
 * 답글 더보기 기능
+
 * socket.io 공부하기
+
 * socket.io를 이용해 클라이언트의 데이터 실시간 업데이트 되도록 하기
+
 * 유저 이름 앞 뒤에 불필요한 요소 제거
+
 * board에서 글 들어갔다가 뒤로가기 후 매니지의 아무 글 클릭하면 post에 데이터가 담기지 않는 에러
+
+  일단 뒤로가기로는 componentWillUnmount 실행되지 않음.
+
+* 
 
 
 
 #### Login FrontEnd
 
 * Login 페이지 디자인
+
 * Outlook 로그아웃 한 상태로, 데스크탑으로 Login 기능 확인
+
+* 로그인 시 아래의 에러가 뜨면서 로그인이 안됨
+
+  ```
+  Error: Failed to lookup view "error" in views directory "/Users/soogeun/Documents/GitHub/uitda/BackEnd/views"
+  ```
+
+* 로그인 완료 후 로그인 페이지로 오기 이전에 페이지로 redirect하기
+
+* user의 profile_picture, pic_location의 차이 ? 의미 ? 묻기
+
+
 
 
 
@@ -139,6 +188,10 @@
 
 
 
+#### FrontEnd
+
+* App state에 유저 등록
+
 
 
 #### User BackEnd
@@ -146,4 +199,15 @@
 * 현재 user status를 알 수 있는 api 만들기
 
 
+
+---
+
+### 논의 사항
+
+* 한 기기에서 한 아이디만 사용할 수 있는 문제
+
+  * 로그 아웃 시, 아웃룩까지 로그 아웃 가능 ?
+  * 로그인 시, 아웃룩에 이 아이디로 로그인 하실 것인가요 묻기 가능 ?
+
+  
 

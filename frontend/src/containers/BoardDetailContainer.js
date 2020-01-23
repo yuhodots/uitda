@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import BoardDetail from "../components/BoardDetail";
 import NotFound from '../components/NotFound';
 
+import { getStatusRequest } from '../store/actions/auth'
 import { 
     initiateDetailPage,
     getBoardDetailRequest,
@@ -26,10 +27,11 @@ class BoardDetailContainer extends Component {
         // const { boardName } = this.props;
         const { boardName, id } = this.props.match.params;
 
-        this.props.headerOff();                              // 헤더 Off
+        this.props.headerOff();                             // 헤더 Off
         this.props.topicSelect(boardName);
 
-        this.props.getBoardDetailRequest(boardName, id);
+        this.props.getStatusRequest();                      // 유저 정보 request
+        this.props.getBoardDetailRequest(boardName, id);    // 포스팅 데이터 request
     }
 
     componentWillUnmount () {
@@ -40,6 +42,8 @@ class BoardDetailContainer extends Component {
 
     render() {
         const { 
+            user,
+
             isGetSuccess, 
             post,
             commentList,
@@ -54,6 +58,8 @@ class BoardDetailContainer extends Component {
         return (
             isGetSuccess ?
             <BoardDetail 
+                curUser={user}
+
                 board={boardName}
                 post={post} 
                 commentList={commentList} 
@@ -73,6 +79,8 @@ BoardDetailContainer.propTypes = {
 
 const mapStateToProps = (state) => {
     return {
+        user: state.auth.user,                      // 유저 정보
+
         isGetSuccess: state.board.isGetSuccess,     // GET 요청이 성공했는 지 여부
         post: state.board.post,                     // 포스팅 데이터
         commentList: state.board.commentList,       // 포스팅 댓글 데이터
@@ -85,7 +93,10 @@ const mapDispatchToProps = (dispatch) => {
         headerOff: () => {dispatch(headerOff())},                                       // 헤더를 사라지게 하는 메서드
         topicSelect: (boardName) => {                                                   // 토픽을 설정함
             dispatch(topicSelect(boardName))
-        },            
+        },    
+        
+        getStatusRequest: () => {dispatch(getStatusRequest())},                         // 유저 정보를 요청하는 request 액션
+
         initiateDetailPage: () => {dispatch(initiateDetailPage())},                     // 디테일 페이지를 초기화 함   
         getBoardDetailRequest: (boardName, id) => {                                     // backend 서버에 GET 요청
             dispatch(getBoardDetailRequest(boardName, id))

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
 import { Link, Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { colors } from '../../../../styles/variables'
 
@@ -53,11 +54,11 @@ class LoginForm extends Component {
         } = this.state;
 
         const {
-            isLoggedIn
+            user
         } = this.props;
 
         return (
-            isLoggedIn ?
+            user ?
             <Redirect to='/' /> :
             <BackGround minHeight={windowHeight}>
                 <Container>
@@ -67,6 +68,13 @@ class LoginForm extends Component {
             </BackGround>
         )
     }
+}
+
+LoginForm.propTypes = {
+    user: PropTypes.oneOfType([         // 현재 유저 정보
+        PropTypes.number,
+        PropTypes.object
+    ]).isRequired
 }
 
 export default LoginForm

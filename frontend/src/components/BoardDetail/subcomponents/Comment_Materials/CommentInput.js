@@ -6,9 +6,9 @@ import PropTypes from 'prop-types';
 import TextareaAutosize from 'react-textarea-autosize';
 import { message } from 'antd';
 
-import SendIcon from './resources/SendIcon_Blue.png';
+import SendIcon from '../resources/SendIcon_Blue.png';
 import { CommentItemPhoto } from "./CommentItem";
-import { colors } from "../../../styles/variables";
+import { colors } from "../../../../styles/variables";
 
 /* Styled Components */
 

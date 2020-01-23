@@ -10,10 +10,7 @@ import {
 
 const initialState = {
     isLoggedIn: false,
-    userInfo: {
-        id: null,
-        username: ""
-    },
+    user: 0,
 
     // 로그인 성공 여부
     loginSuccess: false,
@@ -29,13 +26,11 @@ export default function auth (state = initialState, action) {
         
         // 유저 정보 확인 액션
         case AUTH_GET_STATUS_SUCCESS:
+            console.log(action.user);
             return {
                 ...state,
                 isLoggedIn: true,
-                userInfo: {
-                    id: action.userInfo.id,
-                    username: action.userInfo.username
-                }
+                user: action.user
             };
 
         case AUTH_GET_STATUS_FAILURE:

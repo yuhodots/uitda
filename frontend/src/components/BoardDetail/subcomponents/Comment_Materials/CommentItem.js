@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 import CommentInput from "./CommentInput";
 import CommentUD from "./Comment_UD";
-import { colors } from "../../../styles/variables";
+import { colors } from "../../../../styles/variables";
 
 
 /* Styled Components */
@@ -264,6 +264,8 @@ class CommentItem extends Component {
         const { isReplySee, isUDVisible } = this.state;
 
         let NumOfSubComment = subCommentList.length;
+
+        // console.log(typeof(isUDVisible))
 
         return (
             <CommentStem isReplySee={isReplySee} >

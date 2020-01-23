@@ -12,32 +12,26 @@ import {
 
 
 // User 상태 정보 액션 생성자
-
 export function getStatusRequest() {
     return (dispatch) => {
-        return axios.get('/api')
+        return axios.get('/api/users')
         .then(res => res.data.user)
-        .then(user => {
-            if (user) {
-                dispatch(getStatusSuccess(user));
-            }
-            else {
-                dispatch(getStatusFailure());
-            }
-        })
+        .then(user => { dispatch(getStatusSuccess(user)) })
+        .catch(err => getStatusFailure(err))
     }
 }
 
-export function getStatusSuccess(userInfo) {
+export function getStatusSuccess(user) {
     return {
         type: AUTH_GET_STATUS_SUCCESS,
-        userInfo
+        user
     }
 }
 
-export function getStatusFailure() {
+export function getStatusFailure(err) {
     return {
-        type: AUTH_GET_STATUS_FAILURE
+        type: AUTH_GET_STATUS_FAILURE,
+        err
     }
 }
 
