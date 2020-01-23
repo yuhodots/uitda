@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
+import SubCommentItem from './SubCommentItem'
 import CommentInput from "./CommentInput";
 import CommentUD from "./Comment_UD";
 import { colors } from "../../../../styles/variables";
@@ -48,7 +49,7 @@ const PhotoTextItem = styled.div`
     `;
 
     /* 댓글이 2줄이 넘어갈 때, 텍스트 영역의 가로 길이를 알려주기 위함 */
-    const TextZone = styled.div`
+    export const TextZone = styled.div`
         margin-left: 0.5rem;
         flex: 1;
 
@@ -58,7 +59,7 @@ const PhotoTextItem = styled.div`
     `;
 
     /* 댓글 텍스트를 담은 흰색 둥근 모서리 div 태그 */
-    const CommentItemText = styled.div`
+    export const CommentItemText = styled.div`
         margin-right: 1rem;
         border-radius: 1rem;
         background-color: ${colors.white};
@@ -92,49 +93,6 @@ const AdditionalFuncDiv = styled.div`
         cursor: pointer;
     `;
 
-
-/* 답글의 하나의 덩어리 (Photo + Text + 작성시간)
-   댓글과는 다르게 작성자 사진, 댓글 텍스트(작성자 이름 포함), 시간 정보를 한 라인으로 나타낸다 */
-const SubCommentLeaf = styled.div`
-    margin-left: 3rem;
-    margin-bottom: 0.5rem;
-
-    display: ${props => {
-        return props.isDisplay ? 'flex' : 'none'
-    }};
-    flex-flow: row nowrap;
-`;
-
-    /* SubComment의 경우 TextZone에 시간정보를 담은 애도 있기 때문에
-    CommentItemText + CreatedDivForSub 를 가진 flex box로 만들어야 한다. */
-    const TextZoneForSub = styled(TextZone)`
-        display: flex;
-        flex-flow: row nowrap;
-    `;
-
-    /* Sub Leaf의 생성시간을 담는 Div 영역 */
-    const CreatedDivForSub = styled.div`
-        position: relative;
-        height: 100%;
-        line-height: 1.33em;
-        font-size: 0.75rem;
-        color: ${colors.gray_fontColor};
-        white-space: nowrap;            /* 줄바꿈을 없애는 속성 !! */
-
-        flex: 1 auto;
-    `;
-
-    /* position: absolute 태그를 대신에 크기를 차지하되, 보이지는 않는 div 태그 */
-    const HiddenDiv = styled.div`
-        visibility: hidden;             /* 공간은 차지하되 보이지는 않게 함 !! */
-    `;
-
-    /* created를 나타내는 영역이 전체 위치를 기준으로 아래에 위치하도록 하는 div 태그 */
-    const DivForPosition = styled.div`
-        position: absolute;
-        bottom: 0.5em;
-    `;
-
 //////////////////////////////////////
 
 /* React Component */
@@ -147,10 +105,17 @@ class CommentItem extends Component {
     }
 
     /* subCommentList를 map함수를 통해 render하는 함수 */
-    // _renderSubComment(subCommentList) {
     _renderSubComment = (subCommentList) => {
+        const { 
+            curUser,
+            deleteComment 
+        } = this.props;
+
+        console.log(subCommentList)
+
         return subCommentList.map((subComment, idx) => {
             const {
+                id,
                 user,
                 description,
                 created,
@@ -159,16 +124,17 @@ class CommentItem extends Component {
             const {isReplySee} = this.state;
 
             return (
-                <SubCommentLeaf isDisplay={isReplySee} key={idx} >
-                    <CommentItemPhoto />
-                    <TextZoneForSub>
-                        <CommentItemText><b>{user.username}</b> {description}</CommentItemText>
-                        <CreatedDivForSub>
-                            <HiddenDiv>{created}</HiddenDiv> 
-                            <DivForPosition>{created}</DivForPosition>
-                        </CreatedDivForSub>
-                    </TextZoneForSub>
-                </SubCommentLeaf>
+                <SubCommentItem 
+                    curUser={curUser}
+                    deleteComment={deleteComment}
+                    subComment_id={id}
+
+                    isReplySee={isReplySee} 
+                    user={user}
+                    description={description}
+                    created={created}
+                    key={idx}
+                />
             )
         })
     }
@@ -187,6 +153,7 @@ class CommentItem extends Component {
     /* 댓글 영역에 마우스를 올릴 때,
        해당 댓글을 쓴 작성자의 경우 update, delete 아이콘이 뜨도록 하기 */
     _handleMouseEnter = () => {
+        /* user는 작성자, curUser은 현재 접속자 */
         const {
             user, curUser
         } = this.props;
@@ -208,10 +175,12 @@ class CommentItem extends Component {
     }
     ///////////////////
 
-    
+
     render() {
 
         const {
+            curUser,
+
             comment_id,
             user,
             description,
@@ -280,6 +249,8 @@ class CommentItem extends Component {
                 <CommentInput
                     isSubComment={true}
                     isReplySee={isReplySee}
+
+                    curUser={curUser}
 
                     board={board}
                     post_id={post_id}

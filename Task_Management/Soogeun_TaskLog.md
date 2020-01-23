@@ -75,6 +75,9 @@
 * getStatusRequest 액션 만들고, BoardDeatilContainer와 ManageContainer에서 해당 메서드를 통해 user 객체를 auth reducer에 저장하도록 함
 * Comment Create 시, 로그인이 되어 있지 않으면, 로그인 안내 메시지만 띄우고 Create 액션을 보내지 않기
 * 댓글 작성자와 접속된 유저가 일치한 경우에만 해당 댓글에 update/delete 아이콘이 뜨도록 함
+* 답글에 대한 코드를 subCommentItem 컴포넌트로 뽑아냄 (코드 리팩토링)
+* 답글에도 update / delete UI 뜨도록 함
+* 답글 delete action 완료
 
 
 
@@ -103,19 +106,23 @@
 * console 창에 뜨는 props 타입 관련 에러 메시지 -> type script로 변경하지 않는 이상 해결되지 않을 것 같음. (혹은 콘솔 에러 메시지를 없애기 위해 지저분한 코드를 만들어야 함.)
   기능상에 문제는 전혀 없기 때문에 넘어갑시다.
 
-* UD 컴포넌트 본인이 쓴 댓글만 뜨도록
+  
+  
+* UD 컴포넌트 답글에도 나타나도록 디자인
 
-* 더보기 답글에도 나타나도록 디자인
-
-* create할 때, create Action 보내지 않고 user 없으면 경고창 뜨도록 하기
+* 답글 삭제 액션 적용
 
 * 수정하기 클릭 시, Comment Input으로 변경
 
-* 수정 시 수정 내역 보이게
+* 수정 시 (수정 됨) 을 추가하기
 
-* update 액션
+* board에서 글 들어갔다가 뒤로가기 후 매니지의 아무 글 클릭하면 post에 데이터가 담기지 않는 에러
 
-* update front
+  일단 뒤로가기로는 componentWillUnmount 실행되지 않음.
+
+* 
+
+  
 
 * 사진이 없는 글 디자인 고려
 
@@ -133,12 +140,6 @@
 
 * 유저 이름 앞 뒤에 불필요한 요소 제거
 
-* board에서 글 들어갔다가 뒤로가기 후 매니지의 아무 글 클릭하면 post에 데이터가 담기지 않는 에러
-
-  일단 뒤로가기로는 componentWillUnmount 실행되지 않음.
-
-* 
-
 
 
 #### Login FrontEnd
@@ -155,7 +156,6 @@
 
 * 로그인 완료 후 로그인 페이지로 오기 이전에 페이지로 redirect하기
 
-* user의 profile_picture, pic_location의 차이 ? 의미 ? 묻기
 
 
 
@@ -180,8 +180,6 @@
 * Edit update 시, 삭제되는 이미지는 id, 새로 추가되는 이미지는 이전처럼 보내주기
 * 사진 업로드 최대 개수 (현재 6개)
 * 사진 순서 변경 기능
-
-
 
 
 
@@ -221,5 +219,6 @@
 ### 요청 사항
 
 * username 정규표현식을 통해서 이름만 저장되도록 하기
-* 
+* user의 profile_picture, pic_location의 차이 ? 의미 ? 묻기
+* market, networking delete 시, 해당 게시글의 댓글도 삭제되도록 backend 처리하기
 

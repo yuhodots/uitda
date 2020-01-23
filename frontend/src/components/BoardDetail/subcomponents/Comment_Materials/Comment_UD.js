@@ -140,11 +140,12 @@ MoreButton.propTypes = {
     comment_id: PropTypes.number.isRequired,    // 댓글 ID
     subCommentList: PropTypes.array,            // 답글들의 데이터 array
     deleteComment: PropTypes.func.isRequired,   // 댓글 삭제 메서드
-    isVisible: PropTypes.bool.isRequired,       // 보이기 안 보이기
+    isVisible: PropTypes.bool,                  // 보이기 안 보이기
 }
 
 MoreButton.defaultProps = {
-    subCommentList: []
+    subCommentList: [],
+    isVisible: true,
 }
 
 
