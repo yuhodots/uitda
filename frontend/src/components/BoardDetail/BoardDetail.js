@@ -86,12 +86,14 @@ class BoardDetail extends Component {
             id,                 // 게시글 정보
         } = this.props.post;
 
-        console.log(this.props.post);
+        // console.log(this.props.post);
         // console.log(filelist);
 
         let isPhoto = filelist[0];     // filelist에 원소가 하나라도 있으면 true
 
         const {
+            curUser,            // 접속한 유저 정보
+
             board,              // 게시판 정보 
             commentList,        // comment data
 
@@ -100,6 +102,7 @@ class BoardDetail extends Component {
         } = this.props;
 
         // console.log(commentList);
+        console.log(curUser)
 
         return (
             <BackgroundDiv>
@@ -127,6 +130,11 @@ class BoardDetail extends Component {
 }
 
 BoardDetail.propTypes = {
+    curUser: PropTypes.oneOfType([                 // 유저 정보
+        PropTypes.number,
+        PropTypes.object
+    ]).isRequired,
+
     board: PropTypes.string.isRequired,         // 게시판 정보
     post: PropTypes.object.isRequired,          // 포스팅 데이터
     commentList: PropTypes.array,               // 댓글 데이터

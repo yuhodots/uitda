@@ -16,6 +16,7 @@ import {
     getMyPostRequest,   // Posts GET request 함수
     deletePostRequest,  // Post Delete Post request 함수  
 } from '../../store/actions/manage'
+import { getStatusRequest } from '../../store/actions/auth'
 
 /* Constants */
 import {
@@ -32,59 +33,69 @@ import {
     NETWORKING,
 } from '../../constants/board_name'
 
-import {
-    NO_USER,
-} from '../../constants/error_types'
-
-
 
 class ManageContainer extends Component {
 
-    componentDidMount() {
-        const {
-            kind
-        } = this.props
+    state = { isLoad: false }
 
-        let board;
-
-        switch(kind) {
-
-            /* 게시글 관리 */
-            case MANAGE_POSTS_MARKET:
-                board = MARKET;
-                // eslint-disable-next-line
-            case MANAGE_POSTS_NETWORKING:
-                board = board ? MARKET : NETWORKING;
-
-                // console.log(`posts/${board}`);
-                this.props.getMyPostRequest(board);
-                break;
-
-            /* 댓글 관리 */
-            case MANAGE_COMMENTS:
-                // console.log('comment category');
-                break;
-
-            /* 좋아요 표시한 게시글 */
-            case MANAGE_LIKEPOSTS:
-                // console.log('likeposts category');
-                break;
-
-            /* 내 카풀 일정 */
-            case MANAGE_MYCARPOOL:
-                // console.log('mycarpool category');
-                break;   
+    async componentDidMount() {
+        try {
+            const {
+                kind
+            } = this.props
+    
+            let board;
+    
+            switch(kind) {
+    
+                /* 게시글 관리 */
+                case MANAGE_POSTS_MARKET:
+                    board = MARKET;
+                    // eslint-disable-next-line
+                case MANAGE_POSTS_NETWORKING:
+                    board = board ? MARKET : NETWORKING;
+    
+                    // console.log(`posts/${board}`);
+                    await this.props.getMyPostRequest(board);
+                    await this.props.getStatusRequest();
+                    break;
+    
+                /* 댓글 관리 */
+                case MANAGE_COMMENTS:
+                    // console.log('comment category');
+                    break;
+    
+                /* 좋아요 표시한 게시글 */
+                case MANAGE_LIKEPOSTS:
+                    // console.log('likeposts category');
+                    break;
+    
+                /* 내 카풀 일정 */
+                case MANAGE_MYCARPOOL:
+                    // console.log('mycarpool category');
+                    break;   
+                    
+                /* 지난 알림 보기 */
+                case MANAGE_NOTIFICATIONS:
+                    // console.log('notification category');
+                    break;
                 
-            /* 지난 알림 보기 */
-            case MANAGE_NOTIFICATIONS:
-                // console.log('notification category');
-                break;
-            
-            /* kind가 post인 경우 */
-            default:
-                break;
-        }
+                /* kind가 post인 경우 */
+                default:
+                    break;
+            }
 
+            this.setState({
+                ...this.state,
+                isLoad: true
+            })
+        }
+        catch {
+            this.setState({
+                ...this.state,
+                isLoad: false
+            })
+        }
     }
 
 
@@ -94,37 +105,37 @@ class ManageContainer extends Component {
             // isGetSuccess,
             user,
             kind,
-            err,
 
             postList,
 
             deletePostRequest,
         } = this.props;
     
-        
-        /* 에러 처리 */
-        /* 유저가 없는 경우, 로그인 페이지로 이동 */
-        if (err === NO_USER) {
-            return (
-                <Redirect to='/auth/login' />
-            )
-        }
-
+        const { isLoad } = this.state;
 
         return(
             <div>
-                <Header 
-                    isEdit={false} 
-                    user={user}
-                />
-                <Body 
-                    user={user}
-                    kind={kind}
+            {
+                isLoad ? 
+                <div>
+                    {
+                        !user && <Redirect to='/auth/login' />
+                    }
+                    <Header 
+                        isEdit={false} 
+                        user={user}
+                    />
+                    <Body 
+                        user={user}
+                        kind={kind}
 
-                    postList={postList}
-                    deletePost={deletePostRequest}
-                />
-            </div>
+                        postList={postList}
+                        deletePost={deletePostRequest}
+                    /> 
+                </div>:
+                '로딩 중'
+            }
+            </div> 
         )
     }
 
@@ -139,7 +150,7 @@ const mapStateToProps = (state) => {
         isGetSuccess: state.manage.isGetSuccess,    // GET 요청의 성공 여부
         err: state.manage.err,                      // GET 실패 시 err 식별자
 
-        user: state.manage.user,                     // 유저 정보
+        user: state.auth.user,                      // 유저 정보
 
         postList: state.manage.postList,            // Posts GET 요청을 통해 얻은 post list
     }
@@ -147,6 +158,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        getStatusRequest: () => {dispatch(getStatusRequest())},                         // 접속된 유저 정보를 요청하는 액션
+
         getMyPostRequest: (board) => {dispatch(getMyPostRequest(board))},
         deletePostRequest: (board, id) => {dispatch(deletePostRequest(board, id))},
     }

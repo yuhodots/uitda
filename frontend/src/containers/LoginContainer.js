@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import LoginForm from "../components/Auth/Login/LoginForm";
 import { 
     getStatusRequest,
-    loginRequest 
 } from "../store/actions/auth";
 
 class LoginContainer extends Component {
@@ -17,16 +16,14 @@ class LoginContainer extends Component {
     render() {
 
         const { 
-            isLoggedIn,
-            loginRequest
+            user,
         } = this.props
 
         return(
-            isLoggedIn ?
+            user ?
             <Redirect to='/'/> :
             <LoginForm 
-                loginRequest={loginRequest} 
-                isLoggedIn={isLoggedIn}
+                user={user}
             />
         )
     }
@@ -34,17 +31,13 @@ class LoginContainer extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        isLoggedIn: state.auth.isLoggedIn,
-        userInfo: state.auth.userInfo
+        user: state.auth.user
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         getStatusRequest: () => {dispatch(getStatusRequest())},
-        loginRequest: (username, password) => {
-            dispatch(loginRequest(username, password))
-        }
     }
 }
 
