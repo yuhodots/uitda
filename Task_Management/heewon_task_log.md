@@ -9,3 +9,4 @@ Q: frontend에 보냈던 정보를 다시 받을 수 있는지? ex) user정보�
   관련 파일 : lib/chatting.js -> frontend -> socket.js에서 다시 받아야 메세지 내용을 저장할 수 있음
               원래는 req.user.username과 req.params.id로 바로 받을 수 있지만 socket.io를 거치는 바람에 url변화 없이 정보를 프론트엔드에서 받아야 함.
 채팅방 삭제 구현
+postman 공부하기
