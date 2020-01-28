@@ -4,9 +4,11 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import SubCommentItem from './SubCommentItem'
-import CommentInput from "./CommentInput";
-import CommentUD from "./Comment_UD";
+import { 
+    SubCommentItem,
+    CommentInput,
+    CommentUD
+} from './';
 import { colors } from "../../../../styles/variables";
 
 
@@ -28,7 +30,7 @@ const CommentLeaf = styled.div`
 `;
 
 /* 작성자 사진, 텍스트 데이터를 담는 div */
-const PhotoTextItem = styled.div`
+export const PhotoTextItem = styled.div`
    width: 100%;
    margin: 0;
    /* margin-bottom: 0.5rem; */
@@ -117,7 +119,8 @@ class CommentItem extends Component {
     _renderSubComment = (subCommentList) => {
         const { 
             curUser,
-            deleteComment 
+            deleteComment,
+            updateComment
         } = this.props;
 
         // console.log(subCommentList)
@@ -136,6 +139,7 @@ class CommentItem extends Component {
                 <SubCommentItem 
                     curUser={curUser}
                     deleteComment={deleteComment}
+                    updateComment={updateComment}
                     subComment_id={id}
 
                     isReplySee={isReplySee} 
