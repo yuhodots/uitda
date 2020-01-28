@@ -4,9 +4,11 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import SubCommentItem from './SubCommentItem'
-import CommentInput from "./CommentInput";
-import CommentUD from "./Comment_UD";
+import { 
+    SubCommentItem,
+    CommentInput,
+    CommentUD
+} from './';
 import { colors } from "../../../../styles/variables";
 
 
@@ -28,7 +30,7 @@ const CommentLeaf = styled.div`
 `;
 
 /* 작성자 사진, 텍스트 데이터를 담는 div */
-const PhotoTextItem = styled.div`
+export const PhotoTextItem = styled.div`
    width: 100%;
    margin: 0;
    /* margin-bottom: 0.5rem; */
@@ -117,7 +119,8 @@ class CommentItem extends Component {
     _renderSubComment = (subCommentList) => {
         const { 
             curUser,
-            deleteComment 
+            deleteComment,
+            updateComment
         } = this.props;
 
         // console.log(subCommentList)
@@ -136,6 +139,7 @@ class CommentItem extends Component {
                 <SubCommentItem 
                     curUser={curUser}
                     deleteComment={deleteComment}
+                    updateComment={updateComment}
                     subComment_id={id}
 
                     isReplySee={isReplySee} 
@@ -241,6 +245,7 @@ class CommentItem extends Component {
                             updateComment={updateComment}
                             comment_id={comment_id}
                             defaultValue={description}
+                            cancleUpdate={this._handleUpdateCancle}
                         /> :
 
                         <PhotoTextItem
@@ -249,7 +254,17 @@ class CommentItem extends Component {
                         >
                             <CommentItemPhoto />
                             <TextZone>
-                                <CommentItemText><b>{user.username}</b> {description}</CommentItemText>
+                                {/* 하얀색 둥근네모 안에 담기는 내용 (작성자 + 글 내용) */}
+                                <CommentItemText>
+                                    <b>{user.username}</b>&nbsp;
+                                    {/* \n 을 기준으로 span 태그 + br 태그를 생성해서
+                                        줄 띄어쓰기를 적용시킴 */}
+                                    {description.split('\n').map( line => {
+                                        return (<span>{line}<br/></span>)
+                                    })}
+                                </CommentItemText>
+                                
+                                {/* 댓글 수정 삭제 버튼 */}
                                 <CommentUD 
                                     comment_id={comment_id} 
                                     subCommentList={subCommentList} 

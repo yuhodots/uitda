@@ -4,8 +4,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import CommentUD from "./Comment_UD";
+import { CommentInput, CommentUD } from './';
 import { 
+    PhotoTextItem,
     CommentItemPhoto,
     CommentItemText,
     TextZone, 
@@ -22,9 +23,9 @@ const SubCommentLeaf = styled.div`
     margin-bottom: 0.5rem;
 
     display: ${props => {
-        return props.isDisplay ? 'flex' : 'none'
+        return props.isDisplay ? 'block' : 'none'
     }};
-    flex-flow: row nowrap;
+    /* flex-flow: row nowrap; */
 `;
 
     /* Sub Leaf의 생성시간을 담는 Div 영역 */
@@ -50,6 +51,31 @@ const SubCommentLeaf = styled.div`
         bottom: 0.5em;
     `;
 
+    /* 수정하기 클릭 시 나타나는 컴포넌트 (Input 태그 + 취소 탭) */
+    const UpdateComponent = styled.div`
+        display: flex;
+        flex-flow: column nowrap;
+    `;
+
+    /* 취소하기 문구를 담은 div 태그 */
+    const CancleTab = styled.div`
+        margin-top: 0.25rem;
+        margin-left: 3rem;
+
+        font-size: 0.75rem;
+        color: ${colors.font_gray};
+    `;
+
+    /* '취소' 부분 스타일 태그 */
+    const CancleText = styled.span`
+        color: ${colors.blue};
+        
+        cursor: pointer;
+        :hover {
+            text-decoration: underline;
+        }
+    `;
+
 //////////////////////////////////////
 
 /* React Component */
@@ -57,7 +83,8 @@ const SubCommentLeaf = styled.div`
 class SubCommentItem extends Component {
 
     state = {
-        isUDVisible: false,             // 수정 삭제 버튼 visible
+        isUDVisible: false,         // 수정 삭제 버튼 visible
+        isUpdateMode: false,        // 수정 모드 여부
     }
 
     /* 댓글 영역에 마우스를 올릴 때,
@@ -85,9 +112,29 @@ class SubCommentItem extends Component {
     }
     ///////////////////
 
+    /* 수정 모드로 변경하는 메서드 */
+    _setUpdateMode = () => {
+        this.setState({
+            ...this.state,
+            isUpdateMode: true
+        })
+    }
+
+    /* 수정 모드 취소하는 메서드 */
+    _handleUpdateCancle = () => {
+        this.setState({
+            ...this.state,
+            isUpdateMode: false
+        })
+    }
+
+
     render() {
 
         const {
+            curUser,            // 현재 접속자 정보
+            updateComment,      // 댓글 수정 액션 (Comment Input 태그에 넘겨줌)
+
             subComment_id,
             deleteComment,
 
@@ -98,7 +145,10 @@ class SubCommentItem extends Component {
             created,
         } = this.props;
 
-        const { isUDVisible } = this.state;
+        const { 
+            isUDVisible,
+            isUpdateMode,
+        } = this.state;
 
         return (
             <SubCommentLeaf 
@@ -106,21 +156,50 @@ class SubCommentItem extends Component {
                 onMouseEnter={this._handleMouseEnter}
                 onMouseLeave={this._handleMouseLeave}
             >
-                <CommentItemPhoto />
-                <TextZone>
-                    <CommentItemText><b>{user.username}</b> {description}</CommentItemText>
-                    {
-                        isUDVisible ?
-                        <CommentUD 
+                {
+                    isUpdateMode ?
+
+                    <UpdateComponent>
+                        <CommentInput 
+                            curUser={curUser}
+                            isUpdateMode={true} 
+                            updateComment={updateComment}
                             comment_id={subComment_id}
-                            deleteComment={deleteComment}
-                        /> :
-                        <CreatedDivForSub>
-                            <HiddenDiv>{created}</HiddenDiv> 
-                            <DivForPosition>{created}</DivForPosition>
-                        </CreatedDivForSub>
-                    }
-                </TextZone>
+                            defaultValue={description}
+                            cancleUpdate={this._handleUpdateCancle}
+                        />
+                        <CancleTab>
+                            <CancleText onClick={this._handleUpdateCancle} >취소</CancleText>
+                            <span>하려면 Esc 키를 누르세요.</span>
+                        </CancleTab>
+                    </UpdateComponent> :
+                    
+                    <PhotoTextItem>
+                        <CommentItemPhoto />
+                        <TextZone>
+                            <CommentItemText>
+                                <b>{user.username}</b>&nbsp;
+                                {description.split('\n').map(line => {
+                                    return (<span>{line}<br/></span>)
+                                })}
+                            </CommentItemText>
+                            {
+                                isUDVisible ?
+                                <CommentUD 
+                                    comment_id={subComment_id}
+                                    deleteComment={deleteComment}
+
+                                    setUpdateMode={this._setUpdateMode}
+                                /> :
+                                <CreatedDivForSub>
+                                    <HiddenDiv>{created}</HiddenDiv> 
+                                    <DivForPosition>{created}</DivForPosition>
+                                </CreatedDivForSub>
+                            }
+                        </TextZone>
+                    </PhotoTextItem>
+                }
+                
             </SubCommentLeaf>
         )
     }
