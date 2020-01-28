@@ -254,7 +254,17 @@ class CommentItem extends Component {
                         >
                             <CommentItemPhoto />
                             <TextZone>
-                                <CommentItemText><b>{user.username}</b> {description}</CommentItemText>
+                                {/* 하얀색 둥근네모 안에 담기는 내용 (작성자 + 글 내용) */}
+                                <CommentItemText>
+                                    <b>{user.username}</b>&nbsp;
+                                    {/* \n 을 기준으로 span 태그 + br 태그를 생성해서
+                                        줄 띄어쓰기를 적용시킴 */}
+                                    {description.split('\n').map( line => {
+                                        return (<span>{line}<br/></span>)
+                                    })}
+                                </CommentItemText>
+                                
+                                {/* 댓글 수정 삭제 버튼 */}
                                 <CommentUD 
                                     comment_id={comment_id} 
                                     subCommentList={subCommentList} 

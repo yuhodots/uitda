@@ -177,7 +177,12 @@ class SubCommentItem extends Component {
                     <PhotoTextItem>
                         <CommentItemPhoto />
                         <TextZone>
-                            <CommentItemText><b>{user.username}</b> {description}</CommentItemText>
+                            <CommentItemText>
+                                <b>{user.username}</b>&nbsp;
+                                {description.split('\n').map(line => {
+                                    return (<span>{line}<br/></span>)
+                                })}
+                            </CommentItemText>
                             {
                                 isUDVisible ?
                                 <CommentUD 
