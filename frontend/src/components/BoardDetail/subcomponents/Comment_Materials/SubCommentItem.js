@@ -51,11 +51,13 @@ const SubCommentLeaf = styled.div`
         bottom: 0.5em;
     `;
 
+    /* 수정하기 클릭 시 나타나는 컴포넌트 (Input 태그 + 취소 탭) */
     const UpdateComponent = styled.div`
         display: flex;
         flex-flow: column nowrap;
     `;
 
+    /* 취소하기 문구를 담은 div 태그 */
     const CancleTab = styled.div`
         margin-top: 0.25rem;
         margin-left: 3rem;
@@ -64,6 +66,7 @@ const SubCommentLeaf = styled.div`
         color: ${colors.font_gray};
     `;
 
+    /* '취소' 부분 스타일 태그 */
     const CancleText = styled.span`
         color: ${colors.blue};
         
@@ -71,7 +74,7 @@ const SubCommentLeaf = styled.div`
         :hover {
             text-decoration: underline;
         }
-    `
+    `;
 
 //////////////////////////////////////
 
@@ -163,6 +166,7 @@ class SubCommentItem extends Component {
                             updateComment={updateComment}
                             comment_id={subComment_id}
                             defaultValue={description}
+                            cancleUpdate={this._handleUpdateCancle}
                         />
                         <CancleTab>
                             <CancleText onClick={this._handleUpdateCancle} >취소</CancleText>

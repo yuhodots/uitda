@@ -91,6 +91,16 @@ class CommentInput extends Component {
     // state에 text 내용 저장하기
     state = { content: '' }
 
+    
+    /* 수정 모드로 렌더링 된 경우 textarea에 포커스 주기 */
+    componentDidMount () {
+        const { isUpdateMode } = this.props;
+
+        if (isUpdateMode){
+            this.textRef.focus();
+        }
+    }
+
     /* 입력 시, 데이터를 state에 저장하는 함수 */
     _handleChange = (e) => {
         this.setState({
@@ -152,8 +162,44 @@ class CommentInput extends Component {
         window.location.reload();
     }
 
+    /* 키 입력 이벤트 핸들러 (Enter, Esc) */
+    /* KeyDown은 한글 + Enter 시, 두 번 이벤트를 처리한다 ㅡㅡ */
+    _handleKeyPress = (e) => {
+        switch(e.key) {
+            case 'Enter':
+                if(e.shiftKey) { console.log('shift + enter'); break; }
+
+                e.preventDefault();
+                this._handleClick();
+                break;
+
+            default:
+                return;        
+        }
+    }
+
+    /* KeyPress는 Esc를 인식하지 못한다 ㅡㅡ */
+    _handleKeyDown = (e) => {
+
+        const { 
+            isUpdateMode,
+            cancleUpdate
+        } = this.props;
+
+        switch(e.key) {
+            case 'Escape':
+                if ( !isUpdateMode ) { return }
+                cancleUpdate();
+                break;
+
+            default:
+                return;
+        }
+    }
+
+
     render() {
-        
+
         const { 
             isSubComment,
             isReplySee,
@@ -169,8 +215,14 @@ class CommentInput extends Component {
                 <CommentItemPhoto />
                 <CommentInputTextArea>
                     <TextAreaDiv>
-                        {/* <TextArea onChange={this._handleChange} /> */}
-                        <TextArea onChange={this._handleChange} defaultValue={defaultValue} />
+                        <TextArea 
+                            inputRef={tag => {this.textRef = tag}}
+
+                            onKeyDown={this._handleKeyDown} 
+                            onKeyPress={this._handleKeyPress}
+                            onChange={this._handleChange} 
+                            defaultValue={defaultValue} 
+                        />
                     </TextAreaDiv>
                     <SendButton 
                         ImgURL={SendIcon} 
@@ -202,6 +254,8 @@ CommentInput.propTypes = {
         PropTypes.number,
         PropTypes.object
     ]).isRequired,
+
+    cancleUpdate: PropTypes.func,                   // 수정 상태를 취소하는 메서드
 }
 
 CommentInput.defaultProps = {
@@ -210,6 +264,10 @@ CommentInput.defaultProps = {
     parent_comment: 0,
     comment_id: 0,
     defaultValue: '',
+
+    createComment: () => {},
+    updateComment: () => {},
+    cancleUpdate: () => {},
 }
 
 

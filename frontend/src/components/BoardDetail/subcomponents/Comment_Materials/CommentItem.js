@@ -245,6 +245,7 @@ class CommentItem extends Component {
                             updateComment={updateComment}
                             comment_id={comment_id}
                             defaultValue={description}
+                            cancleUpdate={this._handleUpdateCancle}
                         /> :
 
                         <PhotoTextItem
