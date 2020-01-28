@@ -242,7 +242,20 @@
 
 
 
+### 20.01.28 (화)
+
+- carpool model 수정
+
+  - 이벤트 아이디, 제목, 출발지, 도착지, 집합시간, 집합장소, 연락방법, 계좌번호, 내용
+
+  - id, title, departure, destination,  start, meeting_place, contact, account, description
+  - username(작성자)는 자동으로 추가
+
+
+
 ### 해야할 일
+
+- 백엔드 CRUD 확인
 
 - carpool 프론트엔드
 
