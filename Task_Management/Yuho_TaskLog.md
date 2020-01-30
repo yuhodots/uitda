@@ -246,16 +246,23 @@
 
 - carpool model 수정
 
-  - 이벤트 아이디, 제목, 출발지, 도착지, 집합시간, 집합장소, 연락방법, 계좌번호, 내용
+  - 이벤트 아이디, 제목, 출발지, 도착지, 집합시간, 집합장소, 연락방법, 내용
 
-  - id, title, departure, destination,  start, meeting_place, contact, account, description
+  - id, title, departure, destination,  start, meeting_place, contact, description
   - username(작성자)는 자동으로 추가
+
+
+
+### 20.01.30 (목)
+
+- carpool 백엔드 CRUD 확인완료
+- carpool 프론트엔드
+  - week 단위 list로 출력
 
 
 
 ### 해야할 일
 
-- 백엔드 CRUD 확인
-
 - carpool 프론트엔드
-
+  - title 대신 destination이 이벤트에 출력되도록
+  - 전체적인 디자인 fullcalendar demo 참고해서 디자인
