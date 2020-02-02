@@ -261,8 +261,20 @@
 
 
 
-### 해야할 일
+### 20.02.02 (토)
 
-- carpool 프론트엔드
-  - title 대신 destination이 이벤트에 출력되도록
-  - 전체적인 디자인 fullcalendar demo 참고해서 디자인
+- carpool 프론트엔드 꾸미기
+  - 한국어 출력
+  - css 적용, 전체 사이즈 조정
+  - Event Popover 처리 ('+more' 버튼)
+  - 클릭했을 때 상세보기 출력 (ant-design modal 사용)
+
+
+
+###해야할 일
+
+1. **list 옆에 작성자 이름 출력하기**
+2. **title 대신 destination이 이벤트에 출력되도록**
+3. 캘린더 아래에 '이벤트 생성하기' 버튼이 있어도 괜찮을듯
+4. modal의 ok, cancel 중 하나 지우기
+
