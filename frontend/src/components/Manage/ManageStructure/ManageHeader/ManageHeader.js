@@ -54,7 +54,14 @@ class ManageHeader extends Component {
             description,
             editSuccess,
 
-            EditPostRequest
+            edit_spanStyle,
+
+            EditPostRequest,
+            
+            editClickB,
+            editClickI,
+            editClickU,
+            editClickS,
         } = this.props;
 
         return (
@@ -72,7 +79,14 @@ class ManageHeader extends Component {
                         description={description}
                         editSuccess={editSuccess}
 
+                        spanStyle={edit_spanStyle}
+
                         EditPostRequest={EditPostRequest}
+
+                        editClickB={editClickB}
+                        editClickI={editClickI}
+                        editClickU={editClickU}
+                        editClickS={editClickS}
                     /> :
                     <DefaultCompoent />
                 }
@@ -95,7 +109,14 @@ ManageHeader.propTypes = {
     description: PropTypes.string,      // Description Data
     editSuccess: PropTypes.bool,        // 작성 완료를 알리는 데이터
 
+    edit_spanStyle: PropTypes.object,   // BIUS 스타일 선택 정보
+
     EditPostRequest: PropTypes.func,    // Post Create / Update function
+
+    editClickB: PropTypes.func,
+    editClickI: PropTypes.func,
+    editClickU: PropTypes.func,
+    editClickS: PropTypes.func,
 }
 
 ManageHeader.defaultProps = {
@@ -109,6 +130,8 @@ ManageHeader.defaultProps = {
     files: [],             
     description: '',
     editSuccess: false,
+
+    edit_spanStyle: {},
 
     EditPostRequest: undefined,
 }

@@ -11,6 +11,10 @@ import {
     MANAGE_EDIT_STORE_DESCRIPTION_DATA,
     MANAGE_EDIT_CREATE_POST_SUCCESS,
     MANAGE_EDIT_UPDATE_POST_SUCCESS,
+    MANAGE_EDIT_CLICK_BOLD,
+    MANAGE_EDIT_CLICK_ITELIC,
+    MANAGE_EDIT_CLICK_UNDERLINE,
+    MANAGE_EDIT_CLICK_STRIKETHROUGH,
 } from '../actions/ActionTypes'
 
 
@@ -31,6 +35,13 @@ const InitialState = {
     editedFiles: [],            // 업로드할 파일 데이터 리스트
     editedDescription: '',      // 작성한 설명 부분 데이터
     editSuccess: false,         // 작성 완료
+
+    edit_spanStyle: {           // BIUS style 선택된 유무
+        bSelect: false,         // Bold
+        iSelect: false,         // Itelic
+        uSelect: false,         // Underline
+        sSelect: false,         // Strikethrough
+    },
 }
 
 /* manage reducer */
@@ -125,6 +136,44 @@ export default function manage (state = InitialState, action) {
                 ...state,
                 editSuccess: true,
             }
+
+        /* edit span style 선택 액션 */
+        case MANAGE_EDIT_CLICK_BOLD:
+            return {
+                ...state,
+                edit_spanStyle: {
+                    ...state.edit_spanStyle,
+                    bSelect: !state.edit_spanStyle.bSelect
+                }
+            }
+
+        case MANAGE_EDIT_CLICK_ITELIC:
+            return {
+                ...state,
+                edit_spanStyle: {
+                    ...state.edit_spanStyle,
+                    iSelect: !state.edit_spanStyle.iSelect
+                }
+            }
+        
+        case MANAGE_EDIT_CLICK_UNDERLINE:
+            return {
+                ...state,
+                edit_spanStyle: {
+                    ...state.edit_spanStyle,
+                    uSelect: !state.edit_spanStyle.uSelect
+                }
+            }
+
+        case MANAGE_EDIT_CLICK_STRIKETHROUGH:
+            return {
+                ...state,
+                edit_spanStyle: {
+                    ...state.edit_spanStyle,
+                    sSelect: !state.edit_spanStyle.sSelect
+                }
+            }
+
 
         default:
             return state

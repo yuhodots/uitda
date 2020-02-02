@@ -16,6 +16,10 @@ import {
     MANAGE_EDIT_STORE_DESCRIPTION_DATA,
     MANAGE_DELETE_POST_SUCCESS,
     MANAGE_DELETE_POST_FAILURE,
+    MANAGE_EDIT_CLICK_BOLD,
+    MANAGE_EDIT_CLICK_ITELIC,
+    MANAGE_EDIT_CLICK_UNDERLINE,
+    MANAGE_EDIT_CLICK_STRIKETHROUGH,
 } from './ActionTypes';
 
 /* Error Types */
@@ -24,6 +28,7 @@ import {
 } from '../../constants/error_types'
 
 
+// Manage Board 시작 //
 ////////////////////////////////////////////////////////////
 /* '/manage/post/:board' 에서 내 포스팅 데이터를 get 요청하는 액션 */
 
@@ -67,7 +72,43 @@ export function getMyPostFailure (err) {
     }
 }
 
-////////////
+/* '/manage/post/:board'에서의 포스팅 삭제 액션 */
+
+export function deletePostRequest (board, id) {
+    return (dispatch) => {
+
+        /* POST 요청 보낼 url */
+        const POSTurl = `/api/${board}/delete/${id}`;
+
+        /* POST 요청 */
+        return axios.post(POSTurl)
+
+        /* 성공과 실패 시, 각각에 알맞는 액션 dispatch */
+        .then(res => {dispatch(deletePostSuccess())})
+        .catch(err => {dispatch(deletePostFailure(err))})
+    }
+}
+
+export function deletePostSuccess () {
+    return {
+        type: MANAGE_DELETE_POST_SUCCESS,   // 포스팅 삭제 성공
+    }
+}
+
+export function deletePostFailure (err) {
+    return {
+        type: MANAGE_DELETE_POST_FAILURE,   // 포스팅 삭제 실패
+        err,
+    }
+}
+
+/////////////////////////////////////////////////////////////////
+// Manage board 끝 //
+
+
+
+// Manage Edit 시작 //
+//////////////////////////////
 /* Edit Page 데이터 초기화 액션 */
 export function initEditPage() {
     return {
@@ -219,33 +260,27 @@ export function storeEditDescriptionData (editedDescription) {
 }
 
 
-////////////////////////////////////////////
-/* '/manage/post/:board'에서의 포스팅 삭제 액션 */
-
-export function deletePostRequest (board, id) {
-    return (dispatch) => {
-
-        /* POST 요청 보낼 url */
-        const POSTurl = `/api/${board}/delete/${id}`;
-
-        /* POST 요청 */
-        return axios.post(POSTurl)
-
-        /* 성공과 실패 시, 각각에 알맞는 액션 dispatch */
-        .then(res => {dispatch(deletePostSuccess())})
-        .catch(err => {dispatch(deletePostFailure(err))})
+/* Edit page BIUS select 함수 */
+export function editClickB () {
+    return {
+        type: MANAGE_EDIT_CLICK_BOLD
     }
 }
 
-export function deletePostSuccess () {
+export function editClickI () {
     return {
-        type: MANAGE_DELETE_POST_SUCCESS,   // 포스팅 삭제 성공
+        type: MANAGE_EDIT_CLICK_ITELIC
     }
 }
 
-export function deletePostFailure (err) {
+export function editClickU () {
     return {
-        type: MANAGE_DELETE_POST_FAILURE,   // 포스팅 삭제 실패
-        err,
+        type: MANAGE_EDIT_CLICK_UNDERLINE
+    }
+}
+
+export function editClickS () {
+    return {
+        type: MANAGE_EDIT_CLICK_STRIKETHROUGH
     }
 }

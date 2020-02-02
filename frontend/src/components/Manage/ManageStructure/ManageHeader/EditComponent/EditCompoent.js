@@ -2,13 +2,12 @@
 
 
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
-import { Select, Popover, Icon, Divider } from 'antd'
-// import 'antd/es/select/style/css'
-// import 'antd/es/divider/style/css'
+import { Select, Tooltip, Icon, Divider } from 'antd'
 
 import { colors } from '../../../../../styles/variables'; 
+// import AlignJustify from '../../../../../styles/icon/align_justify.svg'; 
 import { MARKET, NETWORKING } from '../../../../../constants/board_name'
 import { Redirect } from 'react-router-dom';
 
@@ -40,10 +39,10 @@ const EditFuncBox = styled.div`
     align-items: center;
 `;
 
-    /*  */
-    const FuncDescriptor = styled(Popover)`
-        transition: 0s all !important;
-    `;
+    // /*  */
+    // const FuncDescriptor = styled(Popover)`
+    //     transition: 0s all !important;
+    // `;
 
     const FontSizeSelect = styled(Select)`
         margin: 0 0.5rem !important;
@@ -55,6 +54,17 @@ const EditFuncBox = styled.div`
         font-size: 1rem;
 
         cursor: pointer;
+        transition-property: color, background-color;
+        transition-duration: 0.3s;
+
+        color: ${colors.icon_darkgray};
+        background-color: ${colors.white};
+
+        /* 클릭 시, 글자색 배경색 변경 */
+        ${props => props.isSelected && css`
+            color: ${colors.white};
+            background-color: ${colors.icon_darkgray};
+        `}
     `;
 
 
@@ -119,13 +129,28 @@ class EditComponent extends Component {
             isNew,
 
             defaultBoard,
-            editSuccess
+            editSuccess,
+
+            spanStyle,
+
+            editClickB,
+            editClickI,
+            editClickS,
+            editClickU,
         } = this.props;
 
-        const { board } = this.state;
+        const { 
+            board,
+        } = this.state;
 
         const redirerctURL = `/manage/posts/${board}`
 
+        const TooltipProps = {
+            mouseEnterDelay: 0,
+            mouseLeaveDelay: 0
+        }
+
+        console.log(spanStyle);
         // console.log(`title: ${title}, files: ${files}, description: ${description}`);
 
         return (
@@ -157,7 +182,7 @@ class EditComponent extends Component {
 
                 <EditFuncBox>
                     {/* font-size */}
-                    <FuncDescriptor content='글자 크기' >
+                    <Tooltip title='글자 크기' {...TooltipProps} >
                         <FontSizeSelect
                             defaultValue={10} 
                         >
@@ -169,30 +194,32 @@ class EditComponent extends Component {
                             <Option value={18} >18 pt</Option>
                             <Option value={24} >24 pt</Option>
                         </FontSizeSelect>
-                    </FuncDescriptor>
+                    </Tooltip>
                     
                     {/* 글꼴 ? */}
 
                     <Divider type='vertical' />
 
-                    <FuncDescriptor content='굵게'>
-                        <EditIcon type="bold" />
-                    </FuncDescriptor>
-                    <FuncDescriptor content='기울이기'>
-                        <EditIcon type="italic" />
-                    </FuncDescriptor>
-                    <FuncDescriptor content='밑줄' >
-                        <EditIcon type="underline" />
-                    </FuncDescriptor>
-                    <FuncDescriptor content='취소선' >
-                        <EditIcon type="strikethrough" />
-                    </FuncDescriptor>
-                    <FuncDescriptor content='글자색' >
+                    <Tooltip title='굵게' {...TooltipProps} >
+                        <EditIcon type="bold" isSelected={spanStyle.bSelect} onClick={editClickB} />
+                    </Tooltip>
+                    <Tooltip title='기울이기' {...TooltipProps} >
+                        <EditIcon type="italic" isSelected={spanStyle.iSelect} onClick={editClickI} />
+                    </Tooltip>
+                    <Tooltip title='밑줄' {...TooltipProps} >
+                        <EditIcon type="underline" isSelected={spanStyle.uSelect} onClick={editClickU} />
+                    </Tooltip>
+                    <Tooltip title='취소선' {...TooltipProps} >
+                        <EditIcon type="strikethrough" isSelected={spanStyle.sSelect} onClick={editClickS} />
+                    </Tooltip>
+
+                    <Tooltip title='글자색' {...TooltipProps} >
                         <EditIcon type="font-colors" />
-                    </FuncDescriptor>
+                    </Tooltip>
                     
                     <Divider type="vertical" />
                     
+                    {/* <EditIcon component={AlignJustify} /> */}
                     <EditIcon type="align-left" />
                     <EditIcon type="align-center" />
                     <EditIcon type="align-right" />
@@ -220,7 +247,14 @@ EditComponent.propTypes = {
     files: PropTypes.array.isRequired,              // Files Data
     description: PropTypes.string.isRequired,       // Description Data
 
+    spanStyle: PropTypes.object.isRequired,         // BIUS 스타일 선택 정보
+
     EditPostRequest: PropTypes.func.isRequired,     // Post Create / Update function
+
+    editClickB: PropTypes.func.isRequired,
+    editClickI: PropTypes.func.isRequired,
+    editClickU: PropTypes.func.isRequired,
+    editClickS: PropTypes.func.isRequired,
 }
 
 EditComponent.defaultProps = {

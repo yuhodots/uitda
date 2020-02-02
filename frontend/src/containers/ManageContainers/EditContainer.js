@@ -15,6 +15,10 @@ import {
     addFileData,
     deleteFileData,
     storeEditDescriptionData,
+    editClickB,
+    editClickI,
+    editClickU,
+    editClickS,
 } from '../../store/actions/manage'
 
 class EditContainer extends Component {
@@ -69,13 +73,18 @@ class EditContainer extends Component {
             files,
             description,
             editSuccess,
+            edit_spanStyle,
 
             /* App Methods */
             EditPostRequest,
             storeEditTitleData,
             addFileData,
             deleteFileData,
-            storeEditDescriptionData
+            storeEditDescriptionData,
+            editClickB,
+            editClickI,
+            editClickU,
+            editClickS,
         } = this.props;
 
         const id = isNew ? 0 : match.params.id;
@@ -98,7 +107,13 @@ class EditContainer extends Component {
                     description={description}           // Eidt 페이지에서 작성한 Description 데이터
                     editSuccess={editSuccess}           // Edit이 완료되었음을 알리는 데이터
 
+                    edit_spanStyle={edit_spanStyle}          // BIUS 스타일 선택 정보
+
                     EditPostRequest={EditPostRequest}
+                    editClickB={editClickB}
+                    editClickI={editClickI}
+                    editClickU={editClickU}
+                    editClickS={editClickS}
                 />
                 <EditBody 
                     title={title}                       // Edit 페이지에서 작성한 Title 데이터
@@ -133,6 +148,7 @@ const mapStateToProps = (state) => {
         files: state.manage.editedFiles,                // File List Data
         description: state.manage.editedDescription,    // Description Data
         editSuccess: state.manage.editSuccess,          // 작성 완료 정보
+        edit_spanStyle: state.manage.edit_spanStyle,    // BUIS 스타일 선택 데이터
     }
 }
 
@@ -148,6 +164,11 @@ const mapDispatchToProps = (dispatch) => {
         addFileData: (file) => dispatch(addFileData(file)),
         deleteFileData: (file) => dispatch(deleteFileData(file)),
         storeEditDescriptionData: (description) => dispatch(storeEditDescriptionData(description)),
+
+        editClickB: () => dispatch(editClickB()),
+        editClickI: () => dispatch(editClickI()),
+        editClickU: () => dispatch(editClickU()),
+        editClickS: () => dispatch(editClickS()),
     }
 }
 
