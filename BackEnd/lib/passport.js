@@ -18,7 +18,7 @@ module.exports = function (app) {
     passport.deserializeUser(function (email, done) { // 로그인 성공한 사용자가 웹 페이지 이동할 때 마다 콜백 함수 호출
     //    console.log('[DeserializeUser]', email); // authId 인자에는 serializeUser 메소드에서 보낸 user.authId 값이 담김
       users.findOne({ where: {email: email} }).then(function(project) {
-        done(null,project.dataValues);
+        done(null, project.dataValues);
       }).catch(function(err){throw err;})
     });
 
@@ -26,8 +26,11 @@ module.exports = function (app) {
     var outlookCredentials = require('../config/outlook.json');
     passport.use(new OutlookStrategy(outlookCredentials,
       function(accessToken, refreshToken, profile, done) {
+        var username =  profile.displayName;
+        var pattern = /(\(.*\) )|( \(.*\))/g;
+        username =  username.replace(pattern, '')
         var user = {
-          userid : profile.displayName,
+          userid : username,
           email: profile.emails[0].value,
           accessToken: accessToken,
           displayName:profile.displayName,
@@ -36,8 +39,6 @@ module.exports = function (app) {
         };
         if (refreshToken)
           user.refreshToken = refreshToken;
-      //  if (profile.mailboxGuid)
-      //    user.mailboxGuid = profile.mailboxGuid;
         users
             .findOrCreate({where: {email: user.email, username : user.userid} }) //defaults: {email: 'heewon7318@unist.ac.kr'}
             .then(() => {

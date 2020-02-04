@@ -34,6 +34,11 @@ module.exports =(sequelize, DataTypes) => {
         parent_comment:{
           type:DataTypes.INTEGER(11).UNSIGNED,
           allowNull:true
+        },
+        is_modified:{
+          type:DataTypes.BOOLEAN,
+          allowNull:false,
+          defaultValue:false
         }
       },{
         timestamps: false,

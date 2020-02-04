@@ -7,15 +7,14 @@ require('moment-timezone');
 moment.tz.setDefault("Asia/Seoul");
 moment.locale('ko');
 
-function make_writer(username, profile_picture, pic_location) {
+function make_writer(username, pic_location) {
     let writer = {
         username: username,
-        profile_picture: profile_picture,
         pic_location: pic_location
     }
     return writer;
 }
-function make_comment_ob(id, type_board, board_id, description, user, created, is_re_comment, parent_comment) {
+function make_comment_ob(id, type_board, board_id, description, user, created, is_re_comment, parent_comment, is_modified) {
     let comment_ob = {
         id: id,
         type_board: type_board,
@@ -24,7 +23,8 @@ function make_comment_ob(id, type_board, board_id, description, user, created, i
         user: user,
         created: created,
         is_re_comment: is_re_comment,
-        parent_comment: parent_comment
+        parent_comment: parent_comment,
+        is_modified: is_modified
     }
     return comment_ob;
 }
@@ -55,17 +55,17 @@ module.exports = {
             function (comment, callback) {
                 let temp = comment;
                 users.findOne({ where: { username: temp.author } }).then(function (user) {
-                    let writer = make_writer(user.username, user.profile_picture, user.pic_location);
+                    let writer = make_writer(user.username, user.pic_location);
                     let time = moment(temp.created, 'YYYY년MM월DD일HH시mm분ss초').fromNow();
                     comment = make_comment_ob(temp.id, temp.type_board, temp.board_id,
-                        temp.description, writer, time, temp.is_re_comment, temp.parent_comment);
+                        temp.description, writer, time, temp.is_re_comment, temp.parent_comment, temp.is_modified);
                     res.json({ comment: comment, user: req.user ? req.user : 0 });
                 }).catch(function (err) { throw err; });
                 callback(null);
             }
         ], function (err) {
             if (err) throw (err);
-        });        
+        });
     },
 
     create : function(req, res){
@@ -99,7 +99,7 @@ module.exports = {
             /* 댓글 생성 */
             function (callback) {
                 comment.create({
-                    type_board: type_board,  board_id: board_id, description: description, 
+                    type_board: type_board,  board_id: board_id, description: description,
                     author: req.user.username, created: moment().format('YYYY년MM월DD일HH시mm분ss초'),
                     is_re_comment: is_re_comment, parent_comment: parent_comment
                 }).then(function () {
@@ -117,7 +117,7 @@ module.exports = {
             if (err) throw (err);
         });
     },
-  
+
     update : function(req, res){
 
         /* 변수 선언 */
@@ -152,7 +152,7 @@ module.exports = {
             /* 댓글 수정 */
             function (callback) {
                 comment.update({
-                    description: description, created: moment().format('YYYY년MM월DD일HH시mm분ss초')
+                    description: description, created: moment().format('YYYY년MM월DD일HH시mm분ss초'), is_modified: true
                 }, { where: { id: id } }).then(function () {
                     callback(null);
                 }).catch(function (err) { throw err; });
