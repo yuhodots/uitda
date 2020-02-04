@@ -104,6 +104,7 @@
 ### 2.4 (화)
 
 * p 태그 text Align 속성 선택하는 UI 작업 (react-icon 사용해서 align-justify 추가)
+* manage 상단바 position fix시킴
 
 
 

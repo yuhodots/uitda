@@ -18,6 +18,7 @@ import {
 /* Styled Components */
 /* 배경 스타일 div 태그 */
 const BackGround = styled(BGTemplate)`
+    padding-top: 4rem;
     min-height: ${props => {
         return `${props.minHeight - 64}px`      // 64는 Header의 높이
     }};
@@ -32,6 +33,7 @@ const EditPaper = styled(PaperTemplate)`
     width: 55rem;
     min-width: 40rem;
     padding: 3rem 4rem;
+    padding-bottom: 5rem;
 
     display: flex;
     flex-flow: column nowrap;

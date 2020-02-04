@@ -14,7 +14,7 @@ const DescriptionBox = styled.div`
 
 const DescriptionTextArea = styled(Input.TextArea)`
     padding-top: 3rem;
-    min-height: 20rem !important;
+    min-height: 10rem !important;
     width: 100%;
 
     font-size: 1rem;

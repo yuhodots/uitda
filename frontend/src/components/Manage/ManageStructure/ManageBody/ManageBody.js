@@ -20,6 +20,7 @@ import {
 const BodyArea = styled(BGTemplate)`
     margin: 0;
     padding: 2.5rem;
+    padding-top: 6.5rem;
 `;
 
 /* Body에 들어가는 요소 (SideBox, ContentBox)를 담는 전체 Box
