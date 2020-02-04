@@ -15,7 +15,10 @@ import {
     MANAGE_EDIT_CLICK_ITELIC,
     MANAGE_EDIT_CLICK_UNDERLINE,
     MANAGE_EDIT_CLICK_STRIKETHROUGH,
+    MANAGE_EDIT_SELECT_TEXT_ALIGN,
 } from '../actions/ActionTypes'
+
+import { TEXT_ALIGN } from '../../constants/edit_funcs'
 
 
 /* 초기 상태 및 manage state 항목 설명 */
@@ -26,23 +29,25 @@ const InitialState = {
     user: 0,
 
     /* 'posts' states */
-    postList: [],               // 포스팅 데이터 리스트
+    postList: [],                           // 포스팅 데이터 리스트
 
     /* 'edit' states */
-    isEditInit: false,          // Edit 페이지 초기화 여부
-    isEditGetSuccess: false,    // Edit page GET 성공 여부
-    editedTitle: '',            // 작성한 제목 데이터
-    editedFiles: [],            // 업로드할 파일 데이터 리스트
-    editedDescription: '',      // 작성한 설명 부분 데이터
-    editSuccess: false,         // 작성 완료
+    isEditInit: false,                      // Edit 페이지 초기화 여부
+    isEditGetSuccess: false,                // Edit page GET 성공 여부
+    editedTitle: '',                        // 작성한 제목 데이터
+    editedFiles: [],                        // 업로드할 파일 데이터 리스트
+    editedDescription: '',                  // 작성한 설명 부분 데이터
+    editSuccess: false,                     // 작성 완료
 
-    edit_spanStyle: {           // BIUS style 선택된 유무
-        bSelect: false,         // Bold
-        iSelect: false,         // Itelic
-        uSelect: false,         // Underline
-        sSelect: false,         // Strikethrough
+    edit_spanStyle: {                       // BIUS style 선택된 유무
+        bSelect: false,                     // Bold
+        iSelect: false,                     // Itelic
+        uSelect: false,                     // Underline
+        sSelect: false,                     // Strikethrough
     },
+    edit_textAlign: TEXT_ALIGN.justify,     // p 태그 text align 속성
 }
+
 
 /* manage reducer */
 export default function manage (state = InitialState, action) {
@@ -174,6 +179,12 @@ export default function manage (state = InitialState, action) {
                 }
             }
 
+        /* text-align 속성값 선택 액션 */
+        case MANAGE_EDIT_SELECT_TEXT_ALIGN:
+            return {
+                ...state,
+                edit_textAlign: action.textAlignAttr
+            }
 
         default:
             return state

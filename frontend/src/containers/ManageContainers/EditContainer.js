@@ -19,6 +19,7 @@ import {
     editClickI,
     editClickU,
     editClickS,
+    editSelectTextAlign,
 } from '../../store/actions/manage'
 
 class EditContainer extends Component {
@@ -74,6 +75,7 @@ class EditContainer extends Component {
             description,
             editSuccess,
             edit_spanStyle,
+            edit_textAlign,
 
             /* App Methods */
             EditPostRequest,
@@ -85,6 +87,7 @@ class EditContainer extends Component {
             editClickI,
             editClickU,
             editClickS,
+            editSelectTextAlign,
         } = this.props;
 
         const id = isNew ? 0 : match.params.id;
@@ -107,13 +110,15 @@ class EditContainer extends Component {
                     description={description}           // Eidt 페이지에서 작성한 Description 데이터
                     editSuccess={editSuccess}           // Edit이 완료되었음을 알리는 데이터
 
-                    edit_spanStyle={edit_spanStyle}          // BIUS 스타일 선택 정보
+                    edit_spanStyle={edit_spanStyle}     // BIUS 스타일 선택 정보
+                    edit_textAlign={edit_textAlign}     // p태그 text align 속성
 
                     EditPostRequest={EditPostRequest}
                     editClickB={editClickB}
                     editClickI={editClickI}
                     editClickU={editClickU}
                     editClickS={editClickS}
+                    editSelectTextAlign={editSelectTextAlign}
                 />
                 <EditBody 
                     title={title}                       // Edit 페이지에서 작성한 Title 데이터
@@ -149,6 +154,7 @@ const mapStateToProps = (state) => {
         description: state.manage.editedDescription,    // Description Data
         editSuccess: state.manage.editSuccess,          // 작성 완료 정보
         edit_spanStyle: state.manage.edit_spanStyle,    // BUIS 스타일 선택 데이터
+        edit_textAlign: state.manage.edit_textAlign,    // p태그 text align 속성 값
     }
 }
 
@@ -169,6 +175,9 @@ const mapDispatchToProps = (dispatch) => {
         editClickI: () => dispatch(editClickI()),
         editClickU: () => dispatch(editClickU()),
         editClickS: () => dispatch(editClickS()),
+        editSelectTextAlign: (textAlignAttr) => {
+            dispatch(editSelectTextAlign(textAlignAttr))
+        }
     }
 }
 

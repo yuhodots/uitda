@@ -20,6 +20,7 @@ import {
     MANAGE_EDIT_CLICK_ITELIC,
     MANAGE_EDIT_CLICK_UNDERLINE,
     MANAGE_EDIT_CLICK_STRIKETHROUGH,
+    MANAGE_EDIT_SELECT_TEXT_ALIGN,
 } from './ActionTypes';
 
 /* Error Types */
@@ -282,5 +283,13 @@ export function editClickU () {
 export function editClickS () {
     return {
         type: MANAGE_EDIT_CLICK_STRIKETHROUGH
+    }
+}
+
+/* Text Align 속성 Select 함수 */
+export function editSelectTextAlign (textAlignAttr) {
+    return {
+        type: MANAGE_EDIT_SELECT_TEXT_ALIGN,
+        textAlignAttr
     }
 }

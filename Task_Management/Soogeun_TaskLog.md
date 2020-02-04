@@ -101,9 +101,9 @@
 
 
 
-### 2.2 (일)
+### 2.4 (화)
 
-
+* p 태그 text Align 속성 선택하는 UI 작업 (react-icon 사용해서 align-justify 추가)
 
 
 
@@ -134,7 +134,7 @@
 
   
   
-* 수정 시 (수정 됨) 을 추가하기
+* 댓글 수정 시 (수정 됨) 을 추가하기
 
 * board에서 글 들어갔다가 뒤로가기 후 매니지의 아무 글 클릭하면 post에 데이터가 담기지 않는 에러
 
@@ -193,18 +193,34 @@
 
 #### Manage FrontEnd
 
+* manage 페이지 상단바 고정시키기 (position: fix)
+
+  
+
 * 작성하다가 삭제를 했을 때, DropZone 미리보기와 실제 업로드 되는 사진이 다른 오류
+
 * DropZone PhotoList의 width값 고정된거 없애기
+
 * Edit Page 나가기 전에 '나가시겠습니까 묻기'
+
 * Edit update 시, 사진이 뜨도록
+
 * Edit Page 상단 바 디자인
+
 * Edit 상단 아이콘 기능 구현
+
 * Edit Create 시, default Board값을 받아올 수 있도록 하기
+
 * Edit 스타일을 지닌 태그들을 어떻게 저장할 것인지 구상
+
 * Edit update 시, 삭제되는 이미지는 id, 새로 추가되는 이미지는 이전처럼 보내주기
+
 * 사진 업로드 최대 개수 (현재 6개)
+
 * 사진 순서 변경 기능 (백앤드 작업 이후)
+
 * manage에 이름 박수근 -> 사용자 이름
+
 * 내용이 없이 create 했을 때, 경고 메시지 창 띄우기
 
 

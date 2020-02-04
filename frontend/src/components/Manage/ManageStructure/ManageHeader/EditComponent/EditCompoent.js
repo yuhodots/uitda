@@ -5,11 +5,17 @@ import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 import { Select, Tooltip, Icon, Divider } from 'antd'
+import { 
+    MdFormatAlignJustify,
+    MdFormatAlignLeft,
+    MdFormatAlignCenter,
+    MdFormatAlignRight,
+} from 'react-icons/md'
+import { Redirect } from 'react-router-dom';
 
 import { colors } from '../../../../../styles/variables'; 
-// import AlignJustify from '../../../../../styles/icon/align_justify.svg'; 
 import { MARKET, NETWORKING } from '../../../../../constants/board_name'
-import { Redirect } from 'react-router-dom';
+import { TEXT_ALIGN } from '../../../../../constants/edit_funcs'
 
 /* Select Component의 Option Component */
 const { Option } = Select;
@@ -39,17 +45,12 @@ const EditFuncBox = styled.div`
     align-items: center;
 `;
 
-    // /*  */
-    // const FuncDescriptor = styled(Popover)`
-    //     transition: 0s all !important;
-    // `;
-
     const FontSizeSelect = styled(Select)`
         margin: 0 0.5rem !important;
     `;
 
     /* Icon 공통 속성 (ant-design) */
-    const EditIcon = styled(Icon)`
+    const IconStyle = css`
         margin: 0 0.5rem;
         font-size: 1rem;
 
@@ -67,6 +68,16 @@ const EditFuncBox = styled.div`
         `}
     `;
 
+    /* Ant Design Icon */
+    const EditIcon = styled(Icon)`
+        ${IconStyle}
+    `;
+
+    /* Ant Design에 없는 아이콘들 */
+    const AlignJustifyIcon = styled(MdFormatAlignJustify)`${IconStyle}`;
+    const AlignLeftIcon = styled(MdFormatAlignLeft)`${IconStyle}`;
+    const AlignCenterIcon = styled(MdFormatAlignCenter)`${IconStyle}`;
+    const AlignRightIcon = styled(MdFormatAlignRight)`${IconStyle}`;
 
     /* 글 생성 / 수정 버튼 */
     const EndButton = styled.div`
@@ -132,11 +143,13 @@ class EditComponent extends Component {
             editSuccess,
 
             spanStyle,
+            textAlign,
 
             editClickB,
             editClickI,
             editClickS,
             editClickU,
+            selectTextAlign,
         } = this.props;
 
         const { 
@@ -219,11 +232,31 @@ class EditComponent extends Component {
                     
                     <Divider type="vertical" />
                     
-                    {/* <EditIcon component={AlignJustify} /> */}
-                    <EditIcon type="align-left" />
-                    <EditIcon type="align-center" />
-                    <EditIcon type="align-right" />
-                    {/* text-align: justify 아이콘 */}
+                    {/* p 태그 속성 (text-align) */}
+                    <Tooltip title='양쪽 정렬' {...TooltipProps} >
+                        <AlignJustifyIcon 
+                            isSelected={textAlign === TEXT_ALIGN.justify} 
+                            onClick={() => selectTextAlign(TEXT_ALIGN.justify)}    
+                        />
+                    </Tooltip>
+                    <Tooltip title='왼쪽 정렬' {...TooltipProps} >
+                        <AlignLeftIcon 
+                            isSelected={textAlign === TEXT_ALIGN.left} 
+                            onClick={() => selectTextAlign(TEXT_ALIGN.left)}
+                        />
+                    </Tooltip>
+                    <Tooltip title='가운데 정렬' {...TooltipProps} >
+                        <AlignCenterIcon 
+                            isSelected={textAlign === TEXT_ALIGN.center} 
+                            onClick={() => selectTextAlign(TEXT_ALIGN.center)}
+                        />
+                    </Tooltip>
+                    <Tooltip title='오른쪽 정렬' {...TooltipProps} >
+                        <AlignRightIcon 
+                            isSelected={textAlign === TEXT_ALIGN.right} 
+                            onClick={() => selectTextAlign(TEXT_ALIGN.right)}
+                        />
+                    </Tooltip>
                 </EditFuncBox>
 
                 {/* 글 수정 / 생성 버튼 */}
@@ -248,6 +281,7 @@ EditComponent.propTypes = {
     description: PropTypes.string.isRequired,       // Description Data
 
     spanStyle: PropTypes.object.isRequired,         // BIUS 스타일 선택 정보
+    textAlign: PropTypes.object.isRequired,         // p태그 text align 속성 값
 
     EditPostRequest: PropTypes.func.isRequired,     // Post Create / Update function
 
@@ -255,6 +289,7 @@ EditComponent.propTypes = {
     editClickI: PropTypes.func.isRequired,
     editClickU: PropTypes.func.isRequired,
     editClickS: PropTypes.func.isRequired,
+    selectTextAlign: PropTypes.func.isRequired,     // text align 속성값 선택 함수
 }
 
 EditComponent.defaultProps = {

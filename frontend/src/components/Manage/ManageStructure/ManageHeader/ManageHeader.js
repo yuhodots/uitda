@@ -55,6 +55,7 @@ class ManageHeader extends Component {
             editSuccess,
 
             edit_spanStyle,
+            edit_textAlign,
 
             EditPostRequest,
             
@@ -62,6 +63,7 @@ class ManageHeader extends Component {
             editClickI,
             editClickU,
             editClickS,
+            editSelectTextAlign,
         } = this.props;
 
         return (
@@ -80,6 +82,7 @@ class ManageHeader extends Component {
                         editSuccess={editSuccess}
 
                         spanStyle={edit_spanStyle}
+                        textAlign={edit_textAlign}
 
                         EditPostRequest={EditPostRequest}
 
@@ -87,6 +90,7 @@ class ManageHeader extends Component {
                         editClickI={editClickI}
                         editClickU={editClickU}
                         editClickS={editClickS}
+                        selectTextAlign={editSelectTextAlign}
                     /> :
                     <DefaultCompoent />
                 }
@@ -100,23 +104,25 @@ ManageHeader.propTypes = {
     isEdit: PropTypes.bool,             // Edit header인지 아닌지
 
     /* Edit Header를 위한 props */
-    isNew: PropTypes.bool,              // Create / Update 여부
-    id: PropTypes.number,               // Update의 경우 해당 글의 id
+    isNew: PropTypes.bool,                  // Create / Update 여부
+    id: PropTypes.number,                   // Update의 경우 해당 글의 id
     board: PropTypes.string,
 
-    title: PropTypes.string,            // Title Data
-    files: PropTypes.array,             // Files Data
-    description: PropTypes.string,      // Description Data
-    editSuccess: PropTypes.bool,        // 작성 완료를 알리는 데이터
+    title: PropTypes.string,                // Title Data
+    files: PropTypes.array,                 // Files Data
+    description: PropTypes.string,          // Description Data
+    editSuccess: PropTypes.bool,            // 작성 완료를 알리는 데이터
 
-    edit_spanStyle: PropTypes.object,   // BIUS 스타일 선택 정보
+    edit_spanStyle: PropTypes.object,       // BIUS 스타일 선택 정보
+    edit_textAlign: PropTypes.string,       // p태그 text align 속섣값
 
-    EditPostRequest: PropTypes.func,    // Post Create / Update function
+    EditPostRequest: PropTypes.func,        // Post Create / Update function
 
     editClickB: PropTypes.func,
     editClickI: PropTypes.func,
     editClickU: PropTypes.func,
     editClickS: PropTypes.func,
+    editSelectTextAlign: PropTypes.func,    // Text Align 속성값을 선택하는 함수
 }
 
 ManageHeader.defaultProps = {
@@ -132,8 +138,10 @@ ManageHeader.defaultProps = {
     editSuccess: false,
 
     edit_spanStyle: {},
+    edit_textAlign: '',
 
     EditPostRequest: undefined,
+    editSelectTextAlign: undefined,
 }
 
 export default ManageHeader;
