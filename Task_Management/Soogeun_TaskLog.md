@@ -194,7 +194,7 @@
 
 #### Manage FrontEnd
 
-* manage 페이지 상단바 고정시키기 (position: fix)
+* edit 상단바가 스크롤 내리면 위에 tooltip 생기는 거 고치기
 
   
 
