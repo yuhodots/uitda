@@ -10,6 +10,7 @@ var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 var session_store_object = require('./config/session-store');
 var app = express();
+var http = require('http');
 var sequelize = require('./models/index').sequelize;
 sequelize.sync();
 /* Increase event listener */
@@ -76,4 +77,5 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.listen(3000,'127.0.0.1',() => console.log('App listening on port 3000!'))
+let httpServer= http.createServer(app).listen(3000,'127.0.0.1',() => console.log('App listening on port 3000!'))
+let socket = require('./lib/socket')(httpServer);

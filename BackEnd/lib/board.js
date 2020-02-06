@@ -19,10 +19,9 @@ let multerS3 = require('../lib/multerS3')();
 let s3 = multerS3.s3;
 
 /* Model method */
-function make_writer(username, profile_picture, pic_location) {
+function make_writer(username, pic_location) {
     let writer = {
         username: username,
-        profile_picture: profile_picture,
         pic_location: pic_location
     }
     return writer;
@@ -75,7 +74,7 @@ function type_files_assign(type) {
         return networking_files;
     }
 }
-function make_comment_ob(id, type_board, board_id, description, user, created, is_re_comment, parent_comment) {
+function make_comment_ob(id, type_board, board_id, description, user, created, is_re_comment, parent_comment, is_modified) {
     let comment_ob = {
         id: id,
         type_board: type_board,
@@ -84,7 +83,8 @@ function make_comment_ob(id, type_board, board_id, description, user, created, i
         user: user,
         created: created,
         is_re_comment: is_re_comment,
-        parent_comment: parent_comment
+        parent_comment: parent_comment,
+        is_modified: is_modified
     }
     return comment_ob;
 }
@@ -180,7 +180,7 @@ module.exports = {
                                     if (files.length > 0) {
                                         filelist = make_file(files, files.length);
                                     }
-                                    let writer = make_writer(user.username, user.profile_picture, user.pic_location);
+                                    let writer = make_writer(user.username, user.pic_location);
                                     let time = moment(content.created, 'YYYY년MM월DD일HH시mm분ss초').fromNow();
                                     (type == 'market') ?
                                         post = make_market_ob(content.id, content.title, writer, time, content.price, content.condition, content.description, filelist) :
@@ -235,10 +235,10 @@ module.exports = {
                 comment.findAll({ where: { board_id: board_id, type_board: comment_type_board } }).then(function(comments){
                     for (let i = 0; i < comments.length; i++) {
                         users.findOne({ where: { username: comments[i].author } }).then(function (user) {
-                            let writer = make_writer(user.username, user.profile_picture, user.pic_location);
+                            let writer = make_writer(user.username, user.pic_location);
                             let time = moment(comments[i].created, 'YYYY년MM월DD일HH시mm분ss초').fromNow();
                             comment_ob = make_comment_ob(comments[i].id, comments[i].type_board, comments[i].board_id,
-                                comments[i].description, writer, time, comments[i].is_re_comment, comments[i].parent_comment);
+                                comments[i].description, writer, time, comments[i].is_re_comment, comments[i].parent_comment,comments[i].is_modified);
                             commentlist[i] = comment_ob;
                         }).catch(function (err) { throw err; });
                     }
@@ -253,13 +253,13 @@ module.exports = {
                 }).catch(function (err) {
                     throw err;
                 });
-            },            
+            },
 
             /* post response 객체 생성 & 응답 */
             function (content, callback) {
                 type_files.findAll({ where: { board_id: board_id } }).then(function (files) {
                     users.findOne({ where: { username: content.author } }).then(function (user) {
-                        let writer = make_writer(user.username, user.profile_picture, user.pic_location);
+                        let writer = make_writer(user.username, user.pic_location);
                         let filelist = make_file(files, files.length);
                         let time = moment(content.created, 'YYYY년MM월DD일HH시mm분ss초').fromNow();
                         let post;
@@ -457,6 +457,7 @@ module.exports = {
         /* 변수 선언 */
         let type_board; // market_board | networking board
         let type_files; // market_board | networking board
+        let comment_type_board;
         let id;
 
         async.waterfall([
@@ -466,6 +467,9 @@ module.exports = {
                 id = req.params.id;
                 type_board = type_board_assign(type);
                 type_files = type_files_assign(type);
+                (type == 'market') ?
+                    comment_type_board = 'market':
+                    comment_type_board = 'networking';
                 callback(null);
             },
 
@@ -487,6 +491,7 @@ module.exports = {
 
             /* 게시글 삭제 수행 */
             function (callback) {
+                comment.destroy({ where: { board_id: id, type_board: comment_type_board } }).catch(function (err) { throw err; });
                 type_board.destroy({ where: { id: id } }).catch(function (err) { throw err; });
                 type_files.findAll({ where: { board_id: id } }).then(function (filelist) {
                     if (filelist.length) {

@@ -246,16 +246,48 @@
 
 - carpool model 수정
 
-  - 이벤트 아이디, 제목, 출발지, 도착지, 집합시간, 집합장소, 연락방법, 계좌번호, 내용
+  - 이벤트 아이디, 제목, 출발지, 도착지, 집합시간, 집합장소, 연락방법, 내용
 
-  - id, title, departure, destination,  start, meeting_place, contact, account, description
+  - id, title, departure, destination,  start, meeting_place, contact, description
   - username(작성자)는 자동으로 추가
 
 
 
-### 해야할 일
+### 20.01.30 (목)
 
-- 백엔드 CRUD 확인
-
+- carpool 백엔드 CRUD 확인완료
 - carpool 프론트엔드
+  - week 단위 list로 출력
 
+
+
+### 20.02.02 (일)
+
+- carpool 프론트엔드 꾸미기
+  - 한국어 출력
+  - css 적용, 전체 사이즈 조정
+  - Event Popover 처리 ('+more' 버튼)
+  - 클릭했을 때 상세보기 출력 (ant-design modal 사용)
+
+
+
+### 20.02.04 (화)
+
+- carpool 프론트엔드 
+  - modal의 ok, cancel 삭제
+- comment 백엔드
+  - 희원이가 전해준 자료 코드에 적용
+
+
+
+
+###해야할 일
+
+1. **list 옆에 작성자 & 마감상태 이름 출력하기** 
+2. **title 대신 destination이 이벤트에 출력되도록**
+3. **자신의 이벤트에 대해 색 추가**
+4. 캘린더 아래에 '이벤트 생성하기' 버튼이 있어도 괜찮을듯
+5. 마감 버튼 추가
+
+- 회원 탈퇴기능 추가
+- username이 아니라 email로 유저 확인하기 (관련 내용 모두 수정하기)

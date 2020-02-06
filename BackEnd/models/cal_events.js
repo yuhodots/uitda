@@ -8,7 +8,27 @@ return sequelize.define('cal_events', {
     allowNull: false
   },
   title: {
-    type: DataTypes.STRING(70),
+    type: DataTypes.STRING(50),
+    allowNull: false
+  },
+  departure: {
+    type: DataTypes.STRING(50),
+    allowNull: false
+  },
+  destination: {
+    type: DataTypes.STRING(50),
+    allowNull: false
+  },
+  start: {
+    type: DataTypes.DATE,
+    allowNull: false
+  },
+  meeting_place: {
+    type: DataTypes.STRING(50),
+    allowNull: false
+  },
+  contact: {
+    type: DataTypes.TEXT,
     allowNull: false
   },
   description: {
@@ -17,14 +37,6 @@ return sequelize.define('cal_events', {
   },
   username: {
   type: DataTypes.STRING(30),
-  allowNull: false
-  },
-  start: {
-  type: DataTypes.DATE,
-  allowNull: false
-  },
-  end: {
-  type: DataTypes.DATE,
   allowNull: false
   }
   },{

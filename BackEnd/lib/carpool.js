@@ -20,18 +20,26 @@ module.exports = {
 
         /* 변수 선언 */
         let title;
-        let description;
+        let departure;
+        let destination;
         let start;
-        let end;
+        let meeting_place;
+        let contact;
+        let account;
+        let description;
 
         async.waterfall([
 
             /* 변수 값 할당 */
             function (callback) {
                 title = req.body.title;
-                description = req.body.description;
+                departure = req.body.departure;
+                destination = req.body.destination;
                 start = req.body.start;
-                end = req.body.end;
+                meeting_place = req.body.meeting_place;
+                contact = req.body.contact;
+                account = req.body.account;
+                description = req.body.description;
                 callback(null);
             },
 
@@ -44,7 +52,9 @@ module.exports = {
 
             /* 이벤트 생성 */
             function (callback) {
-                cal_events.create({ title : title, description : description, username : req.user.username, start : start, end : end })
+                cal_events.create({ title : title, departure : departure, destination : destination, 
+                    start : start, meeting_place : meeting_place, contact : contact, account : account, 
+                    description : description, username : req.user.username })
                 .then(function(){ callback(null); }).catch(function(err){throw err;});
             },
 
@@ -62,21 +72,29 @@ module.exports = {
     update : function(req, res){
 
         /* 변수 선언 */
-        let title;
-        let description;
-        let start;
-        let end;
         let id;
+        let title;
+        let departure;
+        let destination;
+        let start;
+        let meeting_place;
+        let contact;
+        let account;
+        let description;
 
         async.waterfall([
 
             /* 변수 값 할당 */
             function (callback) {
-                title = req.body.title;
-                description = req.body.description;
-                start = req.body.start;
-                end = req.body.end;
                 id = req.params.id;
+                title = req.body.title;
+                departure = req.body.departure;
+                destination = req.body.destination;
+                start = req.body.start;
+                meeting_place = req.body.meeting_place;
+                contact = req.body.contact;
+                account = req.body.account;
+                description = req.body.description;
                 callback(null);
             },
 
@@ -98,7 +116,9 @@ module.exports = {
 
             /* 이벤트 수정 */
             function (callback) {
-                cal_events.update({ title : title, description : description, start : start, end : end }, { where: { id: id } })
+                cal_events.update({ title : title, departure : departure, destination : destination, 
+                    start : start, meeting_place : meeting_place, contact : contact, account : account, 
+                    description : description, username : req.user.username }, { where: { id: id } })
                 .then(function () { callback(null); }).catch(function (err) { throw err; });
             },
 
