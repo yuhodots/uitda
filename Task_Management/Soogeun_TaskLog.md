@@ -108,6 +108,14 @@
 
 
 
+### 2.11 (화)
+
+* Board, Manage의 min-height 속성값 정상적으로 부여
+  (container에 addEventListener('resize')를 통해 화면 크기가 변하면 windowHeight값도 변경되도록 함  )
+* 
+
+
+
 
 
 

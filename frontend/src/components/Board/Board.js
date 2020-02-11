@@ -39,14 +39,6 @@ class Board extends Component {
 
     state = {}
 
-    componentDidMount() {
-        const innerHeight = window.innerHeight;
-
-        this.setState({
-            innerHeight
-        })
-    }
-
     _makeStandardList = (postlist) => {
         // Postlist의 Post 개수를 3의 배수에 맞도록
         // Fakecard를 추가해 주는 함수
@@ -112,14 +104,12 @@ class Board extends Component {
 
     render() {
 
-        const { innerHeight } = this.state;
-
-        const { search } = this.props;
+        const { search, windowHeight } = this.props;
 
         const postlist = this._makeStandardList(this.props.postlist);
 
         return (
-            <BoardTemplate minHeight={innerHeight} >
+            <BoardTemplate minHeight={windowHeight} >
                 {
                     search ?
                     <SearchInfoBox>
@@ -138,6 +128,8 @@ Board.propTypes = {
     boardName: PropTypes.string.isRequired,     // 무슨 보드인지 (market, networking)
     postlist: PropTypes.array,                  // 렌더할 Post List 데이터
     search: PropTypes.string,                   // 검색어 데이터
+
+    windowHeight: PropTypes.number.isRequired,  // 화면 세로 길이 값
 }
 
 Board.defaultProps = {
