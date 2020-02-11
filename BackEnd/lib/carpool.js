@@ -54,7 +54,7 @@ module.exports = {
             function (callback) {
                 cal_events.create({ title : title, departure : departure, destination : destination, 
                     start : start, meeting_place : meeting_place, contact : contact, account : account, 
-                    description : description, username : req.user.username })
+                    description : description, username : req.user.username, email: req.user.email })
                 .then(function(){ callback(null); }).catch(function(err){throw err;});
             },
 
@@ -108,7 +108,7 @@ module.exports = {
             /* 작성자인지 확인 */
             function (callback) {
                 cal_events.findOne({ where: { id: id } }).then(function (content) {
-                    (auth.sameOwner(req, content.username) === 0) ?
+                    (auth.sameOwner(req, content.email) === 0) ?
                         res.json({ user: req.user ? req.user : 0 }) :
                         callback(null);
                 }).catch(function (err) { throw err; });
@@ -118,7 +118,7 @@ module.exports = {
             function (callback) {
                 cal_events.update({ title : title, departure : departure, destination : destination, 
                     start : start, meeting_place : meeting_place, contact : contact, account : account, 
-                    description : description, username : req.user.username }, { where: { id: id } })
+                    description : description, username : req.user.username, email : req.user.email }, { where: { id: id } })
                 .then(function () { callback(null); }).catch(function (err) { throw err; });
             },
 
@@ -156,7 +156,7 @@ module.exports = {
             /* 작성자인지 확인 */
             function (callback) {
                 cal_events.findOne({ where: { id: id } }).then(function (content) {
-                    (auth.sameOwner(req, content.username) === 0) ?
+                    (auth.sameOwner(req, content.email) === 0) ?
                         res.json({ user: req.user ? req.user : 0 }) :
                         callback(null);
                 }).catch(function (err) { throw err; });

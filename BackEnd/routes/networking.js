@@ -35,7 +35,7 @@ router.get('/update/:id', function (req, res) {
   (!auth.isOwner(req, res)) ?
     res.json({ user: req.user ? req.user : 0 }) :
     networking_board.findOne({ where: { id: req.params.id } }).then(function (content) {
-      (auth.sameOwner(req, content.author) === 0) ?
+      (auth.sameOwner(req, content.email) === 0) ?
         res.json({ user: req.user ? req.user : 0 }) :
         board.post('networking', req, res);
     }).catch(function (err) { throw err; });

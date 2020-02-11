@@ -19,9 +19,10 @@ let multerS3 = require('../lib/multerS3')();
 let s3 = multerS3.s3;
 
 /* Model method */
-function make_writer(username, pic_location) {
+function make_writer(username, email, pic_location) {
     let writer = {
         username: username,
+        email: email,
         pic_location: pic_location
     }
     return writer;
@@ -175,12 +176,12 @@ module.exports = {
                             type_files.findAll({ where: { board_id: content.id } }).then(function (files) {
                                 console.log(`\nIteration: ${i}\n`);
                                 console.log(`\Counter: ${counter}\n`);
-                                users.findOne({ where: { username: content.author } }).then(function (user) {
+                                users.findOne({ where: { email: content.email } }).then(function (user) {
                                     let filelist = [];
                                     if (files.length > 0) {
                                         filelist = make_file(files, files.length);
                                     }
-                                    let writer = make_writer(user.username, user.pic_location);
+                                    let writer = make_writer(user.username, user.email, user.pic_location);
                                     let time = moment(content.created, 'YYYY년MM월DD일HH시mm분ss초').fromNow();
                                     (type == 'market') ?
                                         post = make_market_ob(content.id, content.title, writer, time, content.price, content.condition, content.description, filelist) :
@@ -234,8 +235,8 @@ module.exports = {
             function (callback) {
                 comment.findAll({ where: { board_id: board_id, type_board: comment_type_board } }).then(function(comments){
                     for (let i = 0; i < comments.length; i++) {
-                        users.findOne({ where: { username: comments[i].author } }).then(function (user) {
-                            let writer = make_writer(user.username, user.pic_location);
+                        users.findOne({ where: { email: comments[i].email } }).then(function (user) {
+                            let writer = make_writer(user.username, user.email, user.pic_location);
                             let time = moment(comments[i].created, 'YYYY년MM월DD일HH시mm분ss초').fromNow();
                             comment_ob = make_comment_ob(comments[i].id, comments[i].type_board, comments[i].board_id,
                                 comments[i].description, writer, time, comments[i].is_re_comment, comments[i].parent_comment,comments[i].is_modified);
@@ -258,8 +259,8 @@ module.exports = {
             /* post response 객체 생성 & 응답 */
             function (content, callback) {
                 type_files.findAll({ where: { board_id: board_id } }).then(function (files) {
-                    users.findOne({ where: { username: content.author } }).then(function (user) {
-                        let writer = make_writer(user.username, user.pic_location);
+                    users.findOne({ where: { email: content.email } }).then(function (user) {
+                        let writer = make_writer(user.username, user.email, user.pic_location);
                         let filelist = make_file(files, files.length);
                         let time = moment(content.created, 'YYYY년MM월DD일HH시mm분ss초').fromNow();
                         let post;
@@ -310,7 +311,7 @@ module.exports = {
             /* 게시글 text data 생성 */
             function (callback) {
                 type_board.create({
-                    title: title, description: description, author: req.user.username, created: moment().format('YYYY년MM월DD일HH시mm분ss초'), filenum: files.length, count: 0
+                    title: title, description: description, author: req.user.username, email: req.user.email, created: moment().format('YYYY년MM월DD일HH시mm분ss초'), filenum: files.length, count: 0
                 }).then(function () {
                     callback(null)
                 }).catch(function (err) { throw err; });
@@ -386,7 +387,7 @@ module.exports = {
             function (callback) {
                 type_board.findOne({ where: { id: id } })
                 .then(function (content) {
-                    (auth.sameOwner(req, content.author) === 0) ?
+                    (auth.sameOwner(req, content.email) === 0) ?
                         res.json({ user: req.user ? req.user : 0 }) :
                         callback(null);
                 })
@@ -483,7 +484,7 @@ module.exports = {
             /* 작성자인지 확인 */
             function (callback) {
                 type_board.findOne({ where: { id: id } }).then(function (content) {
-                    (auth.sameOwner(req, content.author) === 0) ?
+                    (auth.sameOwner(req, content.email) === 0) ?
                         res.json({ user: req.user ? req.user : 0 }) :
                         callback(null);
                 }).catch(function (err) { throw err; });

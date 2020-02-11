@@ -7,9 +7,10 @@ require('moment-timezone');
 moment.tz.setDefault("Asia/Seoul");
 moment.locale('ko');
 
-function make_writer(username, pic_location) {
+function make_writer(username, email, pic_location) {
     let writer = {
         username: username,
+        email: email,
         pic_location: pic_location
     }
     return writer;
@@ -54,8 +55,8 @@ module.exports = {
             /* comment response 객체 생성 & 응답 */
             function (comment, callback) {
                 let temp = comment;
-                users.findOne({ where: { username: temp.author } }).then(function (user) {
-                    let writer = make_writer(user.username, user.pic_location);
+                users.findOne({ where: { email: temp.email } }).then(function (user) {
+                    let writer = make_writer(user.username, user.email, user.pic_location);
                     let time = moment(temp.created, 'YYYY년MM월DD일HH시mm분ss초').fromNow();
                     comment = make_comment_ob(temp.id, temp.type_board, temp.board_id,
                         temp.description, writer, time, temp.is_re_comment, temp.parent_comment, temp.is_modified);
@@ -100,7 +101,7 @@ module.exports = {
             function (callback) {
                 comment.create({
                     type_board: type_board,  board_id: board_id, description: description,
-                    author: req.user.username, created: moment().format('YYYY년MM월DD일HH시mm분ss초'),
+                    author: req.user.username, email: req.user.email, created: moment().format('YYYY년MM월DD일HH시mm분ss초'),
                     is_re_comment: is_re_comment, parent_comment: parent_comment
                 }).then(function () {
                     callback(null)
@@ -143,7 +144,7 @@ module.exports = {
             /* 작성자인지 확인 */
             function (callback) {
                 comment.findOne({ where: { id: id } }).then(function (content) {
-                    (auth.sameOwner(req, content.author) === 0) ?
+                    (auth.sameOwner(req, content.email) === 0) ?
                         res.json({ user: req.user ? req.user : 0 }) :
                         callback(null);
                 }).catch(function (err) { throw err; });
@@ -192,7 +193,7 @@ module.exports = {
             /* 작성자인지 확인 */
             function (callback) {
                 comment.findOne({ where: { id: id } }).then(function (content) {
-                    (auth.sameOwner(req, content.author) === 0) ?
+                    (auth.sameOwner(req, content.email) === 0) ?
                         res.json({ user: req.user ? req.user : 0 }) :
                         callback(null);
                 }).catch(function (err) { throw err; });
