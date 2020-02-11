@@ -27,23 +27,31 @@ import { topicSelect } from "../store/actions/topic";
 
 class BoardContainer extends Component {    
 
+    state = {}
 
     async componentDidMount() {
 
-        await this._initBoard()                                   // Board 초기화 및 scroll 0 데이터 GET 요청
+        await this._initBoard()                                     // Board 초기화 및 scroll 0 데이터 GET 요청
         const { scroll, boardName } = this.props;
         
-        this.props.headerOn();                              // 헤더 On
-        this.props.searchBarOn();                           // 검색창 On
-        this.props.topicSelect(boardName);                  // app의 topic state를 boardName으로 설정
+        this.props.headerOn();                                      // 헤더 On
+        this.props.searchBarOn();                                   // 검색창 On
+        this.props.topicSelect(boardName);                          // app의 topic state를 boardName으로 설정
 
         this.props.getBoardRequest(boardName, scroll);
 
-        window.addEventListener('scroll', this._handleScroll);   // Scroll 이벤트가 생길 때, onScroll을 실행함
+        window.addEventListener('scroll', this._handleScroll);      // Scroll 이벤트가 생길 때, onScroll을 실행함
+        window.addEventListener('resize', this._updateWindowSize);  // window 사이즈 변경 시, 변경된 값을 state에 저장
+
+        this.setState({
+            ...this.state,
+            windowHeight: window.innerHeight
+        })
     }
 
     async componentWillUnmount () {
         window.removeEventListener("scroll", this._handleScroll);
+        window.removeEventListener('resize', this._updateWindowSize);
     }
 
     _initBoard = async () => {
@@ -75,6 +83,13 @@ class BoardContainer extends Component {
         }
     }
 
+    _updateWindowSize = () => {
+        this.setState({
+            ...this.state,
+            windowHeight: window.innerHeight
+        })
+    }
+
 
     render() {
         let {
@@ -90,6 +105,8 @@ class BoardContainer extends Component {
             headerOn,
         } = this.props;
 
+        const { windowHeight } = this.state;
+
         return (
             <div>
                 <LoadingBar isLoading={isLoading} />
@@ -100,6 +117,7 @@ class BoardContainer extends Component {
                         boardName={boardName} 
                         postlist={postlist} 
                         search={search}
+                        windowHeight={windowHeight}
                     /> :
                     <div className='PageError'>
                         새로고침을 눌러주세요 :)

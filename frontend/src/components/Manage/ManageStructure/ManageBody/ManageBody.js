@@ -21,6 +21,13 @@ const BodyArea = styled(BGTemplate)`
     margin: 0;
     padding: 2.5rem;
     padding-top: 6.5rem;
+
+    /* 최소 높이가 50rem보다 큰 경우, 화면 크기에 맞춤 */
+    min-height: ${props => {
+        return props.windowHeight > 50 * 16 ?
+        `${props.windowHeight}px` :
+        '50rem';
+    }};
 `;
 
 /* Body에 들어가는 요소 (SideBox, ContentBox)를 담는 전체 Box
@@ -40,21 +47,24 @@ const WholeBox = styled.div`
 /* React Component */
 class ManageBody extends Component {
 
+
+
     render () {
 
         const {
             user,
             kind,
+            windowHeight,
 
             /* posts */
             postList,
             deletePost,
         } = this.props
 
-        // console.log(user)s
+        console.log(windowHeight)
 
         return (
-            <BodyArea>
+            <BodyArea windowHeight={windowHeight} >
                 <WholeBox>
                     <SideBox
                         user={user}
@@ -72,10 +82,11 @@ class ManageBody extends Component {
 }
 
 ManageBody.propTypes = {
-    kind: PropTypes.string.isRequired,      // 메니지 카테고리 정보
+    kind: PropTypes.string.isRequired,          // 메니지 카테고리 정보
+    windowHeight: PropTypes.number.isRequired,  // 화면 최소 세로 길이 정보
 
-    postList: PropTypes.array,              // Posts 데이터 리스트
-    deletePost: PropTypes.func,             // Post를 지우는 함수
+    postList: PropTypes.array,                  // Posts 데이터 리스트
+    deletePost: PropTypes.func,                 // Post를 지우는 함수
 }
 
 export default ManageBody;

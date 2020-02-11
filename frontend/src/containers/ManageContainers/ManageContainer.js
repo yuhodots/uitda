@@ -45,7 +45,7 @@ class ManageContainer extends Component {
             } = this.props
     
             let board;
-    
+
             switch(kind) {
     
                 /* 게시글 관리 */
@@ -85,9 +85,13 @@ class ManageContainer extends Component {
                     break;
             }
 
+            /* window size 변경 시, 변경된 사이즈를 state에 저장함 */
+            window.addEventListener('resize', this._updateWindowSize)
+
             this.setState({
                 ...this.state,
-                isLoad: true
+                isLoad: true,
+                windowHeight: window.innerHeight
             })
         }
         catch {
@@ -96,6 +100,18 @@ class ManageContainer extends Component {
                 isLoad: false
             })
         }
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this._updateWindowSize)
+    }
+
+    /* window 사이즈를 update */
+    _updateWindowSize = () => {
+        this.setState({
+            ...this.state,
+            windowHeight: window.innerHeight
+        })
     }
 
 
@@ -111,7 +127,10 @@ class ManageContainer extends Component {
             deletePostRequest,
         } = this.props;
     
-        const { isLoad } = this.state;
+        const { 
+            isLoad,
+            windowHeight
+        } = this.state;
 
         return(
             <div>
@@ -128,6 +147,7 @@ class ManageContainer extends Component {
                     <Body 
                         user={user}
                         kind={kind}
+                        windowHeight={windowHeight}
 
                         postList={postList}
                         deletePost={deletePostRequest}

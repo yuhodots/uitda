@@ -108,6 +108,14 @@
 
 
 
+### 2.11 (화)
+
+* Board, Manage의 min-height 속성값 정상적으로 부여
+  (container에 addEventListener('resize')를 통해 화면 크기가 변하면 windowHeight값도 변경되도록 함  )
+* 
+
+
+
 
 
 
@@ -123,6 +131,7 @@
 * postlist 초기화 및 중복 요청 제거
 * 무한 스크롤 islast 점검
 * 상세 페이지에서 다시 돌아올때는 초기화 X
+* 검색 창 띄우기 아이콘이 안 보일 때 위치에 갖다대면 cursor 모양으로 바뀌는 에러
 
 
 
