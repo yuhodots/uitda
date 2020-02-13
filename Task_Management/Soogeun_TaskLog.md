@@ -205,21 +205,25 @@
 
 * edit 상단바가 스크롤 내리면 위에 tooltip 생기는 거 고치기
 
+* edit update 구현
+
+* 수정 페이지에 사진 리스트 뜨기
+
+* Edit Page 나가기 전에 '나가시겠습니까 묻기'
+
+* Edit Create 시, default Board값을 받아올 수 있도록 하기
+
   
 
 * 작성하다가 삭제를 했을 때, DropZone 미리보기와 실제 업로드 되는 사진이 다른 오류
 
 * DropZone PhotoList의 width값 고정된거 없애기
 
-* Edit Page 나가기 전에 '나가시겠습니까 묻기'
-
 * Edit update 시, 사진이 뜨도록
 
 * Edit Page 상단 바 디자인
 
 * Edit 상단 아이콘 기능 구현
-
-* Edit Create 시, default Board값을 받아올 수 있도록 하기
 
 * Edit 스타일을 지닌 태그들을 어떻게 저장할 것인지 구상
 

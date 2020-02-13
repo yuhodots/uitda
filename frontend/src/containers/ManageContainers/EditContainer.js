@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 
+import { Modal } from 'antd'
+
 import { Header } from '../../components/Manage/ManageStructure'
 import EditBody from '../../components/Manage/ManageEdit'
 
@@ -21,6 +23,9 @@ import {
     editClickS,
     editSelectTextAlign,
 } from '../../store/actions/manage'
+
+
+const { confirm } = Modal;
 
 class EditContainer extends Component {
 
@@ -58,7 +63,43 @@ class EditContainer extends Component {
                 })
             }, 50);
         }
+
+        window.onpopstate = (e) => {
+            e.preventDefault();
+            console.log(window.history)
+            confirm({
+                title: '페이지를 나가시겠습니까?',
+                content: 'Ok 버튼을 누르면 작성한 내용이 모두 사라집니다.',
+                onOk: () => { window.history.go(0) },
+                onCancel: () => { window.history.forward() }
+            }) 
+        }
+
+        console.log(window);
+
+        window.addEventListener("beforeunload", this._onUnload);
     }
+
+    componentWillUnmount() {
+        window.removeEventListener("beforeunload", this._onUnload);
+    }
+
+    _onUnload = (e) => {
+        e.preventDefault();
+        e.returnValue = '';
+    }
+
+    _onBackButton = (e) => {
+        e.preventDefault();
+        console.log(e);
+        confirm({
+            title: '페이지를 나가시겠습니까?',
+            content: 'Ok 버튼을 누르면 작성한 내용이 모두 사라집니다.',
+            onOk: () => { window.history.go(0) },
+            onCancel: () => { window.history.forward() }
+        }) 
+    }
+
 
     render() {
 
@@ -94,6 +135,7 @@ class EditContainer extends Component {
         const board = isNew ? '' : match.params.boardName;
 
         // console.log(`title: ${title}, description: ${description}`)
+        console.log(files);
 
         return(
             (!getSuccess) ?

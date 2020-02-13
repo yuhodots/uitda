@@ -163,7 +163,7 @@ class EditComponent extends Component {
             mouseLeaveDelay: 0
         }
 
-        console.log(spanStyle);
+        // console.log(spanStyle);
         // console.log(`title: ${title}, files: ${files}, description: ${description}`);
 
         return (
@@ -281,7 +281,7 @@ EditComponent.propTypes = {
     description: PropTypes.string.isRequired,       // Description Data
 
     spanStyle: PropTypes.object.isRequired,         // BIUS 스타일 선택 정보
-    textAlign: PropTypes.object.isRequired,         // p태그 text align 속성 값
+    textAlign: PropTypes.string.isRequired,         // p태그 text align 속성 값
 
     EditPostRequest: PropTypes.func.isRequired,     // Post Create / Update function
 
