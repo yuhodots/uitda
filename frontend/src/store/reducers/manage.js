@@ -89,6 +89,7 @@ export default function manage (state = InitialState, action) {
                 ...state,
                 editedTitle: action.title,
                 editedDescription: action.description,
+                editedFiles: action.filelist,
                 isEditGetSuccess: true,
 
                 isEditInit: false,
