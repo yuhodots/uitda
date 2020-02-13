@@ -26,7 +26,7 @@ export default function auth (state = initialState, action) {
         
         // 유저 정보 확인 액션
         case AUTH_GET_STATUS_SUCCESS:
-            console.log(action.user);
+            // console.log(action.user);
             return {
                 ...state,
                 isLoggedIn: true,

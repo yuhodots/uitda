@@ -112,6 +112,15 @@
 
 * Board, Manage의 min-height 속성값 정상적으로 부여
   (container에 addEventListener('resize')를 통해 화면 크기가 변하면 windowHeight값도 변경되도록 함  )
+
+
+
+### 2.13 (목)
+
+* edit update 미리보기 이미지 띄우기 성공 !!
+* 사진 create 에러 해결 (file.originFileObj에 저장한 File 객체를 넘겨줌)
+* edit update 페이지 init + get 요청 동기화 문제 해결
+  edit 페이지에 title, description 데이터가 안담기는 에러 해결 
 * 
 
 
@@ -207,11 +216,19 @@
 
 * edit update 구현
 
-* 수정 페이지에 사진 리스트 뜨기
-
 * Edit Page 나가기 전에 '나가시겠습니까 묻기'
 
 * Edit Create 시, default Board값을 받아올 수 있도록 하기
+
+* Redirect 문제 (포스트 delete 시, '/board/market'으로 이동)
+reload (새로고침) 하는데 왜 '/board/market' 으로 이동할까 ?
+  
+* 상태 변경 기능
+
+* create에서 작성하다가 나갔다 다시 create할 때, 내용 남음
+(create 페이지에서 나갈 때, isEditInit이 false로 초기화 되지 않음)
+  
+* 
 
   
 

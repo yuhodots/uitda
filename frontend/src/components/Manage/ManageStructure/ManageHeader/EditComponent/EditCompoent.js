@@ -124,13 +124,17 @@ class EditComponent extends Component {
 
             title,
             files,
+            deletedFileIDs,
             description,
 
             EditPostRequest
         } = this.props;
 
+        // console.log(deletedFileIDs)
+        console.log(id);
+
         id ?    // id가 있으면 수정 액션, 없으면 생성 액션
-        EditPostRequest(board, title, description, files, id) :
+        EditPostRequest(board, title, description, files, id, deletedFileIDs) :
         EditPostRequest(board, title, description, files)
     }
 
@@ -278,6 +282,7 @@ EditComponent.propTypes = {
     /* 글 내용에 대한 데이터 */
     title: PropTypes.string.isRequired,             // Title Data
     files: PropTypes.array.isRequired,              // Files Data
+    deletedFileIDs: PropTypes.array.isRequired,     // 수정 시, 삭제할 사진 id 리스트
     description: PropTypes.string.isRequired,       // Description Data
 
     spanStyle: PropTypes.object.isRequired,         // BIUS 스타일 선택 정보

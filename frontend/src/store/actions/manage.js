@@ -4,6 +4,7 @@ import {
     MANAGE_GET_MY_POSTS_SUCCESS,
     MANAGE_GET_MY_POSTS_FAILURE,
     MANAGE_EDIT_INIT_PAGE,
+    MANAGE_EDIT_SET_INIT_FALSE,
     MANAGE_EDIT_GET_POST_SUCCESS,
     MANAGE_EDIT_GET_POST_FAILURE,
     MANAGE_EDIT_CREATE_POST_SUCCESS,
@@ -117,6 +118,13 @@ export function initEditPage() {
     }
 }
 
+export function setInitFalse(hi) {
+    return {
+        type: MANAGE_EDIT_SET_INIT_FALSE,
+        hi
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////
 /* '/manage/update/:board/:id' 에서 해당 페이지에 알맞는 데이터를 불러오는 (GET) 액션 */
 
@@ -143,7 +151,6 @@ export function getUpdatePostRequest(board, id) {
 }
 
 export function getUpdatePostSuccess(post) {
-    console.log(post)
     return {
         type: MANAGE_EDIT_GET_POST_SUCCESS,     // edit 페이지의 get 요청 성공
         title: post.title,
@@ -164,7 +171,7 @@ export function getUpdatePostFailure(err) {
 /* '/manage/edit/'에서의 POST 메서드로 글 생성 및 없데이트 액션 
    id의 여부에 따라 update/create를 구분 (id 있으면 update, 없으면 create) */
 
-export function EditPostRequest (board, title, description, files, id) {
+export function EditPostRequest (board, title, description, files, id, deletedFileIDs) {
     return (dispatch) => {
 
         /* POST 요청 시 사용되는 url */
@@ -176,10 +183,14 @@ export function EditPostRequest (board, title, description, files, id) {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('description', description);
-        console.log(files);
         files.forEach(file => {
-            formData.append('userfile', file);
+            /* 현재 file은 데이터를 가진 Object 객체이고,
+               originFileObj 프로퍼티에 File 객체를 담음 */
+            formData.append('userfile', file.originFileObj);
         });
+
+        /* update의 경우, delete_id list를 추가 */
+        if (id) { formData.append('deleted_files', deletedFileIDs) }
 
         /* POST 요청 성공 시 보내지는 액션 생성자 */
         const successAction = id ?
@@ -190,6 +201,13 @@ export function EditPostRequest (board, title, description, files, id) {
         const failureAction = id ?
         updatePostFailure :
         createPostFailure ;
+
+        console.log(deletedFileIDs)
+        console.log(formData)
+        setTimeout(() => {
+            console.log(deletedFileIDs)
+            console.log(formData)
+        }, 2000);
 
         /* create POST 요청 */
         return axios.post(POSTurl, formData, {
@@ -247,10 +265,11 @@ export function addFileData (file) {
     }
 }
 
-export function deleteFileData (file) {
+export function deleteFileData (file, isNew) {
     return {
         type: MANAGE_EDIT_DELETE_FILE_DATA,
-        file
+        file,
+        isNew
     }
 }
 

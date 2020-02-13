@@ -61,8 +61,6 @@ class ManageBody extends Component {
             deletePost,
         } = this.props
 
-        console.log(windowHeight)
-
         return (
             <BodyArea windowHeight={windowHeight} >
                 <WholeBox>

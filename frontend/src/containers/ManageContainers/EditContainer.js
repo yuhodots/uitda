@@ -11,6 +11,7 @@ import EditBody from '../../components/Manage/ManageEdit'
 
 import { 
     initEditPage,
+    setInitFalse,
     getUpdatePostRequest,
     EditPostRequest,
     storeEditTitleData,
@@ -32,6 +33,9 @@ class EditContainer extends Component {
     state = {}
 
     componentDidMount() {
+
+        console.log('edit page mount')
+
         const {
             isNew,
             match,
@@ -40,13 +44,10 @@ class EditContainer extends Component {
             getPostRequest
         } = this.props;
 
+        /* 첫 시작은 초기화부터 ! */
         initEditPage();
-        setTimeout(() => {
-            this.setState({
-                getSuccess: true
-            })
-        }, 50);
 
+        /* 새 글 작성 (create) 아닌 경우, get요청을 통해 update 이전 데이터 가져오기 */
         if(!isNew) {
             const {
                 boardName,
@@ -54,34 +55,28 @@ class EditContainer extends Component {
             } = match.params;
 
             getPostRequest(boardName, id);
-            
-            /* 동기화 잘 쓰게 되면 수정할 것
-               수정 권장: GetRequest에 success 여부를 앱 state에 저장하기 */
-            setTimeout(() => {
-                this.setState({
-                    getSuccess: true
-                })
-            }, 50);
         }
 
-        window.onpopstate = (e) => {
-            e.preventDefault();
-            console.log(window.history)
-            confirm({
-                title: '페이지를 나가시겠습니까?',
-                content: 'Ok 버튼을 누르면 작성한 내용이 모두 사라집니다.',
-                onOk: () => { window.history.go(0) },
-                onCancel: () => { window.history.forward() }
-            }) 
-        }
+        // window.onpopstate = (e) => {
+        //     e.preventDefault();
+        //     console.log(window.history)
+        //     confirm({
+        //         title: '페이지를 나가시겠습니까?',
+        //         content: 'Ok 버튼을 누르면 작성한 내용이 모두 사라집니다.',
+        //         onOk: () => { window.history.go(0) },
+        //         onCancel: () => { window.history.forward() }
+        //     }) 
+        // }
 
-        console.log(window);
+        // console.log(window);
 
-        window.addEventListener("beforeunload", this._onUnload);
+        // setInitFalse('왜우');
+
+        // window.addEventListener("beforeunload", this._onUnload);
     }
 
     componentWillUnmount() {
-        window.removeEventListener("beforeunload", this._onUnload);
+        // window.removeEventListener("beforeunload", this._onUnload);
     }
 
     _onUnload = (e) => {
@@ -103,16 +98,18 @@ class EditContainer extends Component {
 
     render() {
 
-        const { getSuccess } = this.state;
-
         const {
             /* create / update 구분 props */
             isNew,
             match,
 
             /* App States */
+            isEditGetSuccess,
+            isEditInit,
+
             title,
             files,
+            deletedFileIDs,
             description,
             editSuccess,
             edit_spanStyle,
@@ -135,11 +132,18 @@ class EditContainer extends Component {
         const board = isNew ? '' : match.params.boardName;
 
         // console.log(`title: ${title}, description: ${description}`)
-        console.log(files);
+        // console.log(files);
+        // console.log(deletedFileIDs);
+        console.log(isEditInit);
+
+        /* 동기화 문제 해결
+           create의 경우 init 완료되었음을 의미하는 isEditInit을,
+           update의 경우 get 요청이 완료되었음을 의미하는 isEditGetSuccess를
+           load가 완료되었는가의 boolean 값 isLoad로 이용함 */
+        let isLoad = isNew ? isEditInit : isEditGetSuccess
 
         return(
-            (!getSuccess) ?
-            'loading' : 
+            isLoad ?
             <div>
                 <Header 
                     isEdit={true}                       // Edit 페이지 헤더임을 알려주는 props
@@ -149,6 +153,7 @@ class EditContainer extends Component {
 
                     title={title}                       // Edit 페이지에서 작성한 Title 데이터
                     files={files}                       // Edit 페이지에서 업로드한 사진 데이터
+                    deletedFileIDs={deletedFileIDs}     // 수정 시, 삭제할 사진 id 리스트
                     description={description}           // Eidt 페이지에서 작성한 Description 데이터
                     editSuccess={editSuccess}           // Edit이 완료되었음을 알리는 데이터
 
@@ -172,7 +177,8 @@ class EditContainer extends Component {
                     deleteFileData={deleteFileData}
                     storeDescriptionData={storeEditDescriptionData}
                 />
-            </div>
+            </div> : 
+            'loading'
         )
     }
 
@@ -191,18 +197,24 @@ EditContainer.defaultProps = {
 
 const mapStateToProps = (state) => {
     return {
-        title: state.manage.editedTitle,                // Title Data
-        files: state.manage.editedFiles,                // File List Data
-        description: state.manage.editedDescription,    // Description Data
-        editSuccess: state.manage.editSuccess,          // 작성 완료 정보
-        edit_spanStyle: state.manage.edit_spanStyle,    // BUIS 스타일 선택 데이터
-        edit_textAlign: state.manage.edit_textAlign,    // p태그 text align 속성 값
+        title: state.manage.editedTitle,                    // Title Data
+        files: state.manage.editedFiles,                    // File List Data
+        deletedFileIDs: state.manage.deletedFileIDs,        // 삭제할 파일 ID 리스트
+        description: state.manage.editedDescription,        // Description Data
+
+        isEditGetSuccess: state.manage.isEditGetSuccess,    // update 포스팅 데이터 받아졌는지 여부
+        isEditInit: state.manage.isEditInit,                // Edit 페이지 초기화 완료 여부
+        isModified: state.manage.isModified,                // 작성을 했는 지 여부
+        editSuccess: state.manage.editSuccess,              // 작성 완료 정보
+        edit_spanStyle: state.manage.edit_spanStyle,        // BUIS 스타일 선택 데이터
+        edit_textAlign: state.manage.edit_textAlign,        // p태그 text align 속성 값
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         initEditPage: () => {dispatch(initEditPage())},
+        setInitFalse: () => {dispatch(setInitFalse())} ,
         EditPostRequest: (board, title, discription, files, id) => {
             dispatch(EditPostRequest(board, title, discription, files, id))
         },

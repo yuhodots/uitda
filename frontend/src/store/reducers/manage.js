@@ -3,6 +3,7 @@ import {
     MANAGE_GET_MY_POSTS_SUCCESS,
     MANAGE_GET_MY_POSTS_FAILURE,
     MANAGE_EDIT_INIT_PAGE,
+    MANAGE_EDIT_SET_INIT_FALSE,
     MANAGE_EDIT_GET_POST_SUCCESS,
     MANAGE_EDIT_GET_POST_FAILURE,
     MANAGE_EDIT_STORE_TITLE_DATA,
@@ -34,8 +35,10 @@ const InitialState = {
     /* 'edit' states */
     isEditInit: false,                      // Edit 페이지 초기화 여부
     isEditGetSuccess: false,                // Edit page GET 성공 여부
+    isModified: false,                      // 수정된 지 여부
     editedTitle: '',                        // 작성한 제목 데이터
     editedFiles: [],                        // 업로드할 파일 데이터 리스트
+    deletedFileIDs: [],                     // 삭제할 파일의 id 리스트
     editedDescription: '',                  // 작성한 설명 부분 데이터
     editSuccess: false,                     // 작성 완료
 
@@ -77,19 +80,41 @@ export default function manage (state = InitialState, action) {
                 editedTitle: '',
                 editedFiles: [],
                 editedDescription: '',
+                
                 editSuccess: false,
-
+                isEditGetSuccess: false,
+                isModified: false,
                 isEditInit: true,
             }
+
+        case MANAGE_EDIT_SET_INIT_FALSE:
+            console.log(action.hi)
+            console.log('set init false')
+            return {
+                ...state,
+                // isEditInit: false
+            }
+
 
         /* 글 수정 시 요청한 GET 요청 액션으로 얻은 data 또는 err
            데이터는 글 수정 edit 페이지에 처음 로드 되는데 사용됨 */
         case MANAGE_EDIT_GET_POST_SUCCESS:
+            let modifiedFileList = action.filelist.map(filedata => {
+                const uid = `${-filedata.file_id - 1}`;
+                return {
+                    uid: uid,
+                    name: 'image.png',
+                    status: 'done',
+                    url: filedata.location,
+                    del_id: filedata.id
+                }
+            })
+
             return {
                 ...state,
                 editedTitle: action.title,
                 editedDescription: action.description,
-                editedFiles: action.filelist,
+                editedFiles: modifiedFileList,
                 isEditGetSuccess: true,
 
                 isEditInit: false,
@@ -106,28 +131,38 @@ export default function manage (state = InitialState, action) {
         case MANAGE_EDIT_STORE_TITLE_DATA:
             return {
                 ...state,
-                editedTitle: action.editedTitle
+                editedTitle: action.editedTitle,
+                isModified: true,
+            }
+
+        case MANAGE_EDIT_STORE_DESCRIPTION_DATA:
+            return {
+                ...state,
+                editedDescription: action.editedDescription,
+                isModified: true,
             }
         
         case MANAGE_EDIT_ADD_FILE_DATA:
             return {
                 ...state,
-                editedFiles: [...state.editedFiles, action.file]
+                editedFiles: [...state.editedFiles, action.file],
+                isModified: true,
             }
 
         case MANAGE_EDIT_DELETE_FILE_DATA:
             const index = state.editedFiles.indexOf(action.file);
             const newFileList = state.editedFiles.slice();
             newFileList.splice(index, 1);
-            return {
-                ...state,
-                editedFiles: newFileList
+
+            /* 기존에 있던 (수정 전) 사진의 경우, deletedFileIDs 리스트에 해당 사진의 id를 저장 */
+            if( !action.isNew ) {
+                state.deletedFileIDs = [...state.deletedFileIDs, action.file.del_id]
             }
 
-        case MANAGE_EDIT_STORE_DESCRIPTION_DATA:
             return {
                 ...state,
-                editedDescription: action.editedDescription
+                editedFiles: newFileList,
+                isModified: true,
             }
 
         /* 작성 성공 되었음을 알리는 액션들 */

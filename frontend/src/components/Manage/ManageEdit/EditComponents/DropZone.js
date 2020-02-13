@@ -88,12 +88,19 @@ class DropZone extends Component {
 
             /* 업로드할 사진을 리스트에서 지우는 기능 */
             onRemove: file => {
-                deleteFileData(file)
+                const isNew = !file.url
+                deleteFileData(file, isNew)
             },
 
             /* 바로 업로드 되지 않도록 하고, app state에 저장하는 기능 */
             beforeUpload: file => {
-                addFileData(file);
+                /* Object 객체인 fileobj를 만들지 않으면, 
+                   File 객체를 return하여 미리보기 이미지를 제대로 생성하지 못하는 오류가 생김 */
+                const fileobj = {
+                    ...file,
+                    originFileObj: file,
+                }
+                addFileData(fileobj);
                 return false;
             },
 
@@ -103,9 +110,10 @@ class DropZone extends Component {
             /* 사진 리스트 형태로 나타내기  */
             listType: 'picture-card',
 
-            /* 파일 리스트 */
-            files,
-          };
+            /* 파일 리스트 
+               (antd upload 컴포넌트는 fileList 라는 이름으로 식별한다.) */
+            fileList: files
+        };
 
         return (
             <Container className='photo-list-box' >
@@ -129,6 +137,8 @@ class DropZone extends Component {
 
 DropZone.propTypes = {
     
+    files: PropTypes.array.isRequired,              // 사진 파일 데이터 리스트
+
     addFileData: PropTypes.func.isRequired,
     deleteFileData: PropTypes.func.isRequired,
 }

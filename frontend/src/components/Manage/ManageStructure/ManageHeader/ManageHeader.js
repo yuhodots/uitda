@@ -54,6 +54,7 @@ class ManageHeader extends Component {
 
             title,
             files,
+            deletedFileIDs,
             description,
             editSuccess,
 
@@ -69,6 +70,8 @@ class ManageHeader extends Component {
             editSelectTextAlign,
         } = this.props;
 
+        // console.log(deletedFileIDs);
+
         return (
             <HeaderBox>
                 <HomeLink to='/'></HomeLink>
@@ -81,6 +84,7 @@ class ManageHeader extends Component {
 
                         title={title}
                         files={files}
+                        deletedFileIDs={deletedFileIDs}
                         description={description}
                         editSuccess={editSuccess}
 
@@ -113,6 +117,7 @@ ManageHeader.propTypes = {
 
     title: PropTypes.string,                // Title Data
     files: PropTypes.array,                 // Files Data
+    deletedFileIDs: PropTypes.array,        // 수정 시, 삭제할 사진 id 리스트
     description: PropTypes.string,          // Description Data
     editSuccess: PropTypes.bool,            // 작성 완료를 알리는 데이터
 
@@ -136,7 +141,8 @@ ManageHeader.defaultProps = {
     id: 0,
 
     title: '',            
-    files: [],             
+    files: [],          
+    deletedFileIDs: [],   
     description: '',
     editSuccess: false,
 
