@@ -148,6 +148,7 @@ export function getUpdatePostSuccess(post) {
         type: MANAGE_EDIT_GET_POST_SUCCESS,     // edit 페이지의 get 요청 성공
         title: post.title,
         description: post.description,
+        filelist: post.filelist,
     }
 }
 
