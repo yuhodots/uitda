@@ -38,6 +38,10 @@ return sequelize.define('cal_events', {
   username: {
   type: DataTypes.STRING(30),
   allowNull: false
+  },
+  email: {
+    type: DataTypes.STRING(50),
+    allowNull: false
   }
   },{
     timestamps: false,

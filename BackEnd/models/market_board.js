@@ -19,6 +19,10 @@ return sequelize.define('market_board', {
     type: DataTypes.STRING(30),
     allowNull: false
   },
+  email: {
+    type: DataTypes.STRING(50),
+    allowNull: false
+  },
   created: {
     type:DataTypes.STRING(30),
     allowNull: false

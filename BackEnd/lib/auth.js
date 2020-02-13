@@ -10,8 +10,8 @@ module.exports = {
             return false;
         }
     },
-    sameOwner: function (request, author) { // 로그인 유저와 글 저자가 같은지 판단
-        if (request.user.username === author) {
+    sameOwner: function (request, email) { // 로그인 유저와 글 저자가 같은지 판단
+        if (request.user.email === email) {
             console.log("[sameOwner] Right approach")
             return 1;
         } else {
@@ -19,9 +19,9 @@ module.exports = {
             return 0;
         }
     },
-    hasPost: function (request, board, author) { // 로그인 유저가 게시글을 하나라도 가지고 있는지 판단
+    hasPost: function (request, board, email) { // 로그인 유저가 게시글을 하나라도 가지고 있는지 판단
         db.query(
-            `SELECT EXISTS(SELECT * FROM ${board} WHERE ${author}='${request.user.username}') AS SUCCESS`,
+            `SELECT EXISTS(SELECT * FROM ${board} WHERE ${email}='${request.user.email}') AS SUCCESS`,
             function (error, result) {
                 if (error) throw error;
                 else {

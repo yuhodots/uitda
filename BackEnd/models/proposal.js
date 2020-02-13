@@ -20,6 +20,10 @@ return sequelize.define('proposal', {
   type: DataTypes.STRING(30),
   allowNull: false
   },
+  email: {
+    type: DataTypes.STRING(50),
+    allowNull: false
+  },
   created: {
   type: 'TIMESTAMP',
   defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
