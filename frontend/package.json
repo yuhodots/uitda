@@ -22,7 +22,7 @@
     "styled-components": "^4.4.0"
   },
   "scripts": {
-    "start": "SET PORT=4000 && react-scripts start",
+    "start": "export PORT=4000 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
