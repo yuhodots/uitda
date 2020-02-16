@@ -85,4 +85,5 @@ user db에 socket.id 넣고 connection할 때마다 socket_id 넣을 수 있음.
 #### 해야할 일
 
 not found를 frontend에 보내는 방법 찾기->response로 찾아보면 될 듯하다....!
+board_id 가 없을 때
 #### 진행중 
