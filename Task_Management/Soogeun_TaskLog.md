@@ -121,7 +121,13 @@
 * 사진 create 에러 해결 (file.originFileObj에 저장한 File 객체를 넘겨줌)
 * edit update 페이지 init + get 요청 동기화 문제 해결
   edit 페이지에 title, description 데이터가 안담기는 에러 해결 
-* 
+
+
+
+### 2.16 (일)
+
+* manage update 사진 삭제 성공
+* manage update 구현 완료 (테스트 완료)
 
 
 
@@ -214,24 +220,21 @@
 
 * edit 상단바가 스크롤 내리면 위에 tooltip 생기는 거 고치기
 
-* edit update 구현
-
 * Edit Page 나가기 전에 '나가시겠습니까 묻기'
 
 * Edit Create 시, default Board값을 받아올 수 있도록 하기
 
-* Redirect 문제 (포스트 delete 시, '/board/market'으로 이동)
-reload (새로고침) 하는데 왜 '/board/market' 으로 이동할까 ?
+* '/manage' 로 시작하는 URL을 브라우저 창에 입력하고 enter를 누르면 강제로 '/board/market'으로 리다이렉트 되는 에러
+Redirect 문제 (포스트 delete 시, '/board/market'으로 이동)
+  reload (새로고침) 하는데 왜 '/board/market' 으로 이동할까 ?
   
-* 상태 변경 기능
+* 게시글 상태 변경 기능 (거래중, 판매 완료)
 
 * create에서 작성하다가 나갔다 다시 create할 때, 내용 남음
 (create 페이지에서 나갈 때, isEditInit이 false로 초기화 되지 않음)
   
-* 
-
   
-
+  
 * 작성하다가 삭제를 했을 때, DropZone 미리보기와 실제 업로드 되는 사진이 다른 오류
 
 * DropZone PhotoList의 width값 고정된거 없애기

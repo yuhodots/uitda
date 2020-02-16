@@ -39,7 +39,6 @@ export function getMyPostRequest (boardName) {
 
         /* get 요청을 보낼 URL */
         const GETurl = `/api/manage/${boardName}`;
-        // const GETurl = `/api/manage/${boardName}-posts`;        // 수정 전 버전 url
 
         /* get 요청 보내기 */
         return axios.get(GETurl)
@@ -186,7 +185,8 @@ export function EditPostRequest (board, title, description, files, id, deletedFi
         files.forEach(file => {
             /* 현재 file은 데이터를 가진 Object 객체이고,
                originFileObj 프로퍼티에 File 객체를 담음 */
-            formData.append('userfile', file.originFileObj);
+            const FILE_TYPE = id ? 'added' : 'userfile';
+            formData.append(FILE_TYPE, file.originFileObj);
         });
 
         /* update의 경우, delete_id list를 추가 */
@@ -202,22 +202,13 @@ export function EditPostRequest (board, title, description, files, id, deletedFi
         updatePostFailure :
         createPostFailure ;
 
-        console.log(deletedFileIDs)
-        console.log(formData)
-        setTimeout(() => {
-            console.log(deletedFileIDs)
-            console.log(formData)
-        }, 2000);
-
         /* create POST 요청 */
         return axios.post(POSTurl, formData, {
             headers: { 'Content-Type': 'multipart/form-data'}
         })
 
         /* 성공, 실패 시 각각에 맞는 액션을 dispatch하기 */
-        .then(res => {
-            // console.log(res);
-            return (dispatch(successAction()))})
+        .then(res => {dispatch(successAction())})
         .catch(err => {dispatch(failureAction(err))})
     }
 }

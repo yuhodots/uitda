@@ -130,12 +130,13 @@ class EditComponent extends Component {
             EditPostRequest
         } = this.props;
 
-        // console.log(deletedFileIDs)
-        console.log(id);
+        /* 업로드로 넘겨주는 file 데이터는 이미 업로드 되어 있지 않은 사진들
+           (url 프로퍼티를 갖지 않는 파일들) 만으로 구성한다. */
+        const uploadFiles = files.filter( file => !file.url )
 
         id ?    // id가 있으면 수정 액션, 없으면 생성 액션
-        EditPostRequest(board, title, description, files, id, deletedFileIDs) :
-        EditPostRequest(board, title, description, files)
+        EditPostRequest(board, title, description, uploadFiles, id, deletedFileIDs) :
+        EditPostRequest(board, title, description, uploadFiles)
     }
 
     render () {
@@ -169,6 +170,9 @@ class EditComponent extends Component {
 
         // console.log(spanStyle);
         // console.log(`title: ${title}, files: ${files}, description: ${description}`);
+        // console.log(deletedFileIDs)
+        // console.log(id);
+        // console.log(files);
 
         return (
             editSuccess ? 

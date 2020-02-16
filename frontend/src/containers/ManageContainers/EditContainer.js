@@ -133,8 +133,8 @@ class EditContainer extends Component {
 
         // console.log(`title: ${title}, description: ${description}`)
         // console.log(files);
-        // console.log(deletedFileIDs);
-        console.log(isEditInit);
+        console.log(deletedFileIDs);
+        // console.log(isEditInit);
 
         /* 동기화 문제 해결
            create의 경우 init 완료되었음을 의미하는 isEditInit을,
@@ -215,8 +215,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         initEditPage: () => {dispatch(initEditPage())},
         setInitFalse: () => {dispatch(setInitFalse())} ,
-        EditPostRequest: (board, title, discription, files, id) => {
-            dispatch(EditPostRequest(board, title, discription, files, id))
+        EditPostRequest: (board, title, discription, files, id, deletedFileIDs) => {
+            dispatch(EditPostRequest(board, title, discription, files, id, deletedFileIDs))
         },
         getPostRequest: (board, id) => dispatch(getUpdatePostRequest(board, id)),
 
