@@ -129,6 +129,7 @@
 * manage update 사진 삭제 성공
 * manage update 구현 완료 (테스트 완료)
 * Detail page 렌더링 에러 해결 (초기화를 component did mount 시점으로 이동)
+* Detail page 로딩 페이지 제작
 
 
 
@@ -141,6 +142,9 @@
 #### Board FrontEnd
 
 * 디테일 페이지에서 뒤로가기 했을 때, render가 안되는 오류
+
+
+
 * 검색창에 자동완성 기능 추가
 * 사진 넘기기 아이콘 ant-design 적용
 * 사진 Ant Design의 Carousel Component 검토
@@ -165,8 +169,6 @@
 * board에서 글 들어갔다가 뒤로가기 후 매니지의 아무 글 클릭하면 post에 데이터가 담기지 않는 에러
 
   일단 뒤로가기로는 componentWillUnmount 실행되지 않음.
-
-  (추가) 처음 rendering 되고 manage 들어가서 상세페이지를 들어갔을 때도 오류남 (post에 안담긴듯)
 
 * 스타일이 적용된 태그를 포함한 내용을 DescriptionBox 컴포넌트에 렌더링 시키기
 
