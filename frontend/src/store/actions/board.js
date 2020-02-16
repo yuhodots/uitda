@@ -3,8 +3,8 @@ import qs from 'qs';
 
 import { 
     BOARD_INIT,
-    BOARD_GET_SUCCESS,
-    BOARD_GET_FAILURE,
+    BOARD_FIRST_GET_SUCCESS,
+    BOARD_FIRST_GET_FAILURE,
     BOARD_SCROLL_GET,
     BOARD_SCROLL_GET_SUCCESS,
     BOARD_SCROLL_GET_FAILURE,
@@ -23,7 +23,7 @@ export function initiateBoard() {
 
 
 // Board Data GET 액션 생성자
-export function getBoardRequest(boardName, scroll, search, successAction = getBoardSuccess, failureAction = getBoardFailure) {
+export function getBoardRequest(boardName, scroll = 0, search, successAction = getBoardSuccess, failureAction = getBoardFailure) {
     return (dispatch) => {
 
         /* search 데이터를 정제하는 과정(함수) 필요 */
@@ -50,7 +50,7 @@ export function getBoardRequest(boardName, scroll, search, successAction = getBo
 
 export function getBoardSuccess(search = '', postlist, isLast) {
     return {
-        type: BOARD_GET_SUCCESS,
+        type: BOARD_FIRST_GET_SUCCESS,
         search,
         postlist,
         isLast
@@ -59,7 +59,7 @@ export function getBoardSuccess(search = '', postlist, isLast) {
 
 export function getBoardFailure(err) {
     return {
-        type: BOARD_GET_FAILURE,
+        type: BOARD_FIRST_GET_FAILURE,
         err
     }
 }
@@ -99,13 +99,11 @@ export function getBoardByScrollFailure(err) {
 
 //////////////////////////////////////////////////////
 // Board Detail Actions //
-
 export function initiateDetailPage() {
     return {
         type: BOARD_DETAIL_INIT
     }
 }
-
 
 export function getBoardDetailRequest(boardName, id) {
     return (dispatch) => {

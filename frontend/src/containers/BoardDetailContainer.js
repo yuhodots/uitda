@@ -56,7 +56,7 @@ class BoardDetailContainer extends Component {
         const { 
             user,
 
-            isGetSuccess, 
+            isLoaded, 
             post,
             commentList,
             
@@ -68,7 +68,7 @@ class BoardDetailContainer extends Component {
         /* 게시판 정보 */
         const { boardName } = this.props.match.params;
 
-        return isGetSuccess ?
+        return isLoaded ?
             <BoardDetail 
                 curUser={user}
 
@@ -91,11 +91,11 @@ BoardDetailContainer.propTypes = {
 
 const mapStateToProps = (state) => {
     return {
-        user: state.auth.user,                      // 유저 정보
+        user: state.auth.user,                          // 유저 정보
 
-        isGetSuccess: state.board.isGetSuccess,     // GET 요청이 성공했는 지 여부
-        post: state.board.post,                     // 포스팅 데이터
-        commentList: state.board.commentList,       // 포스팅 댓글 데이터
+        isLoaded: state.board.isDetailGetSuccess,       // GET 요청이 성공했는 지 여부
+        post: state.board.post,                         // 포스팅 데이터
+        commentList: state.board.commentList,           // 포스팅 댓글 데이터
     }
 }
 

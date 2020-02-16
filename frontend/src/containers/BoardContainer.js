@@ -29,33 +29,35 @@ class BoardContainer extends Component {
 
     state = {}
 
-    async componentDidMount() {
+    componentDidMount() {
 
-        await this._initBoard()                                     // Board 초기화 및 scroll 0 데이터 GET 요청
-        const { scroll, boardName } = this.props;
+        const { 
+            boardName,
+            
+            initiateBoard,
+            getBoardRequest,
+            headerOn,
+            searchBarOn,
+            topicSelect,
+        } = this.props;
         
-        this.props.headerOn();                                      // 헤더 On
-        this.props.searchBarOn();                                   // 검색창 On
-        this.props.topicSelect(boardName);                          // app의 topic state를 boardName으로 설정
+        initiateBoard();
 
-        this.props.getBoardRequest(boardName, scroll);
+        headerOn();                                      // 헤더 On
+        searchBarOn();                                   // 검색창 On
+        topicSelect(boardName);                          // app의 topic state를 boardName으로 설정
+        
+        getBoardRequest(boardName);
 
         window.addEventListener('scroll', this._handleScroll);      // Scroll 이벤트가 생길 때, onScroll을 실행함
         window.addEventListener('resize', this._updateWindowSize);  // window 사이즈 변경 시, 변경된 값을 state에 저장
 
-        this.setState({
-            ...this.state,
-            windowHeight: window.innerHeight
-        })
+        this._updateWindowSize();
     }
 
-    async componentWillUnmount () {
+    componentWillUnmount () {
         window.removeEventListener("scroll", this._handleScroll);
         window.removeEventListener('resize', this._updateWindowSize);
-    }
-
-    _initBoard = async () => {
-        await this.props.initiateBoard();               // Board 초기화
     }
 
     _handleScroll = (e) => {
@@ -97,8 +99,9 @@ class BoardContainer extends Component {
             boardName,
             postlist,
             search,
+
             isHeaderOn,
-            isGetSuccess,
+            doesRenderOK,
             isLoading,
 
             // methods
@@ -111,7 +114,7 @@ class BoardContainer extends Component {
             <div>
                 <LoadingBar isLoading={isLoading} />
                 {
-                    isGetSuccess ?
+                    doesRenderOK ?
                 
                     <Board
                         boardName={boardName} 
@@ -119,6 +122,7 @@ class BoardContainer extends Component {
                         search={search}
                         windowHeight={windowHeight}
                     /> :
+
                     <div className='PageError'>
                         새로고침을 눌러주세요 :)
                     </div>
@@ -134,13 +138,13 @@ class BoardContainer extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        isGetSuccess: state.board.isGetSuccess,     // GET 요청이 성공했는 지 여부
-        postlist: state.board.postlist,             // postlist 데이터
-        scroll: state.board.scroll,                 // 스크롤 횟수 (데이터를 받은 횟수)
-        search: state.board.search,                 // 검색어 데이터
-        isLoading: state.board.isLoading,           // Scroll GET 대기 여부
-        isLast: state.board.isLast,                 // 요소가 마지막인 지 여부
-        isHeaderOn: state.structure.isHeaderOn,     // 헤더가 On 인지
+        doesRenderOK: state.board.isFirstBoardGetSuccess,   // 첫 번째 GET 요청이 성공했는 지 여부 = Render할 준비가 되었는 지
+        postlist: state.board.postlist,                     // postlist 데이터
+        scroll: state.board.scroll,                         // 스크롤 횟수 (데이터를 받은 횟수)
+        search: state.board.search,                         // 검색어 데이터
+        isLoading: state.board.isLoading,                   // Scroll GET 대기 여부
+        isLast: state.board.isLast,                         // 요소가 마지막인 지 여부
+        isHeaderOn: state.structure.isHeaderOn,             // 헤더가 On 인지
     }
 }
 

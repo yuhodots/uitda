@@ -1,7 +1,7 @@
 import {
     BOARD_INIT,
-    BOARD_GET_SUCCESS,
-    BOARD_GET_FAILURE,
+    BOARD_FIRST_GET_SUCCESS,
+    BOARD_FIRST_GET_FAILURE,
     BOARD_SCROLL_GET,
     BOARD_SCROLL_GET_SUCCESS,
     BOARD_SCROLL_GET_FAILURE,
@@ -12,21 +12,25 @@ import {
 
 
 const InitialState = {
-    /* 공통 state */
-    isGetSuccess: false,    // GET 요청이 성공했는 지 여부
-    err: '',                // 에러
+    // /* 공통 state */
+    // isGetSuccess: false,    // GET 요청이 성공했는 지 여부
+    // err: '',                // 에러
     
     /* Board 게시판 state */
-    postlist: [],           // postlist 데이터
-    scroll: 0,              // 스크롤 횟수 (데이터를 받은 횟수)
-    search: '',             // 검색어 데이터
+    isFirstBoardGetSuccess: false,  // 게시판 페이지 데이터 get 완료 여부
 
-    isLoading: false,       // Scroll GET 대기 여부
-    isLast: false,          // 마지막 요소인 지
+    postlist: [],                   // postlist 데이터
+    scroll: 0,                      // 스크롤 횟수 (데이터를 받은 횟수)
+    search: '',                     // 검색어 데이터
+
+    isLoading: false,               // Scroll GET 대기 여부
+    isLast: false,                  // 마지막 요소인 지
 
     /* Board detail state */
-    post: {},               // 포스팅에 대한 정보를 담은 객체
-    commentList: [],        // 포스팅에 대한 comments 데이터
+    isDetailGetSuccess: false,      // Detail 페이지 데이터 get 완료 여부
+
+    post: {},                       // 포스팅에 대한 정보를 담은 객체
+    commentList: [],                // 포스팅에 대한 comments 데이터
 }
 
 export default function board (state = InitialState, action) {
@@ -36,25 +40,30 @@ export default function board (state = InitialState, action) {
         // 보드 초기화 액션
         case BOARD_INIT:
             return {
-                ...InitialState,
+                ...state,
+                isFirstBoardGetSuccess: false,
+                postlist: [],
+                scroll: 0,
+                search: '',
+                isLoading: false,
+                isLast: false
             };
 
-        // 보드 GET 액션
-        case BOARD_GET_SUCCESS:
+        // 보드 첫 번째 GET 액션
+        case BOARD_FIRST_GET_SUCCESS:
             return {
                 ...state,
-                isGetSuccess: true,
-                // postlist: [...state.postlist, ...action.postlist],
+                isFirstBoardGetSuccess: true,
                 postlist: action.postlist,
                 isLast: action.isLast,
                 scroll: state.scroll + 1,
                 search: action.search,
             }
 
-        case BOARD_GET_FAILURE:
+        case BOARD_FIRST_GET_FAILURE:
             return {
                 ...state,
-                isGetSuccess: false,
+                isFirstBoardGetSuccess: false,
                 err: action.err
             }
 
@@ -79,7 +88,7 @@ export default function board (state = InitialState, action) {
         case BOARD_SCROLL_GET_FAILURE:
             return {
                 ...state,
-                isGetSuccess: false,
+                isBoardGetSuccess: false,
                 err: action.err
             }
 
@@ -87,17 +96,18 @@ export default function board (state = InitialState, action) {
         case BOARD_DETAIL_INIT:
             return {
                 ...state,
-                isGetSuccess: false,
+                isDetailGetSuccess: false,
                 post: {},
                 commentList: []
             }
 
         //  Board Detail GET 액션
+        /* 아마도 아주 가끔 댓글이 전체가 안 담기는 오류는 이 부분을 동기처리 해주지 않아서 일 듯 */
         case BOARD_DETAIL_GET_SUCCESS:
             const newCommentList = convertCommentList(action.commentlist)
             return {
                 ...state,
-                isGetSuccess: true,
+                isDetailGetSuccess: true,
                 post: action.post,
                 commentList: newCommentList
             }
@@ -105,7 +115,7 @@ export default function board (state = InitialState, action) {
         case BOARD_DETAIL_GET_FAILURE:
             return {
                 ...state,
-                isGetSuccess: false,
+                isDetailGetSuccess: false,
                 err: action.err
             }
 
