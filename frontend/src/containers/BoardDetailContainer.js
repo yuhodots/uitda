@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import BoardDetail from "../components/BoardDetail";
-import NotFound from '../components/NotFound';
+import ExceptionalPage from '../components/Exceptionals';
 
 import { getStatusRequest } from '../store/actions/auth'
 import { 
@@ -21,6 +21,8 @@ import { topicSelect } from "../store/actions/topic";
 class BoardDetailContainer extends Component {
 
     componentDidMount () {
+
+        console.log('detail did mount')
 
         const {
             match,
@@ -45,6 +47,10 @@ class BoardDetailContainer extends Component {
         getBoardDetailRequest(boardName, id);    // 포스팅 데이터 request
     }
 
+    componentWillUnmount() {
+        console.log('detail page unmount')
+    }
+
 
     render() {
         const { 
@@ -62,8 +68,7 @@ class BoardDetailContainer extends Component {
         /* 게시판 정보 */
         const { boardName } = this.props.match.params;
 
-        return (
-            isGetSuccess ?
+        return isGetSuccess ?
             <BoardDetail 
                 curUser={user}
 
@@ -75,8 +80,7 @@ class BoardDetailContainer extends Component {
                 updateComment={updateComment}
                 deleteComment={deleteComment}
             /> :
-            <NotFound /> // default는 loading 페이지, get요청이 실패한 경우에는 페이즐 찾을 수 없습니다. url링크를 확인해주세요.
-        )
+            <ExceptionalPage /> // 로딩 중 + id가 올바르지 않은 경우
     }
 }
 

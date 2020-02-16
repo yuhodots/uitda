@@ -138,6 +138,8 @@ export function getBoardDetailSuccess (post, commentlist) {
 }
 
 export function getBoardDetailFailure (err) {
+    console.log('get board detail fail')
+    console.log(err)
     return {
         type: BOARD_DETAIL_GET_FAILURE,
         err
