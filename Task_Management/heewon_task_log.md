@@ -61,14 +61,13 @@ username
 
 ### 2020년 2월 13일
 
-#### 완료
 이후 room에 들어갔을 경우, 안읽은 메세지 개수 0으로 reset 하기-> 확인 완료
 
 메세지 입력 잘 되는 것 확인
 
-#### 진행중 
 
-문제 발생
+
+**문제 발생
 
 socket.id 를 통해 특정인에게 알림을 띄우고자 했으나, 상대방의 socket.id를 받을 방법이 없음.
 
@@ -77,6 +76,13 @@ socket.id 를 통해 특정인에게 알림을 띄우고자 했으나, 상대방
 
 하나의 해결책으로, users db에 socket_id라는 column을 생성하여 "connection"일 때, 현재의 socket.id를 user db에 update을 해둔다. "disconnect"되면, socket_id를 ""로 만들어 접속하지 않고 있다는 것을 의미하게 한다..
 
+### 2020년 2월 13일
+
+#### 완료
+
+user db에 socket.id 넣고 connection할 때마다 socket_id 넣을 수 있음..
+
 #### 해야할 일
 
-
+not found를 frontend에 보내는 방법 찾기->response로 찾아보면 될 듯하다....!
+#### 진행중 
