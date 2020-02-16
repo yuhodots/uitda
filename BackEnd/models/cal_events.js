@@ -35,6 +35,11 @@ return sequelize.define('cal_events', {
   type: DataTypes.TEXT,
   allowNull: true
   },
+  condition:{
+    type:DataTypes.ENUM('모집 중','마감'),
+    defaultValue:'모집 중',
+    allowNull:false
+  },
   username: {
   type: DataTypes.STRING(30),
   allowNull: false

@@ -27,6 +27,7 @@ module.exports = {
         let contact;
         let account;
         let description;
+        let condition;
 
         async.waterfall([
 
@@ -40,6 +41,7 @@ module.exports = {
                 contact = req.body.contact;
                 account = req.body.account;
                 description = req.body.description;
+                condition = req.body.condition;
                 callback(null);
             },
 
@@ -54,7 +56,7 @@ module.exports = {
             function (callback) {
                 cal_events.create({ title : title, departure : departure, destination : destination, 
                     start : start, meeting_place : meeting_place, contact : contact, account : account, 
-                    description : description, username : req.user.username, email: req.user.email })
+                    description : description, username : req.user.username, email: req.user.email, condition: condition })
                 .then(function(){ callback(null); }).catch(function(err){throw err;});
             },
 
@@ -81,6 +83,7 @@ module.exports = {
         let contact;
         let account;
         let description;
+        let condition;
 
         async.waterfall([
 
@@ -95,6 +98,7 @@ module.exports = {
                 contact = req.body.contact;
                 account = req.body.account;
                 description = req.body.description;
+                condition = req.body.condition;
                 callback(null);
             },
 
@@ -118,7 +122,8 @@ module.exports = {
             function (callback) {
                 cal_events.update({ title : title, departure : departure, destination : destination, 
                     start : start, meeting_place : meeting_place, contact : contact, account : account, 
-                    description : description, username : req.user.username, email : req.user.email }, { where: { id: id } })
+                    description : description, username : req.user.username, email : req.user.email, condition: condition }, 
+                    { where: { id: id } })
                 .then(function () { callback(null); }).catch(function (err) { throw err; });
             },
 
