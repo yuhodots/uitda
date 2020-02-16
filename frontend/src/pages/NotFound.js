@@ -1,6 +1,6 @@
 import React from "react";
 
-import NotFoundComponent from '../components/NotFound';
+import NotFoundComponent from '../components/Exceptionals/NotFound';
 
 const NotFound = () => {
     return (
