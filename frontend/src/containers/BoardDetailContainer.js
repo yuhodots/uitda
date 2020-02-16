@@ -22,22 +22,27 @@ class BoardDetailContainer extends Component {
 
     componentDidMount () {
 
-        // console.log('mount detail')
-        // console.log(this.props);
+        const {
+            match,
 
-        // const { boardName } = this.props;
-        const { boardName, id } = this.props.match.params;
+            headerOff,
+            topicSelect,
+            initiateDetailPage,
+            getStatusRequest,
+            getBoardDetailRequest,
+        } = this.props
+        
+        const { 
+            boardName, id 
+        } = match.params;
 
-        this.props.headerOff();                             // 헤더 Off
-        this.props.topicSelect(boardName);
+        initiateDetailPage();
 
-        this.props.getStatusRequest();                      // 유저 정보 request
-        this.props.getBoardDetailRequest(boardName, id);    // 포스팅 데이터 request
-    }
+        headerOff();                             // 헤더 Off
+        topicSelect(boardName);
 
-    componentWillUnmount () {
-        // console.log('unmount detail')
-        this.props.initiateDetailPage()
+        getStatusRequest();                      // 유저 정보 request
+        getBoardDetailRequest(boardName, id);    // 포스팅 데이터 request
     }
 
 

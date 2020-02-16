@@ -128,6 +128,7 @@
 
 * manage update 사진 삭제 성공
 * manage update 구현 완료 (테스트 완료)
+* Detail page 렌더링 에러 해결 (초기화를 component did mount 시점으로 이동)
 
 
 
@@ -139,7 +140,7 @@
 
 #### Board FrontEnd
 
-* 디테일 페이지에서 뒤로가기 했을 때, render가 안되는 오류 (아주 가끔 ?)
+* 디테일 페이지에서 뒤로가기 했을 때, render가 안되는 오류
 * 검색창에 자동완성 기능 추가
 * 사진 넘기기 아이콘 ant-design 적용
 * 사진 Ant Design의 Carousel Component 검토
@@ -170,6 +171,8 @@
 * 스타일이 적용된 태그를 포함한 내용을 DescriptionBox 컴포넌트에 렌더링 시키기
 
 * 가끔 댓글 전체가 안담기는 에러가 있음. 백엔드 문제인지 프론트 문제인지 확인 필요
+
+* 렌더링 되기 이전에 페이지 못찾음이 아닌 로딩 페이지로
 
   
 
