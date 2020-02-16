@@ -133,6 +133,12 @@
 
 
 
+### 2. 17 (월)
+
+* board, detail 페이지 **초기화 -> 데이터 요청 액션 -> 렌더링** 의 일련의 동기화 처리 완료 
+
+
+
 
 
 
@@ -166,10 +172,6 @@
   
 * 댓글 수정 시 (수정 됨) 을 추가하기
 
-* board에서 글 들어갔다가 뒤로가기 후 매니지의 아무 글 클릭하면 post에 데이터가 담기지 않는 에러
-
-  일단 뒤로가기로는 componentWillUnmount 실행되지 않음.
-
 * 스타일이 적용된 태그를 포함한 내용을 DescriptionBox 컴포넌트에 렌더링 시키기
 
 * 가끔 댓글 전체가 안담기는 에러가 있음. 백엔드 문제인지 프론트 문제인지 확인 필요
@@ -182,8 +184,6 @@
 
 * 사진 Ant Design의 Carousel Component 검토
 
-* Detail Container 렌더링 시, 로딩 페이지를 만들기
-
 * 댓글 더보기 기능
 
 * 답글 더보기 기능
@@ -192,7 +192,6 @@
 
 * socket.io를 이용해 클라이언트의 데이터 실시간 업데이트 되도록 하기
 
-* 유저 이름 앞 뒤에 불필요한 요소 제거
 
 
 
@@ -202,14 +201,7 @@
 
 * Outlook 로그아웃 한 상태로, 데스크탑으로 Login 기능 확인
 
-* 로그인 시 아래의 에러가 뜨면서 로그인이 안됨
-
-  ```
-  Error: Failed to lookup view "error" in views directory "/Users/soogeun/Documents/GitHub/uitda/BackEnd/views"
-  ```
-
 * 로그인 완료 후 로그인 페이지로 오기 이전에 페이지로 redirect하기
-
 
 
 
