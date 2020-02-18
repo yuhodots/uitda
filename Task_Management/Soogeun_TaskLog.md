@@ -305,4 +305,5 @@ Redirect 문제 (포스트 delete 시, '/board/market'으로 이동)
 
 * comment, board의 시간을 작성 시간 기준으로 할 지, 수정 시간을 기준으로 할 지
 * board의 condition update 백앤드 작업
+* user의 사진 업로드 백앤드 작업
 
