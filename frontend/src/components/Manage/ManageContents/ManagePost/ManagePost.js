@@ -1,12 +1,15 @@
 
 
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { Button } from 'antd'
 
+import ConditionSelector from './Subcomponents/ConditionSelector'
 import { colors } from '../../../../styles/variables'
 import { 
+    PostManageButtonStyle,
     BoxTemplate,
     LinkBoxTemplate
  } from '../../../../styles/templates/manage'
@@ -153,44 +156,16 @@ const PostItem = styled(BoxTemplate)`
         align-items: center;
     `
 
-        const EditButton = styled(LinkBoxTemplate)`
-            padding: 0.375rem 1rem;
-            margin: 0 0.5rem;
-            font-size: 0.875rem;
-
-            color: ${colors.font_darkgray};
+        const PostManageButton = styled(Button)`
+            ${PostManageButtonStyle}
 
             :hover {
                 color: ${colors.font_darkgray};
-                box-shadow: 0 0 3px rgba(0,0,0,.2);
-            }
-        `;
 
-        const DeleteButton = styled(BoxTemplate)`
-            padding: 0.375rem 1rem;
-            margin: 0 0.5rem;
-            font-size: 0.875rem;
-
-            color: ${colors.font_red};
-
-            cursor: pointer;
-
-            :hover {
-                box-shadow: 0 0 3px rgba(0,0,0,.2);
-            }
-        `;
-
-        const SelectButton = styled(BoxTemplate)`
-            padding: 0.375rem 1rem;
-            margin: 0 0.5rem;
-            font-size: 0.875rem;
-
-            color: ${colors.font_darkgray};
-
-            cursor: pointer;
-
-            :hover {
-                box-shadow: 0 0 3px rgba(0,0,0,.2);
+                ${props => props.isDelete && css`
+                    color: ${colors.font_red};
+                    border-color: ${colors.font_red};
+                `}
             }
         `;
 
@@ -257,14 +232,17 @@ class ManagePost extends Component{
             return (
                 <PostItem isLast={(idx + 1) === postList.length} key={idx}>
                     <PostID>{post.postId}</PostID>
+                    
                     <TextBox>
                         <PostTitle> <TitleLink to={postURL} >{post.title}</TitleLink> </PostTitle>
                         <PostSubInfo> {post.created} </PostSubInfo>
                     </TextBox>
+                    
+                    {/* 수정, 삭제, 상태변경 버튼 */}
                     <ButtonBox>
-                        <EditButton to={editURL} >수정</EditButton>
-                        <DeleteButton onClick={() => this._handleDelete(board, post.id)} >삭제</DeleteButton>
-                        <SelectButton> {post.condition} </SelectButton>
+                        <PostManageButton href={editURL} >수정</PostManageButton>
+                        <PostManageButton onClick={() => this._handleDelete(board, post.id)} isDelete={true} >삭제</PostManageButton>
+                        <ConditionSelector board={board} originCondition={post.condition} />
                     </ButtonBox>
                 </PostItem>
             )
