@@ -41,6 +41,11 @@ router.get('/update/:id', function (req, res) {
     }).catch(function (err) { throw err; });
 });
 
+router.post(`/update/condition/:id`,  function (req, res) {
+  /* x-www-form-urlencoded: condition ('구인 중', '거래 중','구인 완료') */
+  board.update_condition('networking', req, res);
+});
+
 router.post(`/update/:id`, [ usercheck, upload.array('added', 6) ], function (req, res) {
   board.update('networking', req, res);
 });

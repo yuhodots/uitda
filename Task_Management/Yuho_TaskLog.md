@@ -330,9 +330,29 @@
 
 
 
-### 해야할 일 (화요일까지)
+### 20.02.18 (화)
 
--  **Calendar 컴포넌트, uitda 실제 디렉토리에 적용해보기**
-  - npm install socket.io 설치 명령어가 자꾸 error를 뱉어서 작업을 못하고 있음 (해결방법 아는사람..?)
+- Calendar 컴포넌트, uitda 실제 디렉토리에 적용해보기
+  - node_modules 모두 지우고 다시 해보니까 socket.io 잘 작동함
+  - uitda 실제 디렉토리에서 그대로 잘 작동함
+- 이벤트 색깔 처리
+  - 출발시간이 현재시간보다 1시간 지나면 회색처리
+  - 마감처리된 이벤트 회색처리
+  - 마감처리되었거나 시간이 지났어도 내 소유의 이벤트는 그대로 연두색
+- lib/board.js `update`
+  - update_condition 메소드 추가
+  - x-www-form-urlencoded 방식으로 req.body.condition에 데이터 담아서 보내면 됨
+  - market은 '판매 중', '거래 중','판매 완료', networking은 '구인 중', '거래 중','구인 완료'
+  - 요청 url은 market or networking/update/condition/:id
+  - 응답은 일단 res.end() 처리해놓았음
+- CarpoolContatiner 상단부분
+  - 아무 처리를 하지 않으면 상단부분('2020년 2월' 써있는 부분)이 잘림
+  - 그래서 css 파일에 margin-top 처리를 해두긴 했는데, 제대로 바꾸려면 어떻게 해야하는지 궁금
 
-- 유잇다 로고 바꾸기
+
+
+### 해야할 일
+
+- CarpoolContatiner 상단부분
+
+- 유잇다 로고

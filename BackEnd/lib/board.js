@@ -452,6 +452,60 @@ module.exports = {
         });
     },
 
+    /* update_condition 메소드: post의 condition 수정 */
+    update_condition: function (type, req, res) {
+
+        /* 변수 선언 */
+        let type_board; // market_board | networking board
+        let id;
+        let condition;
+
+        async.waterfall([
+
+            /* 변수 값 할당 */
+            function (callback) {
+                id = req.params.id;
+                type_board = type_board_assign(type);
+                condition = req.body.condition;
+                callback(null);
+            },
+
+            /* 로그인한 사람의 요청인지 확인 */
+            function (callback) {
+                (!auth.isOwner(req, res)) ?
+                    res.json({ user: req.user ? req.user : 0 }) :
+                    callback(null);
+            },
+
+            /* 작성자인지 확인 */
+            function (callback) {
+                type_board.findOne({ where: { id: id } })
+                .then(function (content) {
+                    (auth.sameOwner(req, content.email) === 0) ?
+                        res.json({ user: req.user ? req.user : 0 }) :
+                        callback(null);
+                })
+                .catch(function (err) { throw err; });
+            },
+
+            /* 게시글 제목, 내용 수정 */
+            function (callback) {
+                type_board.update({ condition : condition }, { where: { id: id } })
+                .then(function () { callback(null); })
+                .catch(function (err) { throw err; });
+            },
+
+            /* Response end */
+            function (callback) {
+                res.end();
+                callback(null);
+            }
+
+        ], function (err) {
+            if (err) throw (err);
+        });
+    },
+
     /* delete 메소드: post 삭제요청을 수행 */
     delete: function (type, req, res) {
 
