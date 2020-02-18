@@ -28,8 +28,8 @@ return sequelize.define('networking_board', {
     allowNull: false
   },
   condition:{
-    type:DataTypes.ENUM('구인 중', '거래 중','구인 완료'),
-    defaultValue:'구인 중',
+    type:DataTypes.ENUM('진행 중', '완료'),
+    defaultValue:'진행 중',
     allowNull:false
   },
   filenum: {

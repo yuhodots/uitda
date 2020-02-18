@@ -42,7 +42,7 @@ router.get('/update/:id', function (req, res) {
 });
 
 router.post(`/update/condition/:id`,  function (req, res) {
-  /* x-www-form-urlencoded: condition ('구인 중', '거래 중','구인 완료') */
+  /* x-www-form-urlencoded: condition ('진행 중', '완료') */
   board.update_condition('networking', req, res);
 });
 

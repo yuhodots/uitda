@@ -25,11 +25,11 @@ return sequelize.define('cal_events', {
   },
   meeting_place: {
     type: DataTypes.STRING(50),
-    allowNull: false
+    allowNull: true
   },
   contact: {
     type: DataTypes.TEXT,
-    allowNull: false
+    allowNull: true
   },
   description: {
   type: DataTypes.TEXT,
