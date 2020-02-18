@@ -78,12 +78,18 @@ socket.id 를 통해 특정인에게 알림을 띄우고자 했으나, 상대방
 
 ### 2020년 2월 13일
 
-#### 완료
-
 user db에 socket.id 넣고 connection할 때마다 socket_id 넣을 수 있음..
+
+not found를 frontend에 보내는 방법 찾기->response로 찾아보면 될 듯하다....!
+
+board_id 가 없을 때
+
+### 2020년 2월 18일
+not found 프론트엔드 보내기.
+#### 완료
 
 #### 해야할 일
 
-not found를 frontend에 보내는 방법 찾기->response로 찾아보면 될 듯하다....!
-board_id 가 없을 때
+로그인 화면 3개 만들기
+로그인 api 찾을 수 있으면 찾아보기
 #### 진행중 
