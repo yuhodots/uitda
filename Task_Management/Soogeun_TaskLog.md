@@ -136,6 +136,15 @@
 ### 2. 17 (월)
 
 * board, detail 페이지 **초기화 -> 데이터 요청 액션 -> 렌더링** 의 일련의 동기화 처리 완료 
+* carpool edit 페이지 디자인
+
+
+
+### 2. 18 (화)
+
+* Manage 페이지에 min-width 속성 추가
+* manage Post의 상태 선택 컴포넌트 (ConditionSelector) 생성
+* manage post 관리 버튼 (수정, 삭제, 상태변경)의 공통 style을 정의하고, ant design의 button을 채택 
 
 
 
@@ -282,7 +291,10 @@ Redirect 문제 (포스트 delete 시, '/board/market'으로 이동)
 
   * 로그 아웃 시, 아웃룩까지 로그 아웃 가능 ?
   * 로그인 시, 아웃룩에 이 아이디로 로그인 하실 것인가요 묻기 가능 ?
-
+* nerworking의 condition이 현재 '구인 중', '거래 중', '구인 완료'
+  -> '진행 중', '완료'
+* cal_events의 contect, meeting_place 현재 allowNull: false
+  -> allowNull: true
 * 
 
 
@@ -292,4 +304,6 @@ Redirect 문제 (포스트 delete 시, '/board/market'으로 이동)
 ### 요청 사항
 
 * comment, board의 시간을 작성 시간 기준으로 할 지, 수정 시간을 기준으로 할 지
+* board의 condition update 백앤드 작업
+* user의 사진 업로드 백앤드 작업
 

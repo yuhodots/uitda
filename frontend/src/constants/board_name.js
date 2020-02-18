@@ -2,3 +2,4 @@
 
 export const MARKET = 'market';
 export const NETWORKING = 'networking';
+export const CARPOOL = 'carpool';

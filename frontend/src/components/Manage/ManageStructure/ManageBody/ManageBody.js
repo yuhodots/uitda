@@ -28,6 +28,7 @@ const BodyArea = styled(BGTemplate)`
         `${props.windowHeight}px` :
         '50rem';
     }};
+    min-width: 1230px; /* 내용물을 다 담을 수 있도록 (1150px + 5rem) */
 `;
 
 /* Body에 들어가는 요소 (SideBox, ContentBox)를 담는 전체 Box

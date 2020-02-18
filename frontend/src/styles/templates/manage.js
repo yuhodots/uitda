@@ -2,7 +2,7 @@
 
 /* Manage 관련 styled component template 파일 */
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import { colors } from '../variables';
@@ -38,3 +38,11 @@ export const PaperTemplate = styled.div`
     background-color: ${colors.white};
     box-shadow: 0 0 10px rgba(0,0,0,.1);
 `;
+
+/* Post 관리 페이지의 Post 개별 컴포넌트에서
+   수정, 삭제, 상태 변경을 담당하는 버튼의 공통 스타일 */
+export const PostManageButtonStyle = css`
+    margin: 0 0.5rem;
+    font-size: 0.875rem;
+    color: ${props => props.isDelete ? colors.font_red : colors.font_darkgray};
+`
