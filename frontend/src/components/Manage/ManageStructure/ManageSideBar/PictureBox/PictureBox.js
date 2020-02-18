@@ -57,7 +57,7 @@ class PictureBox extends Component {
             <BoxArea>
                 <PhotoCircle/>
                 <Email>{user.email}</Email>
-                <UserName>박수근</UserName>
+                <UserName>{user.username}</UserName>
             </BoxArea>
         )
     }
