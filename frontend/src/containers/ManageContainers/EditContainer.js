@@ -12,6 +12,7 @@ import EditBody from '../../components/Manage/ManageEdit'
 import { 
     initEditPage,
     setInitFalse,
+    selectEditCategory,
     getUpdatePostRequest,
     EditPostRequest,
     storeEditTitleData,
@@ -30,32 +31,43 @@ const { confirm } = Modal;
 
 class EditContainer extends Component {
 
-    state = {}
+    state = { didMount: false }
 
     componentDidMount() {
 
-        console.log(this.props.lastLocation);
+        console.log('edit page mount')
 
         const {
             isNew,
             match,
+            lastLocation,
 
             initEditPage,
-            getPostRequest
+            getPostRequest,
+            selectEditCategory
         } = this.props;
 
         /* 첫 시작은 초기화부터 ! */
         initEditPage();
 
-        /* 새 글 작성 (create) 아닌 경우, get요청을 통해 update 이전 데이터 가져오기 */
-        if(!isNew) {
+        /* 새 글인 경우 (create), last path를 통해 default 카테고리를 정함  */
+        if(isNew) {
+            const lastPath = lastLocation ? lastLocation.pathname : '';
+            const defaultCategory = this._getDefaultCategoryForCreate(lastPath);
+
+            selectEditCategory(defaultCategory);
+        }
+
+        /* 새 글 작성 아닌 경우 (update), get요청을 통해 update 이전 데이터 가져오기 + 카테고리 선택 */
+        else {
             const {
-                boardName,
-                id
+                boardName, id
             } = match.params;
 
             getPostRequest(boardName, id);
+            selectEditCategory(boardName);
         }
+        
 
         // window.onpopstate = (e) => {
         //     e.preventDefault();
@@ -73,14 +85,22 @@ class EditContainer extends Component {
         // setInitFalse('왜우');
 
         // window.addEventListener("beforeunload", this._onUnload);
+
+        this.setState({
+            didMount: true
+        })
     }
 
     componentWillUnmount() {
         // window.removeEventListener("beforeunload", this._onUnload);
     }
 
-    _getDefaultBoardForCreate = (pathname) => {
-        
+    /* Create 시, pathname을 통해 default category 값을 반환하는 함수
+       /manage/posts/networking -> NETWORKING
+       /manage/mycarpool        -> CARPOOL
+       나머지 모두               -> MARKET */
+    _getDefaultCategoryForCreate = (pathname) => {
+
         switch (pathname) {
             case '/manage/posts/networking':
                 return NETWORKING;
@@ -114,15 +134,16 @@ class EditContainer extends Component {
 
     render() {
 
+        const { didMount } = this.state
+
         const {
             /* create / update 구분 props */
             isNew,
             match,
-            lastLocation,
-
+            
             /* App States */
             isEditGetSuccess,
-            isEditInit,
+            editCategory,
 
             title,
             files,
@@ -134,6 +155,7 @@ class EditContainer extends Component {
 
             /* App Methods */
             EditPostRequest,
+            selectEditCategory,
             storeEditTitleData,
             addFileData,
             deleteFileData,
@@ -147,20 +169,11 @@ class EditContainer extends Component {
 
         const id = isNew ? 0 : match.params.id;
 
-        /* 새 글의 경우, 이전의 path 정보에서 board 값을 가져오고,
-           update의 경우, 현재 url 정보에서 board 값을 가져올 수 있다. */
-        
-        const lastPath = lastLocation ? lastLocation.pathname : '';
-        const defaultBoard = isNew ? 
-        this._getDefaultBoardForCreate(lastPath) : match.params.boardName;
-
         /* 동기화 문제 해결
            create의 경우 init 완료되었음을 의미하는 isEditInit을,
            update의 경우 get 요청이 완료되었음을 의미하는 isEditGetSuccess를
            load가 완료되었는가의 boolean 값 isLoad로 이용함 */
-        let isLoad = isNew ? isEditInit : isEditGetSuccess
-
-        console.log(defaultBoard)
+        let isLoad = isNew ? didMount : isEditGetSuccess
 
         return(
             isLoad ?
@@ -168,7 +181,7 @@ class EditContainer extends Component {
                 <Header 
                     isEdit={true}                       // Edit 페이지 헤더임을 알려주는 props
                     isNew={isNew}                       // Create / Update 여부
-                    defaultBoard={defaultBoard}         // 카테고리 선택 박스에 default로 들어갈 게시판 정보
+                    editCategory={editCategory}         // 카테고리 선택 박스에 들어갈 게시판 정보 (default로도 사용됨)
                     id={id}                             // Update의 경우 해당 글의 id
 
                     title={title}                       // Edit 페이지에서 작성한 Title 데이터
@@ -180,6 +193,7 @@ class EditContainer extends Component {
                     edit_spanStyle={edit_spanStyle}     // BIUS 스타일 선택 정보
                     edit_textAlign={edit_textAlign}     // p태그 text align 속성
 
+                    selectEditCategory={selectEditCategory}
                     EditPostRequest={EditPostRequest}
                     editClickB={editClickB}
                     editClickI={editClickI}
@@ -188,9 +202,11 @@ class EditContainer extends Component {
                     editSelectTextAlign={editSelectTextAlign}
                 />
                 <EditBody 
-                    title={title}                       // Edit 페이지에서 작성한 Title 데이터
-                    files={files}                       // Edit 페이지에서 업로드한 사진 데이터
-                    description={description}           // Eidt 페이지에서 작성한 Description 데이터
+                    editCategory={editCategory}                         // Edit 내용물을  
+
+                    title={title}                                       // Edit 페이지에서 작성한 Title 데이터
+                    files={files}                                       // Edit 페이지에서 업로드한 사진 데이터
+                    description={description}                           // Eidt 페이지에서 작성한 Description 데이터
 
                     storeTitleData={storeEditTitleData}
                     addFileData={addFileData}
@@ -217,15 +233,17 @@ EditContainer.defaultProps = {
 
 const mapStateToProps = (state) => {
     return {
-        title: state.manage.editedTitle,                    // Title Data
-        files: state.manage.editedFiles,                    // File List Data
-        deletedFileIDs: state.manage.deletedFileIDs,        // 삭제할 파일 ID 리스트
-        description: state.manage.editedDescription,        // Description Data
-
         isEditGetSuccess: state.manage.isEditGetSuccess,    // update 포스팅 데이터 받아졌는지 여부
         isEditInit: state.manage.isEditInit,                // Edit 페이지 초기화 완료 여부
         isModified: state.manage.isModified,                // 작성을 했는 지 여부
         editSuccess: state.manage.editSuccess,              // 작성 완료 정보
+        editCategory: state.manage.editCategory,            // edit 카테고리 정보 (market, networking, carpool)
+
+        title: state.manage.editedTitle,                    // Title Data
+        files: state.manage.editedFiles,                    // File List Data
+        deletedFileIDs: state.manage.deletedFileIDs,        // 삭제할 파일 ID 리스트
+        description: state.manage.editedDescription,        // Description Data
+        
         edit_spanStyle: state.manage.edit_spanStyle,        // BUIS 스타일 선택 데이터
         edit_textAlign: state.manage.edit_textAlign,        // p태그 text align 속성 값
     }
@@ -235,6 +253,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         initEditPage: () => {dispatch(initEditPage())},
         setInitFalse: () => {dispatch(setInitFalse())} ,
+        selectEditCategory: (category) => {dispatch(selectEditCategory(category))},                     // edit 카테고리를 선택하는 메서드
         EditPostRequest: (board, title, discription, files, id, deletedFileIDs) => {
             dispatch(EditPostRequest(board, title, discription, files, id, deletedFileIDs))
         },
