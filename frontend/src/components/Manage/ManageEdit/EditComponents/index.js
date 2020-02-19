@@ -1,3 +1,2 @@
-export { default as Title } from './EditTitle';
-export { default as DropZone } from './DropZone';
-export { default as Description } from './Description';
+export { default as EditCarpool } from './EditCarpool';
+export { default as EditBoard } from './EditBoard';

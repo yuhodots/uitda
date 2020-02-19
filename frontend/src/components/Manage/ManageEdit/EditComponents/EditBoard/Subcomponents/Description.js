@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Input } from 'antd';
 import PropTypes from 'prop-types';
 
-import { colors } from '../../../../styles/variables'
+import { colors } from '../../../../../../styles/variables'
 
 /* Styled Components */
 const DescriptionBox = styled.div`

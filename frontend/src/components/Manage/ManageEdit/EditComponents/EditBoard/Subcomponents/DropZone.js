@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Upload, Icon, Modal } from 'antd';
 
-import { colors } from '../../../../styles/variables'
+import { colors } from '../../../../../../styles/variables'
 
 import './DropZone.css'
 
