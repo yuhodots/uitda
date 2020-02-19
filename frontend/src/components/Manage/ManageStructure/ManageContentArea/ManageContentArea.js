@@ -50,6 +50,7 @@ class ManageContentArea extends Component {
             /* Posts */
             postList,
             deletePost,
+            updatePostCondition
         } = this.props;
 
         switch (kind) {
@@ -89,6 +90,7 @@ class ManageContentArea extends Component {
                         board={board} 
                         postList={postList}
                         deletePost={deletePost}
+                        updatePostCondition={updatePostCondition}
                     />
         }} /> :
 
@@ -105,19 +107,18 @@ class ManageContentArea extends Component {
     
         return (
             <ContentBoxArea>
-                {
-                    this._renderContent(kind)
-                }
+                { this._renderContent(kind) }
             </ContentBoxArea>
         )
     }
 }
 
 ManageContentArea.propTypes = {
-    kind: PropTypes.string.isRequired,      // 메니지 카테고리 정보
+    kind: PropTypes.string.isRequired,                  // 메니지 카테고리 정보
 
-    postList: PropTypes.array,              // Posts 데이터 리스트
-    deletePost: PropTypes.func,             // Post를 지우는 함수
+    postList: PropTypes.array,                          // Posts 데이터 리스트
+    deletePost: PropTypes.func.isRequired,              // Post를 지우는 함수
+    updatePostCondition: PropTypes.func.isRequired,     // 포스팅의 상태 변경 메서드
 }
 
 export default ManageContentArea;

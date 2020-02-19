@@ -49,7 +49,6 @@ const WholeBox = styled.div`
 class ManageBody extends Component {
 
 
-
     render () {
 
         const {
@@ -60,6 +59,7 @@ class ManageBody extends Component {
             /* posts */
             postList,
             deletePost,
+            updatePostCondition,
         } = this.props
 
         return (
@@ -73,6 +73,7 @@ class ManageBody extends Component {
                         kind={kind}
                         postList={postList}
                         deletePost={deletePost}
+                        updatePostCondition={updatePostCondition}
                     />
                 </WholeBox>
             </BodyArea>
@@ -81,11 +82,12 @@ class ManageBody extends Component {
 }
 
 ManageBody.propTypes = {
-    kind: PropTypes.string.isRequired,          // 메니지 카테고리 정보
-    windowHeight: PropTypes.number.isRequired,  // 화면 최소 세로 길이 정보
+    kind: PropTypes.string.isRequired,                  // 메니지 카테고리 정보
+    windowHeight: PropTypes.number.isRequired,          // 화면 최소 세로 길이 정보
 
-    postList: PropTypes.array,                  // Posts 데이터 리스트
-    deletePost: PropTypes.func,                 // Post를 지우는 함수
+    postList: PropTypes.array,                          // Posts 데이터 리스트
+    deletePost: PropTypes.func.isRequired,              // Post를 지우는 함수
+    updatePostCondition: PropTypes.func.isRequired,     // 포스팅의 상태 변경 메서드
 }
 
 export default ManageBody;

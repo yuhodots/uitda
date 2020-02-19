@@ -148,6 +148,12 @@
 
 
 
+### 2.19 (수)
+
+* manage 포스팅 상태 변경 기능 완료
+
+
+
 
 
 
@@ -233,9 +239,8 @@
 * '/manage' 로 시작하는 URL을 브라우저 창에 입력하고 enter를 누르면 강제로 '/board/market'으로 리다이렉트 되는 에러
 Redirect 문제 (포스트 delete 시, '/board/market'으로 이동)
   reload (새로고침) 하는데 왜 '/board/market' 으로 이동할까 ?
+  예상 -> manage container의 user가 없는 경우 auth/login 가고 auth/login에서 /로 갈 듯
   
-* 게시글 상태 변경 기능 (거래중, 판매 완료)
-
 * create에서 작성하다가 나갔다 다시 create할 때, 내용 남음
 (create 페이지에서 나갈 때, isEditInit이 false로 초기화 되지 않음)
   
@@ -291,10 +296,6 @@ Redirect 문제 (포스트 delete 시, '/board/market'으로 이동)
 
   * 로그 아웃 시, 아웃룩까지 로그 아웃 가능 ?
   * 로그인 시, 아웃룩에 이 아이디로 로그인 하실 것인가요 묻기 가능 ?
-* nerworking의 condition이 현재 '구인 중', '거래 중', '구인 완료'
-  -> '진행 중', '완료'
-* cal_events의 contect, meeting_place 현재 allowNull: false
-  -> allowNull: true
 * 
 
 
@@ -304,6 +305,5 @@ Redirect 문제 (포스트 delete 시, '/board/market'으로 이동)
 ### 요청 사항
 
 * comment, board의 시간을 작성 시간 기준으로 할 지, 수정 시간을 기준으로 할 지
-* board의 condition update 백앤드 작업
 * user의 사진 업로드 백앤드 작업
 

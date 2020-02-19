@@ -13,8 +13,9 @@ import {
 
 /* Actions */
 import {
-    getMyPostRequest,   // Posts GET request 함수
-    deletePostRequest,  // Post Delete Post request 함수  
+    getMyPostRequest,               // Posts GET request 함수
+    deletePostRequest,              // Post Delete Post request 함수  
+    updatePostConditionRequest,
 } from '../../store/actions/manage'
 import { getStatusRequest } from '../../store/actions/auth'
 
@@ -125,6 +126,7 @@ class ManageContainer extends Component {
             postList,
 
             deletePostRequest,
+            updatePostConditionRequest,
         } = this.props;
     
         const { 
@@ -151,6 +153,7 @@ class ManageContainer extends Component {
 
                         postList={postList}
                         deletePost={deletePostRequest}
+                        updatePostCondition={updatePostConditionRequest}
                     /> 
                 </div>:
                 '로딩 중'
@@ -180,8 +183,11 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getStatusRequest: () => {dispatch(getStatusRequest())},                         // 접속된 유저 정보를 요청하는 액션
 
-        getMyPostRequest: (board) => {dispatch(getMyPostRequest(board))},
-        deletePostRequest: (board, id) => {dispatch(deletePostRequest(board, id))},
+        getMyPostRequest: (board) => {dispatch(getMyPostRequest(board))},               // 내가 작성한 전체 Post 데이터 GET request 함수
+        deletePostRequest: (board, id) => {dispatch(deletePostRequest(board, id))},     // Post Delete POST request 함수
+        updatePostConditionRequest: (board, id, condition) => {                         // 포스팅의 상태 변경 POST request 메서드
+            dispatch(updatePostConditionRequest(board, id, condition))
+        }
     }
 }
 

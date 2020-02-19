@@ -1,4 +1,5 @@
 import axios from "axios";
+import qs from 'qs';
 
 import {
     MANAGE_GET_MY_POSTS_SUCCESS,
@@ -74,7 +75,6 @@ export function getMyPostFailure (err) {
 }
 
 /* '/manage/post/:board'에서의 포스팅 삭제 액션 */
-
 export function deletePostRequest (board, id) {
     return (dispatch) => {
 
@@ -102,6 +102,22 @@ export function deletePostFailure (err) {
         err,
     }
 }
+
+/* '/manage/post/:board'에서의 포스팅 상태 변경 액션 */
+export function updatePostConditionRequest (board, id, condition) {
+    return (dispatch) => {
+
+        const POSTurl = `/api/${board}/update/condition/${id}`;
+
+        let requestBody = { condition }
+        const config = {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }
+
+        return axios.post(POSTurl, qs.stringify(requestBody), config)
+    }
+}
+
 
 /////////////////////////////////////////////////////////////////
 // Manage board 끝 //

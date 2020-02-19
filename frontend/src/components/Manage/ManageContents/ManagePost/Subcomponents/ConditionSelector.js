@@ -1,11 +1,12 @@
 
 
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Select } from 'antd'
+import { Select } from 'antd';
 
-import { MARKET } from '../../../../../constants/board_name'
+import { MARKET } from '../../../../../constants/board_name';
+import { MARKET_CONDITIONS, NETWORKING_CONDITIONS } from '../../../../../constants/manage_post_conditions';
 import { PostManageButtonStyle } from '../../../../../styles/templates/manage';
 
 const { Option } = Select;
@@ -16,28 +17,46 @@ const SelectButton = styled(Select)`
     width: 6.5rem;
 `;
 
-/* Constants */
-const marketConditions = ['판매 중', '거래 중', '판매 완료'];
-const networkingConditions = ['진행 중', '완료']
-
 /* React Component */
-const ConditionSelector = ({board, originCondition}) => {
+class ConditionSelector extends Component {
 
-    const conditions = board === MARKET ?
-    marketConditions : networkingConditions;
+    _handleChange = (value) => {
+        const { 
+            board,
+            post_id,
+            updatePostCondition 
+        } = this.props;
 
-    return (
-        <SelectButton defaultValue={originCondition} >
-            { conditions.map( condition => {
-                return <Option value={condition} >{condition}</Option>                
-            }) }
-        </SelectButton>
-    )
+        updatePostCondition(board, post_id, value);
+    }
+
+    render () {
+
+        const {
+            board, originCondition
+        } = this.props;
+
+        const conditions = board === MARKET ?
+        MARKET_CONDITIONS : NETWORKING_CONDITIONS;
+
+        return (
+            <SelectButton 
+                defaultValue={originCondition} 
+                onChange={this._handleChange}
+            >
+                { conditions.map( (condition, idx) => {
+                    return <Option value={condition} key={idx} >{condition}</Option>                
+                }) }
+            </SelectButton>
+        )
+    }
 }
 
 ConditionSelector.propTypes = {
-    board: PropTypes.string.isRequired,
-    originCondition: PropTypes.string.isRequired,
+    board: PropTypes.string.isRequired,                 // 게시판 정보 (market, networking)
+    post_id: PropTypes.number.isRequired,               // 해당 포스팅 id
+    originCondition: PropTypes.string.isRequired,       // 상태 변경 이전의 원래 상태 값
+    updatePostCondition: PropTypes.func.isRequired,     // 포스팅의 상태 변경 메서드
 }
 
 export default ConditionSelector

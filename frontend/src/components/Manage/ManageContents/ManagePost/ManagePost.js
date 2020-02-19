@@ -220,6 +220,9 @@ class ManagePost extends Component{
 
     /* Post Item을 render하는 함수 */
     _renderPostItems = (postList, board) => {
+
+        const { updatePostCondition } = this.props;
+
         return postList.map((post, idx) => {
             // console.log(post);
 
@@ -242,7 +245,12 @@ class ManagePost extends Component{
                     <ButtonBox>
                         <PostManageButton href={editURL} >수정</PostManageButton>
                         <PostManageButton onClick={() => this._handleDelete(board, post.id)} isDelete={true} >삭제</PostManageButton>
-                        <ConditionSelector board={board} originCondition={post.condition} />
+                        <ConditionSelector 
+                            board={board} 
+                            post_id={post.id}
+                            originCondition={post.condition} 
+                            updatePostCondition={updatePostCondition} 
+                        />
                     </ButtonBox>
                 </PostItem>
             )
@@ -338,10 +346,11 @@ class ManagePost extends Component{
 }
 
 ManagePost.propTypes = {
-    postList: PropTypes.array,              // 게시글 리스트
-    board: PropTypes.string.isRequired,     // 어떤 게시판인지 정보
+    postList: PropTypes.array,                          // 게시글 리스트
+    board: PropTypes.string.isRequired,                 // 어떤 게시판인지 정보
 
-    deletePost: PropTypes.func.isRequired,  // Post 지우는 함수
+    deletePost: PropTypes.func.isRequired,              // Post 지우는 함수
+    updatePostCondition: PropTypes.func.isRequired,     // 포스팅의 상태 변경 메서드
 }
 
 ManagePost.defaultProps = {
