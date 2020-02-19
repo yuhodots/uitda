@@ -160,8 +160,7 @@
 
 ### 2.20 (목)
 
-* 
-  EditBody 코드 리펙토링
+* EditBody 코드 리펙토링
   EditPaper > EditBoard / EditCarpool 분할
   EditComponents (Title, Dropzone, Description) > EditBoard의 Subcomponents
 
@@ -247,15 +246,10 @@
 
 * Edit Page 나가기 전에 '나가시겠습니까 묻기'
 
-* Edit Create 시, default Board값을 받아올 수 있도록 하기
-
 * '/manage' 로 시작하는 URL을 브라우저 창에 입력하고 enter를 누르면 강제로 '/board/market'으로 리다이렉트 되는 에러
 Redirect 문제 (포스트 delete 시, '/board/market'으로 이동)
   reload (새로고침) 하는데 왜 '/board/market' 으로 이동할까 ?
   예상 -> manage container의 user가 없는 경우 auth/login 가고 auth/login에서 /로 갈 듯
-  
-* create에서 작성하다가 나갔다 다시 create할 때, 내용 남음
-(create 페이지에서 나갈 때, isEditInit이 false로 초기화 되지 않음)
   
 * 글 쓰기로 edit 페이지 들어갈 때, undefined가 들어가서 렌더링 안되는 오류 (/manage/posts/undefined)
 
@@ -268,15 +262,11 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 * DropZone PhotoList의 width값 고정된거 없애기
 
-* Edit update 시, 사진이 뜨도록
-
 * Edit Page 상단 바 디자인
 
 * Edit 상단 아이콘 기능 구현
 
 * Edit 스타일을 지닌 태그들을 어떻게 저장할 것인지 구상
-
-* Edit update 시, 삭제되는 이미지는 id, 새로 추가되는 이미지는 이전처럼 보내주기
 
 * 사진 업로드 최대 개수 (현재 6개)
 
