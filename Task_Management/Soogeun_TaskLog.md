@@ -151,6 +151,10 @@
 ### 2.19 (수)
 
 * manage 포스팅 상태 변경 기능 완료
+* edit page default 보드 기능 완료 (react-router-last-location 패키지 설치)
+* edit container의 create isload 값을 state의 didmount 값으로 대체 (이제 반드시 초기화된 이후에 렌더링 됨)
+* edit page의 카테고리 값을 앱 state로 옮김
+* ManageHeader > EditComponent의 subcomponents 디렉토리 생성, CategorySelectBox 코드 리펙토링
 
 
 
