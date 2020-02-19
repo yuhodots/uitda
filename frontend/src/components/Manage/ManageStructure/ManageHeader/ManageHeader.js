@@ -50,7 +50,7 @@ class ManageHeader extends Component {
             isEdit,
             isNew,
             id,
-            board,
+            defaultBoard,
 
             title,
             files,
@@ -70,17 +70,16 @@ class ManageHeader extends Component {
             editSelectTextAlign,
         } = this.props;
 
-        // console.log(deletedFileIDs);
-
         return (
             <HeaderBox>
                 <HomeLink to='/'></HomeLink>
                 { 
                     isEdit ?
+
                     <EditComponent 
                         isNew={isNew}
                         id={id}
-                        defaultBoard={board}
+                        defaultBoard={defaultBoard}
 
                         title={title}
                         files={files}
@@ -99,6 +98,7 @@ class ManageHeader extends Component {
                         editClickS={editClickS}
                         selectTextAlign={editSelectTextAlign}
                     /> :
+
                     <DefaultCompoent />
                 }
                 {/* 유저, 알림, 메시지 */}
@@ -112,8 +112,8 @@ ManageHeader.propTypes = {
 
     /* Edit Header를 위한 props */
     isNew: PropTypes.bool,                  // Create / Update 여부
+    defaultBoard: PropTypes.string,         // 카테고리 선택창의 기본 게시판 값
     id: PropTypes.number,                   // Update의 경우 해당 글의 id
-    board: PropTypes.string,
 
     title: PropTypes.string,                // Title Data
     files: PropTypes.array,                 // Files Data
@@ -138,7 +138,9 @@ ManageHeader.defaultProps = {
 
     /* Edit Header를 위한 props */
     isNew: true,
+    defaultBoard: '',
     id: 0,
+    board: '',
 
     title: '',            
     files: [],          

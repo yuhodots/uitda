@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter } from 'react-router-dom';
+import { LastLocationProvider } from 'react-router-last-location';
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -13,7 +14,9 @@ const Root = () => {
     return (
         <Provider store={store}>
             <BrowserRouter>
-                <App/>
+                <LastLocationProvider>
+                    <App/>
+                </LastLocationProvider>
             </BrowserRouter>
         </Provider>
     )

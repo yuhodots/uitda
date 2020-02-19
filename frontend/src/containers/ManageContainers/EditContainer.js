@@ -3,12 +3,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
-
 import { Modal } from 'antd'
+import { withLastLocation } from 'react-router-last-location';
 
+import { MARKET, NETWORKING, CARPOOL } from "../../constants/board_name";
 import { Header } from '../../components/Manage/ManageStructure'
 import EditBody from '../../components/Manage/ManageEdit'
-
 import { 
     initEditPage,
     setInitFalse,
@@ -34,7 +34,7 @@ class EditContainer extends Component {
 
     componentDidMount() {
 
-        console.log('edit page mount')
+        console.log(this.props.lastLocation);
 
         const {
             isNew,
@@ -79,6 +79,22 @@ class EditContainer extends Component {
         // window.removeEventListener("beforeunload", this._onUnload);
     }
 
+    _getDefaultBoardForCreate = (pathname) => {
+        
+        switch (pathname) {
+            case '/manage/posts/networking':
+                return NETWORKING;
+
+            case '/manage/mycarpool':
+                return CARPOOL;
+
+            /* /manage/posts/networking 을 포함해 모든 다른 주소도
+               기본적으로 MARKET으로 이동 */
+            default:
+                return MARKET;
+        }
+    }
+
     _onUnload = (e) => {
         e.preventDefault();
         e.returnValue = '';
@@ -102,6 +118,7 @@ class EditContainer extends Component {
             /* create / update 구분 props */
             isNew,
             match,
+            lastLocation,
 
             /* App States */
             isEditGetSuccess,
@@ -129,12 +146,13 @@ class EditContainer extends Component {
         } = this.props;
 
         const id = isNew ? 0 : match.params.id;
-        const board = isNew ? '' : match.params.boardName;
 
-        // console.log(`title: ${title}, description: ${description}`)
-        // console.log(files);
-        console.log(deletedFileIDs);
-        // console.log(isEditInit);
+        /* 새 글의 경우, 이전의 path 정보에서 board 값을 가져오고,
+           update의 경우, 현재 url 정보에서 board 값을 가져올 수 있다. */
+        
+        const lastPath = lastLocation ? lastLocation.pathname : '';
+        const defaultBoard = isNew ? 
+        this._getDefaultBoardForCreate(lastPath) : match.params.boardName;
 
         /* 동기화 문제 해결
            create의 경우 init 완료되었음을 의미하는 isEditInit을,
@@ -142,14 +160,16 @@ class EditContainer extends Component {
            load가 완료되었는가의 boolean 값 isLoad로 이용함 */
         let isLoad = isNew ? isEditInit : isEditGetSuccess
 
+        console.log(defaultBoard)
+
         return(
             isLoad ?
             <div>
                 <Header 
                     isEdit={true}                       // Edit 페이지 헤더임을 알려주는 props
                     isNew={isNew}                       // Create / Update 여부
+                    defaultBoard={defaultBoard}         // 카테고리 선택 박스에 default로 들어갈 게시판 정보
                     id={id}                             // Update의 경우 해당 글의 id
-                    board={board}                       
 
                     title={title}                       // Edit 페이지에서 작성한 Title 데이터
                     files={files}                       // Edit 페이지에서 업로드한 사진 데이터
@@ -235,4 +255,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditContainer);
+export default withLastLocation(connect(mapStateToProps, mapDispatchToProps)(EditContainer));

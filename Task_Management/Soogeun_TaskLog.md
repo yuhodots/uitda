@@ -244,9 +244,14 @@ Redirect 문제 (포스트 delete 시, '/board/market'으로 이동)
 * create에서 작성하다가 나갔다 다시 create할 때, 내용 남음
 (create 페이지에서 나갈 때, isEditInit이 false로 초기화 되지 않음)
   
+* 글 쓰기로 edit 페이지 들어갈 때, undefined가 들어가서 렌더링 안되는 오류 (/manage/posts/undefined)
+
+* edit 페이지에서 뒤로가기로 manage로 이동했을 때 흰색 화면 에러
+DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e918.hot-update.js.map
   
   
-* 작성하다가 삭제를 했을 때, DropZone 미리보기와 실제 업로드 되는 사진이 다른 오류
+  
+* 작성하다가 삭제를 했을 때, DropZone 미리보기와 실제 업로드 되는 사진이 다른 오류 (현재 발견되지 않음)
 
 * DropZone PhotoList의 width값 고정된거 없애기
 
