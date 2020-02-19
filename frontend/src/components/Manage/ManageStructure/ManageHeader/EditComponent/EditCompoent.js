@@ -13,11 +13,10 @@ import {
 } from 'react-icons/md'
 import { Redirect } from 'react-router-dom';
 
+import { CategorySelectBox } from './Subcomponenets';
 import { colors } from '../../../../../styles/variables'; 
-import { MARKET, NETWORKING } from '../../../../../constants/board_name'
 import { TEXT_ALIGN } from '../../../../../constants/edit_funcs'
 
-/* Select Component의 Option Component */
 const { Option } = Select;
 
 /* Styled Compoents */
@@ -29,11 +28,6 @@ const HeaderBox = styled.div`
     flex-flow: row nowrap;
     align-items: center;
 `; 
-
-/* 카테고리 선택 태그 (ant-design) */
-const CategorySelectBox = styled(Select)`
-    width: 8rem;
-`;
 
 /* 글 작성에 관련된 기능을 담은 박스 */
 const EditFuncBox = styled.div`
@@ -110,17 +104,17 @@ class EditComponent extends Component {
 
     /* Select Box Handling 함수 */
     _handleSelect = (value) => {
-        this.setState({
-            board: value
-        })
+        const { selectEditCategory } = this.props;
+
+        selectEditCategory(value);
     }
 
     /* 글 생성 / 수정 버튼 액션 */
     _handleEndClick = () => {
-        const{ board } = this.state;
         
         const { 
             id,
+            editCategory,
 
             title,
             files,
@@ -135,8 +129,8 @@ class EditComponent extends Component {
         const uploadFiles = files.filter( file => !file.url )
 
         id ?    // id가 있으면 수정 액션, 없으면 생성 액션
-        EditPostRequest(board, title, description, uploadFiles, id, deletedFileIDs) :
-        EditPostRequest(board, title, description, uploadFiles)
+        EditPostRequest(editCategory, title, description, uploadFiles, id, deletedFileIDs) :
+        EditPostRequest(editCategory, title, description, uploadFiles)
     }
 
     render () {
@@ -144,11 +138,13 @@ class EditComponent extends Component {
         const { 
             isNew,
 
-            defaultBoard,
+            editCategory,
             editSuccess,
 
             spanStyle,
             textAlign,
+
+            selectEditCategory,
 
             editClickB,
             editClickI,
@@ -157,11 +153,7 @@ class EditComponent extends Component {
             selectTextAlign,
         } = this.props;
 
-        const { 
-            board,
-        } = this.state;
-
-        const redirerctURL = `/manage/posts/${board}`
+        const redirerctURL = `/manage/posts/${editCategory}`
 
         const TooltipProps = {
             mouseEnterDelay: 0,
@@ -178,28 +170,12 @@ class EditComponent extends Component {
             editSuccess ? 
             <Redirect to={redirerctURL} /> :    // 작성 완료 시, Redirect함
             <HeaderBox>
-                {
-                    /* 카테고리 선택 박스 */
-                    isNew ?
-
-                    /* 새 글의 경우, 활성화 */
-                    <CategorySelectBox 
-                        defaultValue={defaultBoard} 
-                        onChange={this._handleSelect}
-                    >
-                        <Option value={MARKET} >다판다</Option>
-                        <Option value={NETWORKING} >잉력시장</Option>
-                    </CategorySelectBox> :
-
-                    /* 글 수정의 경우, 비활성화 */
-                    <CategorySelectBox 
-                        defaultValue={defaultBoard} 
-                        disabled
-                    >
-                        <Option value={MARKET} >다판다</Option>
-                        <Option value={NETWORKING} >잉력시장</Option>
-                    </CategorySelectBox>
-                }
+                
+                <CategorySelectBox 
+                    isNew={isNew}
+                    editCategory={editCategory}
+                    selectEditCategory={selectEditCategory}
+                />
 
                 <EditFuncBox>
                     {/* font-size */}
@@ -277,7 +253,7 @@ class EditComponent extends Component {
 }
 
 EditComponent.propTypes = {
-    defaultBoard: PropTypes.string,                 // Default Category 값
+    editCategory: PropTypes.string.isRequired,      // Default Category 값
 
     isNew: PropTypes.bool,                          // Create / Update 여부
     id: PropTypes.number,                           // Update의 경우 해당 글의 id
@@ -292,6 +268,7 @@ EditComponent.propTypes = {
     spanStyle: PropTypes.object.isRequired,         // BIUS 스타일 선택 정보
     textAlign: PropTypes.string.isRequired,         // p태그 text align 속성 값
 
+    selectEditCategory: PropTypes.func.isRequired,  // 카테고리 선택 메서드
     EditPostRequest: PropTypes.func.isRequired,     // Post Create / Update function
 
     editClickB: PropTypes.func.isRequired,
@@ -302,7 +279,6 @@ EditComponent.propTypes = {
 }
 
 EditComponent.defaultProps = {
-    defaultBoard: MARKET,
     isNew: true,
     id: 0,
 }

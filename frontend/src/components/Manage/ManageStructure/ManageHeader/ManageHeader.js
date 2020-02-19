@@ -50,7 +50,7 @@ class ManageHeader extends Component {
             isEdit,
             isNew,
             id,
-            defaultBoard,
+            editCategory,
 
             title,
             files,
@@ -62,6 +62,7 @@ class ManageHeader extends Component {
             edit_textAlign,
 
             EditPostRequest,
+            selectEditCategory,
             
             editClickB,
             editClickI,
@@ -79,7 +80,7 @@ class ManageHeader extends Component {
                     <EditComponent 
                         isNew={isNew}
                         id={id}
-                        defaultBoard={defaultBoard}
+                        editCategory={editCategory}
 
                         title={title}
                         files={files}
@@ -91,6 +92,7 @@ class ManageHeader extends Component {
                         textAlign={edit_textAlign}
 
                         EditPostRequest={EditPostRequest}
+                        selectEditCategory={selectEditCategory}
 
                         editClickB={editClickB}
                         editClickI={editClickI}
@@ -112,7 +114,7 @@ ManageHeader.propTypes = {
 
     /* Edit Header를 위한 props */
     isNew: PropTypes.bool,                  // Create / Update 여부
-    defaultBoard: PropTypes.string,         // 카테고리 선택창의 기본 게시판 값
+    editCategory: PropTypes.string,         // 카테고리 선택창의 기본 게시판 값
     id: PropTypes.number,                   // Update의 경우 해당 글의 id
 
     title: PropTypes.string,                // Title Data
@@ -125,6 +127,7 @@ ManageHeader.propTypes = {
     edit_textAlign: PropTypes.string,       // p태그 text align 속섣값
 
     EditPostRequest: PropTypes.func,        // Post Create / Update function
+    selectEditCategory: PropTypes.func,     // 카테고리를 선택하는 메서드
 
     editClickB: PropTypes.func,
     editClickI: PropTypes.func,
@@ -152,6 +155,7 @@ ManageHeader.defaultProps = {
     edit_textAlign: '',
 
     EditPostRequest: undefined,
+    selectEditCategory: undefined,
     editSelectTextAlign: undefined,
 }
 

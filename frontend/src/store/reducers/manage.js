@@ -17,8 +17,10 @@ import {
     MANAGE_EDIT_CLICK_UNDERLINE,
     MANAGE_EDIT_CLICK_STRIKETHROUGH,
     MANAGE_EDIT_SELECT_TEXT_ALIGN,
+    MANAGE_EDIT_SELECT_CATEGORY,
 } from '../actions/ActionTypes'
 
+import { MARKET } from '../../constants/board_name'
 import { TEXT_ALIGN } from '../../constants/edit_funcs'
 
 
@@ -36,6 +38,8 @@ const InitialState = {
     isEditInit: false,                      // Edit 페이지 초기화 여부
     isEditGetSuccess: false,                // Edit page GET 성공 여부
     isModified: false,                      // 수정된 지 여부
+    editCategory: MARKET,                   // Edit 페이지 카테고리 정보 (market, networking, carpool)
+    
     editedTitle: '',                        // 작성한 제목 데이터
     editedFiles: [],                        // 업로드할 파일 데이터 리스트
     deletedFileIDs: [],                     // 삭제할 파일의 id 리스트
@@ -81,6 +85,7 @@ export default function manage (state = InitialState, action) {
                 editedFiles: [],
                 editedDescription: '',
                 
+                editCategory: MARKET,
                 editSuccess: false,
                 isEditGetSuccess: false,
                 isModified: false,
@@ -95,6 +100,11 @@ export default function manage (state = InitialState, action) {
                 // isEditInit: false
             }
 
+        case MANAGE_EDIT_SELECT_CATEGORY:
+            return {
+                ...state,
+                editCategory: action.category
+            }
 
         /* 글 수정 시 요청한 GET 요청 액션으로 얻은 data 또는 err
            데이터는 글 수정 edit 페이지에 처음 로드 되는데 사용됨 */

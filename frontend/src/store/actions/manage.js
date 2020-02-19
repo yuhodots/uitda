@@ -6,6 +6,7 @@ import {
     MANAGE_GET_MY_POSTS_FAILURE,
     MANAGE_EDIT_INIT_PAGE,
     MANAGE_EDIT_SET_INIT_FALSE,
+    MANAGE_EDIT_SELECT_CATEGORY,
     MANAGE_EDIT_GET_POST_SUCCESS,
     MANAGE_EDIT_GET_POST_FAILURE,
     MANAGE_EDIT_CREATE_POST_SUCCESS,
@@ -139,6 +140,15 @@ export function setInitFalse(hi) {
         hi
     }
 }
+
+/* Edit 카테고리를 선택하는 메서드 */
+export function selectEditCategory(category) {
+    return {
+        type: MANAGE_EDIT_SELECT_CATEGORY,
+        category
+    }
+}
+
 
 ////////////////////////////////////////////////////////////////////////////
 /* '/manage/update/:board/:id' 에서 해당 페이지에 알맞는 데이터를 불러오는 (GET) 액션 */
