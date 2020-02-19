@@ -202,7 +202,7 @@ class EditContainer extends Component {
                     editSelectTextAlign={editSelectTextAlign}
                 />
                 <EditBody 
-                    editCategory={editCategory}                         // Edit 내용물을  
+                    editCategory={editCategory}                         // Edit 카테고리
 
                     title={title}                                       // Edit 페이지에서 작성한 Title 데이터
                     files={files}                                       // Edit 페이지에서 업로드한 사진 데이터
