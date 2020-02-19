@@ -158,6 +158,15 @@
 
 
 
+### 2.20 (목)
+
+* 
+  EditBody 코드 리펙토링
+  EditPaper > EditBoard / EditCarpool 분할
+  EditComponents (Title, Dropzone, Description) > EditBoard의 Subcomponents
+
+
+
 
 
 
