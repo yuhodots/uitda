@@ -2,7 +2,7 @@
 
 export const MANAGE_POSTS_MARKET = 'posts_market';
 export const MANAGE_POSTS_NETWORKING = 'posts_networking';
-export const MANAGE_COMMENTS = 'comments'
-export const MANAGE_LIKEPOSTS = 'likeposts'
-export const MANAGE_MYCARPOOL = 'mycarpool'
-export const MANAGE_NOTIFICATIONS = 'notifications'
+export const MANAGE_COMMENTS = 'comments';
+export const MANAGE_LIKEPOSTS = 'likeposts';
+export const MANAGE_MYCARPOOL = 'mycarpool';
+export const MANAGE_NOTIFICATIONS = 'notifications';
