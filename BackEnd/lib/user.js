@@ -11,6 +11,39 @@ const { users } = require('../models');
 
 module.exports = {
 
+    update: function(req, res){
+
+      let file; 
+
+      async.waterfall([
+
+          /* 변수 값 할당 */
+          function (callback) {
+            file = req.file;
+            callback(null);
+          },
+
+          /* 로그인한 사람의 요청인지 확인 */
+          function (callback) {
+              (!auth.isOwner(req, res)) ?
+                  res.json({ user: req.user ? req.user : 0 }) :
+                  callback(null);
+          },
+
+          /* pic_location에 사진주소 추가 */
+          function (callback) {
+            users.update({ pic_location: file.location }, { where: { email: req.user.email } })
+            .then(function () { res.end(); })
+            .catch(function (err) { throw err });
+            callback(null); 
+          }
+
+      ], function (err) {
+          if (err) throw (err);
+      });
+
+  },
+
     delete: function(req, res){
 
         async.waterfall([

@@ -3,20 +3,13 @@ let express = require('express');
 let router = express.Router();
 let db = require('../config/db');
 let auth = require('../lib/auth');
-const { users } = require('../models');
 const { market_board } = require('../models');
-const { market_files } = require('../models');
 const { networking_board } = require('../models');
-const { networking_files } = require('../models');
 const { proposal } = require('../models');
 //const { cal_events } = require('../models');
 let moment = require('moment');
 moment.locale('ko');
 
-/* AWS SDK, multer-s3 */
-let multerS3 = require('../lib/multerS3')();
-let upload = multerS3.upload;
-let s3 = multerS3.s3;
 
 /* manage page. */
 router.get('/', function (req, res) {

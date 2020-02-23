@@ -11,7 +11,7 @@ let upload = multerS3.upload;
 
 /* User checking */
 let usercheck = function (req, res, next) {
-  (req.user)? next(): res.end();
+  (req.user)? next(): res.redirect('http://localhost:4000/');
 };
 
 /* Category: networking page. */

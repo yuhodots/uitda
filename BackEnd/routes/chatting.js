@@ -1,7 +1,8 @@
 /* Module load */
-var express = require('express');
-var router = express.Router();
-var auth = require('../lib/auth');
+let express = require('express');
+let router = express.Router();
+let auth = require('../lib/auth');
+
 
 /* Category: chatting page. */
 router.get('/', function (req, res, next) {
