@@ -1,5 +1,6 @@
 let auth = require('./auth');
 let async = require('async');
+const { market_board } = require('../models');
 const { comment } = require('../models');
 const { users } = require('../models');
 let moment = require('moment');
@@ -64,6 +65,96 @@ module.exports = {
                 }).catch(function (err) { throw err; });
                 callback(null);
             }
+        ], function (err) {
+            if (err) throw (err);
+        });
+    },
+
+    my_market_comment: function(req, res){
+
+        let board_id_list = [];
+
+        async.waterfall([
+
+            /* 로그인한 사람의 요청인지 확인 */
+            function (callback) {
+                (!auth.isOwner(req, res)) ?
+                    res.json({ user: req.user ? req.user : 0 }) :
+                    callback(null);
+            },
+
+            /* 해당 게시판에 대해 댓글을 가지고 있는지 확인 */
+            function (callback) {
+                (auth.hasComment(req, 'market', 'email') === 0) ?
+                    res.json({ postlist: undefined, user: req.user ? req.user : 0 }) :
+                    callback(null);
+            },
+
+            /* 본인이 댓글을 작성한 post의 id 검색 */
+            function (callback) {
+                comment.findAll({  where: { email: req.user.email, type_board: 'market' } })
+                .then(result => {
+                    for(let i = 0; i < result.length; i++){
+                        board_id_list.push(result[i]['board_id']);
+                    }
+                    callback(null);
+                })
+                .catch(function (err) { throw err; });
+            },
+
+            /* postlist 응답 */
+            function (callback) {
+                market_board.findAll({  where: { id: board_id_list }, order: [[ 'id','DESC' ]] })
+                .then(result => { res.json({ postlist: result, user: req.user ? req.user : 0 }); })
+                .catch(function (err) { throw err; });
+                callback(null);
+            }
+
+        ], function (err) {
+            if (err) throw (err);
+        });
+    },
+
+    my_networking_comment: function(req, res){
+
+        let board_id_list = [];
+
+        async.waterfall([
+
+            /* 로그인한 사람의 요청인지 확인 */
+            function (callback) {
+                (!auth.isOwner(req, res)) ?
+                    res.json({ user: req.user ? req.user : 0 }) :
+                    callback(null);
+            },
+
+            /* 해당 게시판에 대해 댓글을 가지고 있는지 확인 */
+            function (callback) {
+                (auth.hasComment(req, 'networking', 'email') === 0) ?
+                    res.json({ postlist: undefined, user: req.user ? req.user : 0 }) :
+                    callback(null);
+            },
+
+            /* 본인이 댓글을 작성한 post의 id 검색 */
+            function (callback) {
+                comment.findAll({  where: { email: req.user.email, type_board: 'networking' } })
+                .then(result => {
+                    for(let i = 0; i < result.length; i++){
+                        board_id_list.push(result[i]['board_id']);
+                    }
+                    callback(null);
+                })
+                .catch(function (err) { throw err; });
+            },
+
+            /* postlist 응답 */
+            function (callback) {
+                market_board.findAll({  where: { id: board_id_list }, order: [[ 'id','DESC' ]] })
+                .then(result => { res.json({ postlist: result, user: req.user ? req.user : 0 }); })
+                .catch(function (err) { throw err; });
+                callback(null);
+            }
+
         ], function (err) {
             if (err) throw (err);
         });

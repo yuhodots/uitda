@@ -340,19 +340,56 @@
   - 마감처리된 이벤트 회색처리
   - 마감처리되었거나 시간이 지났어도 내 소유의 이벤트는 그대로 연두색
 - lib/board.js `update`
-  - update_condition 메소드 추가
+  - update_condition 메소드 추가, git push 완료
   - x-www-form-urlencoded 방식으로 req.body.condition에 데이터 담아서 보내면 됨
-  - market은 '판매 중', '거래 중','판매 완료', networking은 '구인 중', '거래 중','구인 완료'
+  - market은 '판매 중', '거래 중','판매 완료', networking은 '진행 중', '완료'
   - 요청 url은 market or networking/update/condition/:id
   - 응답은 일단 res.end() 처리해놓았음
 - CarpoolContatiner 상단부분
   - 아무 처리를 하지 않으면 상단부분('2020년 2월' 써있는 부분)이 잘림
   - 그래서 css 파일에 margin-top 처리를 해두긴 했는데, 제대로 바꾸려면 어떻게 해야하는지 궁금
 
+- carpool, networking model 변경
+
+
+
+### 20.02.20 (목)
+
+- lib/user.js `update`
+  - update 메소드 생성: 유저 사진 업로드
+  - /api/users/update 요청
+  - upload.single('userfile'): key 값으로 'userfile'이라는 value 받음
+- usercheck
+  - 모든 페이지에 대해서 로그인 안하면, /api/로 리다이렉트 되도록 바꿔놓음 
+  - 이에 대해 의견 물어보기: 적용할지 말지
+- 수정제안
+  - manage 이름 '박수근'으로 뜨는 것
+  - 유잇다 로고 2.3 & 헤더 길이 4 정도로 줄이는게 나은듯 
+  - 유잇다_beta
+- 의견 확인 후 푸시
+  - usercheck 안하려면 그냥 git checkout . 하면 됨
+
+
+
+### 20.02.23 (일)
+
+- 저번주 작업 보완
+  - usercheck: 일단 다시 해제해두기
+  - 유저사진 업로드 메소드 푸시완료
+- routes/manage.js `update`
+  - GET: localhost:3000/api/manage/market_comment 추가
+  - GET: localhost:3000/api/manage/networking_comment 추가
+  - 내가 댓글을 단 post를 postlist에 담아서 response ( /api/manage/market 응답과 같은 형태)
+- lib/comment.js `update`
+  - my_market_comment 메소드 추가
+  - my_networking_comment 메소드 추가
+- lib/auth.js `update`
+  - hasComment 메소드 추가
+- git push
+
 
 
 ### 해야할 일
 
-- CarpoolContatiner 상단부분
+- 
 
-- 유잇다 로고
