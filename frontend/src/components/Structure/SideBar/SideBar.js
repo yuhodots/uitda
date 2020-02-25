@@ -4,26 +4,41 @@
 
 
 import React, { Component } from "react";
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
+import { colors } from "../../../styles/variables";
 import topicData from "./topics.json";
-
+import Logo from "../CommonComponents/Logo";
 import Menu from "./Menu";
-import logo from "./logo-color.png";
 
 import './SideBar.css';
 
+/* Styled Components */
 
+const LogoContainer = styled.div`
+    flex: 0 4rem;
+
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+
+    border-bottom: 2px solid ${colors.gray_bg};
+`;
+
+
+/* React Component */
 class SideBar extends Component {
 
     render() {
         return (
-            <aside className='SideBar'>
+            <div className='SideBar'>
 
-                <div className="LogoContainer">
-                    <Link to='/'><img src={logo} className="logo-Image" alt="Home" /></Link>
-                </div>
+                <LogoContainer>
+                    <Logo isWhite={false} />
+                </LogoContainer>
 
                 <div className="UpperItemContainer">
                     <Menu 
@@ -39,7 +54,7 @@ class SideBar extends Component {
                     />
                 </div>
                 
-            </aside>
+            </div>
         )
     }
 }
