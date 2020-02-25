@@ -3,10 +3,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom'
 
+import Logo from '../../../Structure/CommonComponents/Logo';
 import { colors } from '../../../../styles/variables'
-import logoImg from '../../../../styles/images/logo-color.png'
 
 import EditComponent from './EditComponent'
 import DefaultCompoent from './DefaultComponent'
@@ -28,17 +27,6 @@ const HeaderBox = styled.div`
     display: flex;
     flex-flow: row nowrap;
 `; 
-
-const HomeLink = styled(Link)`
-    height: 4rem;
-    width: 4.5rem;
-    margin: 0 3rem;
-
-    background-image: ${`url(${logoImg})`};
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: contain;
-`
 
 
 /* react component */
@@ -73,7 +61,7 @@ class ManageHeader extends Component {
 
         return (
             <HeaderBox>
-                <HomeLink to='/'></HomeLink>
+                <Logo isWhite={false} />
                 { 
                     isEdit ?
 
