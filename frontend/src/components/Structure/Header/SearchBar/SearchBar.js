@@ -2,8 +2,58 @@
 
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { Icon } from "antd";
 
-import './SearchBar.css';
+import { colors } from "../../../../styles/variables";
+
+/* Styled Components */
+
+/* 검색바 (input + button) */
+const SearchBarBox = styled.div`
+    width: 70%;
+    max-width: 36rem;
+    height: 2rem;
+    
+    background-color: ${colors.white};
+    border-radius: 1rem;
+    overflow: hidden;
+    
+    display: flex;
+    flex-flow: row nowrap;
+`;
+
+/* Text 입력 창 */
+const SearchInput = styled.input`
+    flex: 1;
+    padding: .6em 1em;
+    
+    border: none;
+    font-size: .875rem;
+
+    :focus {
+        outline: none;
+        color: ${colors.blue};
+        text-shadow: 0px 0px 0px ${colors.black};  
+        -webkit-text-fill-color: transparent;
+    }
+`
+
+/* Search Button */
+const SearchButton = styled.button`
+    flex: 0 4rem;
+    
+    color: ${colors.blue};
+    background-color: ${colors.gray_bg};
+
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    /* border-left: 2px solid #f4f4f4;  */
+`;
+
+
+/* React Component */
 
 class SearchBar extends Component {
 
@@ -37,15 +87,15 @@ class SearchBar extends Component {
 
     render() {
         return (
-            <div className="Search-Bar">
-                <input 
+            <SearchBarBox>
+                <SearchInput 
                     type='text' 
+                    placeholder='검색어를 입력하세요.'
                     onChange={this._handleInput} 
                     onKeyDown={this._handleEnter}
-                    className="Search-TextArea" 
                 />
-                <div onClick={this._handleClick} className="SearchBotton">검색</div>
-            </div>
+                <SearchButton onClick={this._handleClick} ><Icon type='search' /></SearchButton>
+            </SearchBarBox>
         )
     }
 }

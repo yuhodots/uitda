@@ -6,10 +6,67 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import styled, { css } from 'styled-components';
 
+import { colors } from "../../../styles/variables";
+import Logo from "../CommonComponents/Logo";
 import SearchBar from "./SearchBar";
 import './Header.css'
-import logo from './logo-white.png';
+
+/* Styled Components */
+
+/* Header 전체 박스 */
+const HeaderBox = styled.div`
+    height: 4rem;
+    width: 100%;
+    padding: 0;
+    
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+
+    background-color: ${colors.blue};
+
+    display: flex;
+    flex-flow: row nowrap;
+
+    opacity: 1;
+    visibility: visible;
+
+    transition: visibility 0.5s, 
+                opacity 0.5s;
+
+    ${props => !props.isHeaderOn && css`
+        opacity: 0;
+        visibility: hidden;
+    `}
+`;
+
+const LogoContainer = styled.div`
+    flex: 0 15rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+
+/* 검색창 컴포넌트를 담은 컨테이너 */
+const SearchBarContainer = styled.div`
+    flex: 1;
+    height: 4rem;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+/* */
+const UserInfoContainer = styled.div`
+    flex: 0 8rem;
+`;
+
+
+/* React Component */
 
 class Header extends Component {
 
@@ -19,7 +76,6 @@ class Header extends Component {
             isSearchBarOn,
             isHeaderOn,
             isLoggedIn,
-            isCategoryOn,
             topic,
 
             handleLogout,
@@ -27,41 +83,30 @@ class Header extends Component {
         } = this.props;
 
         return (
-            <div className={
-                isHeaderOn ?
-                "Header" :
-                "Header hidden"
-            }>
-                <div className="LogoContainer">
-                    <Link to="/"><img src={logo} className="logo-Image" alt="Home" /></Link>
-                </div>
-
-                <div className="EmptyContainer"></div>
+            <HeaderBox isHeaderOn={isHeaderOn} >
                 
-                <div className="SearchBarContainer">
-                    {
-                        isSearchBarOn ?
-                        <SearchBar 
-                            getBoardRequest={getBoardRequest} 
-                            board={topic}
-                        /> :
-                        ''
-                    }
-                </div>
+                <LogoContainer>
+                    <Logo isWhite={true} />
+                </LogoContainer>
 
-                <div className="EmptyContainer"></div>
+                <SearchBarContainer>
+                    {isSearchBarOn ?
+                    <SearchBar 
+                        getBoardRequest={getBoardRequest} 
+                        board={topic}
+                    /> :
+                    ''}
+                </SearchBarContainer>
 
+                <UserInfoContainer>
                 {
                     isLoggedIn ? 
                     <a onClick={handleLogout} href='/' className='LogItem'>Logout</a> : 
                     <Link to='/auth/login' className='LogItem'>Login</Link>
                 }
-                {
-                    isCategoryOn ?
-                    <div></div> :
-                    ""
-                }
-            </div>
+                </UserInfoContainer>
+
+            </HeaderBox>
         )
     }
 }
@@ -70,7 +115,6 @@ Header.propTypes = {
     // Properties
     isHeaderOn: PropTypes.bool.isRequired,      // Header가 나타나는 지,
     isSearchBarOn: PropTypes.bool.isRequired,   // 검색바를 나타낼지,
-    isCategoryOn: PropTypes.bool.isRequired,    // 카테고리 창을 나타낼지,
     isLoggedIn: PropTypes.bool.isRequired,      // 로그인 되어있는지,
     user: PropTypes.object,                     // 유저 객체
     topic: PropTypes.string.isRequired,         // 무슨 topic 인지 
@@ -81,7 +125,7 @@ Header.propTypes = {
 }
 
 Header.defaultProps = {
-    user: {}
+    user: {},
 }
 
 export default Header;

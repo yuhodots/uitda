@@ -61,7 +61,7 @@ class EditBody extends Component {
             <BackGround minHeight={windowHeight} >
             {
                 editCategory === CARPOOL ?
-                <EditCarpool /> :
+                <EditCarpool  windowHeight={windowHeight} /> :
                 <EditBoard minHeight={windowHeight}
                     title={title} storeTitleData={storeTitleData}
                     files={files} addFileData={addFileData} deleteFileData={deleteFileData}
