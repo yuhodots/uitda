@@ -166,6 +166,20 @@
 
 
 
+### 2.23 (일)
+
+* 검색바 디자인 작업 및 css -> styled Component
+* Structure/CommonComponents에 Logo.js 생성
+  Header, SideBar, ManageHeader에서 사용하는 로고 컴포넌트 통합
+
+
+
+### 2.25 (화)
+
+* Full Calendar 스타일링  완료
+
+
+
 
 
 
@@ -283,6 +297,8 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 * 유저 아이콘 배치
 
+  
+
 
 
 #### FrontEnd
@@ -305,7 +321,7 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
   * 로그 아웃 시, 아웃룩까지 로그 아웃 가능 ?
   * 로그인 시, 아웃룩에 이 아이디로 로그인 하실 것인가요 묻기 가능 ?
-* 
+* 내가 댓글 쓴 글 목록
 
 
 
