@@ -1,5 +1,9 @@
 export const colors = {
+    
+    /*  */
     blue: '#1E90FF',
+    light_blue_highlighted: '#BAE7FF',
+    light_blue: '#E6F7FF',
     gray_bg: '#F5F6F7',
     gray_line: '#bec4c6',
     white: '#FFFFFF',
