@@ -9,6 +9,8 @@ import {
     Calendar,
     TitleInput,
     PlaceInputBox,
+    TimePickerBox,
+    SubInfoInputBox,
 } from './Subcomponents';
 import { colors } from '../../../../../styles/variables'
 
@@ -99,6 +101,9 @@ class EditCarpool extends Component {
                     <TitleInput />
                     <StyledDivider />
                     <PlaceInputBox />
+                    <TimePickerBox />
+                    <SubInfoInputBox subtitle='연락처' />
+                    <SubInfoInputBox subtitle='집합 장소' />
                 </RoomInfoBox>
             </WholeArea>
         )
