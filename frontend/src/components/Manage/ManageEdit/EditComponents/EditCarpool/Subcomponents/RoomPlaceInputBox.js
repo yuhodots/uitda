@@ -4,7 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Input } from "antd";
 
-import { colors } from "../../../../../../styles/variables";
+import Subtitle from './RoomSubtitle';
 
 /* Styled Components */
 
@@ -30,22 +30,8 @@ const WholeBox = styled.div`
         margin-left: 1rem;
     `;
 
-        const Subtitle = styled.h3`
-            font-weight: bold;
-            margin-bottom: 1rem;
-
-            /* 노트북 사이즈 */
-            @media (max-width: 1500px) {
-                font-size: 1rem;
-            }
-        `;
-
-        const RedStar = styled.span`
-            color: ${colors.font_red};
-        `;
-
         const PlaceTextArea = styled(Input.TextArea)`
-
+            margin-top: 1rem;
             padding: 0.25rem;
 
             /* TextArea 속성 */
@@ -74,7 +60,7 @@ const RoomPlaceInputBox = () => {
     return (
         <WholeBox>
             <DepartureBox>
-                <Subtitle>출발지 <RedStar>*</RedStar> </Subtitle>
+                <Subtitle content='출발지' redStar={true} />
                 <PlaceTextArea 
                     // defaultValue={title}
                     autoSize={true}
@@ -83,7 +69,7 @@ const RoomPlaceInputBox = () => {
             </DepartureBox>
 
             <DestinationBox>
-                <Subtitle>도착지 <RedStar>*</RedStar> </Subtitle>
+                <Subtitle content='도착지' redStar={true} />
                 <PlaceTextArea 
                     // defaultValue={title}
                     autoSize={true}
