@@ -13,9 +13,10 @@ import {
 } from 'react-icons/md'
 import { Redirect } from 'react-router-dom';
 
-import { CategorySelectBox } from './Subcomponenets';
+import { CategorySelectBox, RightBox } from './Subcomponenets';
 import { colors } from '../../../../../styles/variables'; 
 import { TEXT_ALIGN } from '../../../../../constants/edit_funcs'
+import { CARPOOL } from '../../../../../constants/board_name'
 
 const { Option } = Select;
 
@@ -23,70 +24,65 @@ const { Option } = Select;
 /* 로고 다음부터의 오른쪽 부분 */
 const HeaderBox = styled.div`
     height: 4rem;
+    flex: 1;
 
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
+    justify-content: space-between;
 `; 
 
-/* 글 작성에 관련된 기능을 담은 박스 */
-const EditFuncBox = styled.div`
-    margin: 0 2rem;
-    height: 100%;
-
+const LeftBox = styled.div`
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
-`;
+`
 
-    const FontSizeSelect = styled(Select)`
-        margin: 0 0.5rem !important;
+    /* 글 작성에 관련된 기능을 담은 박스 */
+    const EditFuncBox = styled.div`
+        margin: 0 2rem;
+        height: 100%;
+
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
     `;
 
-    /* Icon 공통 속성 (ant-design) */
-    const IconStyle = css`
-        margin: 0 0.5rem;
-        font-size: 1rem;
+        const FontSizeSelect = styled(Select)`
+            margin: 0 0.5rem !important;
+        `;
 
-        cursor: pointer;
-        transition-property: color, background-color;
-        transition-duration: 0.3s;
+        /* Icon 공통 속성 (ant-design) */
+        const IconStyle = css`
+            margin: 0 0.5rem;
+            font-size: 1rem;
 
-        color: ${colors.icon_darkgray};
-        background-color: ${colors.white};
+            cursor: pointer;
+            transition-property: color, background-color;
+            transition-duration: 0.3s;
 
-        /* 클릭 시, 글자색 배경색 변경 */
-        ${props => props.isSelected && css`
-            color: ${colors.white};
-            background-color: ${colors.icon_darkgray};
-        `}
-    `;
+            color: ${colors.icon_darkgray};
+            background-color: ${colors.white};
 
-    /* Ant Design Icon */
-    const EditIcon = styled(Icon)`
-        ${IconStyle}
-    `;
+            /* 클릭 시, 글자색 배경색 변경 */
+            ${props => props.isSelected && css`
+                color: ${colors.white};
+                background-color: ${colors.icon_darkgray};
+            `}
+        `;
 
-    /* Ant Design에 없는 아이콘들 */
-    const AlignJustifyIcon = styled(MdFormatAlignJustify)`${IconStyle}`;
-    const AlignLeftIcon = styled(MdFormatAlignLeft)`${IconStyle}`;
-    const AlignCenterIcon = styled(MdFormatAlignCenter)`${IconStyle}`;
-    const AlignRightIcon = styled(MdFormatAlignRight)`${IconStyle}`;
+        /* Ant Design Icon */
+        const EditIcon = styled(Icon)`
+            ${IconStyle}
+        `;
 
-    /* 글 생성 / 수정 버튼 */
-    const EndButton = styled.div`
-        height: 2rem;
-        padding: 0.5625rem 1rem;
-        margin: 0 1rem;
+        /* Ant Design에 없는 아이콘들 */
+        const AlignJustifyIcon = styled(MdFormatAlignJustify)`${IconStyle}`;
+        const AlignLeftIcon = styled(MdFormatAlignLeft)`${IconStyle}`;
+        const AlignCenterIcon = styled(MdFormatAlignCenter)`${IconStyle}`;
+        const AlignRightIcon = styled(MdFormatAlignRight)`${IconStyle}`;
 
-        border: 1px solid ${colors.gray_line};
-        border-radius: 1rem;
 
-        line-height: 0.875rem;
-        font-size: 0.875rem;
-
-        cursor: pointer;
-    `
 
 /* react component */
 class EditComponent extends Component {
@@ -109,42 +105,30 @@ class EditComponent extends Component {
         selectEditCategory(value);
     }
 
-    /* 글 생성 / 수정 버튼 액션 */
-    _handleEndClick = () => {
-        
+    
+    render () {
+
         const { 
+            isNew,
             id,
+
             editCategory,
+            editSuccess,
 
             title,
             files,
             deletedFileIDs,
             description,
 
-            EditPostRequest
-        } = this.props;
-
-        /* 업로드로 넘겨주는 file 데이터는 이미 업로드 되어 있지 않은 사진들
-           (url 프로퍼티를 갖지 않는 파일들) 만으로 구성한다. */
-        const uploadFiles = files.filter( file => !file.url )
-
-        id ?    // id가 있으면 수정 액션, 없으면 생성 액션
-        EditPostRequest(editCategory, title, description, uploadFiles, id, deletedFileIDs) :
-        EditPostRequest(editCategory, title, description, uploadFiles)
-    }
-
-    render () {
-
-        const { 
-            isNew,
-
-            editCategory,
-            editSuccess,
-
             spanStyle,
             textAlign,
 
+            selectedDate,
+
+            /* Methods */
             selectEditCategory,
+
+            EditPostRequest,
 
             editClickB,
             editClickI,
@@ -152,6 +136,8 @@ class EditComponent extends Component {
             editClickU,
             selectTextAlign,
         } = this.props;
+
+        const isCarpool = editCategory === CARPOOL;
 
         const redirerctURL = `/manage/posts/${editCategory}`
 
@@ -171,82 +157,102 @@ class EditComponent extends Component {
             <Redirect to={redirerctURL} /> :    // 작성 완료 시, Redirect함
             <HeaderBox>
                 
-                <CategorySelectBox 
+                <LeftBox>
+                    <CategorySelectBox 
+                        isNew={isNew}
+                        editCategory={editCategory}
+                        selectEditCategory={selectEditCategory}
+                    />
+
+                    {
+                        /* Carpool 카테고리에서는 EditFuncBox 없음
+                        EditFuncBox는 Subcomponents로 리펙토링 하기 */
+                        editCategory === CARPOOL ?
+                        '' :
+                        <EditFuncBox>
+                            {/* font-size */}
+                            <Tooltip title='글자 크기' {...TooltipProps} >
+                                <FontSizeSelect
+                                    defaultValue={10} 
+                                >
+                                    <Option value={8} >8 pt</Option>
+                                    <Option value={9} >9 pt</Option>
+                                    <Option value={10} >10 pt</Option>
+                                    <Option value={12} >12 pt</Option>
+                                    <Option value={14} >14 pt</Option>
+                                    <Option value={18} >18 pt</Option>
+                                    <Option value={24} >24 pt</Option>
+                                </FontSizeSelect>
+                            </Tooltip>
+                            
+                            {/* 글꼴 ? */}
+
+                            <Divider type='vertical' />
+
+                            <Tooltip title='굵게' {...TooltipProps} >
+                                <EditIcon type="bold" isSelected={spanStyle.bSelect} onClick={editClickB} />
+                            </Tooltip>
+                            <Tooltip title='기울이기' {...TooltipProps} >
+                                <EditIcon type="italic" isSelected={spanStyle.iSelect} onClick={editClickI} />
+                            </Tooltip>
+                            <Tooltip title='밑줄' {...TooltipProps} >
+                                <EditIcon type="underline" isSelected={spanStyle.uSelect} onClick={editClickU} />
+                            </Tooltip>
+                            <Tooltip title='취소선' {...TooltipProps} >
+                                <EditIcon type="strikethrough" isSelected={spanStyle.sSelect} onClick={editClickS} />
+                            </Tooltip>
+
+                            <Tooltip title='글자색' {...TooltipProps} >
+                                <EditIcon type="font-colors" />
+                            </Tooltip>
+                            
+                            <Divider type="vertical" />
+                            
+                            {/* p 태그 속성 (text-align) */}
+                            <Tooltip title='양쪽 정렬' {...TooltipProps} >
+                                <AlignJustifyIcon 
+                                    isSelected={textAlign === TEXT_ALIGN.justify} 
+                                    onClick={() => selectTextAlign(TEXT_ALIGN.justify)}    
+                                />
+                            </Tooltip>
+                            <Tooltip title='왼쪽 정렬' {...TooltipProps} >
+                                <AlignLeftIcon 
+                                    isSelected={textAlign === TEXT_ALIGN.left} 
+                                    onClick={() => selectTextAlign(TEXT_ALIGN.left)}
+                                />
+                            </Tooltip>
+                            <Tooltip title='가운데 정렬' {...TooltipProps} >
+                                <AlignCenterIcon 
+                                    isSelected={textAlign === TEXT_ALIGN.center} 
+                                    onClick={() => selectTextAlign(TEXT_ALIGN.center)}
+                                />
+                            </Tooltip>
+                            <Tooltip title='오른쪽 정렬' {...TooltipProps} >
+                                <AlignRightIcon 
+                                    isSelected={textAlign === TEXT_ALIGN.right} 
+                                    onClick={() => selectTextAlign(TEXT_ALIGN.right)}
+                                />
+                            </Tooltip>
+                        </EditFuncBox>
+                    }
+                </LeftBox>
+
+                <RightBox 
+                    isCarpool={isCarpool} 
                     isNew={isNew}
+                    id={id}
                     editCategory={editCategory}
-                    selectEditCategory={selectEditCategory}
+
+                    title={title}
+                    files={files}
+                    deletedFileIDs={deletedFileIDs}
+                    description={description}
+
+                    selectedDate={selectedDate}
+
+                    EditPostRequest={EditPostRequest}
                 />
-
-                <EditFuncBox>
-                    {/* font-size */}
-                    <Tooltip title='글자 크기' {...TooltipProps} >
-                        <FontSizeSelect
-                            defaultValue={10} 
-                        >
-                            <Option value={8} >8 pt</Option>
-                            <Option value={9} >9 pt</Option>
-                            <Option value={10} >10 pt</Option>
-                            <Option value={12} >12 pt</Option>
-                            <Option value={14} >14 pt</Option>
-                            <Option value={18} >18 pt</Option>
-                            <Option value={24} >24 pt</Option>
-                        </FontSizeSelect>
-                    </Tooltip>
-                    
-                    {/* 글꼴 ? */}
-
-                    <Divider type='vertical' />
-
-                    <Tooltip title='굵게' {...TooltipProps} >
-                        <EditIcon type="bold" isSelected={spanStyle.bSelect} onClick={editClickB} />
-                    </Tooltip>
-                    <Tooltip title='기울이기' {...TooltipProps} >
-                        <EditIcon type="italic" isSelected={spanStyle.iSelect} onClick={editClickI} />
-                    </Tooltip>
-                    <Tooltip title='밑줄' {...TooltipProps} >
-                        <EditIcon type="underline" isSelected={spanStyle.uSelect} onClick={editClickU} />
-                    </Tooltip>
-                    <Tooltip title='취소선' {...TooltipProps} >
-                        <EditIcon type="strikethrough" isSelected={spanStyle.sSelect} onClick={editClickS} />
-                    </Tooltip>
-
-                    <Tooltip title='글자색' {...TooltipProps} >
-                        <EditIcon type="font-colors" />
-                    </Tooltip>
-                    
-                    <Divider type="vertical" />
-                    
-                    {/* p 태그 속성 (text-align) */}
-                    <Tooltip title='양쪽 정렬' {...TooltipProps} >
-                        <AlignJustifyIcon 
-                            isSelected={textAlign === TEXT_ALIGN.justify} 
-                            onClick={() => selectTextAlign(TEXT_ALIGN.justify)}    
-                        />
-                    </Tooltip>
-                    <Tooltip title='왼쪽 정렬' {...TooltipProps} >
-                        <AlignLeftIcon 
-                            isSelected={textAlign === TEXT_ALIGN.left} 
-                            onClick={() => selectTextAlign(TEXT_ALIGN.left)}
-                        />
-                    </Tooltip>
-                    <Tooltip title='가운데 정렬' {...TooltipProps} >
-                        <AlignCenterIcon 
-                            isSelected={textAlign === TEXT_ALIGN.center} 
-                            onClick={() => selectTextAlign(TEXT_ALIGN.center)}
-                        />
-                    </Tooltip>
-                    <Tooltip title='오른쪽 정렬' {...TooltipProps} >
-                        <AlignRightIcon 
-                            isSelected={textAlign === TEXT_ALIGN.right} 
-                            onClick={() => selectTextAlign(TEXT_ALIGN.right)}
-                        />
-                    </Tooltip>
-                </EditFuncBox>
-
-                {/* 글 수정 / 생성 버튼 */}
-                <EndButton onClick={this._handleEndClick} >
-                    { isNew ? '글 생성' : '글 수정' }
-                </EndButton>
+                
             </HeaderBox>
         )
     }
@@ -268,6 +274,10 @@ EditComponent.propTypes = {
     spanStyle: PropTypes.object.isRequired,         // BIUS 스타일 선택 정보
     textAlign: PropTypes.string.isRequired,         // p태그 text align 속성 값
 
+    /* Carpool 탭 데이터 */
+    selectedDate: PropTypes.object,                 // Carpool 탭에서 선택된 날짜 데이터
+
+    /* Methods */
     selectEditCategory: PropTypes.func.isRequired,  // 카테고리 선택 메서드
     EditPostRequest: PropTypes.func.isRequired,     // Post Create / Update function
 
