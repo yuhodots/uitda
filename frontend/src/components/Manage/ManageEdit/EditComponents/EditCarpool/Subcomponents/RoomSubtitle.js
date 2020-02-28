@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import { colors } from "../../../../../../styles/variables";
 
@@ -9,6 +10,7 @@ import { colors } from "../../../../../../styles/variables";
 const StyledH3 = styled.h3`
     margin: 0;
     margin-right: 1rem;
+    width: 5.5em;
     
     font-weight: bold;
     
@@ -32,6 +34,15 @@ const RoomSubtitle = ({content, redStar}) => {
             { redStar ? <RedStar> * </RedStar> : '' }
         </StyledH3>
     )
+}
+
+RoomSubtitle.propTypes = {
+    content: PropTypes.string.isRequired,       // subtitle 내용
+    redStar: PropTypes.bool,                    // Red Star 유무 여부
+}
+
+RoomSubtitle.defaultProps = {
+    redStar: false,
 }
 
 export default RoomSubtitle;
