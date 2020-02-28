@@ -7,7 +7,8 @@ import { Divider } from "antd";
 
 import {
     Calendar,
-    RoomTitleInput,
+    TitleInput,
+    PlaceInputBox,
 } from './Subcomponents';
 import { colors } from '../../../../../styles/variables'
 
@@ -60,8 +61,10 @@ const RoomInfoBox = styled(ContentBoxTemplate)`
     width: ${props => props.boxHeight * 0.73 }px;
 `;
 
+/* margin값을 조정한 Divider */
 const StyledDivider = styled(Divider)`
-    margin: 1rem 0.5rem;
+    margin: 1rem 0;
+    /* padding: 0 0.5rem; */
 `;
 
 
@@ -93,8 +96,9 @@ class EditCarpool extends Component {
                 </CalendarBox>
 
                 <RoomInfoBox boxHeight={height} >
-                    <RoomTitleInput />
+                    <TitleInput />
                     <StyledDivider />
+                    <PlaceInputBox />
                 </RoomInfoBox>
             </WholeArea>
         )

@@ -1,8 +1,11 @@
 
 
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Input } from 'antd';
+
+
+/* Styled Components */
 
 const TitleTextArea = styled(Input.TextArea)`
     margin-bottom: 1rem;
@@ -25,21 +28,22 @@ const TitleTextArea = styled(Input.TextArea)`
         margin-bottom: 0;
         font-size: 1.5rem;
     }
-`
-
-class RoomTitleInput extends Component {
+`;
 
 
-    render () {
-        return (
-            <TitleTextArea 
-                // defaultValue={title}
-                placeholder="제목을 입력 하세요."
-                autoSize={true}
-                // onChange={(e) => storeTitleData(e.target.value)}
-            />
-        )
-    }
+/* React Component */
+
+const RoomTitleInput = () => {
+
+    return (
+        <TitleTextArea 
+            // defaultValue={title}
+            placeholder="제목을 입력 하세요."
+            autoSize={true}
+            // onChange={(e) => storeTitleData(e.target.value)}
+        />
+    )
 }
+
 
 export default RoomTitleInput;
