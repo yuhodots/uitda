@@ -190,6 +190,10 @@
 ### 2.28 (금)
 
 * manage carpool 캘린더의 반응형 웹 디자인 적용 (padding, margin 값 변경, font-size 변경)
+* Room Title Input 컴포넌트 제작
+* 출발지 도착지 Input 컴포넌트 제작 
+* 출발 시각 TimePicker 컴포넌트 제작
+* SubTitle 컴포넌트 코드 리펙토링
 
 
 
