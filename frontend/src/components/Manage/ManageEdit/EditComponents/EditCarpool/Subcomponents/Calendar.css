@@ -46,11 +46,18 @@ code {
   margin-top: 80px;
 } */
 
+/* 캘린더의 버튼 속성 */
+.fc-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 /* 캘린더 header의 center 부분 스타일 */
 .fc-center {
   display: flex;
   flex-flow: row nowrap;
+  justify-content: center;
 }
 
 .fc-center > h2 {
@@ -83,7 +90,7 @@ code {
   opacity: 0.2!important;
 }
 
-
+/* 요일 표시하는 header */
 .fc-day-header {
   background-color: #FCF8E3;
 }
@@ -99,4 +106,26 @@ code {
 
 .fc-dayGrid-view .fc-day-number {
   padding: 0.25rem;
+}
+
+
+/* 노트북 사이즈 기준 스타일 */
+@media (max-width: 1500px) {
+
+  .fc-center > h2 {
+    font-size: 1.5rem;
+  }
+
+  .fc-button {
+    font-size: 0.875rem;
+  }
+
+  .fc-button .fc-icon {
+    font-size: 1rem;
+  }
+
+  .fc-dayGrid-view .fc-day-number {
+    padding: 0.25rem;
+    font-size: 0.75rem;
+  }
 }

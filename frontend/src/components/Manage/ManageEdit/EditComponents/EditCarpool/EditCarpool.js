@@ -22,8 +22,12 @@ const WholeArea = styled.div`
 const ContentBoxTemplate = styled.div`
     margin: 0 2rem;
     height: ${props => props.boxHeight}px;
-    min-height: 503px;  /* 최소 높이는 1377 x 768 해상도 모니터의 브라우저 크기를 기준 */
+    min-height: 553px;  /* 최소 높이는 1377 x 768 해상도 모니터의 브라우저 크기를 기준 */
     padding: 2rem;
+    @media (max-width: 1500px) {
+        margin: 0 1rem;
+        padding: 1rem;
+    }
 
     background-color: ${colors.white};
 
@@ -32,7 +36,7 @@ const ContentBoxTemplate = styled.div`
 `;
 
 const CalendarBox = styled(ContentBoxTemplate)`
-    min-width: 45rem;
+    min-width: 50rem;
     width: ${props => props.boxHeight * 1.43 }px;
 `;
 
@@ -42,7 +46,7 @@ const CalendarBox = styled(ContentBoxTemplate)`
     `
 
 const RoomInfoBox = styled(ContentBoxTemplate)`
-    min-width: 23rem;
+    min-width: 24rem;
     width: ${props => props.boxHeight * 0.73 }px;
 `
 

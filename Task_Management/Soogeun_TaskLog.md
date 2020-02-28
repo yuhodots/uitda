@@ -180,6 +180,19 @@
 
 
 
+### 2.27 (목)
+
+* 캘린더의 date 클릭 액션 처리 작업 완료
+* Edit header Right Box 코드 리펙토링
+
+
+
+### 2.28 (금)
+
+* manage carpool 캘린더의 반응형 웹 디자인 적용 (padding, margin 값 변경, font-size 변경)
+
+
+
 
 
 
@@ -190,6 +203,7 @@
 
 * 디테일 페이지에서 뒤로가기 했을 때, render가 안되는 오류
 * 반응형 웹 - 가로 개수에 맞게 fake카드 렌더링
+* 무한 스크롤 islast 점검 (간혹 2번 요청이 가는 경우가 있음)
 
 
 
@@ -197,7 +211,6 @@
 * 사진 넘기기 아이콘 ant-design 적용
 * 사진 Ant Design의 Carousel Component 검토
 * postlist 초기화 및 중복 요청 제거
-* 무한 스크롤 islast 점검
 * 상세 페이지에서 다시 돌아올때는 초기화 X
 * 검색 창 띄우기 아이콘이 안 보일 때 위치에 갖다대면 cursor 모양으로 바뀌는 에러
 
@@ -247,8 +260,6 @@
 
 
 
-
-
 #### Home FrontEnd
 
 * Home 페이지 디자인
@@ -256,6 +267,11 @@
 
 
 #### Manage FrontEnd
+
+* 캘린더의 Selected Date가 색깔을 갖는것으로 변경
+* 캘린더의 default가 오늘로 설정되도록
+
+
 
 * edit 상단바가 스크롤 내리면 위에 tooltip 생기는 거 고치기
 
@@ -287,8 +303,6 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 * 사진 순서 변경 기능 (백앤드 작업 이후)
 
-* manage에 이름 박수근 -> 사용자 이름
-
 * 내용이 없이 create 했을 때, 경고 메시지 창 띄우기
 
 
@@ -303,7 +317,8 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 #### FrontEnd
 
-* App state에 유저 등록
+* Manage, Carpool의 캘린더의 UI/UX 논의 자료 만들기
+* 
 
 
 
@@ -322,6 +337,20 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
   * 로그 아웃 시, 아웃룩까지 로그 아웃 가능 ?
   * 로그인 시, 아웃룩에 이 아이디로 로그인 하실 것인가요 묻기 가능 ?
 * 내가 댓글 쓴 글 목록
+* 캘린더에 이벤트 띄우기
+  * carpool - 전체 + 내 카풀 일정 의 month + list view / manage > edit > carpool로 이동하는 버튼
+  * manage > 내 카풀 일정 - 내가 등록한 카풀의 (month + list view) + 내가 참여한 일정 / 
+                                               manage > edit > carpool로 이동하는 버튼
+  * manage > edit > carpool - month view만 존재, 날짜를 선택할 수 있는 캘린더. (등록된 일정을 나타내는게 필요할까? 다른 일정 보기 / 없애기 버튼 추가 ?)
+* 내가 참여한 카풀 일정을 안내할 방법
+  1. modal 부분에 댓글을 달 수 있도록 하고, 내가 댓글 단 카풀 일정을 표시
+     내 카풀 일정에는 내가 방장인 이벤트 + 내가 댓글 단 이벤트를 구분해서 나타내기
+  2. modal 페이지에 참가 신청 추가 / 현재 참여 신청한 인원 및 완료한 인원 표시
+     참가자에게 '방장이 확인할 수 있도록 연락을 드리는 것을 권장합니다' 안내 창 띄우기
+     방장에게는 페이지 알림과 함께 modal에 참여 신청한 인원 목록 + 목록별 승락 거절 버튼 제공
+     내 카풀 일정에는 내가 방장인 이벤트 + 참여 신청한 이벤트 + 참여 완료된 이벤트 구분하고, 참여 신청한 이벤트는 거절 또는 날짜가 지난 경우 삭제되도록 하기
+     카풀 페이지에 참여 신청 / 완료를 구분하여 안내하고, 현재 모바일 알림기능이 구현되지 않았기 때문에 직접 연락이 필요한 점을 설명하고, 직접 연락해서 결정한 내용이 중요하다는 것을 설명하는 안내문을 만들기
+* 
 
 
 
@@ -330,5 +359,5 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 ### 요청 사항
 
 * comment, board의 시간을 작성 시간 기준으로 할 지, 수정 시간을 기준으로 할 지
-* user의 사진 업로드 백앤드 작업
+* 
 
