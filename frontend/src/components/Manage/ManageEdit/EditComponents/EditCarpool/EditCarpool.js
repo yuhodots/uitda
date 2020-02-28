@@ -11,6 +11,7 @@ import {
     PlaceInputBox,
     TimePickerBox,
     SubInfoInputBox,
+    DescriptionBox,
 } from './Subcomponents';
 import { colors } from '../../../../../styles/variables'
 
@@ -104,6 +105,7 @@ class EditCarpool extends Component {
                     <TimePickerBox />
                     <SubInfoInputBox subtitle='연락처' />
                     <SubInfoInputBox subtitle='집합 장소' />
+                    <DescriptionBox />
                 </RoomInfoBox>
             </WholeArea>
         )

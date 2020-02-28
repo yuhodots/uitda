@@ -194,6 +194,12 @@
 * 출발지 도착지 Input 컴포넌트 제작 
 * 출발 시각 TimePicker 컴포넌트 제작
 * SubTitle 컴포넌트 코드 리펙토링
+* SubInfoBox 컴포넌트 제작
+* DescriptionBox 컴포넌트 제작
+
+
+
+
 
 
 
@@ -280,6 +286,8 @@
 
 
 * carpool 수정 UX/UI 고려
+
+* carpool room input style 코드 리팩토링
 
 * edit 상단바 funcbox 코드 리펙토링
 

@@ -11,7 +11,8 @@ import HintDatas from "./Subinfo_TitleHint.json";
 
 /* Styled Components */
 const WholeBox = styled.div`
-    margin: 0.5rem 0;
+    margin: 0;
+    margin-bottom: 1rem;
     
     display: flex;
     flex-flow: column nowrap;
