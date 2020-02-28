@@ -270,8 +270,14 @@
 
 * 캘린더의 Selected Date가 색깔을 갖는것으로 변경
 * 캘린더의 default가 오늘로 설정되도록
+* carpool 등록 액션 만들기
+* carpool 내용 채우는 박스 UI 만들기
 
 
+
+* carpool 수정 UX/UI 고려
+
+* edit 상단바 funcbox 코드 리펙토링
 
 * edit 상단바가 스크롤 내리면 위에 tooltip 생기는 거 고치기
 

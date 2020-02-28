@@ -3,13 +3,18 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { Divider } from "antd";
 
-import Calendar from './Subcomponents/Calendar';
+import {
+    Calendar,
+    RoomTitleInput,
+} from './Subcomponents';
 import { colors } from '../../../../../styles/variables'
 
 
 /* Styled Components */
 
+/* Header 영역을 제외한 영역을 나타내는 div 태그 */
 const WholeArea = styled.div`
     min-height: ${props => props.windowHeight - 64}px;
 
@@ -17,13 +22,16 @@ const WholeArea = styled.div`
     flex-flow: row nowrap;
     justify-content: center;
     align-items: center;
-`
+`;
 
+/* Calendar Box와 RoomInfo Box의 공통 속성 */
 const ContentBoxTemplate = styled.div`
     margin: 0 2rem;
     height: ${props => props.boxHeight}px;
     min-height: 553px;  /* 최소 높이는 1377 x 768 해상도 모니터의 브라우저 크기를 기준 */
     padding: 2rem;
+    
+    /* 노트북 기준의 padding margin 값 */
     @media (max-width: 1500px) {
         margin: 0 1rem;
         padding: 1rem;
@@ -35,6 +43,7 @@ const ContentBoxTemplate = styled.div`
     flex-flow: column nowrap;
 `;
 
+/* 캘린더 영역 div 태그 */
 const CalendarBox = styled(ContentBoxTemplate)`
     min-width: 50rem;
     width: ${props => props.boxHeight * 1.43 }px;
@@ -45,14 +54,19 @@ const CalendarBox = styled(ContentBoxTemplate)`
         flex: 1;
     `
 
+/* 카풀 방 정보를 입력하는 div 태그 */
 const RoomInfoBox = styled(ContentBoxTemplate)`
     min-width: 24rem;
     width: ${props => props.boxHeight * 0.73 }px;
-`
+`;
+
+const StyledDivider = styled(Divider)`
+    margin: 1rem 0.5rem;
+`;
+
 
 
 /* React Component */
-
 class EditCarpool extends Component {
 
 
@@ -77,7 +91,11 @@ class EditCarpool extends Component {
                         />
                     </CalendarContainer>
                 </CalendarBox>
-                <RoomInfoBox boxHeight={height} ></RoomInfoBox>
+
+                <RoomInfoBox boxHeight={height} >
+                    <RoomTitleInput />
+                    <StyledDivider />
+                </RoomInfoBox>
             </WholeArea>
         )
     }
