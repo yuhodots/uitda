@@ -24,6 +24,7 @@ import {
     MANAGE_EDIT_CLICK_UNDERLINE,
     MANAGE_EDIT_CLICK_STRIKETHROUGH,
     MANAGE_EDIT_SELECT_TEXT_ALIGN,
+    MANAGE_EDIT_SELECT_CALENDAR_DATE,
 } from './ActionTypes';
 
 /* Error Types */
@@ -328,5 +329,16 @@ export function editSelectTextAlign (textAlignAttr) {
     return {
         type: MANAGE_EDIT_SELECT_TEXT_ALIGN,
         textAlignAttr
+    }
+}
+
+
+/* edit-carpool 액션 */
+
+/* 달력의 날짜를 선택하는 액션 */
+export function selectCalendarDate (date) {
+    return {
+        type: MANAGE_EDIT_SELECT_CALENDAR_DATE,
+        date
     }
 }

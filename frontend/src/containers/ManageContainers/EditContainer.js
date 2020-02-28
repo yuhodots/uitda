@@ -24,6 +24,7 @@ import {
     editClickU,
     editClickS,
     editSelectTextAlign,
+    selectCalendarDate,
 } from '../../store/actions/manage'
 
 
@@ -152,6 +153,7 @@ class EditContainer extends Component {
             editSuccess,
             edit_spanStyle,
             edit_textAlign,
+            selectedDate,
 
             /* App Methods */
             EditPostRequest,
@@ -165,6 +167,7 @@ class EditContainer extends Component {
             editClickU,
             editClickS,
             editSelectTextAlign,
+            selectDate,
         } = this.props;
 
         const id = isNew ? 0 : match.params.id;
@@ -193,6 +196,9 @@ class EditContainer extends Component {
                     edit_spanStyle={edit_spanStyle}     // BIUS 스타일 선택 정보
                     edit_textAlign={edit_textAlign}     // p태그 text align 속성
 
+                    selectedDate={selectedDate}         // Carpool 탭에서 선택된 날짜 데이터
+
+                    /* Methods */
                     selectEditCategory={selectEditCategory}
                     EditPostRequest={EditPostRequest}
                     editClickB={editClickB}
@@ -204,14 +210,20 @@ class EditContainer extends Component {
                 <EditBody 
                     editCategory={editCategory}                         // Edit 카테고리
 
+                    /* property */
                     title={title}                                       // Edit 페이지에서 작성한 Title 데이터
                     files={files}                                       // Edit 페이지에서 업로드한 사진 데이터
-                    description={description}                           // Eidt 페이지에서 작성한 Description 데이터
+                    description={description}                           // Edit 페이지에서 작성한 Description 데이터
 
+                    selectedDate={selectedDate}                         // Carpool 탭에서 선택된 날짜 데이터
+
+                    /* methods */
                     storeTitleData={storeEditTitleData}
                     addFileData={addFileData}
                     deleteFileData={deleteFileData}
                     storeDescriptionData={storeEditDescriptionData}
+
+                    selectDate={selectDate}                             // Carpool 탭에서 날짜를 선택하는 메서드
                 />
             </div> : 
             'loading'
@@ -246,6 +258,8 @@ const mapStateToProps = (state) => {
         
         edit_spanStyle: state.manage.edit_spanStyle,        // BUIS 스타일 선택 데이터
         edit_textAlign: state.manage.edit_textAlign,        // p태그 text align 속성 값
+
+        selectedDate: state.manage.carpool_SelectedDate,    // 카풀 탭에서 선택된 날짜 정보
     }
 }
 
@@ -253,7 +267,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         initEditPage: () => {dispatch(initEditPage())},
         setInitFalse: () => {dispatch(setInitFalse())} ,
-        selectEditCategory: (category) => {dispatch(selectEditCategory(category))},                     // edit 카테고리를 선택하는 메서드
+        selectEditCategory: (category) => {dispatch(selectEditCategory(category))},             // edit 카테고리를 선택하는 메서드
         EditPostRequest: (board, title, discription, files, id, deletedFileIDs) => {
             dispatch(EditPostRequest(board, title, discription, files, id, deletedFileIDs))
         },
@@ -262,7 +276,9 @@ const mapDispatchToProps = (dispatch) => {
         storeEditTitleData: (title) => dispatch(storeEditTitleData(title)),
         addFileData: (file) => dispatch(addFileData(file)),
         deleteFileData: (file) => dispatch(deleteFileData(file)),
-        storeEditDescriptionData: (description) => dispatch(storeEditDescriptionData(description)),
+        storeEditDescriptionData: (description) => {
+            dispatch(storeEditDescriptionData(description))
+        },
 
         editClickB: () => dispatch(editClickB()),
         editClickI: () => dispatch(editClickI()),
@@ -270,7 +286,9 @@ const mapDispatchToProps = (dispatch) => {
         editClickS: () => dispatch(editClickS()),
         editSelectTextAlign: (textAlignAttr) => {
             dispatch(editSelectTextAlign(textAlignAttr))
-        }
+        },
+
+        selectDate: (date) => dispatch(selectCalendarDate(date)),                               // carpool 탭에서 날짜를 선택하는 액션
     }
 }
 

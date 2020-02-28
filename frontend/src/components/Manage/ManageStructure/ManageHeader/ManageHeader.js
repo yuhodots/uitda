@@ -49,6 +49,8 @@ class ManageHeader extends Component {
             edit_spanStyle,
             edit_textAlign,
 
+            selectedDate,
+
             EditPostRequest,
             selectEditCategory,
             
@@ -79,6 +81,8 @@ class ManageHeader extends Component {
                         spanStyle={edit_spanStyle}
                         textAlign={edit_textAlign}
 
+                        selectedDate={selectedDate}
+
                         EditPostRequest={EditPostRequest}
                         selectEditCategory={selectEditCategory}
 
@@ -98,7 +102,7 @@ class ManageHeader extends Component {
 }
 
 ManageHeader.propTypes = {
-    isEdit: PropTypes.bool,             // Edit header인지 아닌지
+    isEdit: PropTypes.bool,                 // Edit header인지 아닌지
 
     /* Edit Header를 위한 props */
     isNew: PropTypes.bool,                  // Create / Update 여부
@@ -114,6 +118,9 @@ ManageHeader.propTypes = {
     edit_spanStyle: PropTypes.object,       // BIUS 스타일 선택 정보
     edit_textAlign: PropTypes.string,       // p태그 text align 속섣값
 
+    selectedDate: PropTypes.object,         // Carpool 탭에서 선택된 날짜 데이터
+
+    /* Edit Header를 위한 Methods */
     EditPostRequest: PropTypes.func,        // Post Create / Update function
     selectEditCategory: PropTypes.func,     // 카테고리를 선택하는 메서드
 

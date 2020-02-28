@@ -50,18 +50,24 @@ class EditBody extends Component {
             title,
             files,
             description,
+            selectedDate,
 
             storeTitleData,
             addFileData,
             deleteFileData,
             storeDescriptionData,
+            selectDate,
         } = this.props;
 
         return (
             <BackGround minHeight={windowHeight} >
             {
                 editCategory === CARPOOL ?
-                <EditCarpool  windowHeight={windowHeight} /> :
+
+                <EditCarpool windowHeight={windowHeight} 
+                    selectedDate={selectedDate} selectDate={selectDate}
+                /> :
+                
                 <EditBoard minHeight={windowHeight}
                     title={title} storeTitleData={storeTitleData}
                     files={files} addFileData={addFileData} deleteFileData={deleteFileData}
@@ -80,16 +86,23 @@ EditBody.propTypes = {
     files: PropTypes.array,                             // Edit 페이지에서 업로드한 사진 데이터
     description: PropTypes.string,                      // Eidt 페이지에서 작성한 Description 데이터
 
+    selectedDate: PropTypes.object,                     // Carpool 탭에서 선택된 날짜 데이터
+
+    /* Methods */
     storeTitleData: PropTypes.func.isRequired,          // Title 데이터를 App State로 저장하는 함수
     addFileData: PropTypes.func.isRequired,             // Files 데이터를 App State로 저장하는 함수
     deleteFileData: PropTypes.func.isRequired,          // App State에 있는 파일 데이터 중 해당 파일을 지우는 함수
     storeDescriptionData: PropTypes.func.isRequired,    // Description 데이터를 App State로 저장하는 함수
+
+    selectDate: PropTypes.func.isRequired,              // Carpool 탭에서 날짜를 선택하는 메서드
 }
 
 EditBody.defaultProps = {
     title: '',                            
     files: [],                             
     description: '',
+
+    selectedDate: {},
 }
 
 export default EditBody;

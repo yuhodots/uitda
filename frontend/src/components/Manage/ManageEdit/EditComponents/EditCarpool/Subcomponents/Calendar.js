@@ -1,6 +1,7 @@
 
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -14,27 +15,39 @@ class Calendar extends Component {
 
     state = {}
 
+    componentDidMount () {
+        const { selectDate } = this.props;
+
+        const today = new Date()
+
+        selectDate(today);
+    }
+
+
     _selectDate = (info) => {
 
         console.log(info)
+        const { date, dayEl } = info;
 
         const { prevElem } = this.state;
+        const { 
+            // selectedDate,
+            selectDate,
+        } = this.props;
 
         if ( prevElem ) { prevElem.style.opacity = 0; }
 
-        info.dayEl.style.opacity = 0.1;
+        dayEl.style.opacity = 0.1;
 
         this.setState({
             ...this.state,
             prevElem: info.dayEl
         })
+
+        selectDate(date);
     }
 
     render () {
-
-        const {
-        } = this.props;
-
 
         return (
             <FullCalendar 
@@ -57,5 +70,9 @@ class Calendar extends Component {
 }
 
 
+Calendar.propTypes = {
+    selectedDate: PropTypes.object,             // Carpool 탭에서 선택된 날짜 데이터
+    selectDate: PropTypes.func.isRequired,      // Carpool 탭에서 날짜를 선택하는 메서드
+}
 
 export default Calendar;

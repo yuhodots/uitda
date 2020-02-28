@@ -18,6 +18,7 @@ import {
     MANAGE_EDIT_CLICK_STRIKETHROUGH,
     MANAGE_EDIT_SELECT_TEXT_ALIGN,
     MANAGE_EDIT_SELECT_CATEGORY,
+    MANAGE_EDIT_SELECT_CALENDAR_DATE,
 } from '../actions/ActionTypes'
 
 import { MARKET } from '../../constants/board_name'
@@ -32,27 +33,29 @@ const InitialState = {
     user: 0,
 
     /* 'posts' states */
-    postList: [],                           // 포스팅 데이터 리스트
+    postList: [],                               // 포스팅 데이터 리스트
 
     /* 'edit' states */
-    isEditInit: false,                      // Edit 페이지 초기화 여부
-    isEditGetSuccess: false,                // Edit page GET 성공 여부
-    isModified: false,                      // 수정된 지 여부
-    editCategory: MARKET,                   // Edit 페이지 카테고리 정보 (market, networking, carpool)
+    isEditInit: false,                          // Edit 페이지 초기화 여부
+    isEditGetSuccess: false,                    // Edit page GET 성공 여부
+    isModified: false,                          // 수정된 지 여부
+    editCategory: MARKET,                       // Edit 페이지 카테고리 정보 (market, networking, carpool)
     
-    editedTitle: '',                        // 작성한 제목 데이터
-    editedFiles: [],                        // 업로드할 파일 데이터 리스트
-    deletedFileIDs: [],                     // 삭제할 파일의 id 리스트
-    editedDescription: '',                  // 작성한 설명 부분 데이터
-    editSuccess: false,                     // 작성 완료
+    editedTitle: '',                            // 작성한 제목 데이터
+    editedFiles: [],                            // 업로드할 파일 데이터 리스트
+    deletedFileIDs: [],                         // 삭제할 파일의 id 리스트
+    editedDescription: '',                      // 작성한 설명 부분 데이터
+    editSuccess: false,                         // 작성 완료
 
-    edit_spanStyle: {                       // BIUS style 선택된 유무
-        bSelect: false,                     // Bold
-        iSelect: false,                     // Itelic
-        uSelect: false,                     // Underline
-        sSelect: false,                     // Strikethrough
+    edit_spanStyle: {                           // BIUS style 선택된 유무
+        bSelect: false,                         // Bold
+        iSelect: false,                         // Itelic
+        uSelect: false,                         // Underline
+        sSelect: false,                         // Strikethrough
     },
-    edit_textAlign: TEXT_ALIGN.justify,     // p 태그 text align 속성
+    edit_textAlign: TEXT_ALIGN.justify,         // p 태그 text align 속성
+
+    carpool_SelectedDate: {isLoading: true},    // 카풀 탭에서 선택된 날짜정보
 }
 
 
@@ -230,6 +233,16 @@ export default function manage (state = InitialState, action) {
             return {
                 ...state,
                 edit_textAlign: action.textAlignAttr
+            }
+
+
+        /* Manage Edit Carpool Actions */
+
+        /* 달력의 날짜를 선택하는 액션 */
+        case MANAGE_EDIT_SELECT_CALENDAR_DATE:
+            return {
+                ...state,
+                carpool_SelectedDate: action.date,
             }
 
         default:

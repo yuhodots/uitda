@@ -55,7 +55,10 @@ class EditCarpool extends Component {
     render () {
 
         const {
-            windowHeight
+            windowHeight,
+            selectedDate,
+
+            selectDate
         } = this.props;
 
         const height = windowHeight - 192;    // 화면 높이에서 padding값 + 헤더 높이 (8rem) 을 뺀 값
@@ -64,7 +67,10 @@ class EditCarpool extends Component {
             <WholeArea windowHeight={windowHeight} >
                 <CalendarBox boxHeight={height} >    
                     <CalendarContainer>
-                        <Calendar />
+                        <Calendar 
+                            selectedDate={selectedDate}
+                            selectDate={selectDate}
+                        />
                     </CalendarContainer>
                 </CalendarBox>
                 <RoomInfoBox boxHeight={height} ></RoomInfoBox>
@@ -74,7 +80,9 @@ class EditCarpool extends Component {
 }
 
 EditCarpool.propTypes = {
-    windowHeight: PropTypes.number.isRequired,     // 최소 화면 높이
+    windowHeight: PropTypes.number.isRequired,  // 최소 화면 높이
+    selectedDate: PropTypes.object,             // Carpool 탭에서 선택된 날짜 데이터
+    selectDate: PropTypes.func.isRequired,      // Carpool 탭에서 날짜를 선택하는 메서드
 }
 
 
