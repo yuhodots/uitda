@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 import { EditBoard, EditCarpool } from './EditComponents'
 import { BGTemplate } from '../../../styles/templates/manage'
-import { CARPOOL } from '../../../constants/board_name'
+import { CARPOOL } from '../../../constants/categories'
 
 /* Styled Components */
 /* 배경 스타일 div 태그 */

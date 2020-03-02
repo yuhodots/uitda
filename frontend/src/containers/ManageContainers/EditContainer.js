@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { Modal } from 'antd'
 import { withLastLocation } from 'react-router-last-location';
 
-import { MARKET, NETWORKING, CARPOOL } from "../../constants/board_name";
+import { MARKET, NETWORKING, CARPOOL } from "../../constants/categories";
 import { Header } from '../../components/Manage/ManageStructure'
 import EditBody from '../../components/Manage/ManageEdit'
 import { 

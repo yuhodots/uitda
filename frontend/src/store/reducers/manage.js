@@ -21,7 +21,7 @@ import {
     MANAGE_EDIT_SELECT_CALENDAR_DATE,
 } from '../actions/ActionTypes'
 
-import { MARKET } from '../../constants/board_name'
+import { MARKET } from '../../constants/categories'
 import { TEXT_ALIGN } from '../../constants/edit_funcs'
 
 

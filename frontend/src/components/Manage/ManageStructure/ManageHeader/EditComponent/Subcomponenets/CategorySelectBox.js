@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Select } from "antd";
 
-import { MARKET, NETWORKING, CARPOOL } from '../../../../../../constants/board_name'
+import { MARKET, NETWORKING, CARPOOL } from '../../../../../../constants/categories'
 
 const { Option } = Select;
 

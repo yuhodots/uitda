@@ -16,7 +16,7 @@ import { Redirect } from 'react-router-dom';
 import { CategorySelectBox, RightBox } from './Subcomponenets';
 import { colors } from '../../../../../styles/variables'; 
 import { TEXT_ALIGN } from '../../../../../constants/edit_funcs'
-import { CARPOOL } from '../../../../../constants/board_name'
+import { CARPOOL } from '../../../../../constants/categories'
 
 const { Option } = Select;
 

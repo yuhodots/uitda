@@ -23,7 +23,7 @@ import {
 import {
     MARKET,
     NETWORKING
-} from '../../../../constants/board_name'
+} from '../../../../constants/categories'
 
 /* Styled Components */
 

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Select } from 'antd';
 
-import { MARKET } from '../../../../../constants/board_name';
+import { MARKET } from '../../../../../constants/categories';
 import { MARKET_CONDITIONS, NETWORKING_CONDITIONS } from '../../../../../constants/manage_post_conditions';
 import { PostManageButtonStyle } from '../../../../../styles/templates/manage';
 
