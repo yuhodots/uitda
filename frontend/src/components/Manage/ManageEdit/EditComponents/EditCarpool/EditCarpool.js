@@ -94,7 +94,7 @@ class EditCarpool extends Component {
                 <CalendarBox boxHeight={height} >    
                     <CalendarContainer>
                         <BaseCalendar 
-                            Category={MANAGE}
+                            category={MANAGE}
 
                             selectedDate={selectedDate}
                             selectDate={selectDate}
