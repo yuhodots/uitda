@@ -1,0 +1,131 @@
+/* html, body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+      "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    
+    font-size: 14px; 
+}
+  
+.Calendar {
+    max-width: 900px;
+    margin: 40px auto;
+}
+  
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+      monospace;
+}
+  
+.modal_ul { 
+  line-height: 40px; 
+}
+
+.modal_direction{
+  background-color: yellow;
+}
+
+.modal_description{
+  background-color: #F2F2F2;
+  padding: 20px 20px 20px 20px;
+  margin: 10px 20px 20px 20px;
+  border-radius: 5px 5px 5px 5px;
+}
+
+.modal_condition{
+  text-align: center;
+  color: #FA5858;
+  text-decoration: underline;
+  margin-bottom: 5px;
+}
+
+.CarpoolTemplate{
+  margin-top: 80px;
+} */
+
+/* 캘린더의 버튼 속성 */
+.fc-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 캘린더 header의 center 부분 스타일 */
+.fc-center {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+}
+
+.fc-center > h2 {
+  margin: 0 2rem!important;
+}
+
+.fc-center .fc-button {
+  margin: 0;
+}
+
+/* 캘린더 day box의 스타일 */
+.fc-day {
+  cursor: pointer;
+  background-color: #1E90FF;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.fc-unthemed td.fc-today {
+  background-color: #1E90FF;
+}
+
+.fc-day:hover {
+  /* background-color: #E6F7FF; */
+  opacity: 0.1!important;
+}
+
+.fc-day:active {
+  /* background-color: #BAE7FF; */
+  opacity: 0.2!important;
+}
+
+/* 요일 표시하는 header */
+.fc-day-header {
+  background-color: #FCF8E3;
+}
+
+/* 캘린더 date 텍스트 스타일 */
+.fc-sun {
+  color: red;
+}
+
+.fc-ltr .fc-dayGrid-view .fc-day-top .fc-day-number {
+  float: left;
+}
+
+.fc-dayGrid-view .fc-day-number {
+  padding: 0.25rem;
+}
+
+
+/* 노트북 사이즈 기준 스타일 */
+@media (max-width: 1500px) {
+
+  .fc-center > h2 {
+    font-size: 1.5rem;
+  }
+
+  .fc-button {
+    font-size: 0.875rem;
+  }
+
+  .fc-button .fc-icon {
+    font-size: 1rem;
+  }
+
+  .fc-dayGrid-view .fc-day-number {
+    padding: 0.25rem;
+    font-size: 0.75rem;
+  }
+}

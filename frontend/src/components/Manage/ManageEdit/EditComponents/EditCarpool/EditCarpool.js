@@ -5,8 +5,9 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Divider } from "antd";
 
+import { BaseCalendar } from "../../../../Base_Components";
 import {
-    Calendar,
+    // Calendar,
     TitleInput,
     PlaceInputBox,
     TimePickerBox,
@@ -14,6 +15,7 @@ import {
     DescriptionBox,
 } from './Subcomponents';
 import { colors } from '../../../../../styles/variables'
+import { MANAGE } from "../../../../../constants/categories";
 
 
 /* Styled Components */
@@ -91,7 +93,9 @@ class EditCarpool extends Component {
             <WholeArea windowHeight={windowHeight} >
                 <CalendarBox boxHeight={height} >    
                     <CalendarContainer>
-                        <Calendar 
+                        <BaseCalendar 
+                            Category={MANAGE}
+
                             selectedDate={selectedDate}
                             selectDate={selectDate}
                         />
