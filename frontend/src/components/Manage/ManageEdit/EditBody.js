@@ -57,6 +57,7 @@ class EditBody extends Component {
             deleteFileData,
             storeDescriptionData,
             selectDate,
+            storeCarpoolData
         } = this.props;
 
         return (
@@ -66,6 +67,7 @@ class EditBody extends Component {
 
                 <EditCarpool windowHeight={windowHeight} 
                     selectedDate={selectedDate} selectDate={selectDate}
+                    storeCarpoolData={storeCarpoolData}
                 /> :
                 
                 <EditBoard minHeight={windowHeight}
@@ -95,6 +97,7 @@ EditBody.propTypes = {
     storeDescriptionData: PropTypes.func.isRequired,    // Description 데이터를 App State로 저장하는 함수
 
     selectDate: PropTypes.func.isRequired,              // Carpool 탭에서 날짜를 선택하는 메서드
+    storeCarpoolData: PropTypes.func.isRequired,        // Carpool 탭의 Room Info Data를 저장하는 메서드
 }
 
 EditBody.defaultProps = {

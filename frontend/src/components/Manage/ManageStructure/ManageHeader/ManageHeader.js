@@ -50,7 +50,9 @@ class ManageHeader extends Component {
             edit_textAlign,
 
             selectedDate,
+            roomInfoData,
 
+            /* Methods */
             EditPostRequest,
             selectEditCategory,
             
@@ -59,6 +61,8 @@ class ManageHeader extends Component {
             editClickU,
             editClickS,
             editSelectTextAlign,
+
+            postCarpoolEvent,
         } = this.props;
 
         return (
@@ -82,7 +86,9 @@ class ManageHeader extends Component {
                         textAlign={edit_textAlign}
 
                         selectedDate={selectedDate}
+                        roomInfoData={roomInfoData}
 
+                        /* Methods */
                         EditPostRequest={EditPostRequest}
                         selectEditCategory={selectEditCategory}
 
@@ -91,6 +97,8 @@ class ManageHeader extends Component {
                         editClickU={editClickU}
                         editClickS={editClickS}
                         selectTextAlign={editSelectTextAlign}
+
+                        postCarpoolEvent={postCarpoolEvent}
                     /> :
 
                     <DefaultCompoent />
@@ -119,6 +127,7 @@ ManageHeader.propTypes = {
     edit_textAlign: PropTypes.string,       // p태그 text align 속섣값
 
     selectedDate: PropTypes.object,         // Carpool 탭에서 선택된 날짜 데이터
+    roomInfoData: PropTypes.object,         // Carpool 방 정보
 
     /* Edit Header를 위한 Methods */
     EditPostRequest: PropTypes.func,        // Post Create / Update function
@@ -129,6 +138,8 @@ ManageHeader.propTypes = {
     editClickU: PropTypes.func,
     editClickS: PropTypes.func,
     editSelectTextAlign: PropTypes.func,    // Text Align 속성값을 선택하는 함수
+
+    postCarpoolEvent: PropTypes.func,       // Carpool Event 등록하는 Post Action
 }
 
 ManageHeader.defaultProps = {

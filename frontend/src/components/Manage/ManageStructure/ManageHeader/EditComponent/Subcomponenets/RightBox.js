@@ -41,28 +41,41 @@ class RightBox extends Component {
     _handleEndClick = () => {
         
         const { 
-            id,
-            editCategory,
+            id, editCategory, isCarpool,
 
-            title,
-            files,
-            deletedFileIDs,
-            description,
+            title, description,
+            files, deletedFileIDs,
+            
+            selectedDate, roomInfoData,
 
-            EditPostRequest
+            EditPostRequest,
+            postCarpoolEvent,
         } = this.props;
 
-        /* 업로드로 넘겨주는 file 데이터는 이미 업로드 되어 있지 않은 사진들
-           (url 프로퍼티를 갖지 않는 파일들) 만으로 구성한다. */
-        const uploadFiles = files.filter( file => !file.url )
+        if ( isCarpool ) {
+            const { 
+                title, departure, destination, 
+                start_time, meeting_place, 
+                contact, description 
+            } = roomInfoData
 
-        id ?    // id가 있으면 수정 액션, 없으면 생성 액션
-        EditPostRequest(editCategory, title, description, uploadFiles, id, deletedFileIDs) :
-        EditPostRequest(editCategory, title, description, uploadFiles)
+            postCarpoolEvent(title, departure, destination, selectedDate, start_time, meeting_place, contact, description);
+        }
+
+        else {
+            /* 업로드로 넘겨주는 file 데이터는 이미 업로드 되어 있지 않은 사진들
+               (url 프로퍼티를 갖지 않는 파일들) 만으로 구성한다. */
+            const uploadFiles = files.filter( file => !file.url )
+
+            id ?    // id가 있으면 수정 액션, 없으면 생성 액션
+            EditPostRequest(editCategory, title, description, uploadFiles, id, deletedFileIDs) :
+            EditPostRequest(editCategory, title, description, uploadFiles)
+        }
     }
 
-    _DateToString = (date) => {
 
+    /* Date => 'yyyy년 mm월 dd일 O요일' */
+    _DateToString = (date) => {
 
         if (date.isLoading) { return }
 
@@ -72,36 +85,14 @@ class RightBox extends Component {
         let day = date.getDay();
 
         switch (day) {
-            case 0:
-                day = '일'
-                break;
-
-            case 1:
-                day = '월'
-                break;
-
-            case 2:
-                day = '화'
-                break;
-
-            case 3:
-                day = '수'
-                break;
-
-            case 4:
-                day = '목'
-                break;
-
-            case 5:
-                day = '금'
-                break;
-
-            case 6:
-                day = '토'
-                break;
-
-            default:
-                break;
+            case 0: day = '일'; break;
+            case 1: day = '월'; break;
+            case 2: day = '화'; break;
+            case 3: day = '수'; break;
+            case 4: day = '목'; break;
+            case 5: day = '금'; break;
+            case 6: day = '토'; break;
+            default: break;
         }
 
         return `${yyyy}년 ${mm}월 ${dd}일 (${day})`;
@@ -150,9 +141,11 @@ RightBox.propTypes = {
 
     /* Carpool 탭 데이터 */
     selectedDate: PropTypes.object,                 // Carpool 탭에서 선택된 날짜 데이터
+    roomInfoData: PropTypes.object,                 // Carpool 방 정보
 
     /* Methods */
     EditPostRequest: PropTypes.func.isRequired,     // Post Create / Update function
+    postCarpoolEvent: PropTypes.func.isRequired,    // Carpool Event 등록하는 Post Action
 }
 
 

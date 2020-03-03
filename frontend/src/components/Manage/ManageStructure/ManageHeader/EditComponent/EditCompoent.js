@@ -124,6 +124,7 @@ class EditComponent extends Component {
             textAlign,
 
             selectedDate,
+            roomInfoData,
 
             /* Methods */
             selectEditCategory,
@@ -135,11 +136,15 @@ class EditComponent extends Component {
             editClickS,
             editClickU,
             selectTextAlign,
+
+            postCarpoolEvent,
         } = this.props;
 
         const isCarpool = editCategory === CARPOOL;
 
-        const redirerctURL = `/manage/posts/${editCategory}`
+        const redirerctURL = isCarpool ?
+        '/carpool' :
+        `/manage/posts/${editCategory}`;
 
         const TooltipProps = {
             mouseEnterDelay: 0,
@@ -249,8 +254,10 @@ class EditComponent extends Component {
                     description={description}
 
                     selectedDate={selectedDate}
+                    roomInfoData={roomInfoData}
 
                     EditPostRequest={EditPostRequest}
+                    postCarpoolEvent={postCarpoolEvent}
                 />
                 
             </HeaderBox>
@@ -276,6 +283,7 @@ EditComponent.propTypes = {
 
     /* Carpool 탭 데이터 */
     selectedDate: PropTypes.object,                 // Carpool 탭에서 선택된 날짜 데이터
+    roomInfoData: PropTypes.object,                 // Carpool 방 정보
 
     /* Methods */
     selectEditCategory: PropTypes.func.isRequired,  // 카테고리 선택 메서드
@@ -286,6 +294,8 @@ EditComponent.propTypes = {
     editClickU: PropTypes.func.isRequired,
     editClickS: PropTypes.func.isRequired,
     selectTextAlign: PropTypes.func.isRequired,     // text align 속성값 선택 함수
+
+    postCarpoolEvent: PropTypes.func.isRequired,    // Carpool Event 등록하는 Post Action
 }
 
 EditComponent.defaultProps = {

@@ -2,8 +2,10 @@
 
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { Input } from 'antd';
 
+import { TITLE } from "../../../../../../constants/edit_RoomInfo_DataKeys";
 
 /* Styled Components */
 
@@ -33,17 +35,19 @@ const TitleTextArea = styled(Input.TextArea)`
 
 /* React Component */
 
-const RoomTitleInput = () => {
+const RoomTitleInput = ({storeCarpoolData}) => {
 
     return (
         <TitleTextArea 
-            // defaultValue={title}
             placeholder="제목을 입력 하세요."
             autoSize={true}
-            // onChange={(e) => storeTitleData(e.target.value)}
+            onChange={(e) => storeCarpoolData(TITLE, e.target.value)}
         />
     )
 }
 
+RoomTitleInput.propTypes = {
+    storeCarpoolData: PropTypes.func.isRequired,        // Carpool 탭의 Room Info Data를 저장하는 메서드
+}
 
 export default RoomTitleInput;

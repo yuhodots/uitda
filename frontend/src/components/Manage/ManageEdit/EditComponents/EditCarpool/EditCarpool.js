@@ -16,6 +16,7 @@ import {
 } from './Subcomponents';
 import { colors } from '../../../../../styles/variables'
 import { MANAGE } from "../../../../../constants/categories";
+import { CONTACT, MEETING_PALCE } from "../../../../../constants/edit_RoomInfo_DataKeys";
 
 
 /* Styled Components */
@@ -84,7 +85,8 @@ class EditCarpool extends Component {
             windowHeight,
             selectedDate,
 
-            selectDate
+            selectDate,
+            storeCarpoolData
         } = this.props;
 
         const height = windowHeight - 192;    // 화면 높이에서 padding값 + 헤더 높이 (8rem) 을 뺀 값
@@ -103,13 +105,13 @@ class EditCarpool extends Component {
                 </CalendarBox>
 
                 <RoomInfoBox boxHeight={height} >
-                    <TitleInput />
+                    <TitleInput storeCarpoolData={storeCarpoolData} />
                     <StyledDivider />
-                    <PlaceInputBox />
-                    <TimePickerBox />
-                    <SubInfoInputBox subtitle='연락처' />
-                    <SubInfoInputBox subtitle='집합 장소' />
-                    <DescriptionBox />
+                    <PlaceInputBox storeCarpoolData={storeCarpoolData} />
+                    <TimePickerBox storeCarpoolData={storeCarpoolData} />
+                    <SubInfoInputBox dataKey={CONTACT} storeCarpoolData={storeCarpoolData} />
+                    <SubInfoInputBox dataKey={MEETING_PALCE} storeCarpoolData={storeCarpoolData} />
+                    <DescriptionBox storeCarpoolData={storeCarpoolData} />
                 </RoomInfoBox>
             </WholeArea>
         )
@@ -117,9 +119,11 @@ class EditCarpool extends Component {
 }
 
 EditCarpool.propTypes = {
-    windowHeight: PropTypes.number.isRequired,  // 최소 화면 높이
-    selectedDate: PropTypes.object,             // Carpool 탭에서 선택된 날짜 데이터
-    selectDate: PropTypes.func.isRequired,      // Carpool 탭에서 날짜를 선택하는 메서드
+    windowHeight: PropTypes.number.isRequired,          // 최소 화면 높이
+    selectedDate: PropTypes.object,                     // Carpool 탭에서 선택된 날짜 데이터
+
+    selectDate: PropTypes.func.isRequired,              // Carpool 탭에서 날짜를 선택하는 메서드
+    storeCarpoolData: PropTypes.func.isRequired,        // Carpool 탭의 Room Info Data를 저장하는 메서드
 }
 
 

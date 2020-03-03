@@ -3,7 +3,6 @@ import {
     MANAGE_GET_MY_POSTS_SUCCESS,
     MANAGE_GET_MY_POSTS_FAILURE,
     MANAGE_EDIT_INIT_PAGE,
-    MANAGE_EDIT_SET_INIT_FALSE,
     MANAGE_EDIT_GET_POST_SUCCESS,
     MANAGE_EDIT_GET_POST_FAILURE,
     MANAGE_EDIT_STORE_TITLE_DATA,
@@ -19,10 +18,14 @@ import {
     MANAGE_EDIT_SELECT_TEXT_ALIGN,
     MANAGE_EDIT_SELECT_CATEGORY,
     MANAGE_EDIT_SELECT_CALENDAR_DATE,
+    MANAGE_EDIT_CARPOOL_STORE_DATA,
+    MANAGE_EDIT_CARPOOL_POST_SUCCESS,
+    MANAGE_EDIT_CARPOOL_POST_FAILURE,
 } from '../actions/ActionTypes'
 
 import { MARKET } from '../../constants/categories'
 import { TEXT_ALIGN } from '../../constants/edit_funcs'
+import moment from 'moment'
 
 
 /* 초기 상태 및 manage state 항목 설명 */
@@ -33,29 +36,38 @@ const InitialState = {
     user: 0,
 
     /* 'posts' states */
-    postList: [],                               // 포스팅 데이터 리스트
+    postList: [],                                   // 포스팅 데이터 리스트
 
     /* 'edit' states */
-    isEditInit: false,                          // Edit 페이지 초기화 여부
-    isEditGetSuccess: false,                    // Edit page GET 성공 여부
-    isModified: false,                          // 수정된 지 여부
-    editCategory: MARKET,                       // Edit 페이지 카테고리 정보 (market, networking, carpool)
+    isEditInit: false,                              // Edit 페이지 초기화 여부
+    isEditGetSuccess: false,                        // Edit page GET 성공 여부
+    isModified: false,                              // 수정된 지 여부
+    editCategory: MARKET,                           // Edit 페이지 카테고리 정보 (market, networking, carpool)
     
-    editedTitle: '',                            // 작성한 제목 데이터
-    editedFiles: [],                            // 업로드할 파일 데이터 리스트
-    deletedFileIDs: [],                         // 삭제할 파일의 id 리스트
-    editedDescription: '',                      // 작성한 설명 부분 데이터
-    editSuccess: false,                         // 작성 완료
+    editedTitle: '',                                // 작성한 제목 데이터
+    editedFiles: [],                                // 업로드할 파일 데이터 리스트
+    deletedFileIDs: [],                             // 삭제할 파일의 id 리스트
+    editedDescription: '',                          // 작성한 설명 부분 데이터
+    editSuccess: false,                             // 작성 완료
 
-    edit_spanStyle: {                           // BIUS style 선택된 유무
-        bSelect: false,                         // Bold
-        iSelect: false,                         // Itelic
-        uSelect: false,                         // Underline
-        sSelect: false,                         // Strikethrough
+    edit_spanStyle: {                               // BIUS style 선택된 유무
+        bSelect: false,                             // Bold
+        iSelect: false,                             // Itelic
+        uSelect: false,                             // Underline
+        sSelect: false,                             // Strikethrough
     },
-    edit_textAlign: TEXT_ALIGN.justify,         // p 태그 text align 속성
+    edit_textAlign: TEXT_ALIGN.justify,             // p 태그 text align 속성
 
-    carpool_SelectedDate: {isLoading: true},    // 카풀 탭에서 선택된 날짜정보
+    carpool_SelectedDate: {isLoading: true},        // 카풀 탭에서 선택된 날짜 정보
+    carpool_RoomInfoData: {                         // 카풀 방 정보
+        title: '',                                  // 제목
+        departure: '',                              // 출발지
+        destination: '',                            // 도착지
+        start_time: moment().format('hh:mm a'),     // 출발 시각
+        meeting_place: '',                          // 집합 장소 
+        contact: '',                                // 연락처
+        description: ''                             // 추가 정보
+    },
 }
 
 
@@ -95,14 +107,7 @@ export default function manage (state = InitialState, action) {
                 isEditInit: true,
             }
 
-        case MANAGE_EDIT_SET_INIT_FALSE:
-            console.log(action.hi)
-            console.log('set init false')
-            return {
-                ...state,
-                // isEditInit: false
-            }
-
+        /* Edit 카테고리 선택 액션 */
         case MANAGE_EDIT_SELECT_CATEGORY:
             return {
                 ...state,
@@ -244,6 +249,26 @@ export default function manage (state = InitialState, action) {
                 ...state,
                 carpool_SelectedDate: action.date,
             }
+
+        /* Data의 key, value 값을 받아서 해당 key에 해당하는 데이터 변경
+           keys = [title, departure, destination, start_time, meeting_place, contact, description ]  */
+        case MANAGE_EDIT_CARPOOL_STORE_DATA:
+            for ( let key in state.carpool_RoomInfoData ) {
+                if ( key === action.data_key ){
+                    state.carpool_RoomInfoData[key] = action.data_value;
+                }
+            }
+            // console.log(state.carpool_RoomInfoData)
+            return state
+
+        case MANAGE_EDIT_CARPOOL_POST_SUCCESS:
+            return {
+                ...state,
+                editSuccess: true
+            }
+
+        case MANAGE_EDIT_CARPOOL_POST_FAILURE:
+            return state
 
         default:
             return state

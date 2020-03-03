@@ -205,6 +205,19 @@
 
 
 
+### 3.2 (월)
+
+* 캘린더 컴포넌트 이동 (Base_Calendar로 작업)
+* 캘린더의 _findDayElWithDate(), _changeDayElStyle(), _today() 메서드로 오늘이 default로 설정되고, today 버튼 클릭 시 today에 색이 들어오도록 함.
+  (html DOM를 받아오기 성공)
+
+
+
+### 3.3 (화)
+
+* 카풀 데이터 앱 state로 저장
+* 카풀 이벤트 등록 액션 완성
+
 
 
 
@@ -279,12 +292,11 @@
 
 #### Manage FrontEnd
 
-* 캘린더의 Selected Date가 색깔을 갖는것으로 변경
-* 캘린더의 default가 오늘로 설정되도록
-* carpool 등록 액션 만들기
-* carpool 내용 채우는 박스 UI 만들기
+* edit carpool에서 필수 데이터 입력 안 했을 시, post request하기 전에 경고 띄우기
 
 
+
+* edit board 앱 데이터 및 저장 액션 리펙토링
 
 * carpool 수정 UX/UI 고려
 
@@ -356,13 +368,12 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
   * 로그 아웃 시, 아웃룩까지 로그 아웃 가능 ?
   * 로그인 시, 아웃룩에 이 아이디로 로그인 하실 것인가요 묻기 가능 ?
   
-  
 * 페이지 별 캘린더 차이
   * carpool - 전체 카풀 일정 의 month + list view / manage > edit > carpool로 이동하는 버튼
   * manage > 내 카풀 일정 - 내가 등록한 카풀의 (month + list view) + 내가 참여한 일정 / 
                                                manage > edit > carpool로 이동하는 버튼
   * manage > edit > carpool - month view만 존재, 날짜를 선택할 수 있는 캘린더. (등록된 일정을 나타내는게 필요할까? 다른 일정 보기 / 없애기 버튼 추가 ?)
-       
+  
 * 내가 참여한 카풀 일정을 안내할 방법
   1. modal 부분에 댓글을 달 수 있도록 하고, 내가 댓글 단 카풀 일정을 표시
      내 카풀 일정에는 내가 방장인 이벤트 + 내가 댓글 단 이벤트를 구분해서 나타내기
@@ -371,7 +382,6 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
      방장에게는 알림과 함께 modal에 참여 신청한 인원 목록 + 목록별 승락 거절 버튼 제공
      내 카풀 일정에는 내가 방장인 이벤트(노랑) + (참여 신청한 이벤트 + 참여 완료된 이벤트)(초록)으로 구분하고, 참여 신청한 이벤트는 거절 또는 날짜가 지난 경우 내 카풀에서 제외
      카풀 페이지에 참여 신청 / 완료를 구분하여 안내하고, 현재 모바일 알림기능이 구현되지 않았기 때문에 직접 연락이 필요한 점을 설명하고, 직접 연락해서 결정한 내용을 기준으로 약속이 정해짐을 안내
-  
   
 * 
 

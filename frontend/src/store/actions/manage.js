@@ -5,7 +5,6 @@ import {
     MANAGE_GET_MY_POSTS_SUCCESS,
     MANAGE_GET_MY_POSTS_FAILURE,
     MANAGE_EDIT_INIT_PAGE,
-    MANAGE_EDIT_SET_INIT_FALSE,
     MANAGE_EDIT_SELECT_CATEGORY,
     MANAGE_EDIT_GET_POST_SUCCESS,
     MANAGE_EDIT_GET_POST_FAILURE,
@@ -25,6 +24,9 @@ import {
     MANAGE_EDIT_CLICK_STRIKETHROUGH,
     MANAGE_EDIT_SELECT_TEXT_ALIGN,
     MANAGE_EDIT_SELECT_CALENDAR_DATE,
+    MANAGE_EDIT_CARPOOL_STORE_DATA,
+    MANAGE_EDIT_CARPOOL_POST_SUCCESS,
+    MANAGE_EDIT_CARPOOL_POST_FAILURE,
 } from './ActionTypes';
 
 /* Error Types */
@@ -132,13 +134,6 @@ export function updatePostConditionRequest (board, id, condition) {
 export function initEditPage() {
     return {
         type: MANAGE_EDIT_INIT_PAGE
-    }
-}
-
-export function setInitFalse(hi) {
-    return {
-        type: MANAGE_EDIT_SET_INIT_FALSE,
-        hi
     }
 }
 
@@ -340,5 +335,53 @@ export function selectCalendarDate (date) {
     return {
         type: MANAGE_EDIT_SELECT_CALENDAR_DATE,
         date
+    }
+}
+
+/* Room Info의 데이터 key-value를 app state에 저장하는 액션 */
+export function storeCarpoolData (data_key, data_value) {
+    return {
+        type: MANAGE_EDIT_CARPOOL_STORE_DATA,
+        data_key,
+        data_value,
+    }
+}
+
+/* Carpool 이벤트 등록 POST 액션 */
+export function postCarpoolEvent (title, departure, destination, start_date, start_time, meeting_place, contact, description) {
+    return (dispatch) => {
+
+        /* POST 요청 시 사용되는 url */
+        const POSTurl = '/api/carpool/create';
+
+        /* POST Request Body Data */
+        let start = start_date;
+        start.setHours(start_time._d.getHours());
+        start.setMinutes(start_time._d.getMinutes());
+        const requestBody = { title, departure, destination, start, meeting_place, contact, description }
+
+        /* POST Request config Data */
+        const config = {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }
+
+        console.log(start);
+
+        /* POST Request */
+        return axios.post(POSTurl, qs.stringify(requestBody), config)
+        .then(res => {dispatch(postCarpoolEventSuccess(res))})
+        .catch(err => {dispatch(postCarpoolEventFailure(err))})
+    }
+}
+
+export function postCarpoolEventSuccess () {
+    return {
+        type: MANAGE_EDIT_CARPOOL_POST_SUCCESS
+    }
+}
+
+export function postCarpoolEventFailure () {
+    return {
+        type: MANAGE_EDIT_CARPOOL_POST_FAILURE
     }
 }

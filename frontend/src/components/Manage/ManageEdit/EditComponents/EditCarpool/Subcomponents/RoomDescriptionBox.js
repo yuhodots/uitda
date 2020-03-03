@@ -2,8 +2,10 @@
 
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { Input } from "antd";
 
+import { DESCRIPTION } from "../../../../../../constants/edit_RoomInfo_DataKeys";
 import { colors } from "../../../../../../styles/variables";
 
 /* Styled Components */
@@ -39,18 +41,21 @@ const WholeBox = styled.div`
 
 
 /* React Component */
-const RoomDescriptionBox = () => {
+const RoomDescriptionBox = ({storeCarpoolData}) => {
 
     return (
         <WholeBox>
             <DescriptionTextArea 
-                // defaultValue={title}
                 placeholder="추가 정보를 입력하세요."
                 autoSize={true}
-                // onChange={(e) => storeTitleData(e.target.value)}
+                onChange={(e) => storeCarpoolData(DESCRIPTION, e.target.value)}
             />
         </WholeBox>
     )
+}
+
+RoomDescriptionBox.propTypes = {
+    storeCarpoolData: PropTypes.func.isRequired,    // Carpool 탭의 Room Info Data를 저장하는 메서드
 }
 
 export default RoomDescriptionBox

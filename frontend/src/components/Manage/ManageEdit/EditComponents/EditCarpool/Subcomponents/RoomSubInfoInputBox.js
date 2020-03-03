@@ -7,7 +7,7 @@ import { Input } from "antd";
 
 import { colors } from "../../../../../../styles/variables";
 import Subtitle from "./RoomSubtitle";
-import HintDatas from "./Subinfo_TitleHint.json";
+import TitleHintDatas from "./Subinfo_TitleHint.json";
 
 /* Styled Components */
 const WholeBox = styled.div`
@@ -59,25 +59,25 @@ const WholeBox = styled.div`
 
 
 /* Reac Component */
-const RoomSubInfoInputBox = ({subtitle}) => {
+const RoomSubInfoInputBox = ({dataKey, storeCarpoolData}) => {
 
     /* Hint Data를 json 객체의 순회를 통해 찾아냄 */
+    let subtitle = '';
     let hint = '';
-    for (let id in HintDatas) {
-        if (id === subtitle) {
-            hint = HintDatas[id];
+    for (let id in TitleHintDatas) {
+        if (id === dataKey) {
+            subtitle = TitleHintDatas[id].subtitle;
+            hint = TitleHintDatas[id].hint;
         }
     }
-
 
     return (
         <WholeBox>
             <SubTitleInputBox>
                 <Subtitle content={subtitle} />
                 <InfoTextArea 
-                    // defaultValue={title}
                     autoSize={true}
-                    // onChange={(e) => storeTitleData(e.target.value)}
+                    onChange={(e) => storeCarpoolData(dataKey, e.target.value)}
                 />
             </SubTitleInputBox>
             <HintBox>{hint}</HintBox>
@@ -86,7 +86,8 @@ const RoomSubInfoInputBox = ({subtitle}) => {
 }
 
 RoomSubInfoInputBox.propTypes = {
-    subtitle: PropTypes.string.isRequired,      // subtitle 데이터
+    dataKey: PropTypes.string.isRequired,           // subtitle 데이터
+    storeCarpoolData: PropTypes.func.isRequired,    // Carpool 탭의 Room Info Data를 저장하는 메서드
 }
 
 export default RoomSubInfoInputBox;

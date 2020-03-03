@@ -2,9 +2,11 @@
 
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { Input } from "antd";
 
 import Subtitle from './RoomSubtitle';
+import { DEPARTURE, DESTINATION } from "../../../../../../constants/edit_RoomInfo_DataKeys";
 
 /* Styled Components */
 
@@ -55,30 +57,31 @@ const WholeBox = styled.div`
 
 /* React Component */
 
-const RoomPlaceInputBox = () => {
+const RoomPlaceInputBox = ({storeCarpoolData}) => {
 
     return (
         <WholeBox>
             <DepartureBox>
                 <Subtitle content='출발지' redStar={true} />
                 <PlaceTextArea 
-                    // defaultValue={title}
                     autoSize={true}
-                    // onChange={(e) => storeTitleData(e.target.value)}
+                    onChange={(e) => storeCarpoolData(DEPARTURE, e.target.value)}
                 />
             </DepartureBox>
 
             <DestinationBox>
                 <Subtitle content='도착지' redStar={true} />
                 <PlaceTextArea 
-                    // defaultValue={title}
                     autoSize={true}
-                    // onChange={(e) => storeTitleData(e.target.value)}
+                    onChange={(e) => storeCarpoolData(DESTINATION, e.target.value)}
                 />
             </DestinationBox>            
         </WholeBox>
     )
 }
 
+RoomPlaceInputBox.propTypes = {
+    storeCarpoolData: PropTypes.func.isRequired,        // Carpool 탭의 Room Info Data를 저장하는 메서드
+}
 
 export default RoomPlaceInputBox;

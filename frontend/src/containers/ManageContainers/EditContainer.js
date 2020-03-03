@@ -11,7 +11,6 @@ import { Header } from '../../components/Manage/ManageStructure'
 import EditBody from '../../components/Manage/ManageEdit'
 import { 
     initEditPage,
-    setInitFalse,
     selectEditCategory,
     getUpdatePostRequest,
     EditPostRequest,
@@ -25,6 +24,8 @@ import {
     editClickS,
     editSelectTextAlign,
     selectCalendarDate,
+    storeCarpoolData,
+    postCarpoolEvent,
 } from '../../store/actions/manage'
 
 
@@ -154,6 +155,7 @@ class EditContainer extends Component {
             edit_spanStyle,
             edit_textAlign,
             selectedDate,
+            roomInfoData,
 
             /* App Methods */
             EditPostRequest,
@@ -168,6 +170,8 @@ class EditContainer extends Component {
             editClickS,
             editSelectTextAlign,
             selectDate,
+            storeCarpoolData,
+            postCarpoolEvent
         } = this.props;
 
         const id = isNew ? 0 : match.params.id;
@@ -197,6 +201,7 @@ class EditContainer extends Component {
                     edit_textAlign={edit_textAlign}     // p태그 text align 속성
 
                     selectedDate={selectedDate}         // Carpool 탭에서 선택된 날짜 데이터
+                    roomInfoData={roomInfoData}         // 카풀 방 정보
 
                     /* Methods */
                     selectEditCategory={selectEditCategory}
@@ -206,6 +211,8 @@ class EditContainer extends Component {
                     editClickU={editClickU}
                     editClickS={editClickS}
                     editSelectTextAlign={editSelectTextAlign}
+
+                    postCarpoolEvent={postCarpoolEvent}         // Carpool Event 등록하는 Post Action
                 />
                 <EditBody 
                     editCategory={editCategory}                         // Edit 카테고리
@@ -224,6 +231,7 @@ class EditContainer extends Component {
                     storeDescriptionData={storeEditDescriptionData}
 
                     selectDate={selectDate}                             // Carpool 탭에서 날짜를 선택하는 메서드
+                    storeCarpoolData={storeCarpoolData}
                 />
             </div> : 
             'loading'
@@ -260,13 +268,13 @@ const mapStateToProps = (state) => {
         edit_textAlign: state.manage.edit_textAlign,        // p태그 text align 속성 값
 
         selectedDate: state.manage.carpool_SelectedDate,    // 카풀 탭에서 선택된 날짜 정보
+        roomInfoData: state.manage.carpool_RoomInfoData,    // 카풀 방 정보
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         initEditPage: () => {dispatch(initEditPage())},
-        setInitFalse: () => {dispatch(setInitFalse())} ,
         selectEditCategory: (category) => {dispatch(selectEditCategory(category))},             // edit 카테고리를 선택하는 메서드
         EditPostRequest: (board, title, discription, files, id, deletedFileIDs) => {
             dispatch(EditPostRequest(board, title, discription, files, id, deletedFileIDs))
@@ -288,7 +296,14 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(editSelectTextAlign(textAlignAttr))
         },
 
+        /* Edit Carpool Actions */
         selectDate: (date) => dispatch(selectCalendarDate(date)),                               // carpool 탭에서 날짜를 선택하는 액션
+        storeCarpoolData: (data_key, data_value) => {                                           // Carpool 탭의 Room Info Data를 담는 액션
+            dispatch(storeCarpoolData(data_key, data_value))
+        },
+        postCarpoolEvent: (title, departure, destination, start_date, start_time, meeting_place, contact, description) => {         // Carpool Event 등록하는 Post Action
+            dispatch(postCarpoolEvent(title, departure, destination, start_date, start_time, meeting_place, contact, description))
+        }
     }
 }
 
