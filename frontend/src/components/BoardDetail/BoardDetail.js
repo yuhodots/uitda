@@ -19,6 +19,7 @@ import { colors } from "../../styles/variables";
 /* 배경색을 깔기 위해 만든 div 테그 */
 const BackgroundDiv = styled.div`
     width: 100%;
+    padding-left: 15rem;
     background-color: ${colors.gray_bg};
 `;
 

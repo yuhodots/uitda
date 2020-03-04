@@ -5,21 +5,24 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 
-
+import SideBar from "../components/Structure/SideBar";
 import Carpool from "../components/Carpool";
-
 import { topicSelect } from "../store/actions/topic";
-
+import { CARPOOL } from "../constants/categories";
 
 class CarpoolContainer extends Component {    
 
     componentDidMount() {
-        this.props.topicSelect('carpool');
+        const { topicSelect } = this.props;
+
+        topicSelect(CARPOOL);
     }
 
     render() {
         return (
             <div>
+                <SideBar topic={CARPOOL} />
+
                 <Carpool />
             </div>
         )

@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import SideBar from "../components/Structure/SideBar";
 import BoardDetail from "../components/BoardDetail";
 import ExceptionalPage from '../components/Exceptionals';
 
@@ -23,7 +24,6 @@ class BoardDetailContainer extends Component {
         const {
             match,
 
-            headerOff,
             topicSelect,
             initiateDetailPage,
             getStatusRequest,
@@ -35,8 +35,6 @@ class BoardDetailContainer extends Component {
         } = match.params;
 
         initiateDetailPage();
-
-        headerOff();                             // 헤더 Off
         topicSelect(boardName);
 
         getStatusRequest();                      // 유저 정보 request
@@ -60,17 +58,21 @@ class BoardDetailContainer extends Component {
         const { boardName } = this.props.match.params;
 
         return isLoaded ?
-            <BoardDetail 
-                curUser={user}
+            <div>
+                <SideBar topic={boardName} />
 
-                board={boardName}
-                post={post} 
-                commentList={commentList} 
+                <BoardDetail 
+                    curUser={user}
 
-                createComment={createComment}
-                updateComment={updateComment}
-                deleteComment={deleteComment}
-            /> :
+                    board={boardName}
+                    post={post} 
+                    commentList={commentList} 
+
+                    createComment={createComment}
+                    updateComment={updateComment}
+                    deleteComment={deleteComment}
+                />
+            </div> :
             <ExceptionalPage /> // 로딩 중 + id가 올바르지 않은 경우
     }
 }
