@@ -5,24 +5,17 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 
-// 컴포넌트
-import Board from "../components/Board";
-import SearchIcon from "../components/Structure/SearchIcon";
-import LoadingBar from "../components/Structure/LoadingBar";
-
-// 액션
-import {
-    headerOn,
-    headerOff,
-    searchBarOn,
-} from "../store/actions/structure"
+import BoardBody from "../components/Board/BoardBody";
+import BoardHeader from "../components/Board/BoardHeader";
+import SideBar from "../components/Structure/SideBar";
 
 import { 
     initiateBoard,
     getBoardRequest,
-    getBoardRequestByScroll
+    getBoardRequestByScroll,
+    boardHeaderOn,
+    boardHeaderOff,
 } from '../store/actions/board'
-
 import { topicSelect } from "../store/actions/topic";
 
 class BoardContainer extends Component {    
@@ -37,15 +30,13 @@ class BoardContainer extends Component {
             initiateBoard,
             getBoardRequest,
             headerOn,
-            searchBarOn,
             topicSelect,
         } = this.props;
         
         initiateBoard();
 
-        headerOn();                                      // 헤더 On
-        searchBarOn();                                   // 검색창 On
-        topicSelect(boardName);                          // app의 topic state를 boardName으로 설정
+        headerOn();                                                 // 헤더 On
+        topicSelect(boardName);                                     // app의 topic state를 boardName으로 설정
         
         getBoardRequest(boardName);
 
@@ -106,31 +97,40 @@ class BoardContainer extends Component {
 
             // methods
             headerOn,
+            getBoardRequest
         } = this.props;
 
         const { windowHeight } = this.state;
 
         return (
             <div>
-                <LoadingBar isLoading={isLoading} />
+                <SideBar topic={boardName} />
+                
+                <BoardHeader 
+                    isHeaderOn={isHeaderOn} 
+                    board={boardName}
+                    
+                    getBoardRequest={getBoardRequest} 
+                />
+                
                 {
                     doesRenderOK ?
-                
-                    <Board
+
+                    <BoardBody 
                         boardName={boardName} 
                         postlist={postlist} 
                         search={search}
                         windowHeight={windowHeight}
+
+                        isLoading={isLoading}
+                        isHeaderOn={isHeaderOn}
+                        headerOn={headerOn}
                     /> :
 
                     <div className='PageError'>
                         새로고침을 눌러주세요 :)
                     </div>
-                }              
-                <SearchIcon
-                    isHeaderOn={isHeaderOn}
-                    headerOn={headerOn}
-                />  
+                }
             </div>
         )
     }
@@ -144,25 +144,24 @@ const mapStateToProps = (state) => {
         search: state.board.search,                         // 검색어 데이터
         isLoading: state.board.isLoading,                   // Scroll GET 대기 여부
         isLast: state.board.isLast,                         // 요소가 마지막인 지 여부
-        isHeaderOn: state.structure.isHeaderOn,             // 헤더가 On 인지
+        isHeaderOn: state.board.isHeaderOn,                 // 헤더가 On 인지
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        headerOn: () => {dispatch(headerOn())},                     // 헤더를 나타나게 하는 메서드
-        headerOff: () => {dispatch(headerOff())},                   // 헤더를 사라지게 하는 메서드
-        searchBarOn: () => {dispatch(searchBarOn())},               // 검색바를 나타나게 하는 메서드
+        headerOn: () => {dispatch(boardHeaderOn())},                    // 헤더를 나타나게 하는 메서드
+        headerOff: () => {dispatch(boardHeaderOff())},                  // 헤더를 사라지게 하는 메서드
 
-        initiateBoard: () => {dispatch(initiateBoard())},           // 보드 초기화 메서드 
-        getBoardRequest: (boardName, scroll, search) => {           // 보드 GET 요청 메서드
+        initiateBoard: () => {dispatch(initiateBoard())},               // 보드 초기화 메서드 
+        getBoardRequest: (boardName, scroll, search) => {               // 보드 GET 요청 메서드
             dispatch(getBoardRequest(boardName, scroll, search))
         },
-        getBoardRequestByScroll: (boardName, scroll, search) => {   // 보드 Scroll GET 요청 메서드
+        getBoardRequestByScroll: (boardName, scroll, search) => {       // 보드 Scroll GET 요청 메서드
             dispatch(getBoardRequestByScroll(boardName, scroll, search))
         },
 
-        topicSelect: (topic) => {dispatch(topicSelect(topic))},     // App의 topic state를 topic 값으로 설정
+        topicSelect: (topic) => {dispatch(topicSelect(topic))},         // App의 topic state를 topic 값으로 설정
     }
 }
 

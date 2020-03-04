@@ -15,15 +15,11 @@ import {
     updateComment,
     deleteComment,
 } from '../store/actions/board';
-import { headerOff } from "../store/actions/structure"
 import { topicSelect } from "../store/actions/topic";
 
 class BoardDetailContainer extends Component {
 
     componentDidMount () {
-
-        console.log('detail did mount')
-
         const {
             match,
 
@@ -46,11 +42,6 @@ class BoardDetailContainer extends Component {
         getStatusRequest();                      // 유저 정보 request
         getBoardDetailRequest(boardName, id);    // 포스팅 데이터 request
     }
-
-    componentWillUnmount() {
-        console.log('detail page unmount')
-    }
-
 
     render() {
         const { 
@@ -102,7 +93,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        headerOff: () => {dispatch(headerOff())},                                       // 헤더를 사라지게 하는 메서드
         topicSelect: (boardName) => {                                                   // 토픽을 설정함
             dispatch(topicSelect(boardName))
         },    

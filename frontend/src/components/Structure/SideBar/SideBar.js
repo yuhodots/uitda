@@ -13,10 +13,24 @@ import topicData from "./topics.json";
 import Logo from "../CommonComponents/Logo";
 import Menu from "./Menu";
 
-import './SideBar.css';
-
 /* Styled Components */
 
+/* 사이드바 전체 영역 스타일 박스 */
+const SidebarBox = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 15rem;
+    z-index: 2020;
+
+    background-color: ${colors.white};
+    
+    display: flex;
+    flex-flow: column nowrap;
+`;
+
+/* Logo를 담는 영역 */
 const LogoContainer = styled.div`
     flex: 0 4rem;
 
@@ -28,33 +42,45 @@ const LogoContainer = styled.div`
     border-bottom: 2px solid ${colors.gray_bg};
 `;
 
+/* 위 카테고리 박스 (다판다, 잉력시장, 카풀) */
+const TopCategoryBox = styled.div`
+    margin-top: 2.5rem;
+`;
+
+/* 아래 카테고리 박스 (Manage, Chatting) */
+const BottomCategoryBox = styled.div`
+    position: absolute;
+    bottom: 2rem;
+    width: 100%;
+    padding-top: 2rem;
+    border-top: 2px solid ${colors.gray_bg};
+`;
+
 
 /* React Component */
 class SideBar extends Component {
 
     render() {
         return (
-            <div className='SideBar'>
-
+            <SidebarBox >
                 <LogoContainer>
                     <Logo isWhite={false} />
                 </LogoContainer>
 
-                <div className="UpperItemContainer">
+                <TopCategoryBox>
                     <Menu 
                         selectedTopic={this.props.topic} 
                         topicData={topicData.upper}    
                     />
-                </div>
+                </TopCategoryBox>
 
-                <div className='BottomItemContainer'>
+                <BottomCategoryBox>
                     <Menu
                         selectedTopic={this.props.topic} 
                         topicData={topicData.below}
                     />
-                </div>
-                
-            </div>
+                </BottomCategoryBox>
+            </SidebarBox>
         )
     }
 }

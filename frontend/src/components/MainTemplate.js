@@ -12,17 +12,11 @@ import {
     Carpool,
 } from "../pages";
 
-import SideBarContainer from "../containers/SideBarContainer";
-import HeaderContainer from '../containers/HeaderContainer';
-
-
-/* Styled Component */
+/* Styled Components */
 
 const ContentArea = styled.div`
-    margin-left: 15rem;
     position: relative;
-`
-
+`;
 
 /* React Component */
 
@@ -49,9 +43,7 @@ const MainTemplate = ({kind}) => {
 
     return (
         <div>
-            <HeaderContainer />
             <ContentArea>
-                <SideBarContainer />
                 <Route component={content} />
             </ContentArea>
         </div>
