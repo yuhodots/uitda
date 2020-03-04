@@ -225,6 +225,10 @@
 * 코드 리펙토링
   HeaderContainer, Structure > Header, store > structure action, structure reducer로 구분되어 있던 게시판 전용 헤더를 Board 내부로 이동
   Components > Board 디렉토리를 정리
+  SideBar를 컨테이너 레벨에서 컴포넌트 레벨로 이동
+  BoardDetail, Carpool도 구조 변화 작업
+
+
 
 
 
