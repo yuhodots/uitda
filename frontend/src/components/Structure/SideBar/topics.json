@@ -1,8 +1,8 @@
 {
     "upper" : [
         {"id":1, "title": "Market", "url":"/board/market", "key":"market"},
-        {"id":2, "title": "Carpool", "url":"/carpool", "key":"carpool"},
-        {"id":3, "title": "Networking", "url":"/board/networking", "key":"networking"}
+        {"id":2, "title": "Networking", "url":"/board/networking", "key":"networking"},
+        {"id":3, "title": "Carpool", "url":"/carpool", "key":"carpool"}
     ],
     "below" : [
         {"id":4, "title": "Manage", "url":"/manage", "key":"manage"},
