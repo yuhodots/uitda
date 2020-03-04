@@ -8,6 +8,8 @@ import {
     BOARD_SCROLL_GET,
     BOARD_SCROLL_GET_SUCCESS,
     BOARD_SCROLL_GET_FAILURE,
+    BOARD_HEADER_ON,
+    BOARD_HEADER_OFF,
     BOARD_DETAIL_INIT,
     BOARD_DETAIL_GET_SUCCESS,
     BOARD_DETAIL_GET_FAILURE
@@ -93,6 +95,18 @@ export function getBoardByScrollFailure(err) {
     return {
         type: BOARD_SCROLL_GET_FAILURE,
         err
+    }
+}
+
+export function boardHeaderOn() {
+    return {
+        type: BOARD_HEADER_ON
+    }
+}
+
+export function boardHeaderOff() {
+    return {
+        type: BOARD_HEADER_OFF
     }
 }
 

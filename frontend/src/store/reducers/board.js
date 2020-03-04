@@ -7,7 +7,9 @@ import {
     BOARD_SCROLL_GET_FAILURE,
     BOARD_DETAIL_GET_SUCCESS,
     BOARD_DETAIL_GET_FAILURE,
-    BOARD_DETAIL_INIT
+    BOARD_DETAIL_INIT,
+    BOARD_HEADER_ON,
+    BOARD_HEADER_OFF
 } from "../actions/ActionTypes";
 
 
@@ -17,6 +19,8 @@ const InitialState = {
     // err: '',                // 에러
     
     /* Board 게시판 state */
+    isHeaderOn: true,               // 게시판 페이지 헤더의 On Off 여부
+
     isFirstBoardGetSuccess: false,  // 게시판 페이지 데이터 get 완료 여부
 
     postlist: [],                   // postlist 데이터
@@ -90,6 +94,18 @@ export default function board (state = InitialState, action) {
                 ...state,
                 isBoardGetSuccess: false,
                 err: action.err
+            }
+
+        case BOARD_HEADER_ON:
+            return {
+                ...state,
+                isHeaderOn: true
+            }
+    
+        case BOARD_HEADER_OFF:
+            return {
+                ...state,
+                isHeaderOn: false
             }
 
         /* Detail 페이지 초기화 액션 */
