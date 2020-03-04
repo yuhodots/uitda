@@ -6,9 +6,8 @@ import React, { Component } from "react";
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import './Board.css';
-import PostCard from "./PostCard";
-import { colors } from '../../styles/variables'
+import { LoadingBar, PostCard, SearchIcon } from "./SubComponents";
+import { colors } from '../../../styles/variables'
 
 
 /* Styled Components */
@@ -17,8 +16,9 @@ const BoardTemplate = styled.div`
     min-height: ${props => {
         return `${props.minHeight}px`
     }};
-    padding: 0.875rem;
-    padding-top: 5.375rem;
+    padding: 0;
+    padding-top: 4rem;
+    padding-left: 15rem;
     background-color: ${colors.gray_bg};
     
     display: flex;
@@ -104,21 +104,34 @@ class Board extends Component {
 
     render() {
 
-        const { search, windowHeight } = this.props;
+        const { 
+            search, 
+            windowHeight, 
+            isLoading,
+            isHeaderOn,
+            headerOn
+        } = this.props;
 
         const postlist = this._makeStandardList(this.props.postlist);
 
         return (
-            <BoardTemplate minHeight={windowHeight} >
-                {
-                    search ?
-                    <SearchInfoBox>
-                        <h2>{search} 검색</h2>
-                    </SearchInfoBox> :
-                    ''
-                }
-                {this._renderPostList(postlist)}
-            </BoardTemplate>
+            <div>
+                <LoadingBar isLoading={isLoading} />
+
+                <BoardTemplate minHeight={windowHeight} >
+                    {
+                        search ?
+                        <SearchInfoBox>
+                            <h2>{search} 검색</h2>
+                        </SearchInfoBox> :
+                        ''
+                    }
+                    {this._renderPostList(postlist)}
+                </BoardTemplate>
+
+                <SearchIcon isHeaderOn={isHeaderOn} headerOn={headerOn} />
+            </div>
+            
         )
     }
 }
@@ -130,6 +143,10 @@ Board.propTypes = {
     search: PropTypes.string,                   // 검색어 데이터
 
     windowHeight: PropTypes.number.isRequired,  // 화면 세로 길이 값
+
+    isLoading: PropTypes.bool.isRequired,       // Loading Bar 실행 여부
+    isHeaderOn: PropTypes.bool.isRequired,      // Header Render 여부
+    headerOn: PropTypes.func.isRequired,        // 검색 아이콘 클릭 액션 (헤더 나타내기)
 }
 
 Board.defaultProps = {

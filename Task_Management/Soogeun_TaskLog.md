@@ -220,6 +220,16 @@
 
 
 
+### 3.4 (수)
+
+* 코드 리펙토링
+  HeaderContainer, Structure > Header, store > structure action, structure reducer로 구분되어 있던 게시판 전용 헤더를 Board 내부로 이동
+  Components > Board 디렉토리를 정리
+  SideBar를 컨테이너 레벨에서 컴포넌트 레벨로 이동
+  BoardDetail, Carpool도 구조 변화 작업
+
+
+
 
 
 ## 해야 할 일
@@ -232,6 +242,7 @@
 
 
 
+* 로딩 바 css 스타일 다듬기
 * 검색창에 자동완성 기능 추가
 * 사진 넘기기 아이콘 ant-design 적용
 * 사진 Ant Design의 Carousel Component 검토

@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 
 import { colors } from "../../../styles/variables";
-import Logo from "../CommonComponents/Logo";
+import Logo from "../../Structure/CommonComponents/Logo";
 import SearchBar from "./SearchBar";
 import './Header.css'
 
@@ -23,7 +23,7 @@ const HeaderBox = styled.div`
     
     position: fixed;
     top: 0;
-    z-index: 1000;
+    z-index: 2021;
 
     background-color: ${colors.blue};
 
@@ -42,6 +42,7 @@ const HeaderBox = styled.div`
     `}
 `;
 
+/* 로고 담는 영역 박스 */
 const LogoContainer = styled.div`
     flex: 0 15rem;
 
@@ -68,15 +69,14 @@ const UserInfoContainer = styled.div`
 
 /* React Component */
 
-class Header extends Component {
+class BoardHeader extends Component {
 
     render() {
 
-        const { 
-            isSearchBarOn,
+        const {
             isHeaderOn,
             isLoggedIn,
-            topic,
+            board,
 
             handleLogout,
             getBoardRequest
@@ -90,12 +90,10 @@ class Header extends Component {
                 </LogoContainer>
 
                 <SearchBarContainer>
-                    {isSearchBarOn ?
                     <SearchBar 
                         getBoardRequest={getBoardRequest} 
-                        board={topic}
-                    /> :
-                    ''}
+                        board={board}
+                    /> 
                 </SearchBarContainer>
 
                 <UserInfoContainer>
@@ -111,21 +109,20 @@ class Header extends Component {
     }
 }
 
-Header.propTypes = {
+BoardHeader.propTypes = {
     // Properties
     isHeaderOn: PropTypes.bool.isRequired,      // Header가 나타나는 지,
-    isSearchBarOn: PropTypes.bool.isRequired,   // 검색바를 나타낼지,
     isLoggedIn: PropTypes.bool.isRequired,      // 로그인 되어있는지,
     user: PropTypes.object,                     // 유저 객체
-    topic: PropTypes.string.isRequired,         // 무슨 topic 인지 
+    board: PropTypes.string.isRequired,         // 무슨 topic 인지 
 
     // Methods
     handleLogout: PropTypes.func.isRequired,    // 로그아웃 메서드
-    getBoardRequest: PropTypes.func,            // board에서 검색 시, get 요청을 하는 매서드 
+    getBoardRequest: PropTypes.func.isRequired, // board에서 검색 시, get 요청을 하는 매서드 
 }
 
-Header.defaultProps = {
+BoardHeader.defaultProps = {
     user: {},
 }
 
-export default Header;
+export default BoardHeader;

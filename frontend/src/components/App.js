@@ -9,26 +9,23 @@ import 'antd/dist/antd.css'
 
 // 컴포넌트
 import { 
+    Home,
+    Board,
+    Carpool,
     NotFound, 
     Auth,
     Manage,
 } from "../pages";
-import MainTemplate from "./MainTemplate";
+// import MainTemplate from "./MainTemplate";
 
 import './App.css';
 
 const App = () => {
     return (
         <Switch>
-            <Route exact path='/' component={ () => 
-                <MainTemplate kind="Home" />
-            } />
-            <Route path='/board' component={ () => 
-                <MainTemplate kind="Board" />
-            } />
-            <Route path='/carpool' component={ () => 
-                <MainTemplate kind="Carpool" />
-            } />
+            <Route exact path='/' component={ Home } />
+            <Route path='/board' component={ Board } />
+            <Route path='/carpool' component={ Carpool } />
             <Route path='/auth/:kind' component={Auth} />
             <Route path='/manage' component={Manage} />
             <Route component={NotFound}/>

@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import SideBar from "../components/Structure/SideBar";
 import BoardDetail from "../components/BoardDetail";
 import ExceptionalPage from '../components/Exceptionals';
 
@@ -15,19 +16,14 @@ import {
     updateComment,
     deleteComment,
 } from '../store/actions/board';
-import { headerOff } from "../store/actions/structure"
 import { topicSelect } from "../store/actions/topic";
 
 class BoardDetailContainer extends Component {
 
     componentDidMount () {
-
-        console.log('detail did mount')
-
         const {
             match,
 
-            headerOff,
             topicSelect,
             initiateDetailPage,
             getStatusRequest,
@@ -39,18 +35,11 @@ class BoardDetailContainer extends Component {
         } = match.params;
 
         initiateDetailPage();
-
-        headerOff();                             // 헤더 Off
         topicSelect(boardName);
 
         getStatusRequest();                      // 유저 정보 request
         getBoardDetailRequest(boardName, id);    // 포스팅 데이터 request
     }
-
-    componentWillUnmount() {
-        console.log('detail page unmount')
-    }
-
 
     render() {
         const { 
@@ -69,17 +58,21 @@ class BoardDetailContainer extends Component {
         const { boardName } = this.props.match.params;
 
         return isLoaded ?
-            <BoardDetail 
-                curUser={user}
+            <div>
+                <SideBar topic={boardName} />
 
-                board={boardName}
-                post={post} 
-                commentList={commentList} 
+                <BoardDetail 
+                    curUser={user}
 
-                createComment={createComment}
-                updateComment={updateComment}
-                deleteComment={deleteComment}
-            /> :
+                    board={boardName}
+                    post={post} 
+                    commentList={commentList} 
+
+                    createComment={createComment}
+                    updateComment={updateComment}
+                    deleteComment={deleteComment}
+                />
+            </div> :
             <ExceptionalPage /> // 로딩 중 + id가 올바르지 않은 경우
     }
 }
@@ -102,7 +95,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        headerOff: () => {dispatch(headerOff())},                                       // 헤더를 사라지게 하는 메서드
         topicSelect: (boardName) => {                                                   // 토픽을 설정함
             dispatch(topicSelect(boardName))
         },    

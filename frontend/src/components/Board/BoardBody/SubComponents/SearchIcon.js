@@ -6,7 +6,7 @@ import React from "react";
 import styled, { css } from 'styled-components';
 import { Icon } from 'antd';
 
-import { colors } from '../../../styles/variables';
+import { colors } from '../../../../styles/variables';
 
 
 /* Styled Components */

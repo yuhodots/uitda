@@ -5,31 +5,24 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 
-
+import SideBar from "../components/Structure/SideBar";
 import Carpool from "../components/Carpool";
-
-import { 
-    headerOn,
-    searchBarOff,
-    categoryOff
-} from "../store/actions/structure";
-
 import { topicSelect } from "../store/actions/topic";
-
+import { CARPOOL } from "../constants/categories";
 
 class CarpoolContainer extends Component {    
 
     componentDidMount() {
-        this.props.headerOn();
-        this.props.searchBarOff();
-        this.props.categoryOff();
+        const { topicSelect } = this.props;
 
-        this.props.topicSelect('carpool');
+        topicSelect(CARPOOL);
     }
 
     render() {
         return (
             <div>
+                <SideBar topic={CARPOOL} />
+
                 <Carpool />
             </div>
         )
@@ -42,10 +35,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        headerOn : () => {dispatch(headerOn())},
-        searchBarOff : () => {dispatch(searchBarOff())},
-        categoryOff : () => {dispatch(categoryOff())},
-
         topicSelect : (topic) => {dispatch(topicSelect(topic))},    // App의 topic state를 CARPOOL로 설정
     }
 }
