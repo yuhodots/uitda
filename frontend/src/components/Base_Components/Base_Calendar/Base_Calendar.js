@@ -111,7 +111,13 @@ class Calendar extends Component {
         
         /* Carpool Calendar Properties */
         {
-
+            plugins: [ dayGridPlugin, interactionPlugin ],      // Fullcalendar 플러그인 리스트
+            
+            header: {                                           // 달력의 헤더 설정
+                left: 'custom_today',
+                center: 'prev, title, next',
+                right: ''
+            },
         };
 
         /* 공통 Calendar Props 추가 */

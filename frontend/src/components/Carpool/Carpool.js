@@ -5,15 +5,62 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
 
+import { BaseCalendar } from "../Base_Components";
+import { MenuBox, DateInfoBox } from "./SubComponents";
 import { colors } from "../../styles/variables";
+import { CARPOOL } from "../../constants/categories";
 
 /* Styled Components */
 
+/* 전체 배경 영역 div 태그 */
 const BackGroundDiv = styled.div`
     width: 100%;
+    min-width: 1280px;
     min-height: ${props => `${props.windowHeight}px`};
     padding-left: 15rem;
     background-color: ${colors.gray_bg};
+
+    display: flex;
+
+`;
+
+/* 전체 모든 Box들의 영역을 나타내는 div 태그 */
+const ContentArea = styled.div`
+    width: 90%;
+    min-width: 1030px;
+    margin: 1.5rem auto;
+
+    display: flex;
+    flex-flow: column nowrap;
+
+    @media (max-width: 1500px) {
+        margin: 1rem auto;
+    }
+`;
+
+/* 하단 CalendarBox + InfoBox 영역 */
+const CalendarInfoArea = styled.div`
+    margin-top: 1.5rem;
+    flex: 1;
+    
+    display: flex;
+    flex-flow: row nowrap;
+
+    @media (max-width: 1500px) {
+        margin-top: 0.75rem;
+    }
+`;
+
+/*  */
+const CalendarBox = styled.div`
+    flex: 1;
+    margin-right: 1.5rem;
+
+    background-color: ${colors.white};
+
+    @media (max-width: 1500px) {
+        margin-right: 0.75rem;
+    }
 `;
 
 
@@ -49,7 +96,20 @@ class Carpool extends Component {
 
         return (
             <BackGroundDiv windowHeight={windowHeight} >
+                <ContentArea >
+                    <MenuBox />
 
+                    <CalendarInfoArea>
+                        <CalendarBox >
+                            {/* <BaseCalendar 
+                                category={CARPOOL}
+                            /> */}
+                        </CalendarBox>
+                        
+                        <DateInfoBox />
+                    </CalendarInfoArea>
+
+                </ContentArea>
             </BackGroundDiv>
         )
     }
