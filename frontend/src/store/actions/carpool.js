@@ -3,8 +3,9 @@ import {
 } from "./ActionTypes";
 
 
-export function CarpoolSelectDate () {
+export function carpoolSelectDate (date) {
     return {
         type: CARPOOL_SELECT_DATE,
+        date
     }
 }
