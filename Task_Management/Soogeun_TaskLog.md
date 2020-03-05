@@ -233,6 +233,7 @@
 ### 3.5 (목)
 
 * 카풀탭 박스영역 스타일링
+* 
 
 
 
@@ -355,6 +356,12 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 
 
+#### Carpool FrontEnd
+
+
+
+
+
 #### Header FrontEnd
 
 * 유저 아이콘 배치
@@ -385,12 +392,9 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
   * 로그 아웃 시, 아웃룩까지 로그 아웃 가능 ?
   * 로그인 시, 아웃룩에 이 아이디로 로그인 하실 것인가요 묻기 가능 ?
   
-* 페이지 별 캘린더 차이
-  * carpool - 전체 카풀 일정 의 month + list view / manage > edit > carpool로 이동하는 버튼
-  * manage > 내 카풀 일정 - 내가 등록한 카풀의 (month + list view) + 내가 참여한 일정 / 
-                                               manage > edit > carpool로 이동하는 버튼
-  * manage > edit > carpool - month view만 존재, 날짜를 선택할 수 있는 캘린더. (등록된 일정을 나타내는게 필요할까? 다른 일정 보기 / 없애기 버튼 추가 ?)
-  
+
+
+
 * 내가 참여한 카풀 일정을 안내할 방법
   1. modal 부분에 댓글을 달 수 있도록 하고, 내가 댓글 단 카풀 일정을 표시
      내 카풀 일정에는 내가 방장인 이벤트 + 내가 댓글 단 이벤트를 구분해서 나타내기
