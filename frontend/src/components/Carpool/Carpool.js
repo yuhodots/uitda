@@ -4,6 +4,7 @@
 
 import React, { Component } from "react";
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import { BaseCalendar } from "../Base_Components";
 import { MenuBox, DateInfoBox } from "./SubComponents";
@@ -21,7 +22,6 @@ const BackGroundDiv = styled.div`
     background-color: ${colors.gray_bg};
 
     display: flex;
-
 `;
 
 /* 전체 모든 Box들의 영역을 나타내는 div 태그 */
@@ -51,21 +51,30 @@ const CalendarInfoArea = styled.div`
     }
 `;
 
-/*  */
-const CalendarBox = styled.div`
-    flex: 1;
-    margin-right: 1.5rem;
+    /*  */
+    const CalendarBox = styled.div`
+        padding: 2rem;
+        margin-right: 1.5rem;
+        flex: 1;
 
-    background-color: ${colors.white};
+        background-color: ${colors.white};
 
-    @media (max-width: 1500px) {
-        margin-right: 0.75rem;
-    }
-`;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: stretch;
+
+        @media (max-width: 1500px) {
+            margin-right: 0.75rem;
+        }
+    `;
+
+        const CalendarContainer = styled.div`
+            flex: 1;
+        `;
 
 
 /* React Component */
-class Carpool extends Component {
+class CarpoolBoard extends Component {
 
     state = {}
 
@@ -76,6 +85,11 @@ class Carpool extends Component {
 
         /* 브라우저 창의 크기가 변하는 이벤트를 감지한다. */
         window.addEventListener('resize', this._handleResize) 
+
+        this.setState({
+            ...this.state,
+            isLoaded: true,
+        })
     }
 
     componentWillUnmount() {
@@ -92,28 +106,47 @@ class Carpool extends Component {
 
     render() {
 
-        const { windowHeight } = this.state;
+        const { windowHeight, isLoaded } = this.state;
+
+        const {
+            selectedDate,
+
+            selectDate
+        } = this.props
 
         return (
+            isLoaded ?
             <BackGroundDiv windowHeight={windowHeight} >
                 <ContentArea >
                     <MenuBox />
 
                     <CalendarInfoArea>
                         <CalendarBox >
-                            {/* <BaseCalendar 
-                                category={CARPOOL}
-                            /> */}
+                            <CalendarContainer>
+                                <BaseCalendar 
+                                    category={CARPOOL}
+                                    selectedDate={selectedDate}
+
+                                    selectDate={selectDate}
+                                />
+                            </CalendarContainer>
                         </CalendarBox>
                         
                         <DateInfoBox />
                     </CalendarInfoArea>
 
                 </ContentArea>
-            </BackGroundDiv>
+            </BackGroundDiv> :
+            ''
         )
     }
 }
 
+CarpoolBoard.propTypes = {
+    selectedDate: PropTypes.object.isRequired,      // 캘린더에서 선택된 날짜 정보
 
-export default Carpool;
+    selectDate: PropTypes.func.isRequired,          // 캘린더에서 날짜를 선택하는 액션
+}
+
+
+export default CarpoolBoard;

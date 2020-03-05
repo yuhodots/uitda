@@ -134,8 +134,11 @@ class Calendar extends Component {
             locale: 'ko',                                       // 언어: 한국어
 
             height: 'parent',                                   // 달력의 사이즈 조정 (parent 높이로 설정)
+            height: 'parent',                                   // 달력의 사이즈 조정 (parent 높이로 설정)
             fixedWeekCount: false,                              // 달력이 해당 월의 week 수 만큼 render됨 (6주 fix X)
         }
+
+        console.log(props);
 
         return (
             <FullCalendar {...props} ref={this.calendarRef} />
