@@ -233,7 +233,7 @@
 ### 3.5 (목)
 
 * 카풀탭 박스영역 스타일링
-* 
+* 카풀에 캘린더 띄우기
 
 
 
@@ -358,7 +358,7 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 #### Carpool FrontEnd
 
-
+* 캘린더 event 받아오기 액션
 
 
 
