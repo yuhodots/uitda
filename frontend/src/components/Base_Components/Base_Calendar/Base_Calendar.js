@@ -19,6 +19,9 @@ class Calendar extends Component {
     calendarRef = React.createRef()
 
     componentDidMount () {
+        const { initCalenderEvents } = this.props
+
+        initCalenderEvents();
         this._today();
     }
 
@@ -73,7 +76,6 @@ class Calendar extends Component {
 
         /* dayEls의 DOM 오브젝트 중, date 값이 입력받은 dateStr과 일치하는 DOM를 리턴 */
         const dateStr = this._dateToStr(date);
-        console.log(dateStr);
         const result = dayEls.find( dayEl => dayEl.dataset.date === dateStr )
         return result;
     }
@@ -92,10 +94,12 @@ class Calendar extends Component {
 
     render () {
 
-        const { category } = this.props;
+        const { 
+            category,
+            eventsObj
+        } = this.props;
 
-        let props = category === MANAGE ?
-
+        let props = ( category === MANAGE ?
         /* Manage Calendar Properties */
         {
             plugins: [ dayGridPlugin, interactionPlugin ],      // Fullcalendar 플러그인 리스트
@@ -105,10 +109,7 @@ class Calendar extends Component {
                 center: 'prev, title, next',
                 right: ''
             },
-
-            dateClick: this._selectDate                         // 달력의 날짜 부분 클릭 시 실행되는 함수
         } :
-        
         /* Carpool Calendar Properties */
         {
             plugins: [ dayGridPlugin, interactionPlugin ],      // Fullcalendar 플러그인 리스트
@@ -118,7 +119,7 @@ class Calendar extends Component {
                 center: 'prev, title, next',
                 right: ''
             },
-        };
+        });
 
         /* 공통 Calendar Props 추가 */
         props = {
@@ -131,15 +132,20 @@ class Calendar extends Component {
                 }
             },
 
+            // events: curEvents,                                  // 현재 캘린더의 상태에 대한 render할 이벤트 데이터
+
             locale: 'ko',                                       // 언어: 한국어
 
             height: 'parent',                                   // 달력의 사이즈 조정 (parent 높이로 설정)
             fixedWeekCount: false,                              // 달력이 해당 월의 week 수 만큼 render됨 (6주 fix X)
+
+            dateClick: this._selectDate                         // 달력의 날짜 부분 클릭 시 실행되는 함수
         }
 
-        console.log(props);
+        console.log(eventsObj)
 
         return (
+            // isLoaded ? <FullCalendar {...props} ref={this.calendarRef} /> : ''
             <FullCalendar {...props} ref={this.calendarRef} />
         )
     }
@@ -147,10 +153,13 @@ class Calendar extends Component {
 
 
 Calendar.propTypes = {
-    category: PropTypes.string.isRequired,      // [Manage / Carpool] 어느 카테고리에 렌더링될 것인지
+    category: PropTypes.string.isRequired,              // [Manage / Carpool] 어느 카테고리에 렌더링될 것인지
 
-    selectedDate: PropTypes.object,             // 캘린더에서 선택된 날짜 데이터
-    selectDate: PropTypes.func.isRequired,      // 캘린더에서 날짜를 선택하는 메서드
+    eventsObj: PropTypes.array.isRequired,              // 전체 카풀 이벤트 데이터
+
+    initCalenderEvents: PropTypes.func.isRequired,      // 캘린더 첫 렌더 시 들어올 events 받는 액션
+    selectedDate: PropTypes.object,                     // 캘린더에서 선택된 날짜 데이터
+    selectDate: PropTypes.func.isRequired,              // 캘린더에서 날짜를 선택하는 메서드
 }
 
 export default Calendar;

@@ -109,8 +109,13 @@ class CarpoolBoard extends Component {
         const { windowHeight, isLoaded } = this.state;
 
         const {
+            eventsObj,
             selectedDate,
 
+            initCalenderEvents,
+            renderTotalEvents,
+            renderMyEvents,
+            changeClosedEvents,
             selectDate
         } = this.props
 
@@ -118,15 +123,21 @@ class CarpoolBoard extends Component {
             isLoaded ?
             <BackGroundDiv windowHeight={windowHeight} >
                 <ContentArea >
-                    <MenuBox />
+                    <MenuBox 
+                        renderTotalEvents={renderTotalEvents}
+                        renderMyEvents={renderMyEvents}
+                        changeClosedEvents={changeClosedEvents}
+                    />
 
                     <CalendarInfoArea>
                         <CalendarBox >
                             <CalendarContainer>
                                 <BaseCalendar 
                                     category={CARPOOL}
+                                    eventsObj={eventsObj}
                                     selectedDate={selectedDate}
 
+                                    initCalenderEvents={initCalenderEvents}
                                     selectDate={selectDate}
                                 />
                             </CalendarContainer>
@@ -143,9 +154,14 @@ class CarpoolBoard extends Component {
 }
 
 CarpoolBoard.propTypes = {
-    selectedDate: PropTypes.object.isRequired,      // 캘린더에서 선택된 날짜 정보
+    eventsObj: PropTypes.object.isRequired,             // 전체 카풀 이벤트 데이터
+    selectedDate: PropTypes.object.isRequired,          // 캘린더에서 선택된 날짜 정보
 
-    selectDate: PropTypes.func.isRequired,          // 캘린더에서 날짜를 선택하는 액션
+    initCalenderEvents: PropTypes.func.isRequired,      // 캘린더 첫 렌더 시 들어올 events 받는 액션
+    renderTotalEvents: PropTypes.func.isRequired,       // 전체 일정 보기
+    renderMyEvents: PropTypes.func.isRequired,          // 내 일정만 보기
+    changeClosedEvents: PropTypes.func.isRequired,      // 마감된 일정 보기 / 숨기기
+    selectDate: PropTypes.func.isRequired,              // 캘린더에서 날짜를 선택하는 액션
 }
 
 

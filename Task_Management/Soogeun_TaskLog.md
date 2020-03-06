@@ -237,6 +237,16 @@
 
 
 
+### 3.6 (금)
+
+* 캘린더 액션 프로토타입 제작
+  initCalenderEvents,
+  renderTotalEvents,
+  renderMyEvents,
+  changeClosedEvents
+
+
+
 
 
 ## 해야 할 일
@@ -311,26 +321,24 @@
 #### Manage FrontEnd
 
 * edit carpool에서 필수 데이터 입력 안 했을 시, post request하기 전에 경고 띄우기
-
-
-
-* edit board 앱 데이터 및 저장 액션 리펙토링
-
-* carpool 수정 UX/UI 고려
-
-* carpool room input style 코드 리팩토링
-
-* edit 상단바 funcbox 코드 리펙토링
-
-* edit 상단바가 스크롤 내리면 위에 tooltip 생기는 거 고치기
-
-* Edit Page 나가기 전에 '나가시겠습니까 묻기'
-
+* edit carpool Room Info Box 스타일링
 * '/manage' 로 시작하는 URL을 브라우저 창에 입력하고 enter를 누르면 강제로 '/board/market'으로 리다이렉트 되는 에러
-Redirect 문제 (포스트 delete 시, '/board/market'으로 이동)
+  Redirect 문제 (포스트 delete 시, '/board/market'으로 이동)
   reload (새로고침) 하는데 왜 '/board/market' 으로 이동할까 ?
   예상 -> manage container의 user가 없는 경우 auth/login 가고 auth/login에서 /로 갈 듯
-  
+
+
+
+* store/manage에 있는 selectDate 액션 및 selectedDate는 Carpool로 통일해도 좋을 듯 
+* edit board 앱 데이터 및 저장 액션 리펙토링
+* carpool 수정 UX/UI 고려
+* carpool room input style 코드 리팩토링
+* edit 상단바 funcbox 코드 리펙토링
+* edit 상단바가 스크롤 내리면 위에 tooltip 생기는 거 고치기
+* Edit Page 나가기 전에 '나가시겠습니까 묻기'
+
+
+
 * 글 쓰기로 edit 페이지 들어갈 때, undefined가 들어가서 렌더링 안되는 오류 (/manage/posts/undefined)
 
 * edit 페이지에서 뒤로가기로 manage로 이동했을 때 흰색 화면 에러
@@ -359,6 +367,8 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 #### Carpool FrontEnd
 
 * 캘린더 event 받아오기 액션
+* MenuBox UI
+* DateInfoBox UI
 
 
 
@@ -368,11 +378,8 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
   
 
-
-
 #### FrontEnd
 
-* Manage, Carpool의 캘린더의 UI/UX 논의 자료 만들기
 * 
 
 
