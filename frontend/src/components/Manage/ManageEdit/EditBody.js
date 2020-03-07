@@ -51,11 +51,13 @@ class EditBody extends Component {
             files,
             description,
             selectedDate,
+            eventsObj,
 
             storeTitleData,
             addFileData,
             deleteFileData,
             storeDescriptionData,
+            initCalenderEvents,
             selectDate,
             storeCarpoolData
         } = this.props;
@@ -66,7 +68,9 @@ class EditBody extends Component {
                 editCategory === CARPOOL ?
 
                 <EditCarpool windowHeight={windowHeight} 
+                    initCalenderEvents={initCalenderEvents}
                     selectedDate={selectedDate} selectDate={selectDate}
+                    eventsObj={eventsObj}
                     storeCarpoolData={storeCarpoolData}
                 /> :
                 
@@ -89,6 +93,7 @@ EditBody.propTypes = {
     description: PropTypes.string,                      // Eidt 페이지에서 작성한 Description 데이터
 
     selectedDate: PropTypes.object,                     // Carpool 탭에서 선택된 날짜 데이터
+    eventsObj: PropTypes.object.isRequired,             // 카풀 탭의 캘린더에 띄울 일정 데이터 객체
 
     /* Methods */
     storeTitleData: PropTypes.func.isRequired,          // Title 데이터를 App State로 저장하는 함수
@@ -96,6 +101,7 @@ EditBody.propTypes = {
     deleteFileData: PropTypes.func.isRequired,          // App State에 있는 파일 데이터 중 해당 파일을 지우는 함수
     storeDescriptionData: PropTypes.func.isRequired,    // Description 데이터를 App State로 저장하는 함수
 
+    initCalenderEvents: PropTypes.func.isRequired,      // 캘린더 첫 화면에서 띄울 events를 받는 액션
     selectDate: PropTypes.func.isRequired,              // Carpool 탭에서 날짜를 선택하는 메서드
     storeCarpoolData: PropTypes.func.isRequired,        // Carpool 탭의 Room Info Data를 저장하는 메서드
 }

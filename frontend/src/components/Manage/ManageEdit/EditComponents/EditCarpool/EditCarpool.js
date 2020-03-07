@@ -78,27 +78,41 @@ const StyledDivider = styled(Divider)`
 /* React Component */
 class EditCarpool extends Component {
 
+    state = {}
+
+    componentDidMount() {
+        this.setState({
+            isLoaded: true
+        })
+    }
 
     render () {
+
+        const { isLoaded } = this.state;
 
         const {
             windowHeight,
             selectedDate,
+            eventsObj,
 
+            initCalenderEvents,
             selectDate,
             storeCarpoolData
         } = this.props;
 
         const height = windowHeight - 192;    // 화면 높이에서 padding값 + 헤더 높이 (8rem) 을 뺀 값
 
-        return (
+        return ( isLoaded ?
             <WholeArea windowHeight={windowHeight} >
                 <CalendarBox boxHeight={height} >    
                     <CalendarContainer>
                         <BaseCalendar 
                             category={MANAGE}
 
+                            eventsObj={eventsObj}
                             selectedDate={selectedDate}
+
+                            initCalenderEvents={initCalenderEvents}
                             selectDate={selectDate}
                         />
                     </CalendarContainer>
@@ -113,7 +127,8 @@ class EditCarpool extends Component {
                     <SubInfoInputBox dataKey={MEETING_PALCE} storeCarpoolData={storeCarpoolData} />
                     <DescriptionBox storeCarpoolData={storeCarpoolData} />
                 </RoomInfoBox>
-            </WholeArea>
+            </WholeArea> :
+            ''
         )
     }
 }
@@ -121,7 +136,9 @@ class EditCarpool extends Component {
 EditCarpool.propTypes = {
     windowHeight: PropTypes.number.isRequired,          // 최소 화면 높이
     selectedDate: PropTypes.object,                     // Carpool 탭에서 선택된 날짜 데이터
+    eventsObj: PropTypes.object.isRequired,             // 카풀 탭의 캘린더에 띄울 일정 데이터 객체
 
+    initCalenderEvents: PropTypes.func.isRequired,      // 캘린더 첫 화면에서 띄울 events를 받는 액션
     selectDate: PropTypes.func.isRequired,              // Carpool 탭에서 날짜를 선택하는 메서드
     storeCarpoolData: PropTypes.func.isRequired,        // Carpool 탭의 Room Info Data를 저장하는 메서드
 }
