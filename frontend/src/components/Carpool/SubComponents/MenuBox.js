@@ -3,7 +3,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Radio, Checkbox } from "antd";
+import { Radio, Checkbox, Button } from "antd";
+import { Link } from 'react-router-dom';
 
 import { colors } from "../../../styles/variables";
 
@@ -19,11 +20,29 @@ const MenuBoxArea = styled.div`
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
+    justify-content: space-between;
 
     @media (max-width: 1500px) {
         height: 4rem;
         padding: 1rem;
     }
+`;
+
+const FuncGroupBox = styled.div`
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+`;
+
+const ButtonLink = styled(Button)`
+    height: 2rem;
+    padding: 0.5625rem 1rem;
+    margin: 0;
+
+    background-color: ${colors.blue};
+
+    line-height: 0.875rem;
+    font-size: 0.875rem;
 `;
 
 
@@ -38,7 +57,7 @@ class MenuBox extends Component {
 
     _handleCheckBox = (e) => {
         const { changeClosedEvents } = this.props;
-        
+
         changeClosedEvents(e.target.checked);
     }
 
@@ -46,11 +65,17 @@ class MenuBox extends Component {
 
         return (
             <MenuBoxArea>
-                <Radio.Group defaultValue='total' onChange={this._handleRadio} >
-                    <Radio value='total' >전체 일정 보기</Radio>
-                    <Radio value='my' >내 일정만 보기</Radio>
-                </Radio.Group>
-                <Checkbox onChange={this._handleCheckBox} >마감 일정 없애기</Checkbox>
+                <FuncGroupBox>
+                    <Radio.Group defaultValue='total' onChange={this._handleRadio} >
+                        <Radio value='total' >전체 일정 보기</Radio>
+                        <Radio value='my' >내 일정만 보기</Radio>
+                    </Radio.Group>
+                    <Checkbox onChange={this._handleCheckBox} >마감 일정 없애기</Checkbox>
+                </FuncGroupBox>
+
+                <Link to='/manage/edit/newpost'>
+                    <ButtonLink type='primary' shape='round'>작성 페이지로 이동</ButtonLink>
+                </Link>
             </MenuBoxArea>
         )
     }

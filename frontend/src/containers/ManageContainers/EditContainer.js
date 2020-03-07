@@ -57,6 +57,9 @@ class EditContainer extends Component {
             const lastPath = lastLocation ? lastLocation.pathname : '';
             const defaultCategory = this._getDefaultCategoryForCreate(lastPath);
 
+            console.log(lastPath)
+            console.log(defaultCategory)
+
             selectEditCategory(defaultCategory);
         }
 
@@ -99,7 +102,7 @@ class EditContainer extends Component {
 
     /* Create 시, pathname을 통해 default category 값을 반환하는 함수
        /manage/posts/networking -> NETWORKING
-       /manage/mycarpool        -> CARPOOL
+       /carpool                 -> CARPOOL
        나머지 모두               -> MARKET */
     _getDefaultCategoryForCreate = (pathname) => {
 
@@ -107,7 +110,7 @@ class EditContainer extends Component {
             case '/manage/posts/networking':
                 return NETWORKING;
 
-            case '/manage/mycarpool':
+            case '/carpool':
                 return CARPOOL;
 
             /* /manage/posts/networking 을 포함해 모든 다른 주소도
