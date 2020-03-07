@@ -18,4 +18,10 @@ export const colors = {
 
     /* icon colors */
     icon_darkgray: '#444b4f',
+
+    /* calender event label color */
+    closed_gray: '#888888',
+    active_blue: '#1E90FF',
+    owner_yellow: '#FFAF2F',
+    guest_green: '#18CE0F',
 }
