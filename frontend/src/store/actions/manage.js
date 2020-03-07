@@ -358,14 +358,13 @@ export function postCarpoolEvent (title, departure, destination, start_date, sta
         let start = start_date;
         start.setHours(start_time._d.getHours());
         start.setMinutes(start_time._d.getMinutes());
+        start.setSeconds(0);
         const requestBody = { title, departure, destination, start, meeting_place, contact, description }
 
         /* POST Request config Data */
         const config = {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }
-
-        console.log(start);
 
         /* POST Request */
         return axios.post(POSTurl, qs.stringify(requestBody), config)

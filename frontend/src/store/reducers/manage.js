@@ -258,7 +258,6 @@ export default function manage (state = InitialState, action) {
                     state.carpool_RoomInfoData[key] = action.data_value;
                 }
             }
-            // console.log(state.carpool_RoomInfoData)
             return state
 
         case MANAGE_EDIT_CARPOOL_POST_SUCCESS:
