@@ -10,10 +10,109 @@ module.exports = {
 
     eventlist : function(req, res){
 
-        /* 모든 이벤트 응답 */
-        cal_events.findAll()
-        .then(function (results) { res.json({ events: results, user: req.user ? req.user : 0 }); })
-        .catch(function (err) { throw err; });
+        let events;
+        let counter = 0;
+
+        async.waterfall([
+
+            function (callback) {
+                cal_events.findAll()
+                .then(function (results) { events = results; })
+                .then(function () { callback(null); })
+                .catch(function (err) { throw err; });
+            },
+
+            /* 로그인 하지 않은 유저의 요청 */
+            function (callback) {
+                if (!auth.isOwner(req, res)){
+
+                    for(let i = 0; i < events.length; i++){
+
+                        counter++;
+
+                        /* ovedue 값 설정 */
+                        let overdue = false;
+                        let date = new Date(events[i]['start']);
+                        let date_today = new Date();
+                        let diffHour = (date.getTime() - date_today.getTime()) / (1000*60*60);
+                        if (diffHour < 8){
+                            overdue = true;
+                        }
+    
+                        /* 1. 마감된 방 */
+                        if( events[i]['condition'] == ' 마감' || overdue ){
+                            events[i].dataValues.label = 'closed';
+                        }
+    
+                        /* 2. 모집중인 방 */
+                        else{
+                            events[i].dataValues.label = 'active';
+                        }
+
+                        if (counter == events.length){
+                            res.json({ events: events, user: req.user ? req.user : 0 });
+                        }
+                    }
+                }
+                else{
+                    callback(null);
+                }
+            },
+
+            /* 로그인 한 유저의 요청 */
+            function (callback) {
+                for(let i = 0; i < events.length; i++){
+
+                    counter++;
+
+                    /* guest 값 설정 */
+                    // let guest = false;
+                    // for (let j = 0; j < events[i]['guest_list'].length; j++){
+                    //     if (req.user.email == events[i]['guest_list'][j]) {
+                    //         guest = true;
+                    //     }
+                    // }
+
+                    /* ovedue 값 설정 */
+                    let overdue = false;
+                    let date = new Date(events[i]['start']);
+                    let date_today = new Date();
+                    let diffHour = (date.getTime() - date_today.getTime()) / (1000*60*60);
+                    if (diffHour < 8){
+                        overdue = true;
+                    }
+
+                    /* 1. 내가 방장인 방 */
+                    if( req.user.email == events[i]['email']){
+                        events[i].dataValues.label = 'owner';
+                    }
+
+                    /* 2. 참가 신청한 방 */
+                    // else if( applied ){
+                    //     events[i]['label'] = 'applied';
+                    // }
+
+                    /* 3. 마감된 방 */
+                    else if( events[i]['condition'] == ' 마감' || overdue ){
+                        events[i].dataValues.label = 'closed';
+                    }
+
+                    /* 4. 모집중인 방 */
+                    else{
+                        events[i].dataValues.label = 'active';
+                    } 
+
+                    if (counter == events.length){
+                        res.json({ events: events, user: req.user ? req.user : 0 });
+                        callback(null);
+                    }
+                }
+            }
+
+        ], function (err) {
+            if (err) throw (err);
+        });
+
     },
 
     create : function(req, res){
