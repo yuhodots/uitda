@@ -38,13 +38,14 @@ export default function carpool (state = InitialState, action) {
 
         /* carpool event 데이터를 받아오는 액션 */
         case CARPOOL_GET_EVENTS_SUCCESS:
-            /* action.events에서 추출해서 저장하는 코드로 변경 */
-            const closedEvents = []
-            const activeEvents = []
-            const ownerEvents = [] 
-            const guestEvents = [] 
-            //////////////////////////////////////////////////
-        
+            const { events } = action;
+            
+            /* event의 라벨에 따라 구분해서 각각의 리스트에 저장 */
+            const closedEvents = events.filter( event => event.label === 'closed' );
+            const activeEvents = events.filter( event => event.label === 'active' );
+            const ownerEvents = events.filter( event => event.label === 'owner' );
+            const guestEvents = events.filter( event => event.label === 'guest' );
+
             return {
                 ...state,
                 isGetSuccess: true,

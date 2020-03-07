@@ -7,6 +7,8 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
 import { MANAGE } from "../../../constants/categories";
+import { CLOSED, ACTIVE, OWNER, GUEST } from '../../../constants/carpool_event_labels'
+import { colors } from "../../../styles/variables";
 
 import '@fullcalendar/core/main.css';
 import '@fullcalendar/daygrid/main.css';
@@ -19,9 +21,9 @@ class Calendar extends Component {
     calendarRef = React.createRef()
 
     componentDidMount () {
-        const { initCalenderEvents } = this.props
+        const { category, initCalenderEvents } = this.props
 
-        initCalenderEvents();
+        initCalenderEvents(category);
         this._today();
     }
 
@@ -30,6 +32,8 @@ class Calendar extends Component {
     _selectDate = (info) => {
         const { date, dayEl } = info;
         const { selectDate } = this.props;
+
+        console.log(date);
 
         this._changeDayElStyle(dayEl);
         selectDate(date);
@@ -44,8 +48,7 @@ class Calendar extends Component {
         const calendarApi = this.calendarRef.current.getApi();
         
         calendarApi.today();
-        const todayDate = calendarApi.getNow()
-        
+        const todayDate = new Date();
         const todayEl = this._findDayElWithDate(todayDate);
         this._changeDayElStyle(todayEl);
         selectDate(todayDate);
@@ -92,12 +95,47 @@ class Calendar extends Component {
         return `${yyyy}-${mm}-${dd}`;
     }
 
+    /* 백엔드에서 받은 이벤트 객체를 calendar render view 데이터로 변형하는 함수 */
+    _dataObjToviewObjList = (obj) => {
+        /* C,A,O,G로 구분된 객체를 하나의 array로 변환 */
+        const eventList = [...obj.C, ...obj.A, ...obj.O, ...obj.G];
+
+        /* 데이터 객체 -> calendar view 객체 */
+        const events = eventList.map( event => {
+            const { id, start, destination, label } = event;
+            
+            /* UTC 0인 string data를 UTC+9인 date 객체로 */
+            const startDate = new Date(start);
+
+            /* label에 해당하는 색을 갖도록 변환 */
+            let color;
+            switch (label) {
+                case CLOSED: color = colors.closed_gray; break;
+                case ACTIVE: color = colors.active_blue; break;
+                case OWNER: color = colors.owner_yellow; break;
+                case GUEST: color = colors.guest_green; break;
+                default:  color = colors.active_blue; break;
+            }
+
+            return {
+                id, color,
+                title: `${destination} 방향`,
+                start: startDate,
+            }
+        })
+
+        return(events);
+    }
+
+
     render () {
 
         const { 
             category,
             eventsObj
         } = this.props;
+
+        const events = this._dataObjToviewObjList(eventsObj);
 
         let props = ( category === MANAGE ?
         /* Manage Calendar Properties */
@@ -124,28 +162,24 @@ class Calendar extends Component {
         /* 공통 Calendar Props 추가 */
         props = {
             ...props,
+            events,                                             // 현재 캘린더의 상태에 대한 render할 이벤트 데이터
+            timezone: 'local',
 
-            customButtons: {
-                custom_today: {
+            customButtons: {                                    // custom 버튼 목록 
+                custom_today: {                                 // today 버튼 클릭 시, 달력 페이지 이동뿐만 아니라, 오늘자 dayEl이 선택되는 버튼
                     text: 'today',
                     click: this._today
                 }
             },
 
-            // events: curEvents,                                  // 현재 캘린더의 상태에 대한 render할 이벤트 데이터
-
             locale: 'ko',                                       // 언어: 한국어
-
             height: 'parent',                                   // 달력의 사이즈 조정 (parent 높이로 설정)
             fixedWeekCount: false,                              // 달력이 해당 월의 week 수 만큼 render됨 (6주 fix X)
 
             dateClick: this._selectDate                         // 달력의 날짜 부분 클릭 시 실행되는 함수
         }
 
-        console.log(eventsObj)
-
         return (
-            // isLoaded ? <FullCalendar {...props} ref={this.calendarRef} /> : ''
             <FullCalendar {...props} ref={this.calendarRef} />
         )
     }

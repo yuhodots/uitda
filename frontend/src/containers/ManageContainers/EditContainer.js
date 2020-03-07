@@ -27,6 +27,7 @@ import {
     storeCarpoolData,
     postCarpoolEvent,
 } from '../../store/actions/manage'
+import { initCalenderEvents } from '../../store/actions/carpool'
 
 
 const { confirm } = Modal;
@@ -158,6 +159,7 @@ class EditContainer extends Component {
             edit_spanStyle,
             edit_textAlign,
             selectedDate,
+            eventsToRenderObj,
             roomInfoData,
 
             /* App Methods */
@@ -172,6 +174,7 @@ class EditContainer extends Component {
             editClickU,
             editClickS,
             editSelectTextAlign,
+            initCalenderEvents,
             selectDate,
             storeCarpoolData,
             postCarpoolEvent
@@ -225,6 +228,7 @@ class EditContainer extends Component {
                     files={files}                                       // Edit 페이지에서 업로드한 사진 데이터
                     description={description}                           // Edit 페이지에서 작성한 Description 데이터
 
+                    eventsObj={eventsToRenderObj}                       // 카풀 탭의 캘린더에 띄울 일정 데이터 객체
                     selectedDate={selectedDate}                         // Carpool 탭에서 선택된 날짜 데이터
 
                     /* methods */
@@ -233,6 +237,7 @@ class EditContainer extends Component {
                     deleteFileData={deleteFileData}
                     storeDescriptionData={storeEditDescriptionData}
 
+                    initCalenderEvents={initCalenderEvents}             // 캘린더 첫 화면에서 띄울 events를 받는 액션
                     selectDate={selectDate}                             // Carpool 탭에서 날짜를 선택하는 메서드
                     storeCarpoolData={storeCarpoolData}
                 />
@@ -271,6 +276,7 @@ const mapStateToProps = (state) => {
         edit_textAlign: state.manage.edit_textAlign,        // p태그 text align 속성 값
 
         selectedDate: state.manage.carpool_SelectedDate,    // 카풀 탭에서 선택된 날짜 정보
+        eventsToRenderObj: state.carpool.eventsToRenderObj, // 카풀 탭의 캘린더에 띄울 일정 데이터 객체
         roomInfoData: state.manage.carpool_RoomInfoData,    // 카풀 방 정보
     }
 }
@@ -301,6 +307,7 @@ const mapDispatchToProps = (dispatch) => {
 
         /* Edit Carpool Actions */
         selectDate: (date) => dispatch(selectCalendarDate(date)),                               // carpool 탭에서 날짜를 선택하는 액션
+        initCalenderEvents: (category) => dispatch(initCalenderEvents(category)),               // 캘린더 첫 화면에서 띄울 events를 받는 액션
         storeCarpoolData: (data_key, data_value) => {                                           // Carpool 탭의 Room Info Data를 담는 액션
             dispatch(storeCarpoolData(data_key, data_value))
         },
