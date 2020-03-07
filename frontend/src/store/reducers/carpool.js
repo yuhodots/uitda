@@ -21,6 +21,7 @@ const InitialState = {
     guestEvents: [],                // 참가 신청한 이벤트
 
     selectedDate: new Date(),
+    eventsOnThatDate: [],
 }
 
 
