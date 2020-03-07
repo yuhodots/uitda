@@ -46,7 +46,7 @@ module.exports = {
     
                         /* 2. 모집중인 방 */
                         else{
-                            events[i].dataValues.label = 'ongoing';
+                            events[i].dataValues.label = 'active';
                         }
 
                         if (counter == events.length){
@@ -65,11 +65,11 @@ module.exports = {
 
                     counter++;
 
-                    /* applied 값 설정 */
-                    // let applied = false;
-                    // for (let j = 0; j < events[i]['apply_list'].length; j++){
-                    //     if (req.user.email == events[i]['apply_list'][j]) {
-                    //         applied = true;
+                    /* guest 값 설정 */
+                    // let guest = false;
+                    // for (let j = 0; j < events[i]['guest_list'].length; j++){
+                    //     if (req.user.email == events[i]['guest_list'][j]) {
+                    //         guest = true;
                     //     }
                     // }
 
@@ -99,7 +99,7 @@ module.exports = {
 
                     /* 4. 모집중인 방 */
                     else{
-                        events[i].dataValues.label = 'ongoing';
+                        events[i].dataValues.label = 'active';
                     } 
 
                     if (counter == events.length){
