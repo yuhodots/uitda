@@ -137,7 +137,7 @@ class CarpoolBoard extends Component {
             renderMyEvents,
             changeClosedEvents,
             selectDate,
-            handleClickEvent,
+            storeClickedEventData,
         } = this.props
 
         return (
@@ -160,7 +160,7 @@ class CarpoolBoard extends Component {
 
                                     initCalenderEvents={initCalenderEvents}
                                     selectDate={selectDate}
-                                    handleClickEvent={handleClickEvent}
+                                    storeClickedEventData={storeClickedEventData}
                                     openModalWindow={this._openModalWindow}
                                 />
                             </CalendarContainer>
@@ -197,7 +197,7 @@ CarpoolBoard.propTypes = {
     renderMyEvents: PropTypes.func.isRequired,          // 내 일정만 보기
     changeClosedEvents: PropTypes.func.isRequired,      // 마감된 일정 보기 / 숨기기
     selectDate: PropTypes.func.isRequired,              // 캘린더에서 날짜를 선택하는 액션
-    handleClickEvent: PropTypes.func.isRequired,        // 이벤트를 클릭하는 이벤트를 핸들하는 액션
+    storeClickedEventData: PropTypes.func.isRequired,   // 이벤트를 클릭하는 이벤트를 핸들하는 액션
 }
 
 

@@ -161,9 +161,9 @@ class Calendar extends Component {
     }
 
     _handleClickEvent = (info) => {
-        const { handleClickEvent, openModalWindow } = this.props
+        const { storeClickedEventData, openModalWindow } = this.props
         
-        handleClickEvent(info.event.id);
+        storeClickedEventData(info.event.id);
         openModalWindow();
     }
 
@@ -235,7 +235,7 @@ Calendar.propTypes = {
     initCalenderEvents: PropTypes.func.isRequired,      // 캘린더 첫 렌더 시 들어올 events 받는 액션
     selectedDate: PropTypes.object,                     // 캘린더에서 선택된 날짜 데이터
     selectDate: PropTypes.func.isRequired,              // 캘린더에서 날짜를 선택하는 메서드
-    handleClickEvent: PropTypes.func.isRequired,        // 이벤트를 클릭하는 이벤트를 핸들하는 액션
+    storeClickedEventData: PropTypes.func.isRequired,   // 이벤트를 클릭하는 이벤트를 핸들하는 액션
     openModalWindow: PropTypes.func,                    // Modal 창을 띄우는 메서드
 }
 

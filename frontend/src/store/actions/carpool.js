@@ -84,7 +84,7 @@ export function changeClosedEvents (isHidden) {
 
 
 /* 이벤트 클릭 헨들러 함수 */
-export function handleClickEvent (eventID) {
+export function storeClickedEventData (eventID) {
     return {
         type: CARPOOL_CLICK_EVENT,
         eventID
