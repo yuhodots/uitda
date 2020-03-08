@@ -12,10 +12,10 @@ import {
 
 
 /* 캘린더의 날짜를 선택하는 액션 */
-export function carpoolSelectDate (category, date) {
+export function selectDate (date) {
     return {
         type: CARPOOL_SELECT_DATE,
-        category, date
+        date
     }
 }
 

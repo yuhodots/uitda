@@ -65,6 +65,7 @@ const CalendarInfoArea = styled.div`
 
         @media (max-width: 1500px) {
             margin-right: 0.75rem;
+            padding: 1rem;
         }
     `;
 
@@ -143,7 +144,9 @@ class CarpoolBoard extends Component {
                             </CalendarContainer>
                         </CalendarBox>
                         
-                        <DateInfoBox />
+                        <DateInfoBox 
+                            selectedDate={selectedDate}
+                        />
                     </CalendarInfoArea>
 
                 </ContentArea>

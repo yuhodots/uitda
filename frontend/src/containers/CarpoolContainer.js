@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import SideBar from "../components/Structure/SideBar";
 import CarpoolBoard from "../components/Carpool";
 import { 
-    carpoolSelectDate,
+    selectDate,
     getCarpoolEvents,
     initCalenderEvents, changeClosedEvents,
     renderTotalEvents, renderMyEvents,
@@ -83,7 +83,7 @@ const mapDispatchToProps = (dispatch) => {
         renderMyEvents: () => dispatch(renderMyEvents()),                           // 내 일정만 보기 액션
         changeClosedEvents: (isHidden) => dispatch(changeClosedEvents(isHidden)),   // 마감된 일정 보이기 / 없애기
 
-        selectDate: (date) => {dispatch(carpoolSelectDate(date))},                  // Carpool 캘린더의 date를 선택하는 액션 
+        selectDate: (date) => {dispatch(selectDate(date))},                         // Carpool 캘린더의 date를 선택하는 액션 
     }
 }
 
