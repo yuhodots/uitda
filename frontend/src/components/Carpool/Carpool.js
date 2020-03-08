@@ -113,13 +113,17 @@ class CarpoolBoard extends Component {
             eventsObj,
             selectedDate,
             eventsOnSelectedDate,
+            selectedEvent,
 
             initCalenderEvents,
             renderTotalEvents,
             renderMyEvents,
             changeClosedEvents,
-            selectDate
+            selectDate,
+            handleClickEvent,
         } = this.props
+
+        console.log(selectedEvent)
 
         return (
             isLoaded ?
@@ -141,6 +145,7 @@ class CarpoolBoard extends Component {
 
                                     initCalenderEvents={initCalenderEvents}
                                     selectDate={selectDate}
+                                    handleClickEvent={handleClickEvent}
                                 />
                             </CalendarContainer>
                         </CalendarBox>
@@ -162,12 +167,14 @@ CarpoolBoard.propTypes = {
     eventsObj: PropTypes.object.isRequired,             // 전체 카풀 이벤트 데이터
     selectedDate: PropTypes.object.isRequired,          // 캘린더에서 선택된 날짜 정보
     eventsOnSelectedDate: PropTypes.array.isRequired,   // 선택된 날짜에 해당하는 일정 목록
+    selectedEvent: PropTypes.object.isRequired,         // 선택된 일정 데이터
 
     initCalenderEvents: PropTypes.func.isRequired,      // 캘린더 첫 렌더 시 들어올 events 받는 액션
     renderTotalEvents: PropTypes.func.isRequired,       // 전체 일정 보기
     renderMyEvents: PropTypes.func.isRequired,          // 내 일정만 보기
     changeClosedEvents: PropTypes.func.isRequired,      // 마감된 일정 보기 / 숨기기
     selectDate: PropTypes.func.isRequired,              // 캘린더에서 날짜를 선택하는 액션
+    handleClickEvent: PropTypes.func.isRequired,        // 이벤트를 클릭하는 이벤트를 핸들하는 액션
 }
 
 

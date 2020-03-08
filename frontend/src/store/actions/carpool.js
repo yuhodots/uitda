@@ -7,7 +7,8 @@ import {
     INITIATE_CALENDER_EVENTS,
     RENDER_TOTAL_CALENDER_EVENTS,
     RENDER_MY_CALENDER_EVENTS,
-    CHANGE_CLOSED_CALENDER_EVENTS
+    CHANGE_CLOSED_CALENDER_EVENTS,
+    CARPOOL_CLICK_EVENT,
 } from "./ActionTypes";
 
 
@@ -78,5 +79,14 @@ export function changeClosedEvents (isHidden) {
     return {
         type: CHANGE_CLOSED_CALENDER_EVENTS,
         isHidden
+    }
+}
+
+
+/* 이벤트 클릭 헨들러 함수 */
+export function handleClickEvent (eventID) {
+    return {
+        type: CARPOOL_CLICK_EVENT,
+        eventID
     }
 }

@@ -5,6 +5,7 @@ import {
     RENDER_TOTAL_CALENDER_EVENTS,
     RENDER_MY_CALENDER_EVENTS,
     CHANGE_CLOSED_CALENDER_EVENTS,
+    CARPOOL_CLICK_EVENT,
 } from "../actions/ActionTypes";
 
 import { CARPOOL } from "../../constants/categories";
@@ -20,8 +21,9 @@ const InitialState = {
     ownerEvents: [],                // 내가 방장인 이벤트
     guestEvents: [],                // 참가 신청한 이벤트
 
-    selectedDate: new Date(),
-    eventsOnSelectedDate: [],
+    selectedDate: new Date(),       // 선택된 날짜 정보
+    eventsOnSelectedDate: [],       // 해당 날짜의 일정 목록
+    selectedEvent: {},              // 선택한 (클릭한) 일정 데이터
 }
 
 
@@ -133,6 +135,19 @@ export default function carpool (state = InitialState, action) {
                     C: action.isHidden ? [] : state.closedEvents
                 }
             }
+
+        /* 클릭한 이벤트의 id를 통해 전체 이벤트 리스트에서 찾아서 데이터 객체를 selectedEvent에 저장하는 액션 */
+        case CARPOOL_CLICK_EVENT: {
+            const { closedEvents, activeEvents, ownerEvents, guestEvents } = state;
+            const totalEvents = [...closedEvents, ...activeEvents, ...ownerEvents, ...guestEvents];
+
+            const selectedEvent = totalEvents.find( event => event.id.toString() === action.eventID )
+
+            return {
+                ...state,
+                selectedEvent
+            }
+        }
 
         default:
             return state;

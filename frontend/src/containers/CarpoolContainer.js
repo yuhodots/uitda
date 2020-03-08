@@ -12,6 +12,7 @@ import {
     getCarpoolEvents,
     initCalenderEvents, changeClosedEvents,
     renderTotalEvents, renderMyEvents,
+    handleClickEvent,
 } from "../store/actions/carpool";
 import { topicSelect } from "../store/actions/topic";
 import { CARPOOL } from "../constants/categories";
@@ -31,12 +32,14 @@ class CarpoolContainer extends Component {
             eventsToRenderObj,
             selectedDate, 
             eventsOnSelectedDate,
+            selectedEvent,
         
             initCalenderEvents,
             renderTotalEvents,
             renderMyEvents,
             changeClosedEvents,
             selectDate,
+            handleClickEvent,
         } = this.props;
 
         return (
@@ -49,12 +52,14 @@ class CarpoolContainer extends Component {
                     eventsObj={eventsToRenderObj}
                     selectedDate={selectedDate}
                     eventsOnSelectedDate={eventsOnSelectedDate}
+                    selectedEvent={selectedEvent}
 
                     initCalenderEvents={initCalenderEvents}
                     renderTotalEvents={renderTotalEvents}
                     renderMyEvents={renderMyEvents}
                     changeClosedEvents={changeClosedEvents}
                     selectDate={selectDate}
+                    handleClickEvent={handleClickEvent}
                 /> 
             </div> :
             
@@ -73,6 +78,7 @@ const mapStateToProps = (state) => {
 
         selectedDate: state.carpool.selectedDate,
         eventsOnSelectedDate: state.carpool.eventsOnSelectedDate,
+        selectedEvent: state.carpool.selectedEvent,
     }
 }
 
@@ -87,6 +93,7 @@ const mapDispatchToProps = (dispatch) => {
         changeClosedEvents: (isHidden) => dispatch(changeClosedEvents(isHidden)),   // 마감된 일정 보이기 / 없애기
 
         selectDate: (category, date) => {dispatch(selectDate(category, date))},     // Carpool 캘린더의 date를 선택하는 액션 
+        handleClickEvent: (eventID) => {dispatch(handleClickEvent(eventID))},       // 이벤트를 클릭하는 이벤트를 핸들하는 액션
     }
 }
 
