@@ -31,6 +31,10 @@ const WholeBoxArea = styled.div`
         font-weight: bold;
     `;
 
+    const EventsListBox = styled.div`
+    
+    `;
+
 
 /* React Component */
 class DateInfoBox extends Component {
@@ -43,27 +47,38 @@ class DateInfoBox extends Component {
         return `${mm}월 ${dd}일 일정`;
     }
 
+    _renderEventList = (eventDataList) => {
+
+        // console.log(eventDataList)
+
+        return eventDataList.map( (event, idx) => {
+            const { destination, start } = event
+            const startDate = new Date(start);
+
+            return (
+                <div key={idx} >{startDate.getHours()}:{startDate.getMinutes()} {destination} 방향</div>
+            )
+        } )
+    }
 
     render() {
 
-        const { selectedDate } = this.props;
+        const { selectedDate, eventsOnSelectedDate } = this.props;
 
         const dateStr = this._dateToStr(selectedDate)
 
         return (
             <WholeBoxArea>
                 <DateTitleBox>{dateStr}</DateTitleBox>
-                <div>전체 일정 보기</div>
-                <div>내 일정만 보기</div>
-                <div>마감 일정 없애기</div>
+                <EventsListBox>{this._renderEventList(eventsOnSelectedDate)}</EventsListBox>
             </WholeBoxArea>
         )
     }
 }
 
 DateInfoBox.propTypes = {
-    selectedDate: PropTypes.object.isRequired,
-
+    selectedDate: PropTypes.object.isRequired,          // 선택된 날짜
+    eventsOnSelectedDate: PropTypes.array.isRequired,   // 선택된 날짜에 해당하는 일정 목록
 }
 
 export default DateInfoBox;

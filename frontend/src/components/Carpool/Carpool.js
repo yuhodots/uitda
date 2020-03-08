@@ -112,6 +112,7 @@ class CarpoolBoard extends Component {
         const {
             eventsObj,
             selectedDate,
+            eventsOnSelectedDate,
 
             initCalenderEvents,
             renderTotalEvents,
@@ -146,6 +147,7 @@ class CarpoolBoard extends Component {
                         
                         <DateInfoBox 
                             selectedDate={selectedDate}
+                            eventsOnSelectedDate={eventsOnSelectedDate}
                         />
                     </CalendarInfoArea>
 
@@ -159,6 +161,7 @@ class CarpoolBoard extends Component {
 CarpoolBoard.propTypes = {
     eventsObj: PropTypes.object.isRequired,             // 전체 카풀 이벤트 데이터
     selectedDate: PropTypes.object.isRequired,          // 캘린더에서 선택된 날짜 정보
+    eventsOnSelectedDate: PropTypes.array.isRequired,   // 선택된 날짜에 해당하는 일정 목록
 
     initCalenderEvents: PropTypes.func.isRequired,      // 캘린더 첫 렌더 시 들어올 events 받는 액션
     renderTotalEvents: PropTypes.func.isRequired,       // 전체 일정 보기

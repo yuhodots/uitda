@@ -21,7 +21,7 @@ const InitialState = {
     guestEvents: [],                // 참가 신청한 이벤트
 
     selectedDate: new Date(),
-    eventsOnThatDate: [],
+    eventsOnSelectedDate: [],
 }
 
 
@@ -30,10 +30,35 @@ export default function carpool (state = InitialState, action) {
 
     switch (action.type) {
 
+        /* 캘린더의 날짜를 선택하는 액션 */
         case CARPOOL_SELECT_DATE:
+            const { selectedDate, category } = action;
+            let eventsOnSelectedDate = [];
+
+            /* carpool 카테고리에서는 날짜를 선택하면 해당 날짜의 이벤트를 저장하는 추가 기능이 있다. */
+            if ( category === CARPOOL) {
+                const { closedEvents, activeEvents, ownerEvents, guestEvents } = state;
+                const totalEvents = [...closedEvents, ...activeEvents, ...ownerEvents, ...guestEvents];
+
+                /* 전체 일정 중에서 선택된 날짜로부터 24시간 이내의 일정들만을 뽑아서 넣는다. 
+                   (selectedDate는 해당일 0시 0분이다) */
+                eventsOnSelectedDate = totalEvents.filter( event => {
+                    const startDate = new Date(event.start);
+                    return ((startDate.getTime() - selectedDate.getTime() >= 0) &&
+                            (startDate.getTime() - selectedDate.getTime() < 24 * 60 * 60 * 1000) )
+                });
+
+                /* 뽑아낸 데이터를 출발 시각이 빠른 순으로 정렬한다. */
+                eventsOnSelectedDate.sort((a, b) => {
+                    const dateOfA = new Date(a.start);
+                    const dateOfB = new Date(b.start);
+                    return dateOfA.getTime() - dateOfB.getTime();
+                })
+            }
+
             return {
                 ...state,
-                selectedDate: action.date
+                selectedDate, eventsOnSelectedDate
             }
 
         /* carpool event 데이터를 받아오는 액션 */

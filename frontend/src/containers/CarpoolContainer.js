@@ -30,6 +30,7 @@ class CarpoolContainer extends Component {
             isGetSuccess,
             eventsToRenderObj,
             selectedDate, 
+            eventsOnSelectedDate,
         
             initCalenderEvents,
             renderTotalEvents,
@@ -47,6 +48,7 @@ class CarpoolContainer extends Component {
                 <CarpoolBoard 
                     eventsObj={eventsToRenderObj}
                     selectedDate={selectedDate}
+                    eventsOnSelectedDate={eventsOnSelectedDate}
 
                     initCalenderEvents={initCalenderEvents}
                     renderTotalEvents={renderTotalEvents}
@@ -70,6 +72,7 @@ const mapStateToProps = (state) => {
         eventsToRenderObj: state.carpool.eventsToRenderObj,
 
         selectedDate: state.carpool.selectedDate,
+        eventsOnSelectedDate: state.carpool.eventsOnSelectedDate,
     }
 }
 
@@ -83,7 +86,7 @@ const mapDispatchToProps = (dispatch) => {
         renderMyEvents: () => dispatch(renderMyEvents()),                           // 내 일정만 보기 액션
         changeClosedEvents: (isHidden) => dispatch(changeClosedEvents(isHidden)),   // 마감된 일정 보이기 / 없애기
 
-        selectDate: (date) => {dispatch(selectDate(date))},                         // Carpool 캘린더의 date를 선택하는 액션 
+        selectDate: (category, date) => {dispatch(selectDate(category, date))},     // Carpool 캘린더의 date를 선택하는 액션 
     }
 }
 

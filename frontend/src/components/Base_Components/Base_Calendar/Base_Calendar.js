@@ -66,10 +66,10 @@ class Calendar extends Component {
        클릭된 날짜의 색을 바꾸고, 선택된 날짜를 app state에 저장 */
     _selectDate = (info) => {
         const { date, dayEl } = info;
-        const { selectDate } = this.props;
+        const { category, selectDate } = this.props;
 
         this._changeDayElStyle(dayEl);
-        selectDate(date);
+        selectDate(category, date);
     }
 
     /* 처음 Mount 되었을 때와 today 버튼을 클릭할 때 실행되는 함수
@@ -77,14 +77,14 @@ class Calendar extends Component {
        오늘 날짜 Date 객체를 받아서 오늘 날짜에 해당 되는 칸의 스타일을 변경하고,
        오늘 날짜를 app state에 저장하는 함수 */
     _today = () => {
-        const { selectDate } = this.props;
+        const { category, selectDate } = this.props;
         const calendarApi = this.calendarRef.current.getApi();
         
         calendarApi.today();
         const todayDate = new Date();
         const todayEl = this._findDayElWithDate(todayDate);
         this._changeDayElStyle(todayEl);
-        selectDate(todayDate);
+        selectDate(category, todayDate);
     }
 
     /* 이전에 선택된 elem를 가리키는 state.prevElem의 style을 없애고
