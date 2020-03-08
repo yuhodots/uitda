@@ -47,16 +47,27 @@ class DateInfoBox extends Component {
         return `${mm}월 ${dd}일 일정`;
     }
 
+    _handleEventClick = (id) => {
+        const { storeClickedEventData, openModalWindow } = this.props
+        storeClickedEventData(id);
+        openModalWindow();
+    }
+
     _renderEventList = (eventDataList) => {
 
         // console.log(eventDataList)
 
         return eventDataList.map( (event, idx) => {
-            const { destination, start } = event
+            const { id, destination, start } = event
             const startDate = new Date(start);
 
             return (
-                <div key={idx} >{startDate.getHours()}:{startDate.getMinutes()} {destination} 방향</div>
+                <div 
+                    key={idx} 
+                    onClick={(e) => this._handleEventClick(id)} 
+                >
+                    {startDate.getHours()}:{startDate.getMinutes()} {destination} 방향
+                </div>
             )
         } )
     }
@@ -79,6 +90,9 @@ class DateInfoBox extends Component {
 DateInfoBox.propTypes = {
     selectedDate: PropTypes.object.isRequired,          // 선택된 날짜
     eventsOnSelectedDate: PropTypes.array.isRequired,   // 선택된 날짜에 해당하는 일정 목록
+
+    storeClickedEventData: PropTypes.func.isRequired,   // 이벤트를 클릭하는 이벤트를 핸들하는 액션
+    openModalWindow: PropTypes.func,                    // Modal 창을 띄우는 메서드
 }
 
 export default DateInfoBox;

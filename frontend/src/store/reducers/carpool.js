@@ -141,7 +141,7 @@ export default function carpool (state = InitialState, action) {
             const { closedEvents, activeEvents, ownerEvents, guestEvents } = state;
             const totalEvents = [...closedEvents, ...activeEvents, ...ownerEvents, ...guestEvents];
 
-            const selectedEvent = totalEvents.find( event => event.id.toString() === action.eventID )
+            const selectedEvent = totalEvents.find( event => event.id.toString() === action.eventID.toString() )
 
             return {
                 ...state,

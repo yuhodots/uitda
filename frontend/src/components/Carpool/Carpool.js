@@ -169,6 +169,9 @@ class CarpoolBoard extends Component {
                         <DateInfoBox 
                             selectedDate={selectedDate}
                             eventsOnSelectedDate={eventsOnSelectedDate}
+
+                            storeClickedEventData={storeClickedEventData}
+                            openModalWindow={this._openModalWindow}
                         />
                     </CalendarInfoArea>
 
