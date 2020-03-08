@@ -5,9 +5,10 @@
 import React, { Component } from "react";
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { Modal } from "antd";
 
 import { BaseCalendar } from "../Base_Components";
-import { MenuBox, DateInfoBox } from "./SubComponents";
+import { MenuBox, DateInfoBox, RoomBox } from "./SubComponents";
 import { colors } from "../../styles/variables";
 import { CARPOOL } from "../../constants/categories";
 
@@ -77,7 +78,9 @@ const CalendarInfoArea = styled.div`
 /* React Component */
 class CarpoolBoard extends Component {
 
-    state = {}
+    state = {
+        modalVisible: false,
+    }
 
     componentDidMount() {
         this.setState({
@@ -104,10 +107,24 @@ class CarpoolBoard extends Component {
         })
     }
 
+    /* Modal 창을 띄우는 메서드 */
+    _openModalWindow = () => {
+        this.setState({
+            ...this.state,
+            modalVisible: true
+        })
+    }
+
+    _closeModalWindow = () => {
+        this.setState({
+            ...this.state,
+            modalVisible: false
+        })
+    }
 
     render() {
 
-        const { windowHeight, isLoaded } = this.state;
+        const { windowHeight, isLoaded, modalVisible } = this.state;
 
         const {
             eventsObj,
@@ -122,8 +139,6 @@ class CarpoolBoard extends Component {
             selectDate,
             handleClickEvent,
         } = this.props
-
-        console.log(selectedEvent)
 
         return (
             isLoaded ?
@@ -146,6 +161,7 @@ class CarpoolBoard extends Component {
                                     initCalenderEvents={initCalenderEvents}
                                     selectDate={selectDate}
                                     handleClickEvent={handleClickEvent}
+                                    openModalWindow={this._openModalWindow}
                                 />
                             </CalendarContainer>
                         </CalendarBox>
@@ -156,6 +172,13 @@ class CarpoolBoard extends Component {
                         />
                     </CalendarInfoArea>
 
+                    <Modal 
+                        visible={modalVisible} 
+                        onCancel={this._closeModalWindow} 
+                        footer={null}
+                    >
+                        <RoomBox selectedEvent={selectedEvent} />
+                    </Modal>
                 </ContentArea>
             </BackGroundDiv> :
             ''

@@ -160,14 +160,19 @@ class Calendar extends Component {
         return(events);
     }
 
+    _handleClickEvent = (info) => {
+        const { handleClickEvent, openModalWindow } = this.props
+        
+        handleClickEvent(info.event.id);
+        openModalWindow();
+    }
+
 
     render () {
 
         const { 
             category,
             eventsObj,
-
-            handleClickEvent,
         } = this.props;
 
         const events = this._dataObjToviewObjList(eventsObj);
@@ -212,9 +217,7 @@ class Calendar extends Component {
             fixedWeekCount: false,                              // 달력이 해당 월의 week 수 만큼 render됨 (6주 fix X)
 
             dateClick: this._selectDate,                        // 달력의 날짜 부분 클릭 시 실행되는 함수
-            eventClick: (info) =>  {
-                handleClickEvent(info.event.id)
-            },
+            eventClick: this._handleClickEvent,                 // 이벤트 클릭을 처리하는 함수
         }
 
         return (
@@ -233,6 +236,7 @@ Calendar.propTypes = {
     selectedDate: PropTypes.object,                     // 캘린더에서 선택된 날짜 데이터
     selectDate: PropTypes.func.isRequired,              // 캘린더에서 날짜를 선택하는 메서드
     handleClickEvent: PropTypes.func.isRequired,        // 이벤트를 클릭하는 이벤트를 핸들하는 액션
+    openModalWindow: PropTypes.func,                    // Modal 창을 띄우는 메서드
 }
 
 export default Calendar;
