@@ -25,6 +25,41 @@ class Calendar extends Component {
 
         initCalenderEvents(category);
         this._today();
+
+        /* dayEl Head 부분에 hover event listener 등록 */
+        const TableRows = this.calendarRef.current.calendar.el.lastChild.lastChild.lastChild.lastChild.lastChild.lastChild.lastChild.lastChild.childNodes;
+        TableRows.forEach(row => {
+            const dayHeads = row.lastChild.lastChild.firstChild.lastChild.childNodes;
+            const dayElBgs = row.firstChild.lastChild.lastChild.lastChild.childNodes;
+
+            for (let i = 0; i < 7; i++) {
+                let dayElbg = dayElBgs[i]
+                dayHeads[i].addEventListener('mouseover', (e) => this._handleHoverDayHead(e, dayElbg) )
+                dayHeads[i].addEventListener('mouseleave', (e) => this._handleMouseLeaveDayHead(e, dayElbg) )
+            }
+        })
+    }
+
+    componentWillUnmount () {
+        const TableRows = this.calendarRef.current.calendar.el.lastChild.lastChild.lastChild.lastChild.lastChild.lastChild.lastChild.lastChild.childNodes;
+        TableRows.forEach(row => {
+            const dayHeads = row.lastChild.lastChild.firstChild.lastChild.childNodes;
+            const dayElBgs = row.firstChild.lastChild.lastChild.lastChild.childNodes;
+
+            for (let i = 0; i < 7; i++) {
+                let dayElbg = dayElBgs[i]
+                dayHeads[i].removeEventListener('mouseover', (e) => this._handleHoverDayHead(e, dayElbg) )
+                dayHeads[i].removeEventListener('mouseleave', (e) => this._handleMouseLeaveDayHead(e, dayElbg) )
+            }
+        })
+    }
+
+    /* dayEl의 Head 부분 hover 할 때, 스타일 변경하는 함수 */
+    _handleHoverDayHead = (e, dayEl) => {
+        dayEl.style.opacity = 0.1;
+    }
+    _handleMouseLeaveDayHead = (e, dayEl) => {
+        if ( dayEl !== this.state.prevElem ) { dayEl.style.opacity = 0 }
     }
 
     /* dateClick 시 실행되는 함수 (날짜 부분을 클릭할 때 실행)
@@ -32,8 +67,6 @@ class Calendar extends Component {
     _selectDate = (info) => {
         const { date, dayEl } = info;
         const { selectDate } = this.props;
-
-        console.log(date);
 
         this._changeDayElStyle(dayEl);
         selectDate(date);
@@ -189,7 +222,7 @@ class Calendar extends Component {
 Calendar.propTypes = {
     category: PropTypes.string.isRequired,              // [Manage / Carpool] 어느 카테고리에 렌더링될 것인지
 
-    eventsObj: PropTypes.array.isRequired,              // 전체 카풀 이벤트 데이터
+    eventsObj: PropTypes.object.isRequired,             // 전체 카풀 이벤트 데이터
 
     initCalenderEvents: PropTypes.func.isRequired,      // 캘린더 첫 렌더 시 들어올 events 받는 액션
     selectedDate: PropTypes.object,                     // 캘린더에서 선택된 날짜 데이터

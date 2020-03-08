@@ -76,6 +76,10 @@ code {
   transition: opacity 0.2s;
 }
 
+.fc-day-top {
+  cursor: pointer;
+}
+
 .fc-unthemed td.fc-today {
   background-color: #1E90FF;
 }
@@ -127,5 +131,10 @@ code {
   .fc-dayGrid-view .fc-day-number {
     padding: 0.25rem;
     font-size: 0.75rem;
+  }
+
+  /* carpool event 글자 크기 */
+  .fc-content {
+    font-size: 0.7rem;
   }
 }
