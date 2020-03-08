@@ -239,7 +239,7 @@
 
 ### 3.6 (금)
 
-* 캘린더 액션 프로토타입 제작
+* 캘린더 이벤트 관련 액션 프로토타입 제작
   initCalenderEvents,
   renderTotalEvents,
   renderMyEvents,
@@ -252,6 +252,15 @@
 * 캘린더에 이벤트 띄우기 성공
 
 
+
+### 3.8 (일)
+
+* 캘린더 day header 부분 hover 시에도 여백 부분 hover와 동일한 스타일 주기 성공
+* Date Info Box에 선택된 날짜 띄우기
+* 선택된 날짜에 해당되는 이벤트만을 저장하는 리스트 생성 (eventsOnSelectedDate)
+* Date Info Box에 해당 날짜의 이벤트 목록 띄우기
+* 이벤트 클릭 시, 해당 이벤트의 데이터가 app state에 저장되기 성공
+* 이벤트 클릭 시, Modal 띄우기 성공
 
 
 
@@ -317,6 +326,7 @@
 * Outlook 로그아웃 한 상태로, 데스크탑으로 Login 기능 확인
 * 로그인 완료 후 로그인 페이지로 오기 이전에 페이지로 redirect하기
 * 첫 로그인 시, outlook을 통해 회원가입 되었습니다. 메시지 뜨기
+* 모든 컨테이너에서 user data 가 없는 경우 로그인 페이지로 이동하도록 하기
 
 
 
@@ -328,6 +338,7 @@
 
 #### Manage FrontEnd
 
+* edit carpool 페이지 mount 될 때, init시키기
 * edit carpool에서 필수 데이터 입력 안 했을 시, post request하기 전에 경고 띄우기
 * edit carpool Room Info Box 스타일링
 * '/manage' 로 시작하는 URL을 브라우저 창에 입력하고 enter를 누르면 강제로 '/board/market'으로 리다이렉트 되는 에러
@@ -374,9 +385,13 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 #### Carpool FrontEnd
 
-* 캘린더 event 받아오기 액션
+* 이벤트 클릭 시 해당 이벤트 모달 출력
 * MenuBox UI
 * DateInfoBox UI
+
+
+
+* carpool action type 이름 정리
 
 
 
