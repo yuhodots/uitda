@@ -77,8 +77,6 @@ class RightBox extends Component {
     /* Date => 'yyyy년 mm월 dd일 O요일' */
     _DateToString = (date) => {
 
-        if (date.isLoading) { return }
-
         const dd = date.getDate();
         const mm = date.getMonth() + 1;
         const yyyy = date.getFullYear();

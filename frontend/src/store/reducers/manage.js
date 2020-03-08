@@ -17,7 +17,6 @@ import {
     MANAGE_EDIT_CLICK_STRIKETHROUGH,
     MANAGE_EDIT_SELECT_TEXT_ALIGN,
     MANAGE_EDIT_SELECT_CATEGORY,
-    MANAGE_EDIT_SELECT_CALENDAR_DATE,
     MANAGE_EDIT_CARPOOL_STORE_DATA,
     MANAGE_EDIT_CARPOOL_POST_SUCCESS,
     MANAGE_EDIT_CARPOOL_POST_FAILURE,
@@ -58,7 +57,6 @@ const InitialState = {
     },
     edit_textAlign: TEXT_ALIGN.justify,             // p 태그 text align 속성
 
-    carpool_SelectedDate: {isLoading: true},        // 카풀 탭에서 선택된 날짜 정보
     carpool_RoomInfoData: {                         // 카풀 방 정보
         title: '',                                  // 제목
         departure: '',                              // 출발지
@@ -242,13 +240,6 @@ export default function manage (state = InitialState, action) {
 
 
         /* Manage Edit Carpool Actions */
-
-        /* 달력의 날짜를 선택하는 액션 */
-        case MANAGE_EDIT_SELECT_CALENDAR_DATE:
-            return {
-                ...state,
-                carpool_SelectedDate: action.date,
-            }
 
         /* Data의 key, value 값을 받아서 해당 key에 해당하는 데이터 변경
            keys = [title, departure, destination, start_time, meeting_place, contact, description ]  */

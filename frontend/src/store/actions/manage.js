@@ -23,7 +23,6 @@ import {
     MANAGE_EDIT_CLICK_UNDERLINE,
     MANAGE_EDIT_CLICK_STRIKETHROUGH,
     MANAGE_EDIT_SELECT_TEXT_ALIGN,
-    MANAGE_EDIT_SELECT_CALENDAR_DATE,
     MANAGE_EDIT_CARPOOL_STORE_DATA,
     MANAGE_EDIT_CARPOOL_POST_SUCCESS,
     MANAGE_EDIT_CARPOOL_POST_FAILURE,
@@ -329,14 +328,6 @@ export function editSelectTextAlign (textAlignAttr) {
 
 
 /* edit-carpool 액션 */
-
-/* 달력의 날짜를 선택하는 액션 */
-export function selectCalendarDate (date) {
-    return {
-        type: MANAGE_EDIT_SELECT_CALENDAR_DATE,
-        date
-    }
-}
 
 /* Room Info의 데이터 key-value를 app state에 저장하는 액션 */
 export function storeCarpoolData (data_key, data_value) {

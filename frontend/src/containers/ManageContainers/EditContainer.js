@@ -23,11 +23,10 @@ import {
     editClickU,
     editClickS,
     editSelectTextAlign,
-    selectCalendarDate,
     storeCarpoolData,
     postCarpoolEvent,
 } from '../../store/actions/manage'
-import { initCalenderEvents } from '../../store/actions/carpool'
+import { initCalenderEvents, selectDate } from '../../store/actions/carpool'
 
 
 const { confirm } = Modal;
@@ -275,7 +274,7 @@ const mapStateToProps = (state) => {
         edit_spanStyle: state.manage.edit_spanStyle,        // BUIS 스타일 선택 데이터
         edit_textAlign: state.manage.edit_textAlign,        // p태그 text align 속성 값
 
-        selectedDate: state.manage.carpool_SelectedDate,    // 카풀 탭에서 선택된 날짜 정보
+        selectedDate: state.carpool.selectedDate,           // 카풀 탭에서 선택된 날짜 정보
         eventsToRenderObj: state.carpool.eventsToRenderObj, // 카풀 탭의 캘린더에 띄울 일정 데이터 객체
         roomInfoData: state.manage.carpool_RoomInfoData,    // 카풀 방 정보
     }
@@ -306,7 +305,7 @@ const mapDispatchToProps = (dispatch) => {
         },
 
         /* Edit Carpool Actions */
-        selectDate: (date) => dispatch(selectCalendarDate(date)),                               // carpool 탭에서 날짜를 선택하는 액션
+        selectDate: (category, date) => dispatch(selectDate(category, date)),                   // carpool 탭에서 날짜를 선택하는 액션
         initCalenderEvents: (category) => dispatch(initCalenderEvents(category)),               // 캘린더 첫 화면에서 띄울 events를 받는 액션
         storeCarpoolData: (data_key, data_value) => {                                           // Carpool 탭의 Room Info Data를 담는 액션
             dispatch(storeCarpoolData(data_key, data_value))
