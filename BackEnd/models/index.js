@@ -18,6 +18,7 @@ db.networking_files = require('./networking_files')(sequelize, Sequelize);
 db.cal_events = require('./cal_events')(sequelize, Sequelize);
 db.proposal = require('./proposal')(sequelize, Sequelize);
 db.comment = require('./comment')(sequelize, Sequelize);
+db.guest = require('./guest')(sequelize, Sequelize);
 
 module.exports = db;
 
