@@ -3,7 +3,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Radio, Checkbox, Button } from "antd";
+import { Radio, Switch, Button, Checkbox } from "antd";
+import { EditOutlined } from "@ant-design/icons";
 import { Link } from 'react-router-dom';
 
 import { colors } from "../../../styles/variables";
@@ -34,16 +35,34 @@ const FuncGroupBox = styled.div`
     align-items: center;
 `;
 
+    const SwitchBox = styled.div`
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+    `
+
 const ButtonLink = styled(Button)`
-    height: 2rem;
+    height: 2.5rem;
     padding: 0.5625rem 1rem;
+    padding-left: 0.8rem;
     margin: 0;
+    margin-right: 1rem;
 
     background-color: ${colors.blue};
 
     line-height: 0.875rem;
     font-size: 0.875rem;
+
+    @media (max-width: 1500px) {
+        height: 2rem;
+        padding: 0.5625rem 0.75rem;
+        padding-left: 0.6rem;
+    }
 `;
+
+    const EditIcon = styled(EditOutlined)`
+        color: ${colors.white};
+    `;
 
 
 class MenuBox extends Component {
@@ -68,13 +87,25 @@ class MenuBox extends Component {
                 <FuncGroupBox>
                     <Radio.Group defaultValue='total' onChange={this._handleRadio} >
                         <Radio value='total' >전체 일정 보기</Radio>
-                        <Radio value='my' >내 일정만 보기</Radio>
+                        <Radio value='my' >내 일정 (만든 일정 + 신청한 일정)</Radio>
                     </Radio.Group>
-                    <Checkbox onChange={this._handleCheckBox} >마감 일정 없애기</Checkbox>
+                    {/* <SwitchBox>
+                        <Switch 
+                        // size="small" 
+                        // onChange={this._handleCheckBox} 
+                        />
+                        마감된 일정 가리기
+                    </SwitchBox> */}
+                    <Checkbox onChange={this._handleCheckBox} >
+                        마감된 일정 가리기
+                    </Checkbox>
                 </FuncGroupBox>
 
                 <Link to='/manage/edit/newpost'>
-                    <ButtonLink type='primary' shape='round'>작성 페이지로 이동</ButtonLink>
+                    <ButtonLink type='primary' >
+                        <EditIcon />
+                        카풀 일정 만들기
+                    </ButtonLink>
                 </Link>
             </MenuBoxArea>
         )

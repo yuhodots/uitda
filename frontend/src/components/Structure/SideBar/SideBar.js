@@ -22,7 +22,7 @@ const SidebarBox = styled.div`
     left: 0;
     height: 100%;
     width: 15rem;
-    z-index: 2020;
+    z-index: 100;
 
     background-color: ${colors.white};
     

@@ -264,6 +264,14 @@
 
 
 
+### 3.11 (수)
+
+* 카풀 DateInfoBox UI 작업
+* 패키지 업데이트 (antd v3 -> v4)
+* 카풀 UI 디자인 작업
+
+
+
 
 
 ## 해야 할 일
@@ -355,6 +363,7 @@
 * edit 상단바 funcbox 코드 리펙토링
 * edit 상단바가 스크롤 내리면 위에 tooltip 생기는 거 고치기
 * Edit Page 나가기 전에 '나가시겠습니까 묻기'
+* edit carpool 작성 완료 시 카풀 페이지 나왔을 때 바로 카풀 이벤트가 뜨지 않음 (시간이 필요함)
 
 
 
@@ -388,10 +397,12 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 * 이벤트 클릭 시 해당 이벤트 모달 출력
 * MenuBox UI
 * DateInfoBox UI
+* 처음 화면 띄울 때, 오늘 일정이 오른쪽에 안담김 (Today의 selectDate 함수가 카풀 이벤트를 가져오는것보다 더 빨리 끝나기 때문인 듯)
 
 
 
 * carpool action type 이름 정리
+* carpool 시작 전 로딩 페이지 띄우기
 
 
 
@@ -436,13 +447,7 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
   
   
   
-* 카풀 이벤트 label 구분
-
-  * 
-
-  
-
-* 
+* carpool 탭 캘린더에 month / list => month만
 
 
 
@@ -451,6 +456,12 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 ### 요청 사항
 
 * comment, board의 시간을 작성 시간 기준으로 할 지, 수정 시간을 기준으로 할 지
+
 * Carpool 게시판 페이지 디자인
-* Manage 페이지 카테고리 구상
+
+* 로그인이 안될 때 안내 문구
+
+* 공용 PC에서 outlook 로그아웃 방법
+
+  
 

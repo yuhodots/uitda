@@ -3,13 +3,14 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Icon, Popover, Tooltip, Modal } from 'antd'
+import { DeleteOutlined, EditOutlined, MoreOutlined } from '@ant-design/icons';
+import { Popover, Tooltip, Modal } from 'antd';
 
 const { confirm } = Modal;
 
 /* Styled Components */
 /* 삭제 및 수정하기 버튼 기능을 열 수 있는 아이콘 */
-const MoreIcon = styled(Icon)`
+const MoreIcon = styled(MoreOutlined)`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -109,12 +110,12 @@ class MoreButton extends Component {
                 <PopoverContentText
                     onClick={setUpdateMode}
                 >
-                    <Icon type='edit' /> 수정하기
+                    <EditOutlined /> 수정하기
                 </PopoverContentText>                
                 <PopoverContentText 
                     onClick={() => this._showDeleteConfirm(deleteMessage)} 
                 >
-                    <Icon type='delete' /> 삭제하기
+                    <DeleteOutlined /> 삭제하기
                 </PopoverContentText>
             </div>
         )
@@ -132,7 +133,6 @@ class MoreButton extends Component {
                     onVisibleChange={this._handlePopVisibleChange}
                 >                                    
                     <MoreIcon 
-                        type="more" 
                         rotate='90' 
                         visible={isVisible} 
                     />
