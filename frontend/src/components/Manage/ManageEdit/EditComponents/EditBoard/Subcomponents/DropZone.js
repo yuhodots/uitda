@@ -3,7 +3,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Upload, Icon, Modal } from 'antd';
+import { InboxOutlined } from '@ant-design/icons';
+import { Upload, Modal } from 'antd';
 
 import { colors } from '../../../../../../styles/variables'
 
@@ -119,7 +120,7 @@ class DropZone extends Component {
             <Container className='photo-list-box' >
                 <DropArea {...props}>
                 <p className="ant-upload-drag-icon">
-                    <Icon type="inbox" />
+                    <InboxOutlined />
                 </p>
                 <p className="ant-upload-text">클릭 또는 드래그를 통해 사진을 업로드하세요</p>
                 <p className="ant-upload-hint">
@@ -131,7 +132,7 @@ class DropZone extends Component {
                     {/* alt 값 파일 이름으로 설정하기 */}
                 </Modal>
             </Container>
-        )
+        );
     }
 }
 

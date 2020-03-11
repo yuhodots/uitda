@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Icon } from "antd";
+import { SearchOutlined } from '@ant-design/icons';
 
 import { colors } from "../../../../styles/variables";
 
@@ -94,9 +94,9 @@ class SearchBar extends Component {
                     onChange={this._handleInput} 
                     onKeyDown={this._handleEnter}
                 />
-                <SearchButton onClick={this._handleClick} ><Icon type='search' /></SearchButton>
+                <SearchButton onClick={this._handleClick} ><SearchOutlined /></SearchButton>
             </SearchBarBox>
-        )
+        );
     }
 }
 

@@ -8,13 +8,13 @@
     "@fullcalendar/interaction": "^4.4.0",
     "@fullcalendar/list": "^4.4.0",
     "@fullcalendar/react": "^4.4.0",
-    "antd": "^3.26.5",
+    "antd": "^4.0.2",
     "axios": "^0.19.0",
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "qs": "^6.9.1",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
     "react-dropzone": "^10.2.1",
     "react-icons": "^3.9.0",
     "react-redux": "^7.1.0",
@@ -29,7 +29,7 @@
     "styled-components": "^4.4.0"
   },
   "scripts": {
-    "start": "export PORT=4000 && react-scripts start",
+    "start": "SET PORT=4000 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

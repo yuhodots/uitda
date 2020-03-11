@@ -4,7 +4,7 @@
 
 import React from "react";
 import styled, { css } from 'styled-components';
-import { Icon } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 
 import { colors } from '../../../../styles/variables';
 
@@ -43,7 +43,7 @@ const CircleArea = styled.div`
     transition: opacity 0.3s;
 `;
 
-const StyledIcon = styled(Icon)`
+const StyledIcon = styled(SearchOutlined)`
     color: ${colors.white};
     font-size: 1.25rem;
     font-weight: bold;
@@ -58,7 +58,7 @@ const SearchIcon = ({isHeaderOn, headerOn}) => {
             isHeaderOn={isHeaderOn}
             onClick={headerOn}
         >
-            <StyledIcon type="search" />
+            <StyledIcon />
         </CircleArea>
     )
 }

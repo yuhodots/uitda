@@ -3,7 +3,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Divider, Icon } from "antd";
+import { InfoOutlined } from '@ant-design/icons';
+import { Divider } from "antd";
 
 import { colors } from "../../../styles/variables";
 import EventListItem from "./EventListItem";
@@ -100,7 +101,7 @@ const WholeBoxArea = styled.div`
         `;
 
         const UsingInfo = styled.div`
-        
+
         `
 
 
@@ -156,12 +157,12 @@ class DateInfoBox extends Component {
                         <EventListItem label={OWNER} infoText='내가 만든 일정' />
                         <EventListItem label={CLOSED} infoText='마감된 일정' />
                         <UsingInfo>
-                            <Icon type='InfoCircleOutlined' />
+                            <InfoOutlined />
                         </UsingInfo>
                     </InfoList>
                 </InfomationBox>
             </WholeBoxArea>
-        )
+        );
     }
 }
 

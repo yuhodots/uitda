@@ -4,7 +4,8 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
-import { Select, Tooltip, Icon, Divider } from 'antd'
+import { Select, Tooltip, Divider } from 'antd';
+import {  } from "@ant-design/icons";
 import { 
     MdFormatAlignJustify,
     MdFormatAlignLeft,
@@ -72,9 +73,9 @@ const LeftBox = styled.div`
         `;
 
         /* Ant Design Icon */
-        const EditIcon = styled(Icon)`
-            ${IconStyle}
-        `;
+        // const EditIcon = styled(Icon)`
+        //     ${IconStyle}
+        // `;
 
         /* Ant Design에 없는 아이콘들 */
         const AlignJustifyIcon = styled(MdFormatAlignJustify)`${IconStyle}`;
@@ -120,7 +121,7 @@ class EditComponent extends Component {
             deletedFileIDs,
             description,
 
-            spanStyle,
+            // spanStyle,
             textAlign,
 
             selectedDate,
@@ -131,10 +132,10 @@ class EditComponent extends Component {
 
             EditPostRequest,
 
-            editClickB,
-            editClickI,
-            editClickS,
-            editClickU,
+            // editClickB,
+            // editClickI,
+            // editClickS,
+            // editClickU,
             selectTextAlign,
 
             postCarpoolEvent,
@@ -194,7 +195,7 @@ class EditComponent extends Component {
 
                             <Divider type='vertical' />
 
-                            <Tooltip title='굵게' {...TooltipProps} >
+                            {/* <Tooltip title='굵게' {...TooltipProps} >
                                 <EditIcon type="bold" isSelected={spanStyle.bSelect} onClick={editClickB} />
                             </Tooltip>
                             <Tooltip title='기울이기' {...TooltipProps} >
@@ -209,7 +210,7 @@ class EditComponent extends Component {
 
                             <Tooltip title='글자색' {...TooltipProps} >
                                 <EditIcon type="font-colors" />
-                            </Tooltip>
+                            </Tooltip> */}
                             
                             <Divider type="vertical" />
                             
