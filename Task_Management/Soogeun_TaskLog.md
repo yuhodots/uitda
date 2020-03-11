@@ -264,6 +264,12 @@
 
 
 
+### 3.11 (수)
+
+* 카풀 DateInfoBox UI 작업
+
+
+
 
 
 ## 해야 할 일
@@ -392,6 +398,7 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 
 * carpool action type 이름 정리
+* carpool 시작 전 로딩 페이지 띄우기
 
 
 
@@ -436,13 +443,7 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
   
   
   
-* 카풀 이벤트 label 구분
-
-  * 
-
-  
-
-* 
+* carpool 탭 캘린더에 month / list => month만
 
 
 
@@ -451,6 +452,12 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 ### 요청 사항
 
 * comment, board의 시간을 작성 시간 기준으로 할 지, 수정 시간을 기준으로 할 지
+
 * Carpool 게시판 페이지 디자인
-* Manage 페이지 카테고리 구상
+
+* 로그인이 안될 때 안내 문구
+
+* 공용 PC에서 outlook 로그아웃 방법
+
+  
 

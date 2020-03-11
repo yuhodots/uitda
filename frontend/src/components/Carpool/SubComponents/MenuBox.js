@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Radio, Checkbox, Button } from "antd";
+import { Radio, Switch, Button, Checkbox } from "antd";
 import { Link } from 'react-router-dom';
 
 import { colors } from "../../../styles/variables";
@@ -33,6 +33,12 @@ const FuncGroupBox = styled.div`
     flex-flow: row nowrap;
     align-items: center;
 `;
+
+    const SwitchBox = styled.div`
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+    `
 
 const ButtonLink = styled(Button)`
     height: 2rem;
@@ -68,9 +74,18 @@ class MenuBox extends Component {
                 <FuncGroupBox>
                     <Radio.Group defaultValue='total' onChange={this._handleRadio} >
                         <Radio value='total' >전체 일정 보기</Radio>
-                        <Radio value='my' >내 일정만 보기</Radio>
+                        <Radio value='my' >내 일정 (만든 일정 + 신청한 일정)</Radio>
                     </Radio.Group>
-                    <Checkbox onChange={this._handleCheckBox} >마감 일정 없애기</Checkbox>
+                    {/* <SwitchBox>
+                        <Switch 
+                        // size="small" 
+                        // onChange={this._handleCheckBox} 
+                        />
+                        마감된 일정 가리기
+                    </SwitchBox> */}
+                    <Checkbox onChange={this._handleCheckBox} >
+                        마감된 일정 가리기
+                    </Checkbox>
                 </FuncGroupBox>
 
                 <Link to='/manage/edit/newpost'>

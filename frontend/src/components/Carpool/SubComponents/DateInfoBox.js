@@ -3,37 +3,105 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Divider, Icon } from "antd";
 
 import { colors } from "../../../styles/variables";
+import EventListItem from "./EventListItem";
+import { ACTIVE, GUEST, OWNER, CLOSED } from '../../../constants/carpool_event_labels';
 
 
 /* Styled Components */
+
+/* 전체 영역 div 태그 (하얀색 바탕색을 주는 컴포넌트) */
 const WholeBoxArea = styled.div`
     padding: 1.25rem;
     width: 18rem;
 
     background-color: ${colors.white};
     
+    overflow: hidden;
+
     display: flex;
     flex-flow: column nowrap;
+    justify-content: space-between;
+    align-items: stretch;
 
     @media (max-width: 1500px) {
         width: 15rem;
     }
 `;
 
-    const DateTitleBox = styled.div`
-        margin-bottom: 1.25rem;
+    /* InfoBox를 아래 끝에 두기 위해 묶어놓은 div 태그 */
+    const UpperBox = styled.div`
+        flex: 1;
         display: flex;
-        justify-content: center;
-
-        font-size: 1.25rem;
-        font-weight: bold;
+        flex-flow: column nowrap;
+        align-items: center;
     `;
 
-    const EventsListBox = styled.div`
-    
+        /* 날짜 정보 제목이 들어가는 박스 */
+        const DateTitleBox = styled.div`
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: center;
+
+            font-size: 1.25rem;
+            font-weight: bold;
+        `;
+
+        /* DateTitle 밑에 들어가는 구분선 */
+        const StyledDivier = styled(Divider)`
+            margin-top: 0;
+            width: 10rem;
+            min-width: 8rem;
+        `;
+
+        /* 카풀 일정 목록을 담은 박스 */
+        const EventsListBox = styled.div`
+            width: 100%;
+
+            display: flex;
+            flex-flow: column nowrap;
+            align-items: flex-start;
+        `;
+
+    /* 안내 정보를 담은 div 태그 */
+    const InfomationBox = styled.div`
+        position: relative;
+        width: 12rem;
+        padding: 0.75rem;
+        padding-top: 1rem;
+        margin: 0 auto;
+        
+        border: 1px solid ${colors.gray_line};
+
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
     `;
+
+        /* Infomation Box Title */
+        const InfoTitle = styled.div`
+            position: absolute;
+            top: -1rem;
+            padding: 0 0.25rem;
+
+            font-size: 1.25rem;
+            font-weight: bold;
+
+            background-color: ${colors.white};
+        `;
+
+        const InfoList = styled.div`
+            width: 100%;
+
+            display: flex;
+            flex-flow: column nowrap;
+        `;
+
+        const UsingInfo = styled.div`
+        
+        `
 
 
 /* React Component */
@@ -47,27 +115,21 @@ class DateInfoBox extends Component {
         return `${mm}월 ${dd}일 일정`;
     }
 
-    _handleEventClick = (id) => {
+    /* 이벤트 리스트를 render하는 함수 */
+    _renderEventList = ( eventDataList ) => {
+
         const { storeClickedEventData, openModalWindow } = this.props
-        storeClickedEventData(id);
-        openModalWindow();
-    }
 
-    _renderEventList = (eventDataList) => {
-
-        // console.log(eventDataList)
-
-        return eventDataList.map( (event, idx) => {
-            const { id, destination, start } = event
-            const startDate = new Date(start);
+        return eventDataList.map( event => {
+            const { id, label } = event
 
             return (
-                <div 
-                    key={idx} 
-                    onClick={(e) => this._handleEventClick(id)} 
-                >
-                    {startDate.getHours()}:{startDate.getMinutes()} {destination} 방향
-                </div>
+                <EventListItem
+                    key={id}
+                    label={label} event={event}
+                    storeClickedEventData={storeClickedEventData}
+                    openModalWindow={openModalWindow}
+                />
             )
         } )
     }
@@ -80,8 +142,24 @@ class DateInfoBox extends Component {
 
         return (
             <WholeBoxArea>
-                <DateTitleBox>{dateStr}</DateTitleBox>
-                <EventsListBox>{this._renderEventList(eventsOnSelectedDate)}</EventsListBox>
+                <UpperBox>
+                    <DateTitleBox>{dateStr}</DateTitleBox>
+                    <StyledDivier />
+                    <EventsListBox>{this._renderEventList(eventsOnSelectedDate)}</EventsListBox>
+                </UpperBox>
+
+                <InfomationBox>
+                    <InfoTitle>Infomation</InfoTitle>
+                    <InfoList>
+                        <EventListItem label={ACTIVE} infoText='모집중인 일정' />
+                        <EventListItem label={GUEST} infoText='참가 신청한 일정' />
+                        <EventListItem label={OWNER} infoText='내가 만든 일정' />
+                        <EventListItem label={CLOSED} infoText='마감된 일정' />
+                        <UsingInfo>
+                            <Icon type='InfoCircleOutlined' />
+                        </UsingInfo>
+                    </InfoList>
+                </InfomationBox>
             </WholeBoxArea>
         )
     }
