@@ -363,6 +363,7 @@
 * edit 상단바 funcbox 코드 리펙토링
 * edit 상단바가 스크롤 내리면 위에 tooltip 생기는 거 고치기
 * Edit Page 나가기 전에 '나가시겠습니까 묻기'
+* edit carpool 작성 완료 시 카풀 페이지 나왔을 때 바로 카풀 이벤트가 뜨지 않음 (시간이 필요함)
 
 
 
@@ -396,6 +397,7 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 * 이벤트 클릭 시 해당 이벤트 모달 출력
 * MenuBox UI
 * DateInfoBox UI
+* 처음 화면 띄울 때, 오늘 일정이 오른쪽에 안담김 (Today의 selectDate 함수가 카풀 이벤트를 가져오는것보다 더 빨리 끝나기 때문인 듯)
 
 
 

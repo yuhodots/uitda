@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { Divider } from "antd";
+import { Divider, Modal } from "antd";
 
 import { colors } from "../../../styles/variables";
 import EventListItem from "./EventListItem";
@@ -124,6 +124,10 @@ const WholeBoxArea = styled.div`
 /* React Component */
 class DateInfoBox extends Component {
 
+    state = {
+        modalVisible: false
+    }
+
     /* Date => yyyy-mm-dd */
     _dateToStr = (date) => {
         const mm = date.getMonth() + 1 ;
@@ -151,8 +155,24 @@ class DateInfoBox extends Component {
         } )
     }
 
+    /* Carpool Info 모달 띄우는 함수 */
+    _OpenInfoModal = () => {
+        this.setState({
+            ...this.state,
+            modalVisible: true
+        })
+    }
+
+    _cancleInfoModal = (e) => {
+        this.setState({
+            ...this.state,
+            modalVisible: false
+        })
+    }
+
     render() {
 
+        const { modalVisible } = this.state;
         const { selectedDate, eventsOnSelectedDate } = this.props;
 
         const dateStr = this._dateToStr(selectedDate)
@@ -178,9 +198,16 @@ class DateInfoBox extends Component {
                         <EventListItem label={GUEST} infoText='참가 신청한 일정' />
                         <EventListItem label={OWNER} infoText='내가 만든 일정' />
                         <EventListItem label={CLOSED} infoText='마감된 일정' />
-                        <UsingInfo>
+                        <UsingInfo onClick={this._OpenInfoModal}>
                             <InfoIcon />
                             카풀 이용 안내
+
+                            <Modal
+                                visible={modalVisible}
+                                onCancel={this._cancleInfoModal}
+                            >
+                                hi
+                            </Modal>
                         </UsingInfo>
                     </InfoList>
                 </InfomationBox>
