@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Radio, Switch, Button, Checkbox } from "antd";
+import { EditOutlined } from "@ant-design/icons";
 import { Link } from 'react-router-dom';
 
 import { colors } from "../../../styles/variables";
@@ -41,15 +42,27 @@ const FuncGroupBox = styled.div`
     `
 
 const ButtonLink = styled(Button)`
-    height: 2rem;
+    height: 2.5rem;
     padding: 0.5625rem 1rem;
+    padding-left: 0.8rem;
     margin: 0;
+    margin-right: 1rem;
 
     background-color: ${colors.blue};
 
     line-height: 0.875rem;
     font-size: 0.875rem;
+
+    @media (max-width: 1500px) {
+        height: 2rem;
+        padding: 0.5625rem 0.75rem;
+        padding-left: 0.6rem;
+    }
 `;
+
+    const EditIcon = styled(EditOutlined)`
+        color: ${colors.white};
+    `;
 
 
 class MenuBox extends Component {
@@ -89,7 +102,10 @@ class MenuBox extends Component {
                 </FuncGroupBox>
 
                 <Link to='/manage/edit/newpost'>
-                    <ButtonLink type='primary' shape='round'>작성 페이지로 이동</ButtonLink>
+                    <ButtonLink type='primary' >
+                        <EditIcon />
+                        카풀 일정 만들기
+                    </ButtonLink>
                 </Link>
             </MenuBoxArea>
         )

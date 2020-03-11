@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { InfoOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import { Divider } from "antd";
 
 import { colors } from "../../../styles/variables";
@@ -66,12 +66,22 @@ const WholeBoxArea = styled.div`
             align-items: flex-start;
         `;
 
+            /* 해당 일에 카풀방이 없는 경우 띄우는 태그 */
+            const NoEventBox = styled.div`
+                /* margin-top: 1rem; */
+                width: 100%;
+
+                display: flex;
+                flex-flow: column nowrap;
+                align-items: center;
+            `;
+
     /* 안내 정보를 담은 div 태그 */
     const InfomationBox = styled.div`
         position: relative;
         width: 12rem;
         padding: 0.75rem;
-        padding-top: 1rem;
+        padding-top: 1.25rem;
         margin: 0 auto;
         
         border: 1px solid ${colors.gray_line};
@@ -94,15 +104,21 @@ const WholeBoxArea = styled.div`
         `;
 
         const InfoList = styled.div`
-            width: 100%;
-
             display: flex;
             flex-flow: column nowrap;
         `;
 
         const UsingInfo = styled.div`
+            cursor: pointer;
 
-        `
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+        `;
+
+            const InfoIcon = styled(InfoCircleOutlined)`
+                margin-right: 0.5rem;
+            `;
 
 
 /* React Component */
@@ -146,7 +162,13 @@ class DateInfoBox extends Component {
                 <UpperBox>
                     <DateTitleBox>{dateStr}</DateTitleBox>
                     <StyledDivier />
-                    <EventsListBox>{this._renderEventList(eventsOnSelectedDate)}</EventsListBox>
+                    <EventsListBox>
+                        {
+                            eventsOnSelectedDate.length === 0 ?
+                            <NoEventBox>해당일은 일정이 없습니다.</NoEventBox> :
+                            this._renderEventList(eventsOnSelectedDate)
+                        }
+                    </EventsListBox>
                 </UpperBox>
 
                 <InfomationBox>
@@ -157,7 +179,8 @@ class DateInfoBox extends Component {
                         <EventListItem label={OWNER} infoText='내가 만든 일정' />
                         <EventListItem label={CLOSED} infoText='마감된 일정' />
                         <UsingInfo>
-                            <InfoOutlined />
+                            <InfoIcon />
+                            카풀 이용 안내
                         </UsingInfo>
                     </InfoList>
                 </InfomationBox>
