@@ -74,17 +74,21 @@ class Calendar extends Component {
 
     /* 처음 Mount 되었을 때와 today 버튼을 클릭할 때 실행되는 함수
        Calendar Api의 today함수와 (오늘 날짜가 있는 페이지로 이동)
-       오늘 날짜 Date 객체를 받아서 오늘 날짜에 해당 되는 칸의 스타일을 변경하고,
-       오늘 날짜를 app state에 저장하는 함수 */
+       오늘 날짜 Date 객체를 받아서 오늘 날짜를 app state에 저장하고,
+       오늘 날짜에 해당 되는 칸의 스타일을 변경하는 함수 */
     _today = () => {
         const { category, selectDate } = this.props;
         const calendarApi = this.calendarRef.current.getApi();
         
         calendarApi.today();
-        const todayDate = new Date();
+        
+        let todayDate = new Date();
+        todayDate.setUTCHours(0);      todayDate.setMinutes(0);
+        todayDate.setSeconds(0);    todayDate.setMilliseconds(0);
+        selectDate(category, todayDate);
+
         const todayEl = this._findDayElWithDate(todayDate);
         this._changeDayElStyle(todayEl);
-        selectDate(category, todayDate);
     }
 
     /* 이전에 선택된 elem를 가리키는 state.prevElem의 style을 없애고
@@ -137,9 +141,6 @@ class Calendar extends Component {
         const events = eventList.map( event => {
             const { id, start, destination, label } = event;
             
-            /* UTC 0인 string data를 UTC+9인 date 객체로 */
-            const startDate = new Date(start);
-
             /* label에 해당하는 색을 갖도록 변환 */
             let color;
             switch (label) {
@@ -151,9 +152,8 @@ class Calendar extends Component {
             }
 
             return {
-                id, color,
+                id, color, start,
                 title: `${destination} 방향`,
-                start: startDate,
             }
         })
 
@@ -180,8 +180,6 @@ class Calendar extends Component {
         let props = ( category === MANAGE ?
         /* Manage Calendar Properties */
         {
-            plugins: [ dayGridPlugin, interactionPlugin ],      // Fullcalendar 플러그인 리스트
-            
             header: {                                           // 달력의 헤더 설정
                 left: 'custom_today',
                 center: 'prev, title, next',
@@ -190,8 +188,6 @@ class Calendar extends Component {
         } :
         /* Carpool Calendar Properties */
         {
-            plugins: [ dayGridPlugin, interactionPlugin ],      // Fullcalendar 플러그인 리스트
-            
             header: {                                           // 달력의 헤더 설정
                 left: 'custom_today',
                 center: 'prev, title, next',
@@ -202,8 +198,10 @@ class Calendar extends Component {
         /* 공통 Calendar Props 추가 */
         props = {
             ...props,
+            plugins: [dayGridPlugin, interactionPlugin],        // Fullcalendar 플러그인 리스트
+
             events,                                             // 현재 캘린더의 상태에 대한 render할 이벤트 데이터
-            timezone: 'local',
+            timeZone: 'UTC',                                    // DB에 저장된 UTC 기준 시간으로 달력에 나타나도록 함
 
             customButtons: {                                    // custom 버튼 목록 
                 custom_today: {                                 // today 버튼 클릭 시, 달력 페이지 이동뿐만 아니라, 오늘자 dayEl이 선택되는 버튼
@@ -215,6 +213,9 @@ class Calendar extends Component {
             locale: 'ko',                                       // 언어: 한국어
             height: 'parent',                                   // 달력의 사이즈 조정 (parent 높이로 설정)
             fixedWeekCount: false,                              // 달력이 해당 월의 week 수 만큼 render됨 (6주 fix X)
+
+            defaultTimedEventDuration: '00:00',                 // 카풀 이벤트의 duration을 없앰으로써 한 이벤트가 한 칸만 차지하도록 함
+            eventLimit: 4,                                      // 달력 한 칸에 나타나는 이벤트 최대 개수
 
             dateClick: this._selectDate,                        // 달력의 날짜 부분 클릭 시 실행되는 함수
             eventClick: this._handleClickEvent,                 // 이벤트 클릭을 처리하는 함수

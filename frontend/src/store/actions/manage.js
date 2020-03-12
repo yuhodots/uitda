@@ -346,10 +346,11 @@ export function postCarpoolEvent (title, departure, destination, start_date, sta
         const POSTurl = '/api/carpool/create';
 
         /* POST Request Body Data */
-        let start = start_date;
-        start.setHours(start_time._d.getHours());
-        start.setMinutes(start_time._d.getMinutes());
-        start.setSeconds(0);
+        const DateToTime = start_date.getTime();
+        const HoursToTime = start_time._d.getHours() * 60 * 60 * 1000;
+        const MinutesToTime = start_time._d.getMinutes() * 60 * 1000;
+        const start = new Date(DateToTime + HoursToTime + MinutesToTime);
+
         const requestBody = { title, departure, destination, start, meeting_place, contact, description }
 
         /* POST Request config Data */

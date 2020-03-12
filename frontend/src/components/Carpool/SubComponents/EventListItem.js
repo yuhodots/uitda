@@ -40,8 +40,8 @@ const ListItem = styled.div`
 /* Functions */
 /* date => HH:MM */
 const _DateToString = (date) => {
-    let HH = date.getHours();
-    let MM = date.getMinutes();
+    let HH = date.getUTCHours();
+    let MM = date.getUTCMinutes();
     
     if ( HH < 10 ) { HH = `0${HH}`; }
     if ( MM < 10 ) { MM = `0${MM}`; }
