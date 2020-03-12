@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Radio, Switch, Button, Checkbox } from "antd";
+import { Radio, Button, Checkbox } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { Link } from 'react-router-dom';
 
@@ -35,12 +35,6 @@ const FuncGroupBox = styled.div`
     align-items: center;
 `;
 
-    const SwitchBox = styled.div`
-        display: flex;
-        flex-flow: row nowrap;
-        align-items: center;
-    `
-
 const ButtonLink = styled(Button)`
     height: 2.5rem;
     padding: 0.5625rem 1rem;
@@ -67,8 +61,14 @@ const ButtonLink = styled(Button)`
 
 class MenuBox extends Component {
 
+    state = {}
+
     _handleRadio = (e) => {
         const { renderTotalEvents, renderMyEvents } = this.props
+
+        this.setState({
+            totalOrMy: e.target.value
+        })
 
         if ( e.target.value === 'total') { renderTotalEvents() }
         else { renderMyEvents() }
@@ -76,6 +76,9 @@ class MenuBox extends Component {
 
     _handleCheckBox = (e) => {
         const { changeClosedEvents } = this.props;
+        const { totalOrMy } = this.state;
+
+        console.log(totalOrMy)
 
         changeClosedEvents(e.target.checked);
     }
@@ -89,13 +92,7 @@ class MenuBox extends Component {
                         <Radio value='total' >전체 일정 보기</Radio>
                         <Radio value='my' >내 일정 (만든 일정 + 신청한 일정)</Radio>
                     </Radio.Group>
-                    {/* <SwitchBox>
-                        <Switch 
-                        // size="small" 
-                        // onChange={this._handleCheckBox} 
-                        />
-                        마감된 일정 가리기
-                    </SwitchBox> */}
+
                     <Checkbox onChange={this._handleCheckBox} >
                         마감된 일정 가리기
                     </Checkbox>

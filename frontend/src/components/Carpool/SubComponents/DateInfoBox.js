@@ -8,7 +8,7 @@ import { Divider, Modal } from "antd";
 
 import { colors } from "../../../styles/variables";
 import EventListItem from "./EventListItem";
-import { ACTIVE, GUEST, OWNER, CLOSED } from '../../../constants/carpool_event_labels';
+import { ACTIVE, GUEST, OWNER, CLOSED } from '../../../constants/calendar_consts';
 
 
 /* Styled Components */
@@ -139,15 +139,19 @@ class DateInfoBox extends Component {
     /* 이벤트 리스트를 render하는 함수 */
     _renderEventList = ( eventDataList ) => {
 
-        const { storeClickedEventData, openModalWindow } = this.props
+        const { totalOrMyOption, storeClickedEventData, openModalWindow } = this.props
 
         return eventDataList.map( event => {
             const { id, label } = event
+
+            console.log(event)
+            console.log(totalOrMyOption)
 
             return (
                 <EventListItem
                     key={id}
                     label={label} event={event}
+                    totalOrMyOption={totalOrMyOption}
                     storeClickedEventData={storeClickedEventData}
                     openModalWindow={openModalWindow}
                 />
@@ -217,6 +221,8 @@ class DateInfoBox extends Component {
 }
 
 DateInfoBox.propTypes = {
+    totalOrMyOption: PropTypes.string.isRequired,       // 전체 일정 or 내 일정
+
     selectedDate: PropTypes.object.isRequired,          // 선택된 날짜
     eventsOnSelectedDate: PropTypes.array.isRequired,   // 선택된 날짜에 해당하는 일정 목록
 

@@ -7,7 +7,9 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
 import { MANAGE } from "../../../constants/categories";
-import { CLOSED, ACTIVE, OWNER, GUEST } from '../../../constants/carpool_event_labels'
+import { 
+    TOTAL, CLOSED, ACTIVE, OWNER, GUEST, OWNER_CLOSED, GUEST_CLOSED 
+} from '../../../constants/calendar_consts'
 import { colors } from "../../../styles/variables";
 
 import '@fullcalendar/core/main.css';
@@ -136,6 +138,7 @@ class Calendar extends Component {
     _dataObjToviewObjList = (obj) => {
         /* C,A,O,G로 구분된 객체를 하나의 array로 변환 */
         const eventList = [...obj.C, ...obj.A, ...obj.O, ...obj.G];
+        const { totalOrMyOption } = this.props;
 
         /* 데이터 객체 -> calendar view 객체 */
         const events = eventList.map( event => {
@@ -148,6 +151,12 @@ class Calendar extends Component {
                 case ACTIVE: color = colors.active_blue; break;
                 case OWNER: color = colors.owner_yellow; break;
                 case GUEST: color = colors.guest_green; break;
+                case OWNER_CLOSED: 
+                    color = totalOrMyOption === TOTAL ? 
+                            colors.owner_yellow : colors.closed_gray; break; 
+                case GUEST_CLOSED: 
+                    color = totalOrMyOption === TOTAL ? 
+                            colors.guest_green : colors.closed_gray; break;
                 default:  color = colors.active_blue; break;
             }
 
@@ -231,6 +240,7 @@ class Calendar extends Component {
 Calendar.propTypes = {
     category: PropTypes.string.isRequired,              // [Manage / Carpool] 어느 카테고리에 렌더링될 것인지
 
+    totalOrMyOption: PropTypes.string.isRequired,       // 전체 일정 or 내 일정
     eventsObj: PropTypes.object.isRequired,             // 전체 카풀 이벤트 데이터
 
     initCalenderEvents: PropTypes.func.isRequired,      // 캘린더 첫 렌더 시 들어올 events 받는 액션

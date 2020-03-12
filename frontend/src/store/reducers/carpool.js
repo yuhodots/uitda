@@ -9,9 +9,17 @@ import {
 } from "../actions/ActionTypes";
 
 import { CARPOOL } from "../../constants/categories";
+import { 
+    TOTAL, MY,
+    CLOSED, ACTIVE, OWNER, GUEST,
+    OWNER_CLOSED, GUEST_CLOSED,
+} from "../../constants/calendar_consts";
 
 const InitialState = {
     isGetSuccess: false,
+    
+    isClosedHidden: false,          // 마감된 일정 가리기 여부
+    totalOrMyOption: TOTAL,         // 전체 일정 or 내 일정
     
     eventsToRenderObj: {            // 캘린더에 띄워질 이벤트
         C:[], A:[], O:[], G:[]
@@ -33,7 +41,7 @@ export default function carpool (state = InitialState, action) {
     switch (action.type) {
 
         /* 캘린더의 날짜를 선택하는 액션 */
-        case CARPOOL_SELECT_DATE:
+        case CARPOOL_SELECT_DATE: {
             const { selectedDate, category } = action;
             let eventsOnSelectedDate = [];
 
@@ -62,16 +70,17 @@ export default function carpool (state = InitialState, action) {
                 ...state,
                 selectedDate, eventsOnSelectedDate
             }
+        }
 
         /* carpool event 데이터를 받아오는 액션 */
-        case CARPOOL_GET_EVENTS_SUCCESS:
+        case CARPOOL_GET_EVENTS_SUCCESS: {
             const { events } = action;
             
             /* event의 라벨에 따라 구분해서 각각의 리스트에 저장 */
-            const closedEvents = events.filter( event => event.label === 'closed' );
-            const activeEvents = events.filter( event => event.label === 'active' );
-            const ownerEvents = events.filter( event => event.label === 'owner' );
-            const guestEvents = events.filter( event => event.label === 'guest' );
+            const closedEvents = events.filter( event => event.label === CLOSED );
+            const activeEvents = events.filter( event => event.label === ACTIVE );
+            const ownerEvents = events.filter( event => event.label === OWNER || event.label === OWNER_CLOSED );
+            const guestEvents = events.filter( event => event.label === GUEST || event.label === GUEST_CLOSED );
 
             return {
                 ...state,
@@ -79,6 +88,7 @@ export default function carpool (state = InitialState, action) {
                 closedEvents, activeEvents, 
                 ownerEvents, guestEvents
             }
+        }
 
         /* Calender의 events_to_render 객체의 데이터를 변경하는 액션들 */
         case INITIATE_CALENDER_EVENTS:
@@ -100,12 +110,14 @@ export default function carpool (state = InitialState, action) {
             })
 
         /* 전체 일정 보기
-           C와 상관 없이, A O G를 render할 이벤트 객체에 넣기 */
+           A, O, G는 모두 받기 고정
+           closed Hidden이면 C는 빈 리스트, 아닌 경우 받아오기 */
         case RENDER_TOTAL_CALENDER_EVENTS:
             return {
                 ...state,
+                totalOrMyOption: TOTAL,
                 eventsToRenderObj: {
-                    ...state.eventsToRenderObj,
+                    C: state.isClosedHidden ? [] : state.closedEvents,
                     A: state.activeEvents,
                     O: state.ownerEvents,
                     G: state.guestEvents
@@ -113,28 +125,52 @@ export default function carpool (state = InitialState, action) {
             }
 
         /* 내 일정 보기
-           C와 상관 없이, O G를 render할 이벤트 객체에 넣고, A는 제외하기 */
-        case RENDER_MY_CALENDER_EVENTS:
+           C와 A는 모두 제외하고, O와 G는 closed Hidden 여부에 따라 filtering 한다. */
+        case RENDER_MY_CALENDER_EVENTS: {
+            const { isClosedHidden, ownerEvents, guestEvents } = state;
+            
+            let ownerEventsToRender = ownerEvents;
+            let guestEventsToRender = guestEvents;
+
+            if ( isClosedHidden ) {
+                ownerEventsToRender = ownerEvents.filter( event => event.label === OWNER );
+                guestEventsToRender = guestEvents.filter( event => event.label === GUEST );
+            }
+
+
             return {
                 ...state,
+                totalOrMyOption: MY,
                 eventsToRenderObj: {
-                    ...state.eventsToRenderObj,
+                    C: [],
                     A: [],
-                    O: state.ownerEvents,
-                    G: state.guestEvents 
+                    O: ownerEventsToRender,
+                    G: guestEventsToRender 
                 }
             }
+        }
 
         /* 마감된 일정 보기 / 숨기기
            A O G 상관 없이, isHidden값에 따라 C를 빼거나 넣기 */
-        case CHANGE_CLOSED_CALENDER_EVENTS:
+        case CHANGE_CLOSED_CALENDER_EVENTS: {
+            const { totalOrMyOption, closedEvents, ownerEvents, guestEvents } = state;
+            const { isHidden } = action;
+
+            const {
+                ownerEventsToRender, guestEventsToRender
+            } = filterOwnerGuestEvents(ownerEvents, guestEvents, isHidden);
+
             return {
                 ...state,
+                isClosedHidden: isHidden,
                 eventsToRenderObj: {
-                    ...state.eventsToRenderObj,
-                    C: action.isHidden ? [] : state.closedEvents
+                    C: totalOrMyOption === MY || isHidden ? [] : closedEvents,      // 내 일정 보기 + 전체 중에서 Hidden인 경우 빈 리스트
+                    A: state.eventsToRenderObj.A,                                   // A는 이전 state 그대로 (전체 일정에서는 존재, 내 일정에서는 빈 리스트)
+                    O: totalOrMyOption === MY ? ownerEventsToRender : ownerEvents,
+                    G: totalOrMyOption === MY ? guestEventsToRender : guestEvents,
                 }
             }
+        }
 
         /* 클릭한 이벤트의 id를 통해 전체 이벤트 리스트에서 찾아서 데이터 객체를 selectedEvent에 저장하는 액션 */
         case CARPOOL_CLICK_EVENT: {
@@ -151,5 +187,23 @@ export default function carpool (state = InitialState, action) {
 
         default:
             return state;
+    }
+}
+
+/* Owner, Guest 이벤트 리스트에서 closed hidden 여부에 따라 각각의 closed 이벤트를 filter하는 함수 */
+const filterOwnerGuestEvents = (ownerEvents, guestEvents, isClosedHidden) => {
+    
+    console.log(isClosedHidden)
+
+    let ownerEventsToRender = ownerEvents;
+    let guestEventsToRender = guestEvents;
+    
+    if ( isClosedHidden ) {
+        ownerEventsToRender = ownerEvents.filter( event => event.label === OWNER );
+        guestEventsToRender = guestEvents.filter( event => event.label === GUEST );
+    }
+
+    return {
+        ownerEventsToRender, guestEventsToRender
     }
 }

@@ -29,6 +29,7 @@ class CarpoolContainer extends Component {
     render() {
         const { 
             isGetSuccess,
+            totalOrMyOption,
             eventsToRenderObj,
             selectedDate, 
             eventsOnSelectedDate,
@@ -49,6 +50,7 @@ class CarpoolContainer extends Component {
                 <SideBar topic={CARPOOL} />
 
                 <CarpoolBoard 
+                    totalOrMyOption={totalOrMyOption}
                     eventsObj={eventsToRenderObj}
                     selectedDate={selectedDate}
                     eventsOnSelectedDate={eventsOnSelectedDate}
@@ -74,6 +76,7 @@ const mapStateToProps = (state) => {
     return {
         isGetSuccess: state.carpool.isGetSuccess,
         
+        totalOrMyOption: state.carpool.totalOrMyOption,
         eventsToRenderObj: state.carpool.eventsToRenderObj,
 
         selectedDate: state.carpool.selectedDate,

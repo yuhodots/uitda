@@ -127,6 +127,7 @@ class CarpoolBoard extends Component {
         const { windowHeight, isLoaded, modalVisible } = this.state;
 
         const {
+            totalOrMyOption,
             eventsObj,
             selectedDate,
             eventsOnSelectedDate,
@@ -155,6 +156,7 @@ class CarpoolBoard extends Component {
                             <CalendarContainer>
                                 <BaseCalendar 
                                     category={CARPOOL}
+                                    totalOrMyOption={totalOrMyOption}
                                     eventsObj={eventsObj}
                                     selectedDate={selectedDate}
 
@@ -168,6 +170,7 @@ class CarpoolBoard extends Component {
                         
                         <DateInfoBox 
                             selectedDate={selectedDate}
+                            totalOrMyOption={totalOrMyOption}
                             eventsOnSelectedDate={eventsOnSelectedDate}
 
                             storeClickedEventData={storeClickedEventData}
@@ -190,6 +193,7 @@ class CarpoolBoard extends Component {
 }
 
 CarpoolBoard.propTypes = {
+    totalOrMyOption: PropTypes.string.isRequired,       // 전체 일정 or 내 일정
     eventsObj: PropTypes.object.isRequired,             // 전체 카풀 이벤트 데이터
     selectedDate: PropTypes.object.isRequired,          // 캘린더에서 선택된 날짜 정보
     eventsOnSelectedDate: PropTypes.array.isRequired,   // 선택된 날짜에 해당하는 일정 목록

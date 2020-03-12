@@ -5,7 +5,9 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import { colors } from "../../../styles/variables";
-import { CLOSED, ACTIVE, OWNER, GUEST } from "../../../constants/carpool_event_labels";
+import { 
+    TOTAL, CLOSED, ACTIVE, OWNER, GUEST, OWNER_CLOSED, GUEST_CLOSED
+} from "../../../constants/calendar_consts";
 
 /* Styled Componenets */
 const ListItem = styled.div`
@@ -49,7 +51,7 @@ const _DateToString = (date) => {
 }
 
 /* React Componenet */
-const EventListItem = ({label, event, infoText, storeClickedEventData, openModalWindow}) => {
+const EventListItem = ({totalOrMyOption, label, event, infoText, storeClickedEventData, openModalWindow}) => {
 
     const { id, start, departure, destination } = event;
 
@@ -59,6 +61,12 @@ const EventListItem = ({label, event, infoText, storeClickedEventData, openModal
         case ACTIVE: labelColor = colors.active_blue; break;
         case OWNER: labelColor = colors.owner_yellow; break;
         case GUEST: labelColor = colors.guest_green; break;
+        case OWNER_CLOSED: 
+            labelColor = totalOrMyOption === TOTAL ? 
+                    colors.owner_yellow : colors.closed_gray; break; 
+        case GUEST_CLOSED: 
+            labelColor = totalOrMyOption === TOTAL ? 
+                    colors.guest_green : colors.closed_gray; break;
         default:  labelColor = colors.active_blue; break;
     }
 
@@ -83,6 +91,8 @@ const EventListItem = ({label, event, infoText, storeClickedEventData, openModal
 }
 
 EventListItem.propTypes = {
+    totalOrMyOption: PropTypes.string,                  // 전체 일정 or 내 일정
+    
     label: PropTypes.string.isRequired,                 // state label (CLOSED, ACTIVE, OWNER, GUEST)
     event: PropTypes.object,                            // 이벤트 데이터 객체
     infoText: PropTypes.string,                         // infoBox의 경우 info 텍스트 값
@@ -92,6 +102,8 @@ EventListItem.propTypes = {
 }
 
 EventListItem.defaultProps = {
+    totalOrMyOption: TOTAL,
+    
     event: {},
     infoText: '',
 
