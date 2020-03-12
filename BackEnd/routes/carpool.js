@@ -3,7 +3,7 @@ let express = require('express');
 let router = express.Router();
 let carpool = require('../lib/carpool');
 
-/* Category: carpool page. */
+/* Carpool: events */
 router.get('/', function (req, res) {
   carpool.eventlist(req, res);
 });
@@ -20,6 +20,26 @@ router.post(`/update/:id`, function (req, res) {
 
 router.post('/delete/:id', function (req, res) {
   carpool.delete(req, res);
+});
+
+/* Carpool: guests */
+router.post('/guest/create', function (req, res) {
+  /* 요청으로 보내줘야 하는 값: event_id */
+  carpool.guest_create(req, res);
+});
+
+router.post('/guest/update/:id', function (req, res) {
+  /* 요청으로 보내줘야 하는 값: condition */
+  carpool.guest_update(req, res);
+});
+
+router.post('/guest/delete/:id', function (req, res) {
+  carpool.guest_delete(req, res);
+});
+
+/* Carpool: guestlist */
+router.get('/guestlist/:id', function (req, res) {
+  carpool.guestlist(req, res);
 });
 
 module.exports = router;

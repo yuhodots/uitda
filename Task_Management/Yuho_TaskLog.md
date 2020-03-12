@@ -389,7 +389,69 @@
 
 
 
+### 20.02.25 (화)
+
+- 메뉴 픽토그램 작업
+  - 저작권 없는 무료 픽토그램 사용
+  - 메뉴 title을 한글로 바꿔봄
+- 유잇다 로고 작업
+  - 저작권 없는 무료 폰트 사용 (고도체)
+
+
+
+### 20.03.01 (일)
+
+- 유잇다 로그인 페이지 디자인, html로 작업
+
+- 오른쪽에 버튼 누르면 모달로 예시페이지 뜨게
+
+
+
+### 20.03.03 (화)
+
+- 로그인 popover 문구 추가, outlook 이미지 추가
+- 로그인 페이지 modal 추가
+
+
+
+### 20.03.05 (목)
+
+- 로고 일러로 png 파일 뽑기, 아이콘을 눌러보세요 png 파일로 뽑기
+
+
+
+### 20.03.08 (일)
+
+- 카풀 이벤트에 라벨링
+  - 로그인 한 사람에 대해서는 3분류 (추후 1개 추가 예정)
+    - 모집중인 방(active), 마감된 방(closed), 내가 방장인 방(owner) + 참가 신청한 방(guest)
+  - 로그인 안 한 사람에 대해서는 2분류
+    - 모집중인 방(active), 마감된 방(closed)
+
+
+
+### 20.03.11 (수)
+
+- models/guest.js `create`
+  - 쿼리 값: id, event_id, guest, email, created, condition(신청, 승낙, 거절)
+- routes/carpool.js `update`
+  - /api/carpool/guest/create
+  - /api/carpool/guest/update/:id (condition 변경을 위해)
+  - /api/carpool/guest/delete/:id
+  - /api/carpool/gueslist/:id
+- lib/carpool.js `update`
+  - guest_create, guest_update, guest_delete, guestlist 메소드 생성
+  - 작동 확인 완료
+- lib/carpool.js eventlist 메소드  `update`
+  - guestlist 객체 추가
+  - owner_closed, guest_closed 라벨링 추가
+
+
+
 ### 해야할 일
 
-- 
+- **carpool modal 디자인 생각**
 
+
+
+- 서버로 작업물 옮기기
