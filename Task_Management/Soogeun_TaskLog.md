@@ -133,14 +133,14 @@
 
 
 
-### 2. 17 (월)
+### 2.17 (월)
 
 * board, detail 페이지 **초기화 -> 데이터 요청 액션 -> 렌더링** 의 일련의 동기화 처리 완료 
 * carpool edit 페이지 디자인
 
 
 
-### 2. 18 (화)
+### 2.18 (화)
 
 * Manage 페이지에 min-width 속성 추가
 * manage Post의 상태 선택 컴포넌트 (ConditionSelector) 생성
@@ -272,6 +272,23 @@
 
 
 
+### 3.12 (목)
+
+* 앱에서 사용되는 모든 Date 데이터의 timezone을 UTC로 설정
+* owner_closed, guest_closed 라벨 처리 완료
+
+
+
+### 3.13 (금)
+
+* Common Component인 UserPhoto, MoreButton 생성
+* 캘린더 크기에 따라 한 칸에 들어가는 이벤트 개수 설정
+* 이벤트 Modal UI 작업 진행중
+
+
+
+
+
 
 
 ## 해야 할 일
@@ -310,6 +327,8 @@
 * 가끔 댓글 전체가 안담기는 에러가 있음. 백엔드 문제인지 프론트 문제인지 확인 필요
 
 * 렌더링 되기 이전에 페이지 못찾음이 아닌 로딩 페이지로
+
+* CommonComponents의 UserPhoto와 MoreButton을 이용하기
 
   
 
@@ -356,6 +375,9 @@
 
 
 
+* Carpool 탭의 Time Picker에서 OK 안누르고 바깥을 눌러도 저장되도록 변경
+* Manage Carpool Calendar의 경우, 옛날 날짜를 선택하는 경우 경고 메시지 띄우기
+  * 1) 날짜 누를 때 방지 2) 등록하기 버튼을 누를 때 날짜를 확인하세요라고 경고
 * store/manage에 있는 selectDate 액션 및 selectedDate는 Carpool로 통일해도 좋을 듯 
 * edit board 앱 데이터 및 저장 액션 리펙토링
 * carpool 수정 UX/UI 고려
@@ -397,7 +419,10 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 * 이벤트 클릭 시 해당 이벤트 모달 출력
 * MenuBox UI
 * DateInfoBox UI
-* 처음 화면 띄울 때, 오늘 일정이 오른쪽에 안담김 (Today의 selectDate 함수가 카풀 이벤트를 가져오는것보다 더 빨리 끝나기 때문인 듯)
+* manage에서 작성 이후 carpool로 redirect될 때, carpool 이벤트가 DB에 담기기 전에 get 요청을 함
+* 화면의 높이를 줄일때 캘린더 높이가 변화되지 않음
+* manage 캘린더에 이벤트 띄우고 없애는 버튼 만들기
+* date info box의 리스트 최대 개수 정하기
 
 
 
@@ -448,6 +473,12 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 
 
+* 카풀 탭에 user, 알림, 메시지 아이콘을 놓을 공간이 없음. 해결 방법 
+* 카풀 일정에 Title이 필요할까 ?
+* 기본 description: '연락처로 직접 연락 주시길 바랍니다.' : '메시지 부탁드립니다.'
+
+
+
 
 
 ### 요청 사항
@@ -459,6 +490,10 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 * 로그인이 안될 때 안내 문구
 
 * 공용 PC에서 outlook 로그아웃 방법
+
+* carpool 이벤트 model에 username 대신 user 객체
+
+* carpool 이벤트 model에 작성시간 추가
 
   
 
