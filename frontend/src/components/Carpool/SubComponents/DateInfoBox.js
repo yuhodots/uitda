@@ -144,9 +144,6 @@ class DateInfoBox extends Component {
         return eventDataList.map( event => {
             const { id, label } = event
 
-            console.log(event)
-            console.log(totalOrMyOption)
-
             return (
                 <EventListItem
                     key={id}
