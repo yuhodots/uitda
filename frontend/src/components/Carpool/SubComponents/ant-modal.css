@@ -1,0 +1,22 @@
+.ant-modal-mask {
+    background-color: rgba(0, 0, 0, 0.65)
+}
+
+.ant-modal-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ant-modal {
+    top: 0;
+    position: static;
+}
+
+.ant-modal-content {
+    position: static;
+}
+
+.ant-modal-body {
+    padding: 0;
+}

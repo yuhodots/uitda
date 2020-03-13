@@ -182,8 +182,9 @@ class CarpoolBoard extends Component {
                         visible={modalVisible} 
                         onCancel={this._closeModalWindow} 
                         footer={null}
+                        closable={false}
                     >
-                        <RoomBox selectedEvent={selectedEvent} />
+                        <RoomBox selectedEvent={selectedEvent} cancleModal={this._closeModalWindow} />
                     </Modal>
                 </ContentArea>
             </BackGroundDiv> :
