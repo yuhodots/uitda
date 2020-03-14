@@ -7,10 +7,6 @@ return sequelize.define('cal_events', {
     autoIncrement: true,
     allowNull: false
   },
-  title: {
-    type: DataTypes.STRING(50),
-    allowNull: false
-  },
   departure: {
     type: DataTypes.STRING(50),
     allowNull: false
@@ -35,14 +31,14 @@ return sequelize.define('cal_events', {
   type: DataTypes.TEXT,
   allowNull: true
   },
+  created: {
+    type:DataTypes.STRING(30),
+    allowNull: false
+  },
   condition:{
     type:DataTypes.ENUM('모집 중','마감'),
     defaultValue:'모집 중',
     allowNull:false
-  },
-  username: {
-  type: DataTypes.STRING(30),
-  allowNull: false
   },
   email: {
     type: DataTypes.STRING(50),

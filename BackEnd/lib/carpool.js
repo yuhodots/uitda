@@ -1,6 +1,7 @@
 let auth = require('./auth');
 let async = require('async');
 const { cal_events } = require('../models');
+const { users } = require('../models');
 const { guest } = require('../models');
 let moment = require('moment');
 require('moment-timezone');
@@ -8,7 +9,7 @@ moment.tz.setDefault("Asia/Seoul");
 moment.locale('ko');
 
 function make_event_ob(id, departure, destination, start, meeting_place, 
-    contact, description, condition, username, email, label, guestlist) {
+    contact, description, created, user, label, guestlist) {
 
     let event = {
         id: id,
@@ -18,9 +19,8 @@ function make_event_ob(id, departure, destination, start, meeting_place,
         meeting_place: meeting_place,
         contact: contact,
         description: description,
-        condition: condition,
-        username: username,
-        email: email,
+        created: created,
+        user: user,
         label: label,
         guestlist: guestlist
     }
@@ -63,7 +63,7 @@ module.exports = {
     
                         /* label 값 설정 */
                         let label;
-                        if( events_db[i]['condition'] == ' 마감' || overdue ){
+                        if( events_db[i]['condition'] == '마감' || overdue ){
                             label = 'closed';
                         }
                         else{
@@ -71,11 +71,23 @@ module.exports = {
                         }
 
                         /* events obeject 생성 */
+                        let user_ob;
+                        users.findOne({ where: { email: events_db[i].email } })
+                        .then(function (result) { 
+                            user_ob = {
+                                id: result.dataValues.id,
+                                email: result.dataValues.email,
+                                username: result.dataValues.username,
+                                pic_location: result.dataValues.pic_location
+                            };
+                        })
+                        .catch(function (err) { throw err; });
+
                         guest.findAll({ where: { event_id: events_db[i].id } })
                         .then(function (guestlist) { 
                             events_response[i] = make_event_ob(events_db[i].id, events_db[i].departure, events_db[i].destination, 
                                 events_db[i].start, events_db[i].meeting_place, events_db[i].contact, events_db[i].description, 
-                                events_db[i].condition, events_db[i].username, events_db[i].email, label, guestlist);
+                                events_db[i].created, user_ob, label, guestlist);
                         })
                         .then(function () {
                             if (counter == events_db.length){
@@ -109,8 +121,9 @@ module.exports = {
                             }
                         }
                     })
-                    .then(function() { callback(null); })
                 }
+
+                callback(null);
             },
 
             /* 로그인 한 유저의 요청 */
@@ -129,7 +142,7 @@ module.exports = {
                     /* label 값 설정 */
                     let label;
                     if( req.user.email == events_db[i]['email']){
-                        if ( events_db[i]['condition'] == ' 마감' || overdue ){
+                        if ( events_db[i]['condition'] == '마감' || overdue ){
                             label = 'owner_closed';
                         }
                         else{
@@ -137,14 +150,14 @@ module.exports = {
                         }
                     }
                     else if( is_guest[i] ){
-                        if ( events_db[i]['condition'] == ' 마감' || overdue ){
+                        if ( events_db[i]['condition'] == '마감' || overdue ){
                             label = 'guest_closed';
                         }
                         else{
                             label = 'guest'
                         }
                     }
-                    else if( events_db[i]['condition'] == ' 마감' || overdue ){
+                    else if( events_db[i]['condition'] == '마감' || overdue ){
                         label = 'closed';
                     }
                     else{
@@ -152,11 +165,23 @@ module.exports = {
                     } 
 
                     /* events obeject 생성 */
+                    let user_ob;
+                    users.findOne({ where: { email: events_db[i].email } })
+                    .then(function (result) { 
+                        user_ob = {
+                            id: result.dataValues.id,
+                            email: result.dataValues.email,
+                            username: result.dataValues.username,
+                            pic_location: result.dataValues.pic_location
+                        };
+                    })
+                    .catch(function (err) { throw err; });
+
                     guest.findAll({ where: { event_id: events_db[i].id } })
                     .then(function (guestlist) { 
                         events_response[i] = make_event_ob(events_db[i].id, events_db[i].departure, events_db[i].destination, 
                             events_db[i].start, events_db[i].meeting_place, events_db[i].contact, events_db[i].description, 
-                            events_db[i].condition, events_db[i].username, events_db[i].email, label, guestlist);
+                            events_db[i].created, user_ob, label, guestlist);
                     })
                     .then(function () {
                         if (counter == events_db.length){
@@ -179,7 +204,6 @@ module.exports = {
     create : function(req, res){
 
         /* 변수 선언 */
-        let title;
         let departure;
         let destination;
         let start;
@@ -188,12 +212,12 @@ module.exports = {
         let account;
         let description;
         let condition;
+        let created;
 
         async.waterfall([
 
             /* 변수 값 할당 */
             function (callback) {
-                title = req.body.title;
                 departure = req.body.departure;
                 destination = req.body.destination;
                 start = req.body.start;
@@ -201,6 +225,7 @@ module.exports = {
                 contact = req.body.contact;
                 account = req.body.account;
                 description = req.body.description;
+                created = moment().format('YYYY년MM월DD일HH시mm분ss초');
                 condition = req.body.condition;
                 callback(null);
             },
@@ -214,9 +239,9 @@ module.exports = {
 
             /* 이벤트 생성 */
             function (callback) {
-                cal_events.create({ title : title, departure : departure, destination : destination, 
+                cal_events.create({ departure : departure, destination : destination, 
                     start : start, meeting_place : meeting_place, contact : contact, account : account, 
-                    description : description, username : req.user.username, email: req.user.email, condition: condition })
+                    description : description, email: req.user.email, created: created, condition: condition })
                 .then(function(){ callback(null); }).catch(function(err){throw err;});
             },
 
@@ -235,7 +260,6 @@ module.exports = {
 
         /* 변수 선언 */
         let id;
-        let title;
         let departure;
         let destination;
         let start;
@@ -250,7 +274,6 @@ module.exports = {
             /* 변수 값 할당 */
             function (callback) {
                 id = req.params.id;
-                title = req.body.title;
                 departure = req.body.departure;
                 destination = req.body.destination;
                 start = req.body.start;
@@ -280,9 +303,9 @@ module.exports = {
 
             /* 이벤트 수정 */
             function (callback) {
-                cal_events.update({ title : title, departure : departure, destination : destination, 
+                cal_events.update({ departure : departure, destination : destination, 
                     start : start, meeting_place : meeting_place, contact : contact, account : account, 
-                    description : description, username : req.user.username, email : req.user.email, condition: condition }, 
+                    description : description, email : req.user.email, condition: condition }, 
                     { where: { id: id } })
                 .then(function () { callback(null); }).catch(function (err) { throw err; });
             },
@@ -343,7 +366,6 @@ module.exports = {
 
         /* 변수 선언 */
         let event_id;
-        let username;
         let email;
         let created;
 

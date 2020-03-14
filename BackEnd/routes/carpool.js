@@ -9,12 +9,12 @@ router.get('/', function (req, res) {
 });
 
 router.post('/create', function (req, res) {
-  /* 요청으로 보내줘야 하는 값: title, departure, destination, start, meeting_place, contact, account, description, condition */
+  /* 요청으로 보내줘야 하는 값: departure, destination, start, meeting_place, contact, description, condition */
   carpool.create(req, res);
 });
 
 router.post(`/update/:id`, function (req, res) {
-  /* 요청으로 보내줘야 하는 값: title, departure, destination, start, meeting_place, contact, account, description, condition */
+  /* 요청으로 보내줘야 하는 값: departure, destination, start, meeting_place, contact, description, condition */
   carpool.update(req, res);
 });
 
