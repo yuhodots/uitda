@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Divider } from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
 
-import { UserPhoto, MoreButton } from "../../../Structure/CommonComponents";
+import HeaderInfoBox from './RoomInfoHeaderBox';
 
 
 /* Styled Components */
@@ -16,47 +16,7 @@ const WholeBox = styled.div`
     
     display: flex;
     flex-flow: column nowrap;
-`;
-
-    /* 상단 Info Box (작성자, 작성시간, 상태정보, 더보기 버튼) */
-    const HeaderInfoBox = styled.div`
-        padding: 1rem;
-        /* margin-bottom: 1rem; */
-        min-height: 4rem;
-        
-        display: flex;
-        flex-flow: row nowrap;
-        align-items: center;
-        justify-content: space-between;
-    `;
-
-        /* Head Left Box. MoreSee Button을 오른쪽 끝으로 두기 위해 만든 박스 */
-        const HLBox = styled.div`
-            display: flex;
-            flex-flow: row nowrap;
-            align-items: center;
-        `;
-
-            const UserCreatedInfoBox = styled.div`
-                /* flex: 1; */
-                margin-left: 1rem;
-
-                display: flex;
-                flex-flow: column nowrap;
-            `;
-
-                const UserName = styled.div`
-                    margin-bottom: 0.25rem;
-                    
-                    font-size: 1rem;
-                    font-weight: bold;
-                `;
-
-                const Created = styled.div`
-                    font-size: 0.625rem;
-                `;
- 
-        
+`;    
 
     const InfoListBox = styled.div`
         padding: 1rem;
@@ -112,20 +72,12 @@ const _formatDateStr = (dateStr) => {
 }
 
 /* React Components */
-
-const MoreButtonContent = (
-    <div>
-        <p onClick={()=> {console.log('수정')}} >수정</p>
-        <p onClick={()=> {console.log('삭제')}} >삭제</p>
-    </div>
-)
-
-const TempCompo = ({selectedEvent}) => {
+const RoomInfoBox = ({selectedEvent}) => {
 
     console.log(selectedEvent)
 
     const {
-        username,
+        username, label,
         departure, destination,
         start, meeting_place, contact,
         description
@@ -135,17 +87,11 @@ const TempCompo = ({selectedEvent}) => {
 
     return (
         <WholeBox>
-            <HeaderInfoBox>
-                <HLBox>
-                    <UserPhoto size={40} />
-                    <UserCreatedInfoBox>
-                        <UserName>{username}</UserName>
-                        <Created>2시간 전</Created>
-                    </UserCreatedInfoBox>
-                </HLBox>
-                
-                <MoreButton content={MoreButtonContent} />
-            </HeaderInfoBox>
+            <HeaderInfoBox 
+                username={username}
+                created={'2시간 전'}
+                label={label}
+            />
 
             <InfoListBox>
                 <InfoListItem>
@@ -182,4 +128,4 @@ const TempCompo = ({selectedEvent}) => {
 }
 
 
-export default TempCompo;
+export default RoomInfoBox;
