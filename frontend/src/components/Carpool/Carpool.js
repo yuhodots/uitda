@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { Modal } from "antd";
 
 import { BaseCalendar } from "../Base_Components";
-import { MenuBox, DateInfoBox, RoomBox } from "./SubComponents";
+import { MenuBox, DateInfoBox, RoomModalBox } from "./SubComponents";
 import { colors } from "../../styles/variables";
 import { CARPOOL } from "../../constants/categories";
 
@@ -184,7 +184,7 @@ class CarpoolBoard extends Component {
                         footer={null}
                         closable={false}
                     >
-                        <RoomBox selectedEvent={selectedEvent} cancleModal={this._closeModalWindow} />
+                        <RoomModalBox selectedEvent={selectedEvent} cancleModal={this._closeModalWindow} />
                     </Modal>
                 </ContentArea>
             </BackGroundDiv> :

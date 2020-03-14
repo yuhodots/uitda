@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Divider } from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
 
-import { UserPhoto, MoreButton } from "../../Structure/CommonComponents";
+import { UserPhoto, MoreButton } from "../../../Structure/CommonComponents";
 
 
 /* Styled Components */

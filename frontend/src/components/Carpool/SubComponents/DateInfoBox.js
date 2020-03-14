@@ -7,7 +7,7 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import { Divider, Modal } from "antd";
 
 import { colors } from "../../../styles/variables";
-import EventListItem from "./EventListItem";
+import EventListItem from "./DateInfo_Sub/EventListItem";
 import { ACTIVE, GUEST, OWNER, CLOSED } from '../../../constants/calendar_consts';
 
 

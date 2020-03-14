@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { CloseOutlined } from "@ant-design/icons";
 
-import TempCompo from "./TempRoomBoxCompo";
+import { RoomInfoBox } from "./RoomModal_Sub";
 import { colors } from "../../../styles/variables";
 import './ant-modal.css';
 
@@ -36,7 +36,7 @@ class RoomBox extends Component {
 
         return (
             <WholeArea>
-                <TempCompo 
+                <RoomInfoBox 
                     selectedEvent={selectedEvent}
                 />
                 <CloseButton onClick={cancleModal} ><CloseOutlined/></CloseButton>
