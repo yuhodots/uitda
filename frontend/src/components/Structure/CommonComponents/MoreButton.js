@@ -64,12 +64,12 @@ class MoreButton extends Component {
 
     /* Content 정보가 담긴 list를 react component로 render하는 함수 */
     _renderPopoverList = (contentList) => {
-        return contentList.map( contentData => {
+        return contentList.map( (contentData, idx) => {
             
             const { text, icon, clickMethod } = contentData
 
             return (
-                <PopoverListItem onClick={() => this._handleContentClick(clickMethod)} >
+                <PopoverListItem onClick={() => this._handleContentClick(clickMethod)} key={idx} >
                     {
                         icon ?
                         <PopoverListItemIcon>{icon}</PopoverListItemIcon> :
