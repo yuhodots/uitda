@@ -49,45 +49,61 @@ const HeaderInfoBox = styled.div`
             `;
 
 
-/* Custom Functions */
-
-/* label에 따라 그에 해당되는 더보기 content를 생성하는 함수 */
-const _renderContent = (label) => {
-
-    switch (label) {
-
-        case OWNER:
-        case OWNER_CLOSED:
-            return [
-                {
-                    icon: <EditOutlined />,
-                    text: '수정하기'
-                },
-                {
-                    icon: <DeleteOutlined />,
-                    text: '삭제하기'
-                }
-            ]
-
-        case GUEST:
-        case GUEST_CLOSED:
-            return [
-                {
-                    text: '내 일정에서 제외하기'
-                }
-            ]
-
-        default:
-            return [
-                {
-                    text: '내 일정에 추가하기'
-                }
-            ] 
-    }
-} 
-
 /* React Component */
-const RoomInfoHeaderBox = ({username, created, label}) => {
+const RoomInfoHeaderBox = ({id, username, created, label, deleteEvent}) => {
+
+    /* label에 따라 그에 해당되는 더보기 content를 생성하는 함수 */
+    const _renderContent = (label) => {
+
+        switch (label) {
+
+            case OWNER:
+            case OWNER_CLOSED:
+                return [
+                    {
+                        icon: <EditOutlined />,
+                        text: '수정하기',
+                        clickMethod: () => {
+                            
+                        }
+                    },
+                    {
+                        icon: <DeleteOutlined />,
+                        text: '삭제하기',
+                        clickMethod: () => {
+                            deleteEvent(id);
+                            
+                            /* 현재는 시간 조금 이후에 새로고침이지만,
+                               socket으로 구현이 되면, modal 닫기만 하면 된다. */
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 300);
+                        }
+                    }
+                ]
+
+            case GUEST:
+            case GUEST_CLOSED:
+                return [
+                    {
+                        text: '내 일정에서 제외하기',
+                        clickMethod: () => {
+
+                        }
+                    }
+                ]
+
+            default:
+                return [
+                    {
+                        text: '내 일정에 추가하기',
+                        clickMethod: () => {
+
+                        }
+                    }
+                ] 
+        }
+    } 
 
     const MoreButtonContentList = _renderContent(label);
 
@@ -108,9 +124,12 @@ const RoomInfoHeaderBox = ({username, created, label}) => {
 }
 
 RoomInfoHeaderBox.propTypes = {
+    id: PropTypes.number.isRequired,            // 카풀 일정 데이터의 id
     username: PropTypes.string.isRequired,      // 카풀 일정 작성자 객체 데이터
     created: PropTypes.string.isRequired,       // 카풀 일정 작성 시간
     label: PropTypes.string.isRequired,         // 카풀 일정 상태 정보
+
+    deleteEvent: PropTypes.func.isRequired,     // 이벤트를 지우는 액션
 }
 
 export default RoomInfoHeaderBox;

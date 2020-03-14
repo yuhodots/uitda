@@ -139,6 +139,7 @@ class CarpoolBoard extends Component {
             changeClosedEvents,
             selectDate,
             storeClickedEventData,
+            deleteEvent,
         } = this.props
 
         return (
@@ -184,7 +185,11 @@ class CarpoolBoard extends Component {
                         footer={null}
                         closable={false}
                     >
-                        <RoomModalBox selectedEvent={selectedEvent} cancleModal={this._closeModalWindow} />
+                        <RoomModalBox 
+                            selectedEvent={selectedEvent} 
+                            cancleModal={this._closeModalWindow} 
+                            deleteEvent={deleteEvent} 
+                        />
                     </Modal>
                 </ContentArea>
             </BackGroundDiv> :
@@ -206,6 +211,7 @@ CarpoolBoard.propTypes = {
     changeClosedEvents: PropTypes.func.isRequired,      // 마감된 일정 보기 / 숨기기
     selectDate: PropTypes.func.isRequired,              // 캘린더에서 날짜를 선택하는 액션
     storeClickedEventData: PropTypes.func.isRequired,   // 이벤트를 클릭하는 이벤트를 핸들하는 액션
+    deleteEvent: PropTypes.func.isRequired,             // 이벤트를 지우는 액션
 }
 
 

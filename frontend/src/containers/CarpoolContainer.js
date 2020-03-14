@@ -13,6 +13,7 @@ import {
     initCalenderEvents, changeClosedEvents,
     renderTotalEvents, renderMyEvents,
     storeClickedEventData,
+    postDeleteEventRequest,
 } from "../store/actions/carpool";
 import { topicSelect } from "../store/actions/topic";
 import { CARPOOL } from "../constants/categories";
@@ -41,6 +42,7 @@ class CarpoolContainer extends Component {
             changeClosedEvents,
             selectDate,
             storeClickedEventData,
+            deleteEvent,
         } = this.props;
 
         return (
@@ -62,6 +64,7 @@ class CarpoolContainer extends Component {
                     changeClosedEvents={changeClosedEvents}
                     selectDate={selectDate}
                     storeClickedEventData={storeClickedEventData}
+                    deleteEvent={deleteEvent}
                 /> 
             </div> :
             
@@ -97,6 +100,8 @@ const mapDispatchToProps = (dispatch) => {
 
         selectDate: (category, date) => {dispatch(selectDate(category, date))},     // Carpool 캘린더의 date를 선택하는 액션 
         storeClickedEventData: (id) => {dispatch(storeClickedEventData(id))},       // 이벤트를 클릭하는 이벤트를 핸들하는 액션
+
+        deleteEvent: (id) => {dispatch(postDeleteEventRequest(id))},                // 이벤트를 지우는 액션
     }
 }
 

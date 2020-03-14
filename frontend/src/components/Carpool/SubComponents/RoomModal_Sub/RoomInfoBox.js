@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { Divider } from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
 
@@ -72,12 +73,10 @@ const _formatDateStr = (dateStr) => {
 }
 
 /* React Components */
-const RoomInfoBox = ({selectedEvent}) => {
-
-    console.log(selectedEvent)
+const RoomInfoBox = ({selectedEvent, deleteEvent}) => {
 
     const {
-        username, label,
+        id, username, label,
         departure, destination,
         start, meeting_place, contact,
         description
@@ -88,9 +87,11 @@ const RoomInfoBox = ({selectedEvent}) => {
     return (
         <WholeBox>
             <HeaderInfoBox 
+                id={id}
                 username={username}
                 created={'2시간 전'}
                 label={label}
+                deleteEvent={deleteEvent}
             />
 
             <InfoListBox>
@@ -127,5 +128,9 @@ const RoomInfoBox = ({selectedEvent}) => {
     )
 }
 
+RoomInfoBox.propTypes = {
+    selectedEvent: PropTypes.object.isRequired,         // 선택된 일정 데이터
+    deleteEvent: PropTypes.func.isRequired,             // 이벤트를 지우는 액션
+}
 
 export default RoomInfoBox;

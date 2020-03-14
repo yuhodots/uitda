@@ -90,3 +90,14 @@ export function storeClickedEventData (eventID) {
         eventID
     }
 }
+
+
+/* 카풀 일정 삭제 POST request 액션 */
+export function postDeleteEventRequest (eventID) {
+    return (dispatch) => {
+
+        const POSTurl = `/api/carpool/delete/${eventID}`;
+
+        axios.post(POSTurl)
+    }
+}

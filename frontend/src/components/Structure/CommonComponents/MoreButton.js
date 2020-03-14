@@ -55,7 +55,8 @@ class MoreButton extends Component {
     };
 
     /* 각각의 content item의 개별 메서드 실행 후, popover를 닫는 메서드 */
-    _handleContentClick = () => {
+    _handleContentClick = (clickMethod) => {
+        clickMethod();
         this.setState({
             popoverVisible: false,
         });
@@ -65,10 +66,10 @@ class MoreButton extends Component {
     _renderPopoverList = (contentList) => {
         return contentList.map( contentData => {
             
-            const { text, icon } = contentData
+            const { text, icon, clickMethod } = contentData
 
             return (
-                <PopoverListItem onClick={() => this._handleContentClick()} >
+                <PopoverListItem onClick={() => this._handleContentClick(clickMethod)} >
                     {
                         icon ?
                         <PopoverListItemIcon>{icon}</PopoverListItemIcon> :
