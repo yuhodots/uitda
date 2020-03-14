@@ -1,12 +1,16 @@
 
 
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Divider } from "antd";
-import { ArrowRightOutlined } from "@ant-design/icons";
+import { Divider, Input } from "antd";
 
 import HeaderInfoBox from './RoomInfoHeaderBox';
+import InfoListBox from './RoomInfoListBox';
+import { 
+    DEPARTURE, DESTINATION, START_DATE, START_TIME, 
+    MEETING_PLACE, CONTACT, DESCRIPTION
+} from "../../../../constants/calendar_consts";
 
 
 /* Styled Components */
@@ -19,118 +23,134 @@ const WholeBox = styled.div`
     flex-flow: column nowrap;
 `;    
 
-    const InfoListBox = styled.div`
-        padding: 1rem;
-    `;
-
-        const InfoListItem = styled.div`
-            margin: 0.5rem 0;
-            
-            display: flex;
-            flex-flow: row nowrap;
-            align-items: center;
-        `;
-
-            const InfoSubtitle = styled.span`
-                width: 6rem;
-                margin-right: 1rem;
-
-                font-weight: bold;
-            `;
-
-            const ArrowRightIcon = styled(ArrowRightOutlined)`
-                margin: 0 1rem;
-            `;
-
     const DescriptionBox = styled.div`
         padding: 1rem;
+        margin-bottom: 1rem;
+    `;
+
+    const DescriptionTextArea = styled(Input.TextArea)`
+        min-height: 5rem !important;
+        width: 100%;
+
+        font-size: 1rem;
+
+        /* TextArea 속성 */
+        resize: none;
     `;
 
 
-/* Custom Functions */
-const _formatDateStr = (dateStr) => {
-    const date = new Date(dateStr);
-
-    const YYYY = date.getUTCFullYear();
-    const MM = date.getUTCMonth() + 1;
-    const DD = date.getUTCDate();
-    let day = date.getUTCDay();
-    switch (day) {
-        case 0: day = '일'; break;
-        case 1: day = '월'; break;
-        case 2: day = '화'; break;
-        case 3: day = '수'; break;
-        case 4: day = '목'; break;
-        case 5: day = '금'; break;
-        case 6: day = '토'; break;
-        default: break;
-    }
-    const hh = date.getUTCHours() + 11;
-    const hourStr = hh < 23 ? `오전 ${hh % 12 + 1}시` : `오후 ${hh % 12 + 1}시`;
-    const mm = date.getUTCMinutes();
-
-    return `${YYYY}년 ${MM}월 ${DD}일 ${day}요일. ${hourStr} ${mm}분`
-}
-
 /* React Components */
-const RoomInfoBox = ({selectedEvent, deleteEvent}) => {
+class RoomInfoBox extends Component {
 
-    const {
-        id, username, label,
-        departure, destination,
-        start, meeting_place, contact,
-        description
-    } = selectedEvent;
+    state = { isUpdateMode: false }
 
-    const startStr = _formatDateStr(start);
+    /* Update 모드로 변경하는 메서드. 
+       Update 모드로 변경할 때는 현재 이벤트 데이터를 UpdateData 객체에 저장하는 과정을 선행으로 진행한다. */
+    _changeModeToUpdate = () => {
 
-    return (
-        <WholeBox>
-            <HeaderInfoBox 
-                id={id}
-                username={username}
-                created={'2시간 전'}
-                label={label}
-                deleteEvent={deleteEvent}
-            />
+        const { selectedEvent, storeEventUpdateData } = this.props;
 
-            <InfoListBox>
-                <InfoListItem>
-                    <InfoSubtitle>이동 방향</InfoSubtitle>
-                    {departure} <ArrowRightIcon /> {destination}
-                </InfoListItem>
-                <InfoListItem>
-                    <InfoSubtitle>출발 시각</InfoSubtitle>
-                    {startStr}
-                </InfoListItem>
-                <InfoListItem>
-                    <InfoSubtitle>집합 장소</InfoSubtitle>
-                    {meeting_place}
-                </InfoListItem>
-                <InfoListItem>
-                    <InfoSubtitle>연락처</InfoSubtitle>
-                    {contact}
-                </InfoListItem>
-            </InfoListBox>
-            
-            <Divider />
+        const {
+            departure, destination,
+            start, meeting_place, 
+            contact, description
+        } = selectedEvent;
 
-            <DescriptionBox>
+        storeEventUpdateData(DEPARTURE, departure);
+        storeEventUpdateData(DESTINATION, destination);
+        
+        storeEventUpdateData(MEETING_PLACE, meeting_place);
+        storeEventUpdateData(CONTACT, contact);
+        storeEventUpdateData(DESCRIPTION, description);
+
+        this.setState({
+            ...this.state,
+            isUpdateMode: true
+        });
+    }
+
+    /* 보기 모드로 변경하는 메서드. 수정 취소 시 해당 메서드만을 실행하고,
+       수정 완료 시, Post 요청 후 앱의 state까지 변경한 후 해당 메서드를 실행한다. */
+    _changeModeToRead = () => {
+        this.setState({
+            ...this.state,
+            isUpdateMode: false
+        });
+    }
+
+
+    render() {
+
+        const { isUpdateMode } = this.state;
+
+        const { 
+            selectedEvent, 
+            eventDataToUpdate,
+
+            deleteEvent,
+            storeEventUpdateData,
+            updateEvent,
+        } = this.props;
+
+        const {
+            id, username, label,
+            contact, description
+        } = selectedEvent;
+    
+        return (
+            <WholeBox>
+                <HeaderInfoBox 
+                    isUpdateMode={isUpdateMode}
+                    id={id}
+                    username={username}
+                    created={'2시간 전'}
+                    label={label}
+                    eventDataToUpdate={eventDataToUpdate}
+
+                    deleteEvent={deleteEvent}
+                    changeModeToUpdate={this._changeModeToUpdate}
+                    changeModeToRead={this._changeModeToRead}
+                    updateEvent={updateEvent}
+                />
+    
+                <InfoListBox 
+                    isUpdateMode={isUpdateMode}
+                    selectedEvent={selectedEvent}
+
+                    storeEventUpdateData={storeEventUpdateData}
+                />
+                
+                <Divider />
+    
+                <DescriptionBox>
                 {
-                    description ? destination :
+                    isUpdateMode ?
+                    
+                    <DescriptionTextArea 
+                        defaultValue={description}
+                        autoSize={true}
+                        onChange={(e) => storeEventUpdateData(DESCRIPTION, e.target.value)}
+                    /> :
+                    
+                    description ? description :
                     contact ?
                     '연락처로 직접 연락 주시길 바랍니다.' :
                     '메시지 부탁드립니다.'
                 }
-            </DescriptionBox>
-            
-        </WholeBox>
-    )
+                </DescriptionBox>
+
+            </WholeBox>
+        )
+    }
 }
 
 RoomInfoBox.propTypes = {
     selectedEvent: PropTypes.object.isRequired,         // 선택된 일정 데이터
+    eventDataToUpdate: PropTypes.object.isRequired,     // 수정 요청 보낼 일정 데이터
+
     deleteEvent: PropTypes.func.isRequired,             // 이벤트를 지우는 액션
+    storeEventUpdateData: PropTypes.func.isRequired,    // 수정 요청 보낼 일정 데이터를 저장하는 액션
+    updateEvent: PropTypes.func.isRequired,             // 이벤트 수정 액션
 }
 
 export default RoomInfoBox;
