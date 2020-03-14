@@ -287,6 +287,15 @@
 
 
 
+### 3.14 (토)
+
+* Carpool Subcomponents 디렉토리 구조 정리
+* 더보기 UI 작업
+* 카풀 일정 삭제 기능 구현 완료
+* 
+
+
+
 
 
 
@@ -417,13 +426,18 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 #### Carpool FrontEnd
 
-* 이벤트 클릭 시 해당 이벤트 모달 출력
-* MenuBox UI
-* DateInfoBox UI
+* date info box의 리스트 최대 개수 정하기
+* 이벤트 모달 UI 마무리
+* 이벤 수정, 참가신청 액션 구현
+
+
+
+* 카풀 일정 삭제하기 클릭 시, 경고창 띄우기
 * manage에서 작성 이후 carpool로 redirect될 때, carpool 이벤트가 DB에 담기기 전에 get 요청을 함
 * 화면의 높이를 줄일때 캘린더 높이가 변화되지 않음
 * manage 캘린더에 이벤트 띄우고 없애는 버튼 만들기
-* date info box의 리스트 최대 개수 정하기
+* 모달의 참가신청 UI를 구현한 이후, 시간이 지난 일정에 대해서는 방장의 UI에서 마감 버튼 disabled
+  마찬가지로, 참여자 입장에서는 마감된 후에는 참가 신청 비활성화
 
 
 
@@ -444,9 +458,7 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 
 
-#### User BackEnd
 
-* 현재 user status를 알 수 있는 api 만들기
 
 
 
@@ -474,10 +486,13 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 
 
-* 카풀 탭에 user, 알림, 메시지 아이콘을 놓을 공간이 없음. 해결 방법 
-* 카풀 일정에 Title이 필요할까 ? 작성 시간은 ?
-* 기본 description: '연락처로 직접 연락 주시길 바랍니다.' : '메시지 부탁드립니다.'
-* 연락처, 집합 장소 빈칸 처리 방법
+* Calendar에 Socket 적용 필요
+  * 참가 신청 버튼 이후 새로고침을 하지 않고 데이터 업데이트가 이루어지기 위해서 필요
+  * 카풀 탭에서 카풀 이벤트가 실시간으로 추가될 때 변경된 것을 확인하기 위해서 필요
+
+
+
+* 시간 지난 일정에 대해 방장이 마감 상태 변경해도 문제 없는 지 묻기
 
 
 
@@ -495,7 +510,6 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 * carpool 이벤트 model에 username 대신 user 객체
 
-* carpool 이벤트 model에 작성시간 추가
-
   
+
 

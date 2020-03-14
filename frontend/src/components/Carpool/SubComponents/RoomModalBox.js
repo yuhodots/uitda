@@ -32,13 +32,25 @@ class RoomBox extends Component {
 
     render() {
         
-        const { selectedEvent, cancleModal, deleteEvent } = this.props
+        const { 
+            selectedEvent, 
+            eventDataToUpdate,
+
+            cancleModal, 
+            deleteEvent,
+            storeEventUpdateData,
+            updateEvent,
+        } = this.props
 
         return (
             <WholeArea>
                 <RoomInfoBox 
                     selectedEvent={selectedEvent}
+                    eventDataToUpdate={eventDataToUpdate}
+
                     deleteEvent={deleteEvent}
+                    storeEventUpdateData={storeEventUpdateData}
+                    updateEvent={updateEvent}
                 />
                 <CloseButton onClick={cancleModal} ><CloseOutlined/></CloseButton>
             </WholeArea>
@@ -48,8 +60,12 @@ class RoomBox extends Component {
 
 RoomBox.propTypes = {
     selectedEvent: PropTypes.object.isRequired,         // 선택된 일정 데이터
+    eventDataToUpdate: PropTypes.object.isRequired,     // 수정 요청 보낼 일정 데이터
+
     cancleModal: PropTypes.func.isRequired,             // 모달 창 닫는 메서드
     deleteEvent: PropTypes.func.isRequired,             // 이벤트를 지우는 액션
+    storeEventUpdateData: PropTypes.func.isRequired,    // 수정 요청 보낼 일정 데이터를 저장하는 액션
+    updateEvent: PropTypes.func.isRequired,             // 이벤트 수정 액션
 }
 
 export default RoomBox;

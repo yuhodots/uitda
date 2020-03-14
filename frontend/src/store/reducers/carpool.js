@@ -6,6 +6,8 @@ import {
     RENDER_MY_CALENDER_EVENTS,
     CHANGE_CLOSED_CALENDER_EVENTS,
     CARPOOL_CLICK_EVENT,
+    CARPOOL_STORE_EVENT_UPDATE_DATA,
+    CARPOOL_POST_EVENT_UPDATE_SUCCESS,
 } from "../actions/ActionTypes";
 
 import { CARPOOL } from "../../constants/categories";
@@ -32,6 +34,15 @@ const InitialState = {
     selectedDate: new Date(),       // 선택된 날짜 정보
     eventsOnSelectedDate: [],       // 해당 날짜의 일정 목록
     selectedEvent: {},              // 선택한 (클릭한) 일정 데이터
+    eventDataToUpdate: {            // 수정 POST 요청을 보낼 데이터 객체
+        departure: '',                  // 출발지
+        destination: '',                // 도착지
+        start_date: new Date(),         // 출발 날짜
+        start_time: new Date(),         // 출발 시각
+        meeting_place: '',              // 집합 장소 
+        contact: '',                    // 연락처
+        description: ''                 // 추가 정보
+    }
 }
 
 
@@ -182,6 +193,30 @@ export default function carpool (state = InitialState, action) {
             return {
                 ...state,
                 selectedEvent
+            }
+        }
+
+        /* 수정 request를 보낼 데이터를 저장하는 액션 */
+        case CARPOOL_STORE_EVENT_UPDATE_DATA: 
+            for ( let key in state.eventDataToUpdate) {
+                if ( key === action.data_key ) {
+                    state.eventDataToUpdate[key] = action.data_value
+                }
+            }
+            return state;
+
+        /* 수정 요청 완료 시, 모달에 곧바로 변경을 주기 위해 
+           eventDataToUpdate 데이터를 selectedEvent로 저장 */
+        case CARPOOL_POST_EVENT_UPDATE_SUCCESS:{
+            const {
+                departure, destination, meeting_place, contact, description
+            } = state.eventDataToUpdate
+            return {
+                ...state,
+                selectedEvent: {
+                    ...state.selectedEvent,
+                    departure, destination, meeting_place, contact, description
+                }
             }
         }
 
