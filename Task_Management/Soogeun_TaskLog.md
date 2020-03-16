@@ -443,8 +443,6 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 #### Carpool FrontEnd
 
-* date info box의 리스트 최대 개수 정하기
-* 이벤트 모달 UI 마무리
 * 이벤트 참가신청 액션 구현
 * 이벤트 마감처리 기능 구현
 * 카풀 일정 업데이트 시에는 modal이 닫히지 않도록 할 것
