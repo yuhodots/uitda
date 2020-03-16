@@ -1,3 +1,7 @@
 .ant-popover-placement-bottomRight .ant-popover-arrow {
     display: none;
 }
+
+.ant-popover-inner-content {
+    padding: 0.75rem 0;
+}

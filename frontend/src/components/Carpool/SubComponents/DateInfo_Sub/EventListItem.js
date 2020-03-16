@@ -4,10 +4,10 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import { colors } from "../../../styles/variables";
+import { colors } from "../../../../styles/variables";
 import { 
     TOTAL, CLOSED, ACTIVE, OWNER, GUEST, OWNER_CLOSED, GUEST_CLOSED
-} from "../../../constants/calendar_consts";
+} from "../../../../constants/calendar_consts";
 
 /* Styled Componenets */
 const ListItem = styled.div`

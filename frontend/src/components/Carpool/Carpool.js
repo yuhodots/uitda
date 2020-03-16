@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { Modal } from "antd";
 
 import { BaseCalendar } from "../Base_Components";
-import { MenuBox, DateInfoBox, RoomBox } from "./SubComponents";
+import { MenuBox, DateInfoBox, RoomModalBox } from "./SubComponents";
 import { colors } from "../../styles/variables";
 import { CARPOOL } from "../../constants/categories";
 
@@ -132,6 +132,7 @@ class CarpoolBoard extends Component {
             selectedDate,
             eventsOnSelectedDate,
             selectedEvent,
+            eventDataToUpdate,
 
             initCalenderEvents,
             renderTotalEvents,
@@ -139,6 +140,9 @@ class CarpoolBoard extends Component {
             changeClosedEvents,
             selectDate,
             storeClickedEventData,
+            deleteEvent,
+            storeEventUpdateData,
+            updateEvent,
         } = this.props
 
         return (
@@ -184,7 +188,15 @@ class CarpoolBoard extends Component {
                         footer={null}
                         closable={false}
                     >
-                        <RoomBox selectedEvent={selectedEvent} cancleModal={this._closeModalWindow} />
+                        <RoomModalBox 
+                            selectedEvent={selectedEvent}
+                            eventDataToUpdate={eventDataToUpdate}
+                            
+                            cancleModal={this._closeModalWindow} 
+                            deleteEvent={deleteEvent} 
+                            storeEventUpdateData={storeEventUpdateData}
+                            updateEvent={updateEvent}
+                        />
                     </Modal>
                 </ContentArea>
             </BackGroundDiv> :
@@ -199,6 +211,7 @@ CarpoolBoard.propTypes = {
     selectedDate: PropTypes.object.isRequired,          // 캘린더에서 선택된 날짜 정보
     eventsOnSelectedDate: PropTypes.array.isRequired,   // 선택된 날짜에 해당하는 일정 목록
     selectedEvent: PropTypes.object.isRequired,         // 선택된 일정 데이터
+    eventDataToUpdate: PropTypes.object.isRequired,     // 수정 요청 보낼 일정 데이터
 
     initCalenderEvents: PropTypes.func.isRequired,      // 캘린더 첫 렌더 시 들어올 events 받는 액션
     renderTotalEvents: PropTypes.func.isRequired,       // 전체 일정 보기
@@ -206,6 +219,9 @@ CarpoolBoard.propTypes = {
     changeClosedEvents: PropTypes.func.isRequired,      // 마감된 일정 보기 / 숨기기
     selectDate: PropTypes.func.isRequired,              // 캘린더에서 날짜를 선택하는 액션
     storeClickedEventData: PropTypes.func.isRequired,   // 이벤트를 클릭하는 이벤트를 핸들하는 액션
+    deleteEvent: PropTypes.func.isRequired,             // 이벤트를 지우는 액션
+    storeEventUpdateData: PropTypes.func.isRequired,    // 수정 요청 보낼 일정 데이터를 저장하는 액션
+    updateEvent: PropTypes.func.isRequired,             // 이벤트 수정 액션
 }
 
 

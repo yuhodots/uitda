@@ -1,4 +1,5 @@
 import axios from "axios";
+import qs from 'qs';
 
 import { 
     CARPOOL_SELECT_DATE,
@@ -9,6 +10,8 @@ import {
     RENDER_MY_CALENDER_EVENTS,
     CHANGE_CLOSED_CALENDER_EVENTS,
     CARPOOL_CLICK_EVENT,
+    CARPOOL_STORE_EVENT_UPDATE_DATA,
+    CARPOOL_POST_EVENT_UPDATE_SUCCESS
 } from "./ActionTypes";
 
 
@@ -88,5 +91,58 @@ export function storeClickedEventData (eventID) {
     return {
         type: CARPOOL_CLICK_EVENT,
         eventID
+    }
+}
+
+
+/* 카풀 일정 삭제 POST request 액션 */
+export function postDeleteEventRequest (eventID) {
+    return (dispatch) => {
+
+        const POSTurl = `/api/carpool/delete/${eventID}`;
+
+        axios.post(POSTurl)
+    }
+}
+
+
+/* 카풀 update 요청에 보낼 데이터를 저장하는 액션 */
+export function storeEventUpdateData (data_key, data_value) {
+    return {
+        type: CARPOOL_STORE_EVENT_UPDATE_DATA,
+        data_key, data_value
+    }
+}
+
+/* 카풀 일정 update POST request 액션 */
+export function postUpdateEventRequest (id, eventData) {
+    return (dispatch) => {
+        
+        /* POST 요청 시 사용되는 url */
+        const POSTurl = `/api/carpool/update/${id}`;
+
+        /* POST Request Body Data */
+        const { departure, destination, start_date, start_time, meeting_place, contact, description } = eventData;
+        let start = start_date;
+        start.setHours(start_time.getHours());
+        start.setMinutes(start_time.getMinutes());
+        start.setSeconds(0);
+        const requestBody = { departure, destination, start, meeting_place, contact, description }
+
+        /* POST Request config Data */
+        const config = {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }
+
+        /* POST Request */
+        return axios.post(POSTurl, qs.stringify(requestBody), config)
+        .then(res => {dispatch(postUpdateEventSuccess(res))})
+        // .catch(err => {dispatch(postCarpoolEventFailure(err))})
+    }
+}
+
+export function postUpdateEventSuccess () {
+    return {
+        type: CARPOOL_POST_EVENT_UPDATE_SUCCESS
     }
 }
