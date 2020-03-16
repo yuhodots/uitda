@@ -96,7 +96,7 @@ class RoomInfoBox extends Component {
         } = this.props;
 
         const {
-            id, username, label,
+            id, label, user, created,
             contact, description
         } = selectedEvent;
     
@@ -105,8 +105,8 @@ class RoomInfoBox extends Component {
                 <HeaderInfoBox 
                     isUpdateMode={isUpdateMode}
                     id={id}
-                    username={username}
-                    created={'2시간 전'}
+                    user={user}
+                    created={created}
                     label={label}
                     eventDataToUpdate={eventDataToUpdate}
 

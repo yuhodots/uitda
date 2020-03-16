@@ -203,7 +203,7 @@ class RoomInfoHeaderBox extends Component {
 
         const {
             isUpdateMode, 
-            username, created, 
+            user, created, 
             changeModeToRead,
         } = this.props
 
@@ -216,7 +216,7 @@ class RoomInfoHeaderBox extends Component {
                 <HLBox>
                     <UserPhoto size={40} />
                     <UserCreatedInfoBox>
-                        <UserName>{username}</UserName>
+                        <UserName>{user.username}</UserName>
                         <Created>{created}</Created>
                     </UserCreatedInfoBox>
                 </HLBox>
