@@ -292,7 +292,20 @@
 * Carpool Subcomponents 디렉토리 구조 정리
 * 더보기 UI 작업
 * 카풀 일정 삭제 기능 구현 완료
-* 
+* Common Component인 UnderLineTextArea 생성
+* 카풀 일정 수정하기 시간 관련된 내용 빼고 모두 구현
+
+
+
+### 3.15 (일)
+
+* Uitda Time Picker 컴포넌트 제작
+
+
+
+### 3.16 (월)
+
+* 카풀 일정 수정하기 구현 완료 !!!
 
 
 
@@ -428,7 +441,9 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 * date info box의 리스트 최대 개수 정하기
 * 이벤트 모달 UI 마무리
-* 이벤 수정, 참가신청 액션 구현
+* 이벤트 참가신청 액션 구현
+* 이벤트 마감처리 기능 구현
+* 카풀 일정 업데이트 시에는 modal이 닫히지 않도록 할 것
 
 
 
@@ -489,10 +504,6 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 * Calendar에 Socket 적용 필요
   * 참가 신청 버튼 이후 새로고침을 하지 않고 데이터 업데이트가 이루어지기 위해서 필요
   * 카풀 탭에서 카풀 이벤트가 실시간으로 추가될 때 변경된 것을 확인하기 위해서 필요
-
-
-
-* 시간 지난 일정에 대해 방장이 마감 상태 변경해도 문제 없는 지 묻기
 
 
 
