@@ -306,6 +306,10 @@
 ### 3.16 (월)
 
 * 카풀 일정 수정하기 구현 완료 !!!
+* Calendar state update와 관련된 render 오류 해결
+* 모달 헤더 user, created update
+* date info box 리스트 scroll 기능 추가
+* info modal 에러 해결
 
 
 
@@ -520,6 +524,8 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 * 공용 PC에서 outlook 로그아웃 방법
 
 * carpool 이벤트 model에 username 대신 user 객체
+
+* 카풀, manage의 created 형태 바꾸기
 
   
 
