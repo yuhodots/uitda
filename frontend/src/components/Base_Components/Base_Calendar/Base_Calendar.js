@@ -40,8 +40,6 @@ class Calendar extends Component {
                 dayHeads[i].addEventListener('mouseleave', (e) => this._handleMouseLeaveDayHead(e, dayElbg) )
             }
         })
-        window.addEventListener('resize', this._updateInnerWidth);
-        this._updateInnerWidth();
     }
 
     componentWillUnmount () {
@@ -56,15 +54,8 @@ class Calendar extends Component {
                 dayHeads[i].removeEventListener('mouseleave', (e) => this._handleMouseLeaveDayHead(e, dayElbg) )
             }
         })
-        window.removeEventListener('resize', this._updateInnerWidth);
     }
 
-    _updateInnerWidth = (e) => {
-        this.setState({
-            ...this.state,
-            innerWidth: window.innerWidth
-        })
-    }
 
     /* dayEl의 Head 부분 hover 할 때, 스타일 변경하는 함수 */
     _handleHoverDayHead = (e, dayEl) => {
@@ -194,9 +185,6 @@ class Calendar extends Component {
             eventsObj,
         } = this.props;
 
-        const { innerWidth } = this.state;
-        const isDeskTopDisplay = innerWidth > 1500;
-
         const events = this._dataObjToviewObjList(eventsObj);
 
         let props = ( category === MANAGE ?
@@ -237,7 +225,7 @@ class Calendar extends Component {
             fixedWeekCount: false,                              // 달력이 해당 월의 week 수 만큼 render됨 (6주 fix X)
 
             defaultTimedEventDuration: '00:00',                 // 카풀 이벤트의 duration을 없앰으로써 한 이벤트가 한 칸만 차지하도록 함
-            eventLimit: isDeskTopDisplay ? 4 : 3,               // 달력 한 칸에 나타나는 이벤트 최대 개수
+            eventLimit: true,                                   // 달력 한 칸에 나타나는 이벤트 최대 개수
 
             dateClick: this._selectDate,                        // 달력의 날짜 부분 클릭 시 실행되는 함수
             eventClick: this._handleClickEvent,                 // 이벤트 클릭을 처리하는 함수
