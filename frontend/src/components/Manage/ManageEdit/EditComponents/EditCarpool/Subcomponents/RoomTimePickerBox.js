@@ -3,10 +3,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { TimePicker } from "antd";
-import moment from "moment";
 
 import Subtitle from "./RoomSubtitle";
+import { UitdaTimePicker } from "../../../../../Structure/CommonComponents";
 import { START_TIME } from "../../../../../../constants/edit_RoomInfo_DataKeys";
 
 /* Styled Components */
@@ -26,12 +25,9 @@ const RoomTimePickerBox = ({storeCarpoolData}) => {
         <WholeBox>
             <Subtitle content='출발 시각' redStar={true} />
 
-            <TimePicker 
-                use12Hours 
-                defaultOpenValue={moment('00:00', 'h:mm a')}
-                format='h:mm a'
-                minuteStep={5}
-                onChange={(time) => storeCarpoolData(START_TIME, time)}
+            <UitdaTimePicker 
+                storeDataFunc={storeCarpoolData}
+                data_key={START_TIME}
             />
         </WholeBox>
     )
