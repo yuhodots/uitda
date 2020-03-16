@@ -59,7 +59,11 @@ const WholeBoxArea = styled.div`
 
         /* 카풀 일정 목록을 담은 박스 */
         const EventsListBox = styled.div`
+            flex: 1;
+            flex-basis: 0;
+            margin-bottom: 2rem;
             width: 100%;
+            overflow-y: auto;
 
             display: flex;
             flex-flow: column nowrap;
