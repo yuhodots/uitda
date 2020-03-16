@@ -169,6 +169,7 @@ class DateInfoBox extends Component {
     }
 
     _cancleInfoModal = (e) => {
+        console.log(e)
         this.setState({
             ...this.state,
             modalVisible: false
@@ -206,14 +207,15 @@ class DateInfoBox extends Component {
                         <UsingInfo onClick={this._OpenInfoModal}>
                             <InfoIcon />
                             카풀 이용 안내
-
-                            <Modal
+                        </UsingInfo>
+                        <Modal
                                 visible={modalVisible}
                                 onCancel={this._cancleInfoModal}
+                                footer={null}
+                                maskClosable={true}
                             >
-                                hi
-                            </Modal>
-                        </UsingInfo>
+                            hi
+                        </Modal>
                     </InfoList>
                 </InfomationBox>
             </WholeBoxArea>

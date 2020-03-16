@@ -247,7 +247,7 @@ RoomInfoHeaderBox.propTypes = {
     isUpdateMode: PropTypes.bool.isRequired,            // 수정 모드 인지
 
     id: PropTypes.number.isRequired,                    // 카풀 일정 데이터의 id
-    username: PropTypes.string.isRequired,              // 카풀 일정 작성자 객체 데이터
+    user: PropTypes.object.isRequired,                  // 카풀 일정 작성자 객체 데이터
     created: PropTypes.string.isRequired,               // 카풀 일정 작성 시간
     label: PropTypes.string.isRequired,                 // 카풀 일정 상태 정보
     eventDataToUpdate: PropTypes.object.isRequired,     // 수정 요청 보낼 일정 데이터
