@@ -3,11 +3,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { DatePicker } from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
+import moment from "moment";
 
-import { UnderLineTextArea } from "../../../Structure/CommonComponents";
+import { UnderLineTextArea, UitdaTimePicker } from "../../../Structure/CommonComponents";
 import { 
-    DEPARTURE, DESTINATION, MEETING_PLACE, CONTACT
+    DEPARTURE, DESTINATION, START_DATE, START_TIME, MEETING_PLACE, CONTACT
 } from "../../../../constants/calendar_consts";
 
 
@@ -72,6 +74,8 @@ const RoomInfoListBox = ({isUpdateMode, selectedEvent, storeEventUpdateData}) =>
 
     const startStr = _formatDateStr(start);
 
+    const defaultTime = moment(start).utc()
+
     return ( isUpdateMode ?
         <InfoListBox>
             <InfoListItem>
@@ -83,7 +87,8 @@ const RoomInfoListBox = ({isUpdateMode, selectedEvent, storeEventUpdateData}) =>
 
             <InfoListItem>
                 <InfoSubtitle>출발 시각</InfoSubtitle>
-                {startStr}
+                <DatePicker onChange={(date) => { storeEventUpdateData(START_DATE, date._d) }} defaultValue={defaultTime} />
+                <UitdaTimePicker storeDataFunc={storeEventUpdateData} data_key={START_TIME} defaultValue={defaultTime} />
             </InfoListItem>
             
             <InfoListItem>

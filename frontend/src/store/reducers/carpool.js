@@ -209,13 +209,19 @@ export default function carpool (state = InitialState, action) {
            eventDataToUpdate 데이터를 selectedEvent로 저장 */
         case CARPOOL_POST_EVENT_UPDATE_SUCCESS:{
             const {
-                departure, destination, meeting_place, contact, description
+                departure, destination, start_date, start_time, meeting_place, contact, description
             } = state.eventDataToUpdate
+
+            let start = start_date;
+            start.setHours(start_time.getHours());
+            start.setMinutes(start_time.getMinutes());
+            start.setSeconds(0);
+
             return {
                 ...state,
                 selectedEvent: {
                     ...state.selectedEvent,
-                    departure, destination, meeting_place, contact, description
+                    departure, destination, start, meeting_place, contact, description
                 }
             }
         }

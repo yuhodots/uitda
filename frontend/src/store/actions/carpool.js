@@ -122,8 +122,12 @@ export function postUpdateEventRequest (id, eventData) {
         const POSTurl = `/api/carpool/update/${id}`;
 
         /* POST Request Body Data */
-        const { departure, destination, meeting_place, contact, description } = eventData;
-        const requestBody = { departure, destination, meeting_place, contact, description }
+        const { departure, destination, start_date, start_time, meeting_place, contact, description } = eventData;
+        let start = start_date;
+        start.setHours(start_time.getHours());
+        start.setMinutes(start_time.getMinutes());
+        start.setSeconds(0);
+        const requestBody = { departure, destination, start, meeting_place, contact, description }
 
         /* POST Request config Data */
         const config = {

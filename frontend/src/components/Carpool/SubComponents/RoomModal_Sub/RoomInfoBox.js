@@ -56,9 +56,12 @@ class RoomInfoBox extends Component {
             contact, description
         } = selectedEvent;
 
+        const startDate = new Date(start);
+
         storeEventUpdateData(DEPARTURE, departure);
         storeEventUpdateData(DESTINATION, destination);
-        
+        storeEventUpdateData(START_DATE, startDate);
+        storeEventUpdateData(START_TIME, startDate);
         storeEventUpdateData(MEETING_PLACE, meeting_place);
         storeEventUpdateData(CONTACT, contact);
         storeEventUpdateData(DESCRIPTION, description);
