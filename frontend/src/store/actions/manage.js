@@ -347,8 +347,8 @@ export function postCarpoolEvent (title, departure, destination, start_date, sta
 
         /* POST Request Body Data */
         const DateToTime = start_date.getTime();
-        const HoursToTime = start_time._d.getHours() * 60 * 60 * 1000;
-        const MinutesToTime = start_time._d.getMinutes() * 60 * 1000;
+        const HoursToTime = start_time.getHours() * 60 * 60 * 1000;
+        const MinutesToTime = start_time.getMinutes() * 60 * 1000;
         const start = new Date(DateToTime + HoursToTime + MinutesToTime);
 
         const requestBody = { title, departure, destination, start, meeting_place, contact, description }
