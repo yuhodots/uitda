@@ -313,6 +313,16 @@
 
 
 
+### 3.17 (화)
+
+* 카풀 마감, 마감취소, 신청, 신청 취소 액션 제작
+* 이벤트 마감 기능 구현
+* 신청 기능 제작 (확인 X)
+
+
+
+
+
 
 
 
@@ -339,36 +349,28 @@
 
 #### Detail FrontEnd
 
-* 댓글 create, delete시 뜨는 proxy 에러 원인 찾기 -> reload를 실행해서 그러함. socket.io를 이용한다면 해결될 문제.
+* socket.io 공부하기
+* socket.io를 이용해 클라이언트의 데이터 실시간 업데이트 되도록 하기
+* 사진이 없는 글 디자인 고려
+* 사진 Ant Design의 Carousel Component 검토
+* 댓글 더보기 기능
+* 답글 더보기 기능
 
+
+
+* CommonComponents의 UserPhoto와 MoreButton을 이용하기
+* 가끔 댓글 전체가 안담기는 에러가 있음. 백엔드 문제인지 프론트 문제인지 확인 필요
+
+
+
+* 댓글 수정 시 (수정 됨) 을 추가하기
+* 댓글 create, delete시 뜨는 proxy 에러 원인 찾기 -> reload를 실행해서 그러함. socket.io를 이용한다면 해결될 문제.
 * console 창에 뜨는 props 타입 관련 에러 메시지 -> type script로 변경하지 않는 이상 해결되지 않을 것 같음. (혹은 콘솔 에러 메시지를 없애기 위해 지저분한 코드를 만들어야 함.)
   기능상에 문제는 전혀 없기 때문에 넘어갑시다.
 
-  
-  
-* 댓글 수정 시 (수정 됨) 을 추가하기
-
 * 스타일이 적용된 태그를 포함한 내용을 DescriptionBox 컴포넌트에 렌더링 시키기
 
-* 가끔 댓글 전체가 안담기는 에러가 있음. 백엔드 문제인지 프론트 문제인지 확인 필요
 
-* 렌더링 되기 이전에 페이지 못찾음이 아닌 로딩 페이지로
-
-* CommonComponents의 UserPhoto와 MoreButton을 이용하기
-
-  
-
-* 사진이 없는 글 디자인 고려
-
-* 사진 Ant Design의 Carousel Component 검토
-
-* 댓글 더보기 기능
-
-* 답글 더보기 기능
-
-* socket.io 공부하기
-
-* socket.io를 이용해 클라이언트의 데이터 실시간 업데이트 되도록 하기
 
 
 
@@ -377,15 +379,10 @@
 
 * Login 페이지 디자인
 * Outlook 로그아웃 한 상태로, 데스크탑으로 Login 기능 확인
-* 로그인 완료 후 로그인 페이지로 오기 이전에 페이지로 redirect하기
 * 첫 로그인 시, outlook을 통해 회원가입 되었습니다. 메시지 뜨기
 * 모든 컨테이너에서 user data 가 없는 경우 로그인 페이지로 이동하도록 하기
 
 
-
-#### Home FrontEnd
-
-* Home 페이지 디자인
 
 
 
@@ -443,18 +440,18 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 #### Carpool FrontEnd
 
-* 이벤트 참가신청 액션 구현
-* 이벤트 마감처리 기능 구현
 * 카풀 일정 업데이트 시에는 modal이 닫히지 않도록 할 것
 
 
 
+* socket을 적용할 때, selected event id를 저장하고, modal 액션 (이벤트 수정, 마감, 참가 상태 변경) 으로 해당 이벤트가 변할 때, 띄어진 모달 창의 데이터가 변할 수 있도록 작업하기
 * 카풀 일정 삭제하기 클릭 시, 경고창 띄우기
 * manage에서 작성 이후 carpool로 redirect될 때, carpool 이벤트가 DB에 담기기 전에 get 요청을 함
 * 화면의 높이를 줄일때 캘린더 높이가 변화되지 않음
 * manage 캘린더에 이벤트 띄우고 없애는 버튼 만들기
 * 모달의 참가신청 UI를 구현한 이후, 시간이 지난 일정에 대해서는 방장의 UI에서 마감 버튼 disabled
   마찬가지로, 참여자 입장에서는 마감된 후에는 참가 신청 비활성화
+* 카풀 이용 안내 모달 창 만들기
 
 
 
@@ -467,11 +464,18 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 * 유저 아이콘 배치
 
-  
+
+
+
+#### Chatting FrontEnd
+
+* 
+
+
 
 #### FrontEnd
 
-* 
+* ant-modal css 전체 속성과 카풀 modal 고유 속성 구분할 수 있도록 하기
 
 
 
@@ -491,21 +495,18 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 
 
-* 내가 참여한 카풀 일정을 안내할 방법
-  1. modal 부분에 댓글을 달 수 있도록 하고, 내가 댓글 단 카풀 일정을 표시
-     내 카풀 일정에는 내가 방장인 이벤트 + 내가 댓글 단 이벤트를 구분해서 나타내기
-  2. modal 페이지에 참가 신청 추가 / 현재 참여 신청한 인원 및 완료한 인원 표시
-     참가자에게 '방장이 확인할 수 있도록 연락을 드리는 것을 권장합니다' 안내 창 띄우기
-     방장에게는 알림과 함께 modal에 참여 신청한 인원 목록 + 목록별 승락 거절 버튼 제공
-     내 카풀 일정에는 내가 방장인 이벤트(노랑) + (참여 신청한 이벤트 + 참여 완료된 이벤트)(초록)으로 구분하고, 참여 신청한 이벤트는 거절 또는 날짜가 지난 경우 내 카풀에서 제외
-     카풀 페이지에 참여 신청 / 완료를 구분하여 안내하고, 현재 모바일 알림기능이 구현되지 않았기 때문에 직접 연락이 필요한 점을 설명하고, 직접 연락해서 결정한 내용을 기준으로 약속이 정해짐을 안내
-  
-
-
-
 * Calendar에 Socket 적용 필요
   * 참가 신청 버튼 이후 새로고침을 하지 않고 데이터 업데이트가 이루어지기 위해서 필요
   * 카풀 탭에서 카풀 이벤트가 실시간으로 추가될 때 변경된 것을 확인하기 위해서 필요
+
+
+
+* Manage Carpool Calendar의 경우, 옛날 날짜를 선택하는 경우 경고 메시지 띄우기
+  * 1) 날짜 누를 때 방지 2) 등록하기 버튼을 누를 때 날짜를 확인하세요라고 경고
+
+
+
+* comment, board의 시간을 작성 시간 기준으로 할 지, 수정 시간을 기준으로 할 지
 
 
 
@@ -513,18 +514,25 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 ### 요청 사항
 
-* comment, board의 시간을 작성 시간 기준으로 할 지, 수정 시간을 기준으로 할 지
-
-* Carpool 게시판 페이지 디자인
-
 * 로그인이 안될 때 안내 문구
-
 * 공용 PC에서 outlook 로그아웃 방법
-
-* carpool 이벤트 model에 username 대신 user 객체
-
 * 카풀, manage의 created 형태 바꾸기
 
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
