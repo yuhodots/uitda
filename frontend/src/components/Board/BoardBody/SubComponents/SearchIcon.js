@@ -3,6 +3,7 @@
 // 상위 컴포넌트: MarketContainer, NetworkContainer
 
 import React from "react";
+import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import { SearchOutlined } from '@ant-design/icons';
 
@@ -61,6 +62,12 @@ const SearchIcon = ({isHeaderOn, headerOn}) => {
             <StyledIcon />
         </CircleArea>
     )
+}
+
+SearchIcon.propTypes = {
+    isHeaderOn: PropTypes.bool.isRequired,      // 헤더 나타나 있는지 여부
+    
+    headerOn: PropTypes.func.isRequired,        // 헤더가 나타나도록 하는 메서드
 }
 
 export default SearchIcon;

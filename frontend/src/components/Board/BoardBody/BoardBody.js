@@ -11,7 +11,8 @@ import { colors } from '../../../styles/variables'
 
 
 /* Styled Components */
-const BoardTemplate = styled.div`
+/* 영역 태그 */
+const BoardArea = styled.div`
     width: 100%;
     min-height: ${props => {
         return `${props.minHeight}px`
@@ -20,10 +21,15 @@ const BoardTemplate = styled.div`
     padding-top: 4rem;
     padding-left: 15rem;
     background-color: ${colors.gray_bg};
+`;
+
+/* 카드 렌더할 Board (felx box) */
+const BoardTemplate = styled.div`
+    padding: 0 .75rem;
     
     display: flex;
     flex-flow: row wrap;
-    justify-content: center;
+    justify-content: space-evenly;
     align-content: flex-start;
 `;
 
@@ -44,6 +50,11 @@ class Board extends Component {
         // Fakecard를 추가해 주는 함수
         // 반응형 기능을 아직 구현 안함
 
+        const { windowWidth } = this.props;
+        const flexBasisOfCard = 320 + 24;
+        const boardWidth = windowWidth - 240;
+        const cardNumsPerOneLine = parseInt( ( boardWidth - 24 ) / flexBasisOfCard )
+
         let standardList = [];
 
         const fakeCard = {
@@ -59,8 +70,8 @@ class Board extends Component {
         };
 
         const cardNum = postlist.length;
-        const remain = cardNum % 3;
-        let fakeCardNum = remain ? 3 - remain : 0;
+        const remain = cardNum % cardNumsPerOneLine;
+        let fakeCardNum = remain ? cardNumsPerOneLine - remain : 0;
 
         standardList = postlist.map(post => {
             return {
@@ -118,16 +129,19 @@ class Board extends Component {
             <div>
                 <LoadingBar isLoading={isLoading} />
 
-                <BoardTemplate minHeight={windowHeight} >
-                    {
-                        search ?
-                        <SearchInfoBox>
-                            <h2>{search} 검색</h2>
-                        </SearchInfoBox> :
-                        ''
-                    }
-                    {this._renderPostList(postlist)}
-                </BoardTemplate>
+                <BoardArea minHeight={windowHeight} >
+                    <BoardTemplate >
+                        {
+                            search ?
+                            <SearchInfoBox>
+                                <h2>{search} 검색</h2>
+                            </SearchInfoBox> :
+                            ''
+                        }
+                        {this._renderPostList(postlist)}
+                    </BoardTemplate>
+                </BoardArea>
+                
 
                 <SearchIcon isHeaderOn={isHeaderOn} headerOn={headerOn} />
             </div>
@@ -143,6 +157,7 @@ Board.propTypes = {
     search: PropTypes.string,                   // 검색어 데이터
 
     windowHeight: PropTypes.number.isRequired,  // 화면 세로 길이 값
+    windowWidth: PropTypes.number.isRequired,   // 화면 가로 길이 값
 
     isLoading: PropTypes.bool.isRequired,       // Loading Bar 실행 여부
     isHeaderOn: PropTypes.bool.isRequired,      // Header Render 여부

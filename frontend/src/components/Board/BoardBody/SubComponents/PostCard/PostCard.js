@@ -4,10 +4,29 @@
 
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 import { MarketCard, FakeCard } from "./Cards";
+import { colors } from "../../../../../styles/variables";
+import { MARKET, NETWORKING } from "../../../../../constants/categories";
 import './PostCard.css';
 
+
+/* Styled Components */
+const PostCardArea = styled.div`
+    margin: 1.5rem .75rem;
+    flex-grow: 1;
+    flex-basis: 20rem; 
+    
+    background-color: ${colors.white};
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    
+    display: flex;
+    flex-flow: column nowrap;  
+`;
+
+
+/* React Component */
 class PostCard extends Component {
 
     _renderCard() {
@@ -15,11 +34,11 @@ class PostCard extends Component {
         let isMarketCard;
         
         switch (this.props.boardName) {
-            case 'market':
+            case MARKET:
                 isMarketCard = true;
                 break;
         
-            case 'networking':
+            case NETWORKING:
                 isMarketCard = false;
                 break;
 
@@ -62,13 +81,13 @@ class PostCard extends Component {
 
     render() {
         return (
-            <div className="PostCard">
+            <PostCardArea >
                 {
                     this.props.isFake ?
                     <FakeCard/> :
                     this._renderCard()
                 }
-            </div>
+            </PostCardArea>
         )
     }
 }

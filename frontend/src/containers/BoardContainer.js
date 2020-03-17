@@ -86,7 +86,8 @@ class BoardContainer extends Component {
     _updateWindowSize = () => {
         this.setState({
             ...this.state,
-            windowHeight: window.innerHeight
+            windowHeight: window.innerHeight,
+            windowWidth: window.innerWidth,
         })
     }
 
@@ -109,7 +110,7 @@ class BoardContainer extends Component {
             getBoardRequest
         } = this.props;
 
-        const { isLoaded, windowHeight } = this.state;
+        const { isLoaded, windowHeight, windowWidth } = this.state;
 
         return (
             isLoaded ?
@@ -134,6 +135,7 @@ class BoardContainer extends Component {
                             postlist={postlist} 
                             search={search}
                             windowHeight={windowHeight}
+                            windowWidth={windowWidth}
 
                             isLoading={isLoading}
                             isHeaderOn={isHeaderOn}
