@@ -127,6 +127,7 @@ class CarpoolBoard extends Component {
         const { windowHeight, isLoaded, modalVisible } = this.state;
 
         const {
+            curUser,
             totalOrMyOption,
             eventsObj,
             selectedDate,
@@ -143,6 +144,9 @@ class CarpoolBoard extends Component {
             deleteEvent,
             storeEventUpdateData,
             updateEvent,
+            closeOrCancleEvent,
+            joinEvent,
+            cancleJoinEvent,
         } = this.props
 
         return (
@@ -189,6 +193,7 @@ class CarpoolBoard extends Component {
                         closable={false}
                     >
                         <RoomModalBox 
+                            curUser={curUser}
                             selectedEvent={selectedEvent}
                             eventDataToUpdate={eventDataToUpdate}
                             
@@ -196,6 +201,9 @@ class CarpoolBoard extends Component {
                             deleteEvent={deleteEvent} 
                             storeEventUpdateData={storeEventUpdateData}
                             updateEvent={updateEvent}
+                            closeOrCancleEvent={closeOrCancleEvent}
+                            joinEvent={joinEvent}
+                            cancleJoinEvent={cancleJoinEvent}
                         />
                     </Modal>
                 </ContentArea>
@@ -206,6 +214,9 @@ class CarpoolBoard extends Component {
 }
 
 CarpoolBoard.propTypes = {
+    curUser: PropTypes.oneOfType([                         // 현재 유저 정보
+        PropTypes.number, PropTypes.object
+    ]).isRequired,
     totalOrMyOption: PropTypes.string.isRequired,       // 전체 일정 or 내 일정
     eventsObj: PropTypes.object.isRequired,             // 전체 카풀 이벤트 데이터
     selectedDate: PropTypes.object.isRequired,          // 캘린더에서 선택된 날짜 정보
@@ -222,6 +233,9 @@ CarpoolBoard.propTypes = {
     deleteEvent: PropTypes.func.isRequired,             // 이벤트를 지우는 액션
     storeEventUpdateData: PropTypes.func.isRequired,    // 수정 요청 보낼 일정 데이터를 저장하는 액션
     updateEvent: PropTypes.func.isRequired,             // 이벤트 수정 액션
+    closeOrCancleEvent: PropTypes.func.isRequired,      // 이벤트 마감 또는 마감 취소 액션
+    joinEvent: PropTypes.func.isRequired,               // 이벤트 참가 신청 액션
+    cancleJoinEvent: PropTypes.func.isRequired,         // 이벤트 참가 신청 취소 액션
 }
 
 

@@ -15,21 +15,27 @@ import {
     storeClickedEventData,
     postDeleteEventRequest,
     storeEventUpdateData, postUpdateEventRequest,
+    postCloseOrCancleEventRequest,
+    postJoinEventRequest, postCancleJoinEventRequest,
 } from "../store/actions/carpool";
 import { topicSelect } from "../store/actions/topic";
+import { getStatusRequest } from "../store/actions/auth";
 import { CARPOOL } from "../constants/categories";
 
 class CarpoolContainer extends Component {    
 
     componentDidMount() {
-        const { topicSelect, getCarpoolEvents } = this.props;
+        const { topicSelect, getCarpoolEvents, getStatusRequest } = this.props;
 
         topicSelect(CARPOOL);
         getCarpoolEvents();
+        getStatusRequest();
     }
 
     render() {
         const { 
+            curUser,
+
             isGetSuccess,
             totalOrMyOption,
             eventsToRenderObj,
@@ -47,6 +53,9 @@ class CarpoolContainer extends Component {
             deleteEvent,
             storeEventUpdateData,
             updateEvent,
+            closeOrCancleEvent,
+            joinEvent,
+            cancleJoinEvent,
         } = this.props;
 
         return (
@@ -56,6 +65,7 @@ class CarpoolContainer extends Component {
                 <SideBar topic={CARPOOL} />
 
                 <CarpoolBoard 
+                    curUser={curUser}
                     totalOrMyOption={totalOrMyOption}
                     eventsObj={eventsToRenderObj}
                     selectedDate={selectedDate}
@@ -72,6 +82,9 @@ class CarpoolContainer extends Component {
                     deleteEvent={deleteEvent}
                     storeEventUpdateData={storeEventUpdateData}
                     updateEvent={updateEvent}
+                    closeOrCancleEvent={closeOrCancleEvent}
+                    joinEvent={joinEvent}
+                    cancleJoinEvent={cancleJoinEvent}
                 /> 
             </div> :
             
@@ -84,6 +97,7 @@ class CarpoolContainer extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        curUser: state.auth.user,
         isGetSuccess: state.carpool.isGetSuccess,
         
         totalOrMyOption: state.carpool.totalOrMyOption,
@@ -99,6 +113,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         topicSelect: (topic) => {dispatch(topicSelect(topic))},                             // App의 topic state를 CARPOOL로 설정
+        getStatusRequest: () => {dispatch(getStatusRequest())},                             // 현재 유저 정보를 가져오는 액션
+
         getCarpoolEvents: () => dispatch(getCarpoolEvents()),                               // 카풀 전체 이벤트를 get 요청하는 액션
 
         initCalenderEvents: (category) => dispatch(initCalenderEvents(category)),           // 캘린더 첫 화면에서 띄울 events를 받는 액션
@@ -112,6 +128,12 @@ const mapDispatchToProps = (dispatch) => {
         deleteEvent: (id) => {dispatch(postDeleteEventRequest(id))},                        // 이벤트를 지우는 액션
         storeEventUpdateData: (key, value) => dispatch(storeEventUpdateData(key, value)),   // 수정할 이벤트의 데이터를 저장하는 액션
         updateEvent: (id, eventData) => {dispatch(postUpdateEventRequest(id, eventData))},  // 이벤트 수정 액션
+
+        closeOrCancleEvent: (eventID, condition) => {                                       // 마감 또는 마감 취소 액션
+            dispatch(postCloseOrCancleEventRequest(eventID, condition))
+        },
+        joinEvent: (eventID) => {dispatch(postJoinEventRequest(eventID))},                  // 이벤트 참가 신청 액션
+        cancleJoinEvent: (guestID) => {dispatch(postCancleJoinEventRequest(guestID))},      // 이벤트 참가 신청 취소 액션 
     }
 }
 

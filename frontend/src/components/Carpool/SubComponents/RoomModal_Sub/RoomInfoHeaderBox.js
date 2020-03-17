@@ -98,7 +98,7 @@ class RoomInfoHeaderBox extends Component {
     /* label에 해당하는 색과 텍스트를 리턴하는 메서드 */
     _getColorAndText = () => {
         
-        const { label } = this.props
+        const { label } = this.props.selectedEvent;
         
         switch (label) {
             case CLOSED: return {labelColor: colors.closed_gray, labelText: '마감'};
@@ -115,9 +115,14 @@ class RoomInfoHeaderBox extends Component {
     _renderContent = () => {
 
         const {
-            id, label,
-            deleteEvent, changeModeToUpdate
+            curUser,
+            selectedEvent,
+            deleteEvent, changeModeToUpdate,
+            closeOrCancleEvent,
+            joinEvent, cancleJoinEvent
         } = this.props;
+
+        const { id, label, guestlist } = selectedEvent
 
         let owenrContentList = [
             {
@@ -149,7 +154,7 @@ class RoomInfoHeaderBox extends Component {
                     icon: <FieldTimeOutlined />,
                     text: '마감하기',
                     clickMethod: () => {
-
+                        closeOrCancleEvent(id, 2)   // 마감
                     }   
                 }]
                 return owenrContentList;
@@ -158,7 +163,7 @@ class RoomInfoHeaderBox extends Component {
                     icon: <CloseCircleOutlined  />,
                     text: '마감 취소하기',
                     clickMethod: () => {
-
+                        closeOrCancleEvent(id, 1)   // 모집 중
                     }   
                 }]
                 return owenrContentList;
@@ -170,7 +175,8 @@ class RoomInfoHeaderBox extends Component {
                         icon: <CloseCircleOutlined  />,
                         text: '내 일정에서 제외하기',
                         clickMethod: () => {
-
+                            const foundedGuest = guestlist.filter(guest => guest.email === curUser.email);
+                            cancleJoinEvent(foundedGuest.id);
                         }
                     }
                 ]
@@ -181,7 +187,7 @@ class RoomInfoHeaderBox extends Component {
                         icon: <PushpinOutlined />,
                         text: '내 일정에 추가하기',
                         clickMethod: () => {
-
+                            joinEvent(id)
                         }
                     }
                 ] 
@@ -190,9 +196,12 @@ class RoomInfoHeaderBox extends Component {
 
     _handleUpdate = () => {
         const {
-            id, eventDataToUpdate, 
+            selectedEvent, 
+            eventDataToUpdate, 
             updateEvent, changeModeToRead
         } = this.props;
+
+        const { id } = selectedEvent;
 
         updateEvent(id, eventDataToUpdate);
         changeModeToRead();
@@ -203,9 +212,11 @@ class RoomInfoHeaderBox extends Component {
 
         const {
             isUpdateMode, 
-            user, created, 
+            selectedEvent,
             changeModeToRead,
         } = this.props
+
+        const { user, created } = selectedEvent
 
         const MoreButtonContentList = this._renderContent();
 
@@ -216,7 +227,7 @@ class RoomInfoHeaderBox extends Component {
                 <HLBox>
                     <UserPhoto size={40} />
                     <UserCreatedInfoBox>
-                        <UserName>{user.username}</UserName>
+                        <UserName>{user ? user.username : ''}</UserName>
                         <Created>{created}</Created>
                     </UserCreatedInfoBox>
                 </HLBox>
@@ -244,8 +255,13 @@ class RoomInfoHeaderBox extends Component {
 }
 
 RoomInfoHeaderBox.propTypes = {
+    curUser: PropTypes.oneOfType([                         // 현재 유저 정보
+        PropTypes.number, PropTypes.object
+    ]).isRequired,
+
     isUpdateMode: PropTypes.bool.isRequired,            // 수정 모드 인지
 
+    selectedEvent: PropTypes.object.isRequired,         // 선택된 일정 데이터
     id: PropTypes.number.isRequired,                    // 카풀 일정 데이터의 id
     user: PropTypes.object.isRequired,                  // 카풀 일정 작성자 객체 데이터
     created: PropTypes.string.isRequired,               // 카풀 일정 작성 시간
@@ -256,6 +272,9 @@ RoomInfoHeaderBox.propTypes = {
     changeModeToUpdate: PropTypes.func.isRequired,      // 수정 모드로 변경하는 메서드
     changeModeToRead: PropTypes.func.isRequired,        // 보기 모드로 변경하는 메서드
     updateEvent: PropTypes.func.isRequired,             // 이벤트 수정 액션
+    closeOrCancleEvent: PropTypes.func.isRequired,      // 이벤트 마감 또는 마감 취소 액션
+    joinEvent: PropTypes.func.isRequired,               // 이벤트 참가 신청 액션
+    cancleJoinEvent: PropTypes.func.isRequired,         // 이벤트 참가 신청 취소 액션
 }
 
 export default RoomInfoHeaderBox;

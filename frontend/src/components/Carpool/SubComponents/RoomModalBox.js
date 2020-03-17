@@ -33,6 +33,7 @@ class RoomBox extends Component {
     render() {
         
         const { 
+            curUser,
             selectedEvent, 
             eventDataToUpdate,
 
@@ -40,17 +41,24 @@ class RoomBox extends Component {
             deleteEvent,
             storeEventUpdateData,
             updateEvent,
+            closeOrCancleEvent,
+            joinEvent,
+            cancleJoinEvent,
         } = this.props
 
         return (
             <WholeArea>
                 <RoomInfoBox 
+                    curUser={curUser}
                     selectedEvent={selectedEvent}
                     eventDataToUpdate={eventDataToUpdate}
 
                     deleteEvent={deleteEvent}
                     storeEventUpdateData={storeEventUpdateData}
                     updateEvent={updateEvent}
+                    closeOrCancleEvent={closeOrCancleEvent}
+                    joinEvent={joinEvent}
+                    cancleJoinEvent={cancleJoinEvent}
                 />
                 <CloseButton onClick={cancleModal} ><CloseOutlined/></CloseButton>
             </WholeArea>
@@ -59,6 +67,9 @@ class RoomBox extends Component {
 }
 
 RoomBox.propTypes = {
+    curUser: PropTypes.oneOfType([                         // 현재 유저 정보
+        PropTypes.number, PropTypes.object
+    ]).isRequired,
     selectedEvent: PropTypes.object.isRequired,         // 선택된 일정 데이터
     eventDataToUpdate: PropTypes.object.isRequired,     // 수정 요청 보낼 일정 데이터
 
@@ -66,6 +77,9 @@ RoomBox.propTypes = {
     deleteEvent: PropTypes.func.isRequired,             // 이벤트를 지우는 액션
     storeEventUpdateData: PropTypes.func.isRequired,    // 수정 요청 보낼 일정 데이터를 저장하는 액션
     updateEvent: PropTypes.func.isRequired,             // 이벤트 수정 액션
+    closeOrCancleEvent: PropTypes.func.isRequired,      // 이벤트 마감 또는 마감 취소 액션
+    joinEvent: PropTypes.func.isRequired,               // 이벤트 참가 신청 액션
+    cancleJoinEvent: PropTypes.func.isRequired,         // 이벤트 참가 신청 취소 액션
 }
 
 export default RoomBox;
