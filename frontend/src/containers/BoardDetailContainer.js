@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import SideBar from "../components/Structure/SideBar";
@@ -58,21 +59,23 @@ class BoardDetailContainer extends Component {
         const { boardName } = this.props.match.params;
 
         return isLoaded ?
-            <div>
-                <SideBar topic={boardName} />
+                user ?
+                <div>
+                    <SideBar topic={boardName} />
 
-                <BoardDetail 
-                    curUser={user}
+                    <BoardDetail 
+                        curUser={user}
 
-                    board={boardName}
-                    post={post} 
-                    commentList={commentList} 
+                        board={boardName}
+                        post={post} 
+                        commentList={commentList} 
 
-                    createComment={createComment}
-                    updateComment={updateComment}
-                    deleteComment={deleteComment}
-                />
-            </div> :
+                        createComment={createComment}
+                        updateComment={updateComment}
+                        deleteComment={deleteComment}
+                    />
+                </div> :
+                <Redirect to='/' /> :
             <ExceptionalPage /> // 로딩 중 + id가 올바르지 않은 경우
     }
 }

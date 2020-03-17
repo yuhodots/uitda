@@ -28,7 +28,6 @@ import {
     MANAGE_MYCARPOOL,
     MANAGE_NOTIFICATIONS,
 } from '../../constants/manage_category'
-
 import {
     MARKET,
     NETWORKING,
@@ -137,25 +136,26 @@ class ManageContainer extends Component {
         return(
             <div>
             {
-                isLoad ? 
-                <div>
-                    {
-                        !user && <Redirect to='/auth/login' />
-                    }
-                    <Header 
-                        isEdit={false} 
-                        user={user}
-                    />
-                    <Body 
-                        user={user}
-                        kind={kind}
-                        windowHeight={windowHeight}
+                isLoad ?
+                
+                    user ? 
+                    <div>
+                        <Header 
+                            isEdit={false} 
+                            user={user}
+                        />
+                        <Body 
+                            user={user}
+                            kind={kind}
+                            windowHeight={windowHeight}
 
-                        postList={postList}
-                        deletePost={deletePostRequest}
-                        updatePostCondition={updatePostConditionRequest}
-                    /> 
-                </div>:
+                            postList={postList}
+                            deletePost={deletePostRequest}
+                            updatePostCondition={updatePostConditionRequest}
+                        /> 
+                    </div> :
+                    <Redirect to='/' />:
+
                 '로딩 중'
             }
             </div> 

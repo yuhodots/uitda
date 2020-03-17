@@ -4,11 +4,11 @@
 
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import BoardBody from "../components/Board/BoardBody";
 import BoardHeader from "../components/Board/BoardHeader";
 import SideBar from "../components/Structure/SideBar";
-
 import { 
     initiateBoard,
     getBoardRequest,
@@ -17,6 +17,7 @@ import {
     boardHeaderOff,
 } from '../store/actions/board'
 import { topicSelect } from "../store/actions/topic";
+import { getStatusRequest } from "../store/actions/auth";
 
 class BoardContainer extends Component {    
 
@@ -38,12 +39,18 @@ class BoardContainer extends Component {
         headerOn();                                                 // 헤더 On
         topicSelect(boardName);                                     // app의 topic state를 boardName으로 설정
         
+        getStatusRequest();
         getBoardRequest(boardName);
 
         window.addEventListener('scroll', this._handleScroll);      // Scroll 이벤트가 생길 때, onScroll을 실행함
         window.addEventListener('resize', this._updateWindowSize);  // window 사이즈 변경 시, 변경된 값을 state에 저장
 
         this._updateWindowSize();
+
+        this.setState({
+            ...this.state,
+            isLoaded: true
+        })
     }
 
     componentWillUnmount () {
@@ -87,6 +94,8 @@ class BoardContainer extends Component {
     render() {
         let {
             // properties
+            curUser,
+
             boardName,
             postlist,
             search,
@@ -100,44 +109,53 @@ class BoardContainer extends Component {
             getBoardRequest
         } = this.props;
 
-        const { windowHeight } = this.state;
+        const { isLoaded, windowHeight } = this.state;
 
         return (
-            <div>
-                <SideBar topic={boardName} />
-                
-                <BoardHeader 
-                    isHeaderOn={isHeaderOn} 
-                    board={boardName}
+            isLoaded ?
+
+                curUser ? 
+            
+                <div>
+                    <SideBar topic={boardName} />
                     
-                    getBoardRequest={getBoardRequest} 
-                />
-                
-                {
-                    doesRenderOK ?
+                    <BoardHeader 
+                        isHeaderOn={isHeaderOn} 
+                        board={boardName}
+                        
+                        getBoardRequest={getBoardRequest} 
+                    />
+                    
+                    {
+                        doesRenderOK ?
 
-                    <BoardBody 
-                        boardName={boardName} 
-                        postlist={postlist} 
-                        search={search}
-                        windowHeight={windowHeight}
+                        <BoardBody 
+                            boardName={boardName} 
+                            postlist={postlist} 
+                            search={search}
+                            windowHeight={windowHeight}
 
-                        isLoading={isLoading}
-                        isHeaderOn={isHeaderOn}
-                        headerOn={headerOn}
-                    /> :
+                            isLoading={isLoading}
+                            isHeaderOn={isHeaderOn}
+                            headerOn={headerOn}
+                        /> :
 
-                    <div className='PageError'>
-                        새로고침을 눌러주세요 :)
-                    </div>
-                }
-            </div>
+                        <div className='PageError'>
+                            새로고침을 눌러주세요 :)
+                        </div>
+                    }
+                </div> :
+
+                <Redirect to='/' /> :
+
+            'loading'
         )
     }
 }
 
 const mapStateToProps = (state) => {
     return {
+        curUser: state.auth.user,                           // 현재 로그인 된 유저 정보
         doesRenderOK: state.board.isFirstBoardGetSuccess,   // 첫 번째 GET 요청이 성공했는 지 여부 = Render할 준비가 되었는 지
         postlist: state.board.postlist,                     // postlist 데이터
         scroll: state.board.scroll,                         // 스크롤 횟수 (데이터를 받은 횟수)
@@ -152,6 +170,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         headerOn: () => {dispatch(boardHeaderOn())},                    // 헤더를 나타나게 하는 메서드
         headerOff: () => {dispatch(boardHeaderOff())},                  // 헤더를 사라지게 하는 메서드
+
+        getStatusRequest: () => dispatch(getStatusRequest()),           // 현재 로그인 된 유저 정보 요청 액션   
 
         initiateBoard: () => {dispatch(initiateBoard())},               // 보드 초기화 메서드 
         getBoardRequest: (boardName, scroll, search) => {               // 보드 GET 요청 메서드

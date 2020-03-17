@@ -4,6 +4,7 @@
 
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import SideBar from "../components/Structure/SideBar";
 import CarpoolBoard from "../components/Carpool";
@@ -61,33 +62,37 @@ class CarpoolContainer extends Component {
         return (
             isGetSuccess ?
             
-            <div>
-                <SideBar topic={CARPOOL} />
+                curUser ?
 
-                <CarpoolBoard 
-                    curUser={curUser}
-                    totalOrMyOption={totalOrMyOption}
-                    eventsObj={eventsToRenderObj}
-                    selectedDate={selectedDate}
-                    eventsOnSelectedDate={eventsOnSelectedDate}
-                    selectedEvent={selectedEvent}
-                    eventDataToUpdate={eventDataToUpdate}
+                <div>
+                    <SideBar topic={CARPOOL} />
 
-                    initCalenderEvents={initCalenderEvents}
-                    renderTotalEvents={renderTotalEvents}
-                    renderMyEvents={renderMyEvents}
-                    changeClosedEvents={changeClosedEvents}
-                    selectDate={selectDate}
-                    storeClickedEventData={storeClickedEventData}
-                    deleteEvent={deleteEvent}
-                    storeEventUpdateData={storeEventUpdateData}
-                    updateEvent={updateEvent}
-                    closeOrCancleEvent={closeOrCancleEvent}
-                    joinEvent={joinEvent}
-                    cancleJoinEvent={cancleJoinEvent}
-                /> 
-            </div> :
+                    <CarpoolBoard 
+                        curUser={curUser}
+                        totalOrMyOption={totalOrMyOption}
+                        eventsObj={eventsToRenderObj}
+                        selectedDate={selectedDate}
+                        eventsOnSelectedDate={eventsOnSelectedDate}
+                        selectedEvent={selectedEvent}
+                        eventDataToUpdate={eventDataToUpdate}
+
+                        initCalenderEvents={initCalenderEvents}
+                        renderTotalEvents={renderTotalEvents}
+                        renderMyEvents={renderMyEvents}
+                        changeClosedEvents={changeClosedEvents}
+                        selectDate={selectDate}
+                        storeClickedEventData={storeClickedEventData}
+                        deleteEvent={deleteEvent}
+                        storeEventUpdateData={storeEventUpdateData}
+                        updateEvent={updateEvent}
+                        closeOrCancleEvent={closeOrCancleEvent}
+                        joinEvent={joinEvent}
+                        cancleJoinEvent={cancleJoinEvent}
+                    /> 
+                </div> :
             
+                <Redirect to='/' />:
+
             ''
         )
                     

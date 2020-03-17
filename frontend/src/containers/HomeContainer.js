@@ -4,32 +4,53 @@
 
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom'; // Home 페이지 구현 이전에 market을 default로 하기 위함
- 
- import { topicSelect } from "../store/actions/topic";
+import { Redirect } from 'react-router-dom';  
+
+import { getStatusRequest } from "../store/actions/auth";
+import EnterPage from "../components/Home";
 
 class HomeContainer extends Component {    
 
+    state = {}
+
     componentDidMount() {
-        this.props.topicSelect('home');
+        const { getStatusRequest } = this.props;
+
+        getStatusRequest();
+
+        this.setState({
+            ...this.state,
+            isLoaded: true,
+        })
     }
 
     render() {
-        return (
-            <Redirect to='/board/market' />
-        )
+
+        const { isLoaded } = this.state;
+
+        const { curUser } = this.props;
+
+        return isLoaded ?
+            <div>
+            {
+                curUser ?
+                <Redirect to='/board/market' /> :
+                <EnterPage />
+            }
+            </div> :
+            'loading'
     }
 }
 
 const mapStateToProps = (state) => {
-    return { }
+    return { 
+        curUser: state.auth.user,           // 현재 로그인 된 유저 정보
+    }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        topicSelect : (topic) => {                          // App의 topic state를 HOME으로 설정
-            dispatch(topicSelect(topic))
-        },          
+        getStatusRequest: () => dispatch(getStatusRequest()),       // 현재 로그인 된 유저 정보 요청 액션    
     }
 }
 

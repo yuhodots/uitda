@@ -13,10 +13,8 @@ import {
     Board,
     Carpool,
     NotFound, 
-    Auth,
     Manage,
 } from "../pages";
-// import MainTemplate from "./MainTemplate";
 
 import './App.css';
 
@@ -26,8 +24,7 @@ const App = () => {
             <Route exact path='/' component={ Home } />
             <Route path='/board' component={ Board } />
             <Route path='/carpool' component={ Carpool } />
-            <Route path='/auth/:kind' component={Auth} />
-            <Route path='/manage' component={Manage} />
+            <Route path='/manage' component={ Manage } />
             <Route component={NotFound}/>
         </Switch>
     )
