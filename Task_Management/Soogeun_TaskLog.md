@@ -318,6 +318,8 @@
 * 카풀 마감, 마감취소, 신청, 신청 취소 액션 제작
 * 이벤트 마감 기능 구현
 * 신청 기능 제작 (확인 X)
+* 로그인 되어 있지 않으면 모든 컨테이너에서 Home컨테이너(enterpage)로 이동하고, 로그인 된 상태에서는 '/'로 이동했을 때 '/board/market'으로 이동하도록 함
+* fake card render 함수 기능 수정
 
 
 
@@ -507,6 +509,14 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 
 * comment, board의 시간을 작성 시간 기준으로 할 지, 수정 시간을 기준으로 할 지
+
+
+
+* logout은 uitda 로그아웃 뿐만 아니라 outlook 로그아웃도 할 수 있도록 하는 것에 대해
+
+
+
+* market의 가격에 대한 논의. Edit 페이지에서 가격 입력란
 
 
 
