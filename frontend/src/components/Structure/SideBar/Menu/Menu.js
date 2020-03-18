@@ -8,6 +8,30 @@ import { Link } from 'react-router-dom';
 
 import './Menu.css';
 
+import market from './market.png'
+import networking from './networking.png'
+import carpool from './carpool.png'
+import manage from './manage.png'
+import chatting from './chatting.png'
+
+const selectImage = (title) => {
+    if (title == '유니마켓'){
+        return market;
+    }
+    else if (title == '네트워킹'){
+        return networking;
+    }
+    else if (title == '택시카풀'){
+        return carpool;
+    }
+    else if (title == '글 관리'){
+        return manage;
+    }
+    else if (title == '채팅방'){
+        return chatting;
+    }
+}
+
 const Menu = ({selectedTopic, topicData}) => {
     
     return (
@@ -38,7 +62,10 @@ Menu.defaultProps = {
 const MenuItem = ({title, url, isActive}) => {
     return (
         <li className={isActive ? 'CategoryItem Active' : 'CategoryItem'}>
-            <Link to={url} className='CategoryText'>{title}</Link>
+            <Link to={url} className='CategoryText'>
+                <img src={selectImage(title)}></img>
+                {title}
+            </Link>
         </li>
     )
 }

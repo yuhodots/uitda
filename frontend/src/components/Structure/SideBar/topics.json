@@ -1,11 +1,11 @@
 {
     "upper" : [
-        {"id":1, "title": "Market", "url":"/board/market", "key":"market"},
-        {"id":2, "title": "Networking", "url":"/board/networking", "key":"networking"},
-        {"id":3, "title": "Carpool", "url":"/carpool", "key":"carpool"}
+        {"id":1, "title": "유니마켓", "url":"/board/market", "key":"market"},
+        {"id":2, "title": "네트워킹", "url":"/board/networking", "key":"networking"},
+        {"id":3, "title": "택시카풀", "url":"/carpool", "key":"carpool"}
     ],
     "below" : [
-        {"id":4, "title": "Manage", "url":"/manage", "key":"manage"},
-        {"id":5, "title": "Chatting", "url":"/chatting", "key":"chatting"}
+        {"id":4, "title": "글 관리", "url":"/manage", "key":"manage"},
+        {"id":5, "title": "채팅방", "url":"/chatting", "key":"chatting"}
     ]
 }

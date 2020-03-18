@@ -39,6 +39,7 @@
 .Container_Left .Button{
     background-color: white;
     margin: 0px 190px 0px 190px;
+    padding-top: 8px;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
     margin-bottom: 35px;
     height: 50px;
@@ -66,8 +67,9 @@
 }
 
 .Container_Right .Notice img{
-    width: 300px;
-    margin-left: 150px;
+    width: 200px;
+    margin-left: 200px;
+    margin-top: 40px;
 }
 
 .Container_Right .Block{

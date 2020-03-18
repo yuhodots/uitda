@@ -14,7 +14,7 @@ import { LogoColor, LogoWhite } from '../../../styles/images';
 /* Styled Components */
 const HomeLink = styled(Link)`
     height: 4rem;
-    width: 4.5rem;
+    width: 7rem;
     margin: 0 3rem;
 
     background-image: ${ props => props.isWhite ? 

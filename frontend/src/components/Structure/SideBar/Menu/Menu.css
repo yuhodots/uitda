@@ -11,6 +11,13 @@
     width: 100%;
 }
 
+.Menu .CategoryItem img{
+    width: 12%;
+    margin-right: 12px;
+    position: relative;
+    top: -2%
+}
+
 .Menu .CategoryItem.Active {
     border-right: 4px solid #1E90FF;
 }
@@ -22,10 +29,10 @@
 .Menu .CategoryItem .CategoryText {
     text-decoration: none;
     color: black;
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     display: block;
     height: 100%;
     width: 100%;
     line-height: 3rem;
-    padding-left: 4rem;
+    padding-left: 3.7rem;
 }
