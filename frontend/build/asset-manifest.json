@@ -1,19 +1,35 @@
 {
   "files": {
-    "main.css": "/static/css/main.85de9784.chunk.css",
-    "main.js": "/static/js/main.f6ea7884.chunk.js",
-    "main.js.map": "/static/js/main.f6ea7884.chunk.js.map",
-    "runtime~main.js": "/static/js/runtime~main.cd912dc6.js",
-    "runtime~main.js.map": "/static/js/runtime~main.cd912dc6.js.map",
-    "static/js/2.c5874ece.chunk.js": "/static/js/2.c5874ece.chunk.js",
-    "static/js/2.c5874ece.chunk.js.map": "/static/js/2.c5874ece.chunk.js.map",
+    "main.css": "/static/css/main.0ebe040a.chunk.css",
+    "main.js": "/static/js/main.773eca51.chunk.js",
+    "main.js.map": "/static/js/main.773eca51.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.9d830519.js",
+    "runtime-main.js.map": "/static/js/runtime-main.9d830519.js.map",
+    "static/css/2.774e23d0.chunk.css": "/static/css/2.774e23d0.chunk.css",
+    "static/js/2.6b7cc48e.chunk.js": "/static/js/2.6b7cc48e.chunk.js",
+    "static/js/2.6b7cc48e.chunk.js.map": "/static/js/2.6b7cc48e.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.f02784fb0a8cc559f4a7247a69702ada.js": "/precache-manifest.f02784fb0a8cc559f4a7247a69702ada.js",
+    "precache-manifest.851db7b2e36bca0eaecda25d2f72ffef.js": "/precache-manifest.851db7b2e36bca0eaecda25d2f72ffef.js",
     "service-worker.js": "/service-worker.js",
-    "static/css/main.85de9784.chunk.css.map": "/static/css/main.85de9784.chunk.css.map",
+    "static/css/2.774e23d0.chunk.css.map": "/static/css/2.774e23d0.chunk.css.map",
+    "static/css/main.0ebe040a.chunk.css.map": "/static/css/main.0ebe040a.chunk.css.map",
+    "static/js/2.6b7cc48e.chunk.js.LICENSE": "/static/js/2.6b7cc48e.chunk.js.LICENSE",
     "static/media/Basic_img.jpg": "/static/media/Basic_img.e2fe49f7.jpg",
+    "static/media/UI_uni.png": "/static/media/UI_uni.98cdaa68.png",
     "static/media/User_Basic_img.JPG": "/static/media/User_Basic_img.0ebffe88.JPG",
-    "static/media/logo-color.png": "/static/media/logo-color.3ff723db.png",
-    "static/media/logo-white.png": "/static/media/logo-white.ca985d89.png"
-  }
+    "static/media/carpool.png": "/static/media/carpool.1c29d35f.png",
+    "static/media/carpool_preview.png": "/static/media/carpool_preview.c356e5be.png",
+    "static/media/market.png": "/static/media/market.6aff9673.png",
+    "static/media/market_preview.png": "/static/media/market_preview.b963d1d7.png",
+    "static/media/networking.png": "/static/media/networking.15acfe20.png",
+    "static/media/networking_preview.png": "/static/media/networking_preview.4dd19150.png",
+    "static/media/outlook.png": "/static/media/outlook.5c440ee4.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.9d830519.js",
+    "static/css/2.774e23d0.chunk.css",
+    "static/js/2.6b7cc48e.chunk.js",
+    "static/css/main.0ebe040a.chunk.css",
+    "static/js/main.773eca51.chunk.js"
+  ]
 }
