@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import './Login.css';
 
 /* ant-design popover */
@@ -51,6 +52,12 @@ class Login extends Component {
   };
 
   handleCancel = e => { this.setState({ visible: false }); };
+
+  /* requestLogin = () => {
+    axios.get(`/api/login/outlook`)
+    .then(res => console.log(res))
+    .catch(err => console.log(err));
+  } */
 
   render() {
 
