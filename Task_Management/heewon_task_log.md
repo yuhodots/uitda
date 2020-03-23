@@ -104,9 +104,25 @@ not found 프론트엔드 보내기.
 manage 페이지 들어갈 만한 카테고리
 로그인 화면에 들어갈 글 쓰기
 
+### 2020년 3월 24일
 #### 완료
+1.namespace 설정
+  > 전체 : '/'
+  > 보드 : '/board'
+  > 채팅 : '/chatting'
+2. namespace 별로 코드 다시 정리
+3. chatting message 전송 시 방 순서 변경되는거 확인(updated 시간 순으로 변경됨)
+4. chattin.main에서 동기화 안되는 거 수정
+5. online_user 숫자 변경되는 거 확인
+6. room_out 추가, disconnect 수정
+7. socket.room_id 추가하여 현재 room_id 파악할 수 있도록 함
+8. disconnect 시 socket_id를 빈칸으로 update함.
 
-#### 해야할 일
 
+### 할 일
+1. lib/chatting 파일 수정 -> socket으로 변경 ==> 채팅으로 추가
+2. 댓글 crd도 ->socket으로 변경 ==>보드로 추가
+3. 댓글 알림 설정
+4. chatting message 전송시 상단바에 떠야하기 때문에 socket.emit을 추가해야할 듯.'/chatting'으로 보내는 건 이미 구현이 되어있음.
 
 #### 진행중 
