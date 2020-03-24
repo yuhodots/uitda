@@ -73,14 +73,9 @@ class Board extends Component {
         const remain = cardNum % cardNumsPerOneLine;
         let fakeCardNum = remain ? cardNumsPerOneLine - remain : 0;
 
-        standardList = postlist.map(post => {
-            return {
-                ...post,
-                isFake: false
-            }
-        })
+        standardList = postlist.map(post => { return { ...post, isFake: false } })
 
-        while(fakeCardNum--){
+        while (fakeCardNum--) {
             standardList.push(fakeCard)
         }
 

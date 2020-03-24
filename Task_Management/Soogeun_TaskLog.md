@@ -334,7 +334,6 @@
 #### Board FrontEnd
 
 * 디테일 페이지에서 뒤로가기 했을 때, render가 안되는 오류
-* 반응형 웹 - 가로 개수에 맞게 fake카드 렌더링
 * 무한 스크롤 islast 점검 (간혹 2번 요청이 가는 경우가 있음)
 
 
@@ -517,6 +516,19 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 
 * market의 가격에 대한 논의. Edit 페이지에서 가격 입력란
+
+
+
+* Uitda 소켓 서버
+
+  필요한 곳: 
+
+  * carpool - 1개의 전체 서버. carpool 탭에 있을 때 connetion, 나가면 disconnection
+  * BoardDetail-Comment - 페이지마다 Room 존재해야하며, 해당 게시글에 들어갔을 때 connetion, 나가면 disconnetion
+  * Notification - 홈페이지 로그인 할 때부터 로그아웃할 때까지 계속 connection
+  * Message - 채팅 방마다 Room 존재. 해당 방에 들어가면 connection 나가면 disconnection. 채팅 방 list는 Notification으로 할지, Message로 할 지 고민
+
+  Namespace
 
 
 
