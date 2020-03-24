@@ -14,6 +14,7 @@ import {
     Carpool,
     NotFound, 
     Manage,
+    Chatting,
 } from "../pages";
 
 import './App.css';
@@ -25,6 +26,7 @@ const App = () => {
             <Route path='/board' component={ Board } />
             <Route path='/carpool' component={ Carpool } />
             <Route path='/manage' component={ Manage } />
+            <Route path='/chatting' component={ Chatting } />
             <Route component={NotFound}/>
         </Switch>
     )
