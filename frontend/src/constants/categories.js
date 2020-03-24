@@ -6,3 +6,4 @@ export const NETWORKING = 'networking';
 export const CARPOOL = 'carpool';
 
 export const MANAGE = 'manage';
+export const CHATTING = 'chatting';
