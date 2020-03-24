@@ -118,7 +118,7 @@ manage 페이지 들어갈 만한 카테고리
 7. socket.room_id 추가하여 현재 room_id 파악할 수 있도록 함
 8. disconnect 시 socket_id를 빈칸으로 update함.
 9. chatting room create & delete socket으로 변경 및 routes/chatting 파일 내용 수정
-10.like를 likey로 변경(database 사용시 like라는게 따로 있어서 불편할 것 같아 싹 바꿈.)
+10. like를 likey로 변경(database 사용시 like라는게 따로 있어서 불편할 것 같아 싹 바꿈.)
 11. 댓글 crd도 ->socket으로 변경(아직 확인 안해봄)
 12. lib/comment & routes/comment 수정
 
@@ -127,10 +127,13 @@ manage 페이지 들어갈 만한 카테고리
 4. chatting message 전송시 상단바에 떠야하기 때문에 socket.emit을 추가해야할 듯.'/chatting'으로 보내는 건 이미 구현이 되어있음.
 5. user database에 있는 유저 정보 모두 가져오기 socket..?으로 구현
 6. 파일을 나중에 분리 시킬 수 있으면 분리시키기
+7. 시간 update시 수정되는거 프론트 엔드로 roomlist 다시보내기
+8. chatting room create & delete 시 roomlist 보내기
+9. alarm -> notification 이름 변경
 
 #### 진행중 
 
 ### 질문
-1. socket으로 구현 할 때에도 isowner와 sameowner 가 필요한가.?
+1. socket으로 구현 할 때에도 isowner와 sameowner 가 필요한가.? create - isowner
   만약 sameowner가 아닐 경우가 발생한다면 어찌해야하는가..?(room delete 부분)
 2. 방 정보 받아오는 것도 socket으로?
