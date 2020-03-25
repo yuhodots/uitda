@@ -12,7 +12,7 @@ const Chatting = () => {
         <Switch>
             {/* 채팅 인덱스 페이지 (아무 방에도 들어가 있지 않은 시작 페이지) */}
             <Route exact path='/chatting/index' render={() => {
-                <ChattingContainer isIndex={true} />
+                return <ChattingContainer isIndex={true} />
             }} />
 
             {/* 
