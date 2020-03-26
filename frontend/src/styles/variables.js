@@ -18,6 +18,8 @@ export const colors = {
 
     /* icon colors */
     icon_darkgray: '#444b4f',
+    photo_defaultgray: '#bec4c6',
+    badge_red: '#ED4956',
 
     /* calender event label color */
     closed_gray: '#888888',
