@@ -323,6 +323,33 @@
 
 
 
+### 3.24 (화)
+
+* SideBar Menu Box 코드개선
+
+  code 리펙토링: 아이콘 이미지를 styles/images 디렉토리로 이동, MenuItem을 분리
+  css -> styled Component
+
+* Chatting page, container 컴포넌트 생성
+
+* Board, Manage, Edit, Chatting의 Header 컴포넌트의 공통부분을 묶는 BaseHeader 컴포넌트 생성
+
+
+
+### 3.25 (수)
+
+* BackgroundTemplate 공통 컴포넌트 제작
+
+
+
+### 3. 26 (목)
+
+* Chatting Body 뼈대 structure component 제작
+* Bell, Messenger Icon svg 파일 제작
+* User Badge Box 생성
+
+
+
 
 
 
@@ -338,6 +365,8 @@
 
 
 
+* 배경 컴포넌트를 BackgroundTemplate로 코드 리펙토링
+* Header를 BaseHeader로 코드 리펙토링
 * 로딩 바 css 스타일 다듬기
 * 검색창에 자동완성 기능 추가
 * 사진 넘기기 아이콘 ant-design 적용
@@ -361,6 +390,7 @@
 
 * CommonComponents의 UserPhoto와 MoreButton을 이용하기
 * 가끔 댓글 전체가 안담기는 에러가 있음. 백엔드 문제인지 프론트 문제인지 확인 필요
+* 배경 컴포넌트를 BackgroundTemplate로 코드 리펙토링
 
 
 
@@ -378,10 +408,8 @@
 
 #### Login FrontEnd
 
-* Login 페이지 디자인
 * Outlook 로그아웃 한 상태로, 데스크탑으로 Login 기능 확인
 * 첫 로그인 시, outlook을 통해 회원가입 되었습니다. 메시지 뜨기
-* 모든 컨테이너에서 user data 가 없는 경우 로그인 페이지로 이동하도록 하기
 
 
 
@@ -411,6 +439,8 @@
 * Edit Page 나가기 전에 '나가시겠습니까 묻기'
 * edit carpool 작성 완료 시 카풀 페이지 나왔을 때 바로 카풀 이벤트가 뜨지 않음 (시간이 필요함)
 * 다판다, 잉력시장 글 관리 서로 넘어갈 때, 로딩 페이지로 부드럽게 넘어가도록
+* Header를 BaseHeader로 코드 리펙토링
+* 배경 컴포넌트를 BackgroundTemplate로 코드 리펙토링
 
 
 
@@ -453,6 +483,7 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 * 모달의 참가신청 UI를 구현한 이후, 시간이 지난 일정에 대해서는 방장의 UI에서 마감 버튼 disabled
   마찬가지로, 참여자 입장에서는 마감된 후에는 참가 신청 비활성화
 * 카풀 이용 안내 모달 창 만들기
+* 배경 컴포넌트를 BackgroundTemplate로 코드 리펙토링
 
 
 
@@ -470,6 +501,14 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 #### Chatting FrontEnd
 
+* Chatting 관련 액션 제작
+  * 컨테이너 did mount 시, Room List Get 액션
+  * Room In 액션
+  * Room out 액션
+  * 메시지 전송 액션
+  * 메시지 받는 액션
+  * 검색창 이동 시, 데이터 GET
+  * 검색 시 GET
 * 
 
 
@@ -496,9 +535,7 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 
 
-* Calendar에 Socket 적용 필요
-  * 참가 신청 버튼 이후 새로고침을 하지 않고 데이터 업데이트가 이루어지기 위해서 필요
-  * 카풀 탭에서 카풀 이벤트가 실시간으로 추가될 때 변경된 것을 확인하기 위해서 필요
+* 메시지에서 사진 업로드 기능 추가 ?
 
 
 
