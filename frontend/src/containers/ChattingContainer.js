@@ -3,8 +3,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { getStatusRequest } from "../store/actions/auth";
+import ChattingHeader from "../components/Chatting/ChattingHeader";
+import ChattingBody from "../components/Chatting/ChattingBody";
 
 
 class ChattingContainer extends Component {
@@ -25,7 +28,7 @@ class ChattingContainer extends Component {
     render() {
 
         const { isLoaded } = this.state;
-        const { curUser } = this.props;
+        const { curUser, isIndex } = this.props;
 
 
         return(
@@ -33,8 +36,9 @@ class ChattingContainer extends Component {
 
                 curUser ?
 
-                <div>
-                    chatting Container
+                <div style={{height: '100%', width: '100%'}}>
+                    <ChattingHeader />
+                    <ChattingBody isIndex={isIndex} />
                 </div> :
 
                 <Redirect to='/' /> :
@@ -43,6 +47,15 @@ class ChattingContainer extends Component {
         )
     }
 }
+
+ChattingContainer.propTypes = {
+    isIndex: PropTypes.bool,        // index 페이지인지 아닌 지
+}
+
+ChattingContainer.defaultProps = {
+    isIndex: false,
+}
+
 
 const mapStateToProps = (state) => {
     return {
