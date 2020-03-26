@@ -11,7 +11,9 @@ import { colors } from "../../../styles/variables";
 
 /* Styled Components */
 const BackgroundArea = styled.div`
-
+    padding-top: ${props => props.doesHaveHeader ? '4rem' : '0' };
+    height: 100%;
+    width: 100%;
     min-height: ${props => props.heightValue}px;
     min-width: ${props => props.widthValue}px;
 
@@ -44,14 +46,22 @@ class BackgroundTemplate extends Component {
     render() {
 
         const { windowHeight, windowWidth } = this.state;
-        const { customHeight, customWidth } = this.props;
+        const { 
+            doesHaveHeader,
+            ContentComponent,
+            customHeight, customWidth 
+        } = this.props;
 
-        const heightValue = customHeight ? customHeight : windowHeight;
-        const widthValue = customWidth ? customWidth : windowWidth;
+        let heightValue = customHeight ? customHeight : windowHeight;
+        let widthValue = customWidth ? customWidth : windowWidth;
 
         return (
-            <BackgroundArea heightValue={heightValue} widthValue={widthValue} >
-
+            <BackgroundArea 
+                doesHaveHeader={doesHaveHeader} 
+                heightValue={heightValue} 
+                widthValue={widthValue} 
+            >
+                <ContentComponent />
             </BackgroundArea>
         )
     }
@@ -59,7 +69,8 @@ class BackgroundTemplate extends Component {
 
 
 BackgroundTemplate.propTypes = {
-    ContentComponent: PropTypes.node.isRequired,    // Background 내부에 들어가는 컨텐츠 컴포넌트
+    doesHaveHeader: PropTypes.bool.isRequired,      // 헤더를 갖는 페이지인지
+    ContentComponent: PropTypes.func.isRequired,    // Background 내부에 들어가는 컨텐츠 컴포넌트
 
     customHeight: PropTypes.number,                 // window Height가 아닌 커스텀 값의 높이인 경우
     customWidth: PropTypes.number,                  // window Width가 아닌 커스텀 값의 길이인 경우
