@@ -131,14 +131,13 @@ manage 페이지 들어갈 만한 카테고리
 4. 알림 model에 email 삭제-> email_1(발신인), email_2(수신인) comment_type('comment', 'recomment')추가
 5. 알림 구현 완료
 6. notification count, chatting count 구현 완료(header에 표시될 숫자)
+7. room list 만듦.
 
 
 
 #### 할 일
 4. chatting message 전송시 상단바에 떠야하기 때문에 socket.emit을 추가해야할 듯.'/chatting'으로 보내는 건 이미 구현이 되어있음.
 5. user database에 있는 유저 정보 모두 가져오기 socket..?으로 구현
-7. 시간 update시 수정되는거 프론트 엔드로 roomlist 다시보내기
-8. chatting room create & delete 시 roomlist 보내기
 - 파일을 나중에 분리 시킬 수 있으면 분리시키기
 
 #### 진행중 
