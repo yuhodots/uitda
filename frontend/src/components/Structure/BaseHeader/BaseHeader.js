@@ -51,8 +51,8 @@ class BaseHeader extends Component {
 }
 
 BaseHeader.propTypes = {
-    isBGWhite: PropTypes.bool,                      // 배경색이 흰색인지
-    MiddleComponent: PropTypes.node.isRequired,     // Header의 가운데에 위치할 컴포넌트
+    isBGWhite: PropTypes.bool,                          // 배경색이 흰색인지
+    MiddleComponent: PropTypes.func.isRequired,         // Header의 가운데에 위치할 컴포넌트
     
 }
 
