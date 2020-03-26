@@ -139,6 +139,8 @@ manage 페이지 들어갈 만한 카테고리
 4. chatting message 전송시 상단바에 떠야하기 때문에 socket.emit을 추가해야할 듯.'/chatting'으로 보내는 건 이미 구현이 되어있음.
 5. user database에 있는 유저 정보 모두 가져오기 socket..?으로 구현
 - 파일을 나중에 분리 시킬 수 있으면 분리시키기
+6. comment list 댓글 cud도 ->socket으로 변경된거 확인 CREATE, UPDATE -> 해당 댓글만 / DELETE 댓글 리스트 전체
+7. count +1 되는거 수정 하기
 
 #### 진행중 
 
