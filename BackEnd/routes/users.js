@@ -14,6 +14,7 @@ let usercheck = function (req, res, next) {
 
 router.get('/', function(req, res) {
   res.json({ user: req.user ? req.user : 0 });
+  console.log("ROUTER GET: USERS.JS")
 });
 
 router.post('/update', [ usercheck, upload.single('userfile') ], function(req, res) {
