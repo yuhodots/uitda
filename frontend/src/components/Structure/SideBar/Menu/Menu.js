@@ -4,49 +4,40 @@
 
 import React from "react";
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
-import './Menu.css';
+import MenuItem from "./MenuItem";
 
-import market from './market.png'
-import networking from './networking.png'
-import carpool from './carpool.png'
-import manage from './manage.png'
-import chatting from './chatting.png'
 
-const selectImage = (title) => {
-    if (title == '유니마켓'){
-        return market;
-    }
-    else if (title == '네트워킹'){
-        return networking;
-    }
-    else if (title == '택시카풀'){
-        return carpool;
-    }
-    else if (title == '글 관리'){
-        return manage;
-    }
-    else if (title == '채팅방'){
-        return chatting;
-    }
-}
+/* Styled Components */
+const MenuBox = styled.div`
+    padding: 0;
+    margin: 0;
 
+    display: flex;
+    flex-flow: column nowrap;
+`;
+
+
+/* React Component */
 const Menu = ({selectedTopic, topicData}) => {
     
     return (
-        <ul className="Menu">
+        <MenuBox >
             {topicData.map((data, i) => {
+                const { titleText, url, category } = data;
+                
                 return(
                     <MenuItem
-                        title={data.title}
-                        url={data.url}
-                        isActive={data.key === selectedTopic}
+                        titleText={titleText}
+                        url={url}
+                        category={category}
+                        isSelected={category === selectedTopic}
                         key={i}
                     />
                 )
             })}
-        </ul>
+        </MenuBox>
     )
 }
 
@@ -58,17 +49,5 @@ Menu.propTypes = {
 Menu.defaultProps = {
     selectedTopic: "HOME"
 }
-
-const MenuItem = ({title, url, isActive}) => {
-    return (
-        <li className={isActive ? 'CategoryItem Active' : 'CategoryItem'}>
-            <Link to={url} className='CategoryText'>
-                <img src={selectImage(title)}></img>
-                {title}
-            </Link>
-        </li>
-    )
-}
-
 
 export default Menu;
