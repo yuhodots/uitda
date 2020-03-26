@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
+import UserBadgeBox from "./UserBadgeBox";
 import { Logo } from '../CommonComponents';
 import { colors } from '../../../styles/variables'
 
@@ -29,6 +30,16 @@ const HeaderBox = styled.div`
     flex-flow: row nowrap;
 `; 
 
+    /* */
+    const ContentBox = styled.div`
+        flex: 1;
+        height: 100%;
+
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+    `;
+
 
 /* react component */
 class BaseHeader extends Component {
@@ -38,13 +49,22 @@ class BaseHeader extends Component {
         const { 
             isBGWhite,
             MiddleComponent,
+            doesNeedUserBadge,
+            userimgURL
         } = this.props;
 
         return (
             <HeaderBox isBGWhite={isBGWhite} >
                 <Logo isWhite={!isBGWhite} />
-                <MiddleComponent />
-                {/* 유저, 알림, 메시지 */}
+
+                <ContentBox>
+                    <MiddleComponent />
+                    {
+                        doesNeedUserBadge ?
+                        <UserBadgeBox userimgURL={userimgURL} /> :
+                        ''
+                    }
+                </ContentBox>
             </HeaderBox>
         )
     }
@@ -53,11 +73,15 @@ class BaseHeader extends Component {
 BaseHeader.propTypes = {
     isBGWhite: PropTypes.bool,                          // 배경색이 흰색인지
     MiddleComponent: PropTypes.func.isRequired,         // Header의 가운데에 위치할 컴포넌트
-    
+    doesNeedUserBadge: PropTypes.bool,                  // 유저 뱃지 박스가 필요한 지 여부
+
+    userimgURL: PropTypes.string,                       // 유저 사진 이미지 url
 }
 
 BaseHeader.defaultProps = {
     isBGWhite: true,
+    doesNeedUserBadge: true,
+    userimgURL: ''
 }
 
 export default BaseHeader;
