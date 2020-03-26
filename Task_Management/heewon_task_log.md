@@ -124,7 +124,7 @@ manage 페이지 들어갈 만한 카테고리
 
 
 ### 2020년 3월 26일
-#### 완료
+
 1. alarm -> notification 이름 변경
 2. 댓글 cud도 ->socket으로 변경된거 확인 CREATE, UPDATE -> 해당 댓글만 / DELETE 댓글 리스트 전체
 3. 댓글 알림 설정(본인 글에 대한 댓글일 경우 notification create 하지 않도록!)
@@ -133,16 +133,17 @@ manage 페이지 들어갈 만한 카테고리
 6. notification count, chatting count 구현 완료(header에 표시될 숫자)
 7. room list 만듦.
 
+### 2020년 3월 27일
+#### 완료
+1. comment list 만들기 (댓글 리스트 전체 전달하기)
+2.
 
 
 #### 할 일
-4. chatting message 전송시 상단바에 떠야하기 때문에 socket.emit을 추가해야할 듯.'/chatting'으로 보내는 건 이미 구현이 되어있음.
 5. user database에 있는 유저 정보 모두 가져오기 socket..?으로 구현
 - 파일을 나중에 분리 시킬 수 있으면 분리시키기
-6. comment list 댓글 cud도 ->socket으로 변경된거 확인 CREATE, UPDATE -> 해당 댓글만 / DELETE 댓글 리스트 전체
-7. count +1 되는거 수정 하기
+
 
 #### 진행중 
 
 ### 질문
-comment create 도 comment list를 다보내야 하는가...?????
