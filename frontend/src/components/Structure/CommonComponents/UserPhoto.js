@@ -1,7 +1,7 @@
 
 
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 
 import { colors } from "../../../styles/variables";
@@ -15,7 +15,10 @@ const CircleArea = styled.div`
 
     border-radius: 50%;
 
-    background-color: ${colors.gray_bg}; 
+    background-color: ${colors.photo_defaultgray}; 
+    ${props => props.imgURL && css`
+        background-image: url(${props.imgURL});
+    `};
 `;
 
 
@@ -25,18 +28,17 @@ const UserPhoto = ({size, imgURL}) => {
 
 
     return (
-        <CircleArea size={size} imgURL={imgURL} >
-
-        </CircleArea>
+        <CircleArea size={size} imgURL={imgURL} />
     )
 }
 
 UserPhoto.propTypes = {
-    size: PropTypes.number.isRequired,
+    size: PropTypes.number,
     imgURL: PropTypes.string,
 }
 
 UserPhoto.defaultProps = {
+    size: 40,
     imgURL: ''
 }
 
