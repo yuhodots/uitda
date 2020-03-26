@@ -18,6 +18,15 @@ import market_preview from './market_preview.png';
 import networking_preview from './networking_preview.png';
 import carpool_preview from './carpool_preview.png';
 
+const button_href = 'http://uitda.net/Login'
+/* nginx 설정바꾸기 */
+// listen 80;
+// server_name uitda.net;
+// location /Login {
+//    proxy_pass http://127.0.0.1:3000/api/login/outlook;
+// }
+// 출처: https://medium.com/sjk5766/nginx-reverse-proxy-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-e11e18fcf843
+
 class Login extends Component {
 
   /* ant-design modal */
@@ -53,11 +62,6 @@ class Login extends Component {
 
   handleCancel = e => { this.setState({ visible: false }); };
 
-  /* requestLogin = () => {
-    axios.get(`/api/login/outlook`)
-    .then(res => console.log(res))
-    .catch(err => console.log(err));
-  } */
 
   render() {
 
@@ -90,7 +94,7 @@ class Login extends Component {
               유잇다를 통해 가막골 유니스타의 삶의 질을 한 단계 높여보아요</p>
           </div>
           <Popover content={content}>
-            <Button className="Button" href='http://localhost:3000/api/login/outlook' >
+            <Button className="Button" href={button_href}>
               <img src={outlook}></img>
               <strong>Outlook 로그인</strong>
             </Button>

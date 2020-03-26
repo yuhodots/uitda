@@ -42,12 +42,12 @@ module.exports = function (app) {
 
   let passport_auth = passport.authenticate('windowslive', 
       { scope: [ 'openid', 'profile', 'offline_access', 'https://outlook.office.com/Mail.Read']});
-  let passport_auth_callback = passport.authenticate('windowslive', {failureRedirect: '/api/login'});
+  let passport_auth_callback = passport.authenticate('windowslive', {failureRedirect: '/'});
 
   app.get('/api/login/outlook', passport_auth);
   app.get('/api/login/outlook/callback', passport_auth_callback, function(req, res){
     req.session.save(() => { 
-      res.redirect('/api/');
+      res.redirect('/board/market');
     })
   });
 
