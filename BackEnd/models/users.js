@@ -20,7 +20,11 @@ return sequelize.define('users', {
   pic_location: {
   type: DataTypes.TEXT,
   allowNull: true
-  }
+  },
+  socket_id: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
+  },
 },{
     timestamps: false,
     paranoid:false,

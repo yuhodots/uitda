@@ -243,14 +243,19 @@ module.exports = {
                             commentlist[i] = comment_ob;
                         }).catch(function (err) { throw err; });
                     }
-                })
+                }).catch(function (err) { throw err; });
                 callback(null);
             },
 
             /* 게시글 정보 검색 */
             function (callback) {
                 type_board.findOne({ where: { id: board_id } }).then(function (content) {
-                    callback(null, content);
+                    if(content){
+                      callback(null, content);
+                    }else{
+                      res.statusCode = 404; // 404 상태 코드
+                      response.end('주소가 없습니다');
+                    }
                 }).catch(function (err) {
                     throw err;
                 });

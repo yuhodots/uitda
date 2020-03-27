@@ -7,19 +7,30 @@ return sequelize.define('chatting_room', {
     autoIncrement: true,
     allowNull: false
   },
-  title: { //채팅방 제목
-    type: DataTypes.STRING(70),
+  email_1:{
+    type: DataTypes.STRING(60),
     allowNull: false
   },
-  author_1: { //처음 만든 사람
-    type: DataTypes.STRING(30),
+  email_2:{
+    type: DataTypes.STRING(60),
     allowNull: false
   },
-  author_2: { //대상자
-    type: DataTypes.STRING(30),
-    allowNull: false
+  unread_1:{
+    type: DataTypes.INTEGER(11).UNSIGNED,
+    allowNull: false,
+    defaultValue: 0
   },
-  created: { //채팅방 만든 시간
+  unread_2:{
+    type: DataTypes.INTEGER(11).UNSIGNED,
+    allowNull: false,
+    defaultValue: 0
+  },
+  online_user:{
+    type: DataTypes.INTEGER(11).UNSIGNED,
+    allowNull: false,
+    defaultValue: 0
+  },
+  updated: {
     type:DataTypes.STRING(30),
     allowNull: false
   }
@@ -29,3 +40,4 @@ return sequelize.define('chatting_room', {
     tableName:'chatting_room'
   });
 };
+//title,email_2, created

@@ -1,6 +1,7 @@
 let auth = require('./auth');
 let async = require('async');
 const { market_board } = require('../models');
+const { networking_board } = require('../models');
 const { comment } = require('../models');
 const { users } = require('../models');
 let moment = require('moment');
@@ -149,153 +150,12 @@ module.exports = {
 
             /* postlist 응답 */
             function (callback) {
-                market_board.findAll({  where: { id: board_id_list }, order: [[ 'id','DESC' ]] })
+                networking_board.findAll({  where: { id: board_id_list }, order: [[ 'id','DESC' ]] })
                 .then(result => { res.json({ postlist: result, user: req.user ? req.user : 0 }); })
                 .catch(function (err) { throw err; });
                 callback(null);
             }
 
-        ], function (err) {
-            if (err) throw (err);
-        });
-    },
-
-    create : function(req, res){
-
-        /* 변수 선언 */
-        let description;
-        let type_board;
-        let board_id;
-        let is_re_comment;
-        let parent_comment;
-
-        async.waterfall([
-
-            /* 변수 값 할당 */
-            function (callback) {
-                description = req.body.description;
-                type_board = req.body.type_board;
-                board_id = req.body.board_id;
-                is_re_comment = req.body.is_re_comment;
-                parent_comment = req.body.parent_comment;
-                callback(null);
-            },
-
-            /* 로그인한 사람의 요청인지 확인 */
-            function (callback) {
-                (!auth.isOwner(req, res)) ?
-                    res.json({ user: req.user ? req.user : 0 }) :
-                    callback(null);
-            },
-
-            /* 댓글 생성 */
-            function (callback) {
-                comment.create({
-                    type_board: type_board,  board_id: board_id, description: description,
-                    author: req.user.username, email: req.user.email, created: moment().format('YYYY년MM월DD일HH시mm분ss초'),
-                    is_re_comment: is_re_comment, parent_comment: parent_comment
-                }).then(function () {
-                    callback(null)
-                }).catch(function (err) { throw err; });
-            },
-
-            /* Redirection */
-            function (callback) {
-                res.end()
-                callback(null);
-            }
-
-        ], function (err) {
-            if (err) throw (err);
-        });
-    },
-
-    update : function(req, res){
-
-        /* 변수 선언 */
-        let description;
-        let id;
-
-        async.waterfall([
-
-            /* 변수 값 할당 */
-            function (callback) {
-                description = req.body.description;
-                id = req.params.id;
-                callback(null);
-            },
-
-            /* 로그인한 사람의 요청인지 확인 */
-            function (callback) {
-                (!auth.isOwner(req, res)) ?
-                    res.json({ user: req.user ? req.user : 0 }) :
-                    callback(null);
-            },
-
-            /* 작성자인지 확인 */
-            function (callback) {
-                comment.findOne({ where: { id: id } }).then(function (content) {
-                    (auth.sameOwner(req, content.email) === 0) ?
-                        res.json({ user: req.user ? req.user : 0 }) :
-                        callback(null);
-                }).catch(function (err) { throw err; });
-            },
-
-            /* 댓글 수정 */
-            function (callback) {
-                comment.update({
-                    description: description, created: moment().format('YYYY년MM월DD일HH시mm분ss초'), is_modified: true
-                }, { where: { id: id } }).then(function () {
-                    callback(null);
-                }).catch(function (err) { throw err; });
-            },
-
-            /* Redirection */
-            function (callback) {
-                res.end()
-                callback(null);
-            }
-
-        ], function (err) {
-            if (err) throw (err);
-        });
-    },
-
-    delete : function(req, res){
-
-        /* 변수 선언 */
-        let id;
-
-        async.waterfall([
-
-            /* 변수 값 할당 */
-            function (callback) {
-                id = req.params.id;
-                callback(null);
-            },
-
-            /* 로그인한 사람의 요청인지 확인 */
-            function (callback) {
-                (!auth.isOwner(req, res)) ?
-                    res.json({ user: req.user ? req.user : 0 }) :
-                    callback(null);
-            },
-
-            /* 작성자인지 확인 */
-            function (callback) {
-                comment.findOne({ where: { id: id } }).then(function (content) {
-                    (auth.sameOwner(req, content.email) === 0) ?
-                        res.json({ user: req.user ? req.user : 0 }) :
-                        callback(null);
-                }).catch(function (err) { throw err; });
-            },
-
-            /* 댓글 삭제 */
-            function (callback) {
-                comment.destroy({ where: { id: id } }).catch(function (err) { throw err; });
-                res.end()
-                callback(null);
-            }
         ], function (err) {
             if (err) throw (err);
         });
