@@ -50,7 +50,7 @@ class BaseHeader extends Component {
             isBGWhite,
             MiddleComponent,
             doesNeedUserBadge,
-            userimgURL
+            curUser
         } = this.props;
 
         return (
@@ -61,7 +61,7 @@ class BaseHeader extends Component {
                     <MiddleComponent />
                     {
                         doesNeedUserBadge ?
-                        <UserBadgeBox userimgURL={userimgURL} /> :
+                        <UserBadgeBox curUser={curUser} /> :
                         ''
                     }
                 </ContentBox>
@@ -75,13 +75,13 @@ BaseHeader.propTypes = {
     MiddleComponent: PropTypes.func.isRequired,         // Header의 가운데에 위치할 컴포넌트
     doesNeedUserBadge: PropTypes.bool,                  // 유저 뱃지 박스가 필요한 지 여부
 
-    userimgURL: PropTypes.string,                       // 유저 사진 이미지 url
+    curUser: PropTypes.object,                          // 로그인된 유저 데이터
 }
 
 BaseHeader.defaultProps = {
     isBGWhite: true,
     doesNeedUserBadge: true,
-    userimgURL: ''
+    curUser: {},
 }
 
 export default BaseHeader;

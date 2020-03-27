@@ -350,6 +350,10 @@
 
 
 
+### 3. 27 (금)
+
+* Components, Container 디렉토리 구조 개선
+
 
 
 
@@ -379,7 +383,6 @@
 
 #### Detail FrontEnd
 
-* socket.io 공부하기
 * socket.io를 이용해 클라이언트의 데이터 실시간 업데이트 되도록 하기
 * 사진이 없는 글 디자인 고려
 * 사진 Ant Design의 Carousel Component 검토
@@ -484,6 +487,7 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
   마찬가지로, 참여자 입장에서는 마감된 후에는 참가 신청 비활성화
 * 카풀 이용 안내 모달 창 만들기
 * 배경 컴포넌트를 BackgroundTemplate로 코드 리펙토링
+* Calendar의 이벤트로 인해 생기는 skeleton때문에 빈칸에서 배경색의 hover 효과가 나타나지 않음
 
 
 

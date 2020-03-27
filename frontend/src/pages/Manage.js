@@ -12,8 +12,8 @@ import {
 } from 'react-router-dom';
 
 import NotFound from './NotFound';
-import ManageContainer from '../containers/ManageContainers/ManageContainer';
-import EditContainer from "../containers/ManageContainers/EditContainer";
+import ManageContainer from '../containers/ManageContainer';
+import EditContainer from "../containers/EditContainer";
 
 import {
     MANAGE_COMMENTS,

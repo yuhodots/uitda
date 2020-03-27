@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Modal } from "antd";
 
-import { BaseCalendar } from "../Base_Components";
+import BaseCalendar from "../Structure/Base_Calendar";
 import { MenuBox, DateInfoBox, RoomModalBox } from "./SubComponents";
 import { colors } from "../../styles/variables";
 import { CARPOOL } from "../../constants/categories";
