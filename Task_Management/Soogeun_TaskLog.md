@@ -352,7 +352,8 @@
 
 ### 3. 27 (금)
 
-* Components, Container 디렉토리 구조 개선
+* Components, Container 디렉토리 구조 개선 (Manage, Edit 분리)
+* Manage, Edit 헤더가 Base Header를 사용하도록 코드 개선
 
 
 
