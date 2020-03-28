@@ -25,9 +25,8 @@ return sequelize.define('proposal', {
     allowNull: false
   },
   created: {
-  type: 'TIMESTAMP',
-  defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
-  allowNull: false
+    type:DataTypes.STRING(30),
+    allowNull: false
   }
   },{
     timestamps: false,

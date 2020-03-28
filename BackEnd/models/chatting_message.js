@@ -15,12 +15,17 @@ return sequelize.define('chatting_message', {
     type: DataTypes.TEXT,
     allowNull: true
   },
-  author: { //작성자
+  email: { //작성자
     type: DataTypes.STRING(30),
     allowNull: false
   },
   created: { //작성 시간
     type:DataTypes.STRING(30),
+    allowNull: false
+  },
+  is_unread: { //읽은 메세지 인가
+    type:DataTypes.BOOLEAN,
+    default: true,
     allowNull: false
   }
   },{

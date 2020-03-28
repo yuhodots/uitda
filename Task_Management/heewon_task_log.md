@@ -105,7 +105,7 @@ manage 페이지 들어갈 만한 카테고리
 로그인 화면에 들어갈 글 쓰기
 
 ### 2020년 3월 24일
-#### 완료
+
 1.namespace 설정
   > 전체 : '/'
   > 보드 : '/board'
@@ -118,19 +118,34 @@ manage 페이지 들어갈 만한 카테고리
 7. socket.room_id 추가하여 현재 room_id 파악할 수 있도록 함
 8. disconnect 시 socket_id를 빈칸으로 update함.
 9. chatting room create & delete socket으로 변경 및 routes/chatting 파일 내용 수정
-10.like를 likey로 변경(database 사용시 like라는게 따로 있어서 불편할 것 같아 싹 바꿈.)
-11. 댓글 crd도 ->socket으로 변경(아직 확인 안해봄)
+10. like를 likey로 변경(database 사용시 like라는게 따로 있어서 불편할 것 같아 싹 바꿈.)
+11. 댓글 cud도 ->socket으로 변경(아직 확인 안해봄)
 12. lib/comment & routes/comment 수정
 
-### 할 일
-3. 댓글 알림 설정
-4. chatting message 전송시 상단바에 떠야하기 때문에 socket.emit을 추가해야할 듯.'/chatting'으로 보내는 건 이미 구현이 되어있음.
-5. user database에 있는 유저 정보 모두 가져오기 socket..?으로 구현
-6. 파일을 나중에 분리 시킬 수 있으면 분리시키기
+
+### 2020년 3월 26일
+
+1. alarm -> notification 이름 변경
+2. 댓글 cud도 ->socket으로 변경된거 확인 CREATE, UPDATE -> 해당 댓글만 / DELETE 댓글 리스트 전체
+3. 댓글 알림 설정(본인 글에 대한 댓글일 경우 notification create 하지 않도록!)
+4. 알림 model에 email 삭제-> email_1(발신인), email_2(수신인) comment_type('comment', 'recomment')추가
+5. 알림 구현 완료
+6. notification count, chatting count 구현 완료(header에 표시될 숫자)
+7. room list 만듦.
+
+### 2020년 3월 27일
+#### 완료
+1. comment list 만들기 (댓글 리스트 전체 전달하기)
+2.
+
+
+#### 할 일
+1. user database에 있는 유저 정보 모두 가져오기 res.json으로 구현
+2. 좋아요 구현
+
+- 파일을 나중에 분리 시킬 수 있으면 분리시키기
+
 
 #### 진행중 
 
 ### 질문
-1. socket으로 구현 할 때에도 isowner와 sameowner 가 필요한가.?
-  만약 sameowner가 아닐 경우가 발생한다면 어찌해야하는가..?(room delete 부분)
-2. 방 정보 받아오는 것도 socket으로?

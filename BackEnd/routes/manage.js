@@ -60,23 +60,4 @@ router.get('/networking_comment', function (req, res) {
   comment.my_networking_comment(req, res);
 });
 
-/* proposal */
-router.get('/proposal', function (req, res) {
-  res.json({ user: req.user ? req.user : 0 });
-});
-
-router.get('/proposal/create', function (req, res) {
-  res.json({ user: req.user ? req.user : 0 });
-});
-
-router.post('/proposal/create', function (req, res) {
-  let title = req.body.title;
-  let description = req.body.description;
-  (!auth.isOwner(req, res)) ?
-    res.json({ user: req.user ? req.user : 0 }) :
-    proposal.create({ title: title, description: description, author: req.user.username, email: req.user.email }).then(function () {
-      res.redirect('/api/manage/proposal');
-    }).catch(function (err) { throw err; });
-});
-
 module.exports = router;
