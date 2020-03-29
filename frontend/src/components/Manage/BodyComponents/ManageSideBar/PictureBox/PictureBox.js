@@ -2,7 +2,10 @@
 
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import { Upload } from "antd";
 
+import { UserPhoto } from "../../../../Structure/CommonComponents";
 import { colors } from '../../../../../styles/variables'
 import { BoxTemplate } from '../../../../../styles/templates/manage'
 
@@ -19,27 +22,27 @@ const BoxArea = styled(BoxTemplate)`
     align-items: center;
 `;
 
-/* 사진이 들어가는 동그란 영역 */
-const PhotoCircle = styled.div`
-    height: 8rem;
-    width: 8rem;
-    border-radius: 50%;
-    margin-bottom: 1rem;
+    /* 사진이 들어가는 동그란 영역 */
+    const PhotoUploadBox = styled.div`
+        margin-bottom: 1rem;
+        width: 8rem;
+        height: 8rem;
+        border-radius: 50%;
 
-    background-color: ${colors.gray_bg};
-`
+        overflow: hidden;
+    `;
 
-/* User Name이 들어가는 공간 */
-const UserName = styled.div`
-    margin-top: 0.5rem;
-    font-size: 1.125rem;
-`
+    /* User Name이 들어가는 공간 */
+    const UserName = styled.div`
+        margin-top: 0.5rem;
+        font-size: 1.125rem;
+    `;
 
-const Email = styled.div`
-    /* margin-top: 0.5rem; */
-    font-size: 0.875rem;
-    color: ${colors.font_gray};
-`
+    const Email = styled.div`
+        /* margin-top: 0.5rem; */
+        font-size: 0.875rem;
+        color: ${colors.font_gray};
+    `;
 
 
 
@@ -50,17 +53,30 @@ class PictureBox extends Component {
     render () {
 
         const {
-            user
+            curUser
         } = this.props
+
+        const uploadProps = {
+            name: 'userfile',
+            action: '/api/users/update',
+        }
 
         return (
             <BoxArea>
-                <PhotoCircle/>
-                <Email>{user.email}</Email>
-                <UserName>{user.username}</UserName>
+                <PhotoUploadBox>
+                    <Upload {...uploadProps} >
+                        <UserPhoto size={128} imgURL={curUser.pic_location} />
+                    </Upload>
+                </PhotoUploadBox>
+                <Email>{curUser.email}</Email>
+                <UserName>{curUser.username}</UserName>
             </BoxArea>
         )
     }
+}
+
+PictureBox.propTypes = {
+    curUser: PropTypes.object.isRequired,   // 유저 정보
 }
 
 export default PictureBox;

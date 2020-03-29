@@ -28,14 +28,14 @@ class ManageSideBox extends Component {
     render () {
 
         const {
-            user,
+            curUser,
             kind,    
         } = this.props
 
         return (
             <SideArea>
                 <PictureBox 
-                    user={user}
+                    curUser={curUser}
                 />
                 <CategoryBox 
                     kind={kind}
@@ -46,7 +46,7 @@ class ManageSideBox extends Component {
 }
 
 ManageSideBox.propTypes = {
-    // user: PropTypes.object.isRequired,      // 유저 정보
+    curUser: PropTypes.object.isRequired,   // 유저 정보
     kind: PropTypes.string.isRequired,      // 매니지 카테고리 정보
 }
 
