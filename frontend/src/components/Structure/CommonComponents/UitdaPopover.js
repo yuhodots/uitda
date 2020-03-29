@@ -107,7 +107,7 @@ UitdaPopover.propTypes = {
     PopButton: PropTypes.func.isRequired,       // Popover를 띄우는 trigger가 되는 버튼
 
     contentList: PropTypes.array,               /* Popover의 목록을 담은 Array 객체.  
-                                                   배열의 elem은 text과 handleClick 메서드를 반드시 필요로 하고, 
+                                                   배열의 elem은 text과 clickMethod 메서드를 반드시 필요로 하고, 
                                                    icon은 추가할 수 있는 객체이어야 한다. */ 
     CustomContent: PropTypes.node,              // List가 아닌 Custom Content도 허용한다.
 }

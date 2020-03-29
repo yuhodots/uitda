@@ -15,7 +15,7 @@ import {
     deletePostRequest,              // Post Delete Post request 함수  
     updatePostConditionRequest,
 } from '../store/actions/manage'
-import { getStatusRequest } from '../store/actions/auth'
+import { getStatusRequest, logoutRequest } from '../store/actions/auth'
 
 /* Constants */
 import {
@@ -122,6 +122,7 @@ class ManageContainer extends Component {
 
             postList,
 
+            logoutRequest,
             deletePostRequest,
             updatePostConditionRequest,
         } = this.props;
@@ -140,6 +141,7 @@ class ManageContainer extends Component {
                     <div>
                         <ManageHeader
                             curUser={curUser}
+                            logoutRequest={logoutRequest}
                         />
                         <ManageBody 
                             curUser={curUser}
@@ -179,6 +181,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getStatusRequest: () => {dispatch(getStatusRequest())},                         // 접속된 유저 정보를 요청하는 액션
+        logoutRequest: () => dispatch(logoutRequest()),                                 // 로그아웃 액션
 
         getMyPostRequest: (board) => {dispatch(getMyPostRequest(board))},               // 내가 작성한 전체 Post 데이터 GET request 함수
         deletePostRequest: (board, id) => {dispatch(deletePostRequest(board, id))},     // Post Delete POST request 함수

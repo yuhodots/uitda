@@ -47,10 +47,12 @@ class BaseHeader extends Component {
     render () {
 
         const { 
+            curUser,
             isBGWhite,
             MiddleComponent,
             doesNeedUserBadge,
-            curUser
+
+            logoutRequest,
         } = this.props;
 
         return (
@@ -61,7 +63,7 @@ class BaseHeader extends Component {
                     <MiddleComponent />
                     {
                         doesNeedUserBadge ?
-                        <UserBadgeBox curUser={curUser} /> :
+                        <UserBadgeBox curUser={curUser} logoutRequest={logoutRequest} /> :
                         ''
                     }
                 </ContentBox>
@@ -71,11 +73,13 @@ class BaseHeader extends Component {
 }
 
 BaseHeader.propTypes = {
+    curUser: PropTypes.object,                          // 로그인된 유저 데이터
+
     isBGWhite: PropTypes.bool,                          // 배경색이 흰색인지
     MiddleComponent: PropTypes.func.isRequired,         // Header의 가운데에 위치할 컴포넌트
     doesNeedUserBadge: PropTypes.bool,                  // 유저 뱃지 박스가 필요한 지 여부
 
-    curUser: PropTypes.object,                          // 로그인된 유저 데이터
+    logoutRequest: PropTypes.func.isRequired,           // 로그아웃 액션
 }
 
 BaseHeader.defaultProps = {

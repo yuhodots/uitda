@@ -19,6 +19,8 @@ const CircleArea = styled.div`
     ${props => props.imgURL && css`
         background-image: url(${props.imgURL});
     `};
+
+    cursor: pointer;
 `;
 
 

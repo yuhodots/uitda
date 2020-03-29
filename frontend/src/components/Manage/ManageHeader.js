@@ -23,20 +23,22 @@ const _renderComponent = () => {
 }
 
 /* react component */
-const ManageHeader = ({curUser}) => {
+const ManageHeader = ({curUser, logoutRequest}) => {
 
     return (
         <BaseHeader 
+            curUser={curUser}
             isBGWhite={true}
             MiddleComponent = {_renderComponent}
-            curUser={curUser}
+        
+            logoutRequest={logoutRequest}
         />
     )
 }
 
 ManageHeader.propTypes = {
-    curUser: PropTypes.object.isRequired,   // 유저 정보
-
+    curUser: PropTypes.object.isRequired,       // 유저 정보
+    logoutRequest: PropTypes.func.isRequired,   // 로그아웃 매서드
 }
 
 ManageHeader.defaultProps = {}
