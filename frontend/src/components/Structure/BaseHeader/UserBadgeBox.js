@@ -36,7 +36,10 @@ class UserBadgeBox extends Component {
             <WholeBox>
                 <IconBadge iconPath={MessengerFilled} size={24} />
                 <GiveMargin><IconBadge iconPath={BellOutlined} size={24} badgeCount={2} /></GiveMargin>
-                <GiveMargin><UserPhoto imgURL={userimgURL} size={28} /></GiveMargin>
+                <GiveMargin>
+                    
+                    <UserPhoto imgURL={userimgURL} size={28} />
+                </GiveMargin>
             </WholeBox>
         )
     }

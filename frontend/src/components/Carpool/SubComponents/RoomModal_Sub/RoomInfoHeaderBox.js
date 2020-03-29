@@ -5,10 +5,10 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Button } from "antd";
 import { 
-    DeleteOutlined, EditOutlined, FieldTimeOutlined, CloseCircleOutlined, PushpinOutlined 
+    DeleteOutlined, EditOutlined, FieldTimeOutlined, CloseCircleOutlined, PushpinOutlined, MoreOutlined
 } from "@ant-design/icons";
 
-import { UserPhoto, MoreButton } from "../../../Structure/CommonComponents";
+import { UserPhoto, UitdaPopover } from "../../../Structure/CommonComponents";
 import { colors } from "../../../../styles/variables";
 import { 
     CLOSED, ACTIVE, OWNER, OWNER_CLOSED, GUEST, GUEST_CLOSED 
@@ -79,6 +79,13 @@ const HeaderInfoBox = styled.div`
 
                 background-color: ${props => props.labelColor};
             `;
+
+        const MoreIcon = styled(MoreOutlined)`
+            color: ${colors.font_gray};
+            font-size: ${16}px;
+
+            cursor: pointer;
+        `;
 
 
         const CancleUpdateButton = styled(Button)`
@@ -245,7 +252,10 @@ class RoomInfoHeaderBox extends Component {
                             <LabelCircle labelColor={labelColor} />
                             {labelText}
                         </StateLabel>
-                        <MoreButton contentList={MoreButtonContentList} />
+                        <UitdaPopover 
+                            contentList={MoreButtonContentList} 
+                            PopButton={() => <MoreIcon /> } 
+                        />
                     </HRBox>
                 }
     
