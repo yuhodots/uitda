@@ -144,5 +144,33 @@ module.exports = {
         ], function (err) {
             if (err) throw (err);
         });
+    },
+    find_user: function(req, res){
+        var user_id = req.params.user_id;
+        users.findAll({where:{id:user_id}
+        }).then(function(user){
+            chatting_room.findOne({where:{
+                [Op.or]:[
+                    {
+                        email_1:req.user.email,
+                        email_2:user[0].dataValues.email
+                    },
+                    {
+                        email_1:user[0].dataValues.email,
+                        email_2:req.user.email
+                    }
+                ]
+            }}).then(function(room){
+                if(room){
+                    res.redirect(`/api/chatting/room/${room.dataValues.id}`);
+                } else {
+                    chatting_room.create({
+                        email_1:req.user.email, email_2:user[0].dataValues.email, updated:moment().format('YYYY년MM월DD일HH시mm분ss초')
+                    }).then(function(new_room){
+                        res.redirect(`/api/chatting/room/${new_room.dataValues.id}`)
+                    }).catch(function(err){throw err;});
+                }
+            }).catch(function(err){throw err;});
+        }).catch(function(err){throw err;});
     }
 }
