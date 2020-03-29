@@ -42,7 +42,11 @@ module.exports = {
             function (callback) {
                 cal_events.findAll()
                 .then(function (results) { events_db = results; })
-                .then(function () { callback(null); })
+                .then(function () { 
+                    (events_db == [])?
+                        callback(null):
+                        res.json({ events: null, user: req.user ? req.user : 0 });
+                })
                 .catch(function (err) { throw err; });
             },
 
