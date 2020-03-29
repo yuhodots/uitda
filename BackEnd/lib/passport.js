@@ -3,6 +3,7 @@ module.exports = function (app) {
   /* Module load */
   let passport = require('passport');
   const { users } = require('../models');
+  let LocalStrategy = require('passport-local').Strategy;
   let OutlookStrategy = require('passport-outlook').Strategy;
 
   app.use(passport.initialize());
@@ -19,6 +20,24 @@ module.exports = function (app) {
     }).catch(function(err){throw err;})
   });
 
+  //LocalStrategy
+  passport.use(new LocalStrategy({
+    usernameField: 'username',
+    passwordField: 'email',
+    session: true, // 세션에 저장 여부
+    passReqToCallback: false,
+    }, (username, password, done) => {
+      let user = {
+          username : username,
+          email : password
+      }
+      users.findOrCreate({where: {email: password, username : username} })
+      .then(() => { done(null,user); })
+  }));
+
+
+
+  //OutlookStrategy
   let outlookCredentials = require('../config/outlook.json');
   passport.use(new OutlookStrategy(outlookCredentials,
     function(accessToken, refreshToken, profile, done) {
@@ -40,13 +59,13 @@ module.exports = function (app) {
     }
   ));
 
-  let passport_auth = passport.authenticate('windowslive', 
+  let passport_auth = passport.authenticate('windowslive',
       { scope: [ 'openid', 'profile', 'offline_access', 'https://outlook.office.com/Mail.Read']});
   let passport_auth_callback = passport.authenticate('windowslive', {failureRedirect: '/'});
 
   app.get('/api/login/outlook', passport_auth);
   app.get('/api/login/outlook/callback', passport_auth_callback, function(req, res){
-    req.session.save(() => { 
+    req.session.save(() => {
       res.redirect('/board/market');
     })
   });
