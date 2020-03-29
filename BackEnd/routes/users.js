@@ -8,13 +8,13 @@ let multerS3 = require('../lib/multerS3')();
 let upload = multerS3.upload;
 
 /* User checking */
+/* 로그인 하지 않은 유저의 요청을 home으로 리다이렉트 */
 let usercheck = function (req, res, next) {
-  (req.user)? next(): res.redirect('http://localhost:4000/');
+  (req.user)? next(): res.redirect('/');
 };
 
 router.get('/', function(req, res) {
   res.json({ user: req.user ? req.user : 0 });
-  console.log("ROUTER GET: USERS.JS")
 });
 
 router.post('/update', [ usercheck, upload.single('userfile') ], function(req, res) {
