@@ -10,12 +10,12 @@ import { colors } from '../../../../../styles/variables'
 import { BoxTemplate } from '../../../../../styles/templates/manage'
 
 import {
+    MANAGE_ACCOUNT,
     MANAGE_POSTS_MARKET,
     MANAGE_POSTS_NETWORKING,
     MANAGE_COMMENTS,
     MANAGE_LIKEPOSTS,
-    MANAGE_MYCARPOOL,
-    // MANAGE_NOTIFICATIONS,
+    MANAGE_CONTACT
 } from '../../../../../constants/manage_category'
 
 
@@ -104,12 +104,6 @@ class CategoryBox extends Component {
                         isHighLight={kind === MANAGE_LIKEPOSTS}
                     >
                         관심있음 표시한 게시글
-                    </CategoryLink>
-                    <CategoryLink 
-                        to='/manage/mycarpool'
-                        isHighLight={kind === MANAGE_MYCARPOOL}
-                    >
-                        내 Carpool 일정
                     </CategoryLink>
                 </SubGroup>
                 

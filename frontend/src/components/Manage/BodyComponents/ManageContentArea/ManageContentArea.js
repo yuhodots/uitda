@@ -12,12 +12,12 @@ import {
 
 /* Constants */
 import {
+    MANAGE_ACCOUNT,
     MANAGE_POSTS_MARKET,
     MANAGE_POSTS_NETWORKING,
     MANAGE_COMMENTS,
     MANAGE_LIKEPOSTS,
-    MANAGE_MYCARPOOL,
-    MANAGE_NOTIFICATIONS,
+    MANAGE_CONTACT,
 } from '../../../../constants/manage_category'
 
 import {
@@ -54,6 +54,9 @@ class ManageContentArea extends Component {
         } = this.props;
 
         switch (kind) {
+            case MANAGE_ACCOUNT:
+                break;
+
             case MANAGE_POSTS_MARKET:
                 board = MARKET;
                 // eslint-disable-next-line
@@ -69,12 +72,10 @@ class ManageContentArea extends Component {
             case MANAGE_LIKEPOSTS:
                 // break;
                 // eslint-disable-next-line
-            case MANAGE_MYCARPOOL:
+            case MANAGE_CONTACT:
                 // break;
                 // eslint-disable-next-line
-            case MANAGE_NOTIFICATIONS:
-                // break;
-                // eslint-disable-next-line
+
             default:
                 component = ErrorPage;
                 break;

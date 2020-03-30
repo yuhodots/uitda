@@ -63,7 +63,7 @@ class ManageBody extends Component {
             <BodyArea windowHeight={windowHeight} >
                 <WholeBox>
                     <SideBar
-                        user={curUser}
+                        curUser={curUser}
                         kind={kind}
                     />
                     <ContentArea 

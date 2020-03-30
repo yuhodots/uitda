@@ -19,12 +19,12 @@ import { getStatusRequest, logoutRequest } from '../store/actions/auth'
 
 /* Constants */
 import {
+    MANAGE_ACCOUNT,
     MANAGE_POSTS_MARKET,
     MANAGE_POSTS_NETWORKING,
     MANAGE_COMMENTS,
     MANAGE_LIKEPOSTS,
-    MANAGE_MYCARPOOL,
-    MANAGE_NOTIFICATIONS,
+    MANAGE_CONTACT,
 } from '../constants/manage_category'
 import {
     MARKET,
@@ -44,8 +44,14 @@ class ManageContainer extends Component {
     
             let board;
 
+            await this.props.getStatusRequest();
+
             switch(kind) {
     
+                /* 계정 관리 */
+                case MANAGE_ACCOUNT:
+                    break;
+
                 /* 게시글 관리 */
                 case MANAGE_POSTS_MARKET:
                     board = MARKET;
@@ -55,10 +61,9 @@ class ManageContainer extends Component {
     
                     // console.log(`posts/${board}`);
                     await this.props.getMyPostRequest(board);
-                    await this.props.getStatusRequest();
                     break;
     
-                /* 댓글 관리 */
+                /* 댓글단 게시글 보기 */
                 case MANAGE_COMMENTS:
                     // console.log('comment category');
                     break;
@@ -69,15 +74,9 @@ class ManageContainer extends Component {
                     break;
     
                 /* 내 카풀 일정 */
-                case MANAGE_MYCARPOOL:
-                    // console.log('mycarpool category');
-                    break;   
-                    
-                /* 지난 알림 보기 */
-                case MANAGE_NOTIFICATIONS:
-                    // console.log('notification category');
+                case MANAGE_CONTACT:
                     break;
-                
+
                 /* kind가 post인 경우 */
                 default:
                     break;

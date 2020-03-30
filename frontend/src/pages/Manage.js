@@ -16,10 +16,11 @@ import ManageContainer from '../containers/ManageContainer';
 import EditContainer from "../containers/EditContainer";
 
 import {
+    MANAGE_ACCOUNT,
     MANAGE_COMMENTS,
     MANAGE_LIKEPOSTS,
-    MANAGE_MYCARPOOL,
     MANAGE_NOTIFICATIONS,
+    MANAGE_CONTACT,
 
     MANAGE_POSTS_MARKET,
     MANAGE_POSTS_NETWORKING,
@@ -33,13 +34,16 @@ const Manage = () => {
                 <Redirect to='/manage/posts/market' />
             } />
 
-            {/*  */}
+            {/* Edit 관련 url 규칙 */}
             <Route exact path='/manage/edit/newpost' render={() => 
                 <EditContainer isNew={true} />
             } />
             <Route path='/manage/edit/:boardName/:id' component={EditContainer} />
 
             {/* 카테고리 별 해당 kind를 넘겨주기 */}
+            <Route path={`/manage/${MANAGE_ACCOUNT}`} component={() => 
+                <ManageContainer kind={MANAGE_ACCOUNT} />
+            } />
             <Route path={`/manage/posts/market`} component={() => 
                 <ManageContainer kind={MANAGE_POSTS_MARKET} />
             } />
@@ -52,12 +56,10 @@ const Manage = () => {
             <Route path={`/manage/${MANAGE_LIKEPOSTS}`} component={() => 
                 <ManageContainer kind={MANAGE_LIKEPOSTS} />
             } />
-            <Route path={`/manage/${MANAGE_MYCARPOOL}`} component={() => 
-                <ManageContainer kind={MANAGE_MYCARPOOL} />
+            <Route path={`/manage/${MANAGE_CONTACT}`} component={() => 
+                <ManageContainer kind={MANAGE_CONTACT} />
             } />
-            <Route path={`/manage/${MANAGE_NOTIFICATIONS}`} component={() => 
-                <ManageContainer kind={MANAGE_NOTIFICATIONS} />
-            } />
+           
 
             {/* 그 외는 404 NotFound를 render한다. */}
             <Route component={NotFound} />
