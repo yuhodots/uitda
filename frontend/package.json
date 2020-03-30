@@ -26,10 +26,12 @@
     "redux-thunk": "^2.3.0",
     "rxjs": "^6.3.3",
     "rxjs-compat": "^6.3.3",
+    "socket.io-client": "^2.3.0",
     "styled-components": "^4.4.0"
   },
   "scripts": {
     "start": "export PORT=4000 && react-scripts start",
+    "start-w": "SET PORT=4000 && react-scripts start",
     "start-client": "export PORT=8080 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
