@@ -357,6 +357,19 @@
 
 
 
+### 3. 29 (일)
+
+* 공통 컴포넌트의 MoreButton을 UitdaPopover로 변경하고, Popover의 공통 속성을 갖는 컴포넌트로 변경.
+  Popover의 특성은 이용하되, Popover 트리거가 MoreIcon으로 고정된 것을 변경함
+* Header의 User 사진 아이콘에서 계정관리, Logout 기능을 추가함
+* manage user photo upload
+
+
+
+
+
+
+
 
 
 
@@ -476,6 +489,7 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 #### Carpool FrontEnd
 
 * 카풀 일정 업데이트 시에는 modal이 닫히지 않도록 할 것
+* 카풀 데이터 하나도 없을 때에도 화면이 뜰 수 있도록
 
 
 
@@ -540,7 +554,15 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 
 
+* 채팅 방 목록에서 검색 기능 필요할까 ? 유니스트 구성원 전체가 나타나도 될까
+
+
+
 * 메시지에서 사진 업로드 기능 추가 ?
+
+
+
+* Manage에서 sidebar 사진은 크게 보기, 삭제만 가능하고 사진 upload는 계정관리 페이지에서 
 
 
 
@@ -581,6 +603,7 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 * 로그인이 안될 때 안내 문구
 * 공용 PC에서 outlook 로그아웃 방법
 * 카풀, manage의 created 형태 바꾸기
+* 카풀 일정 GET 에서 아무것도 없을 때 빈 리스트 보내주도록 backend
 
 
 
