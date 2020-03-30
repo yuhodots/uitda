@@ -1,6 +1,7 @@
 
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import BaseHeader from "../../Structure/BaseHeader";
 import LinkCategory from "../../Structure/BaseHeader/LinkCategory_MidComp";
@@ -25,11 +26,23 @@ class ChattingHeader extends Component {
 
     render() {
 
+        const { curUser, logoutRequest } = this.props
+
         return(
-            <BaseHeader isBGWhite={true} MiddleComponent={this._renderMiddleComponent} />
+            <BaseHeader 
+                curUser={curUser}
+                isBGWhite={true} 
+                MiddleComponent={this._renderMiddleComponent} 
+            
+                logoutRequest={logoutRequest}
+            />
         )
     }
 }
 
+ChattingHeader.propTypes = {
+    curUser: PropTypes.object.isRequired,           // 유저 정보
+    logoutRequest: PropTypes.func.isRequired,       // 로그아웃 액션
+}
 
 export default ChattingHeader
