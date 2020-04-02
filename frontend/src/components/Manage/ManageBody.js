@@ -52,6 +52,7 @@ class ManageBody extends Component {
             curUser,
             kind,
             windowHeight,
+            isLoading,
 
             /* posts */
             postList,
@@ -67,6 +68,7 @@ class ManageBody extends Component {
                         kind={kind}
                     />
                     <ContentArea 
+                        isLoading={isLoading}
                         kind={kind}
                         postList={postList}
                         deletePost={deletePost}
@@ -82,6 +84,7 @@ ManageBody.propTypes = {
     curUser: PropTypes.object.isRequired,               // 현재 로그인된 유저 정보
     kind: PropTypes.string.isRequired,                  // 메니지 카테고리 정보
     windowHeight: PropTypes.number.isRequired,          // 화면 최소 세로 길이 정보
+    isLoading: PropTypes.bool.isRequired,               // Manage 컨텐츠의 항목이 loading중인지 여부
 
     postList: PropTypes.array,                          // Posts 데이터 리스트
     deletePost: PropTypes.func.isRequired,              // Post를 지우는 함수

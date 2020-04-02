@@ -34,6 +34,8 @@ import {
 
 class ManageContainer extends Component {
 
+    state = {}
+
     componentDidMount() {
         const {
             kind,
@@ -135,7 +137,7 @@ class ManageContainer extends Component {
                             curUser={curUser}
                             kind={kind}
                             windowHeight={windowHeight}
-                            isManageItemsLoading={isManageItemsLoading}
+                            isLoading={isManageItemsLoading}
                             postList={postList}
 
                             deletePost={deletePostRequest}

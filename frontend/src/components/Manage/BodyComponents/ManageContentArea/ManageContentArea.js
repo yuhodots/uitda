@@ -66,15 +66,15 @@ class ManageContentArea extends Component {
                 component = ManagePost;
                 break;
 
-            case MANAGE_COMMENTS:
-                // break;
-                // eslint-disable-next-line
-            case MANAGE_LIKEPOSTS:
-                // break;
-                // eslint-disable-next-line
-            case MANAGE_CONTACT:
-                // break;
-                // eslint-disable-next-line
+            // case MANAGE_COMMENTS:
+            //     break;
+            //     // eslint-disable-next-line
+            // case MANAGE_LIKEPOSTS:
+            //     break;
+            //     // eslint-disable-next-line
+            // case MANAGE_CONTACT:
+            //     break;
+            //     // eslint-disable-next-line
 
             default:
                 component = ErrorPage;
@@ -103,18 +103,24 @@ class ManageContentArea extends Component {
     render() {
 
         const {
+            isLoading,
             kind
         } = this.props
     
         return (
             <ContentBoxArea>
-                { this._renderContent(kind) }
+            {
+                isLoading ?
+                <div>loading</div> :
+                this._renderContent(kind)
+            }
             </ContentBoxArea>
         )
     }
 }
 
 ManageContentArea.propTypes = {
+    isLoading: PropTypes.bool.isRequired,               // Manage 컨텐츠의 항목이 loading중인지 여부
     kind: PropTypes.string.isRequired,                  // 메니지 카테고리 정보
 
     postList: PropTypes.array,                          // Posts 데이터 리스트
