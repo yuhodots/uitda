@@ -56,8 +56,9 @@ class LocalLogin extends Component {
     _storeInputData = (input_key, value) => {
         for ( let key in this.state ) {
             if ( key === input_key ) {
-                this.state[key] = value;
-                this.setState(this.state)
+                let newState = this.state;
+                newState[key] = value;
+                this.setState(newState)
             }
         }
     }
