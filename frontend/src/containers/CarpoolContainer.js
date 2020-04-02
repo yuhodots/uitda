@@ -36,8 +36,9 @@ class CarpoolContainer extends Component {
     render() {
         const { 
             curUser,
+            isGetStatusDone,
+            isCarpoolGetDone,
 
-            isGetSuccess,
             totalOrMyOption,
             eventsToRenderObj,
             selectedDate, 
@@ -59,8 +60,10 @@ class CarpoolContainer extends Component {
             cancleJoinEvent,
         } = this.props;
 
+        const isLoaded = isGetStatusDone && isCarpoolGetDone;
+
         return (
-            isGetSuccess ?
+            isLoaded ?
             
                 curUser ?
 
@@ -103,7 +106,9 @@ class CarpoolContainer extends Component {
 const mapStateToProps = (state) => {
     return {
         curUser: state.auth.user,
-        isGetSuccess: state.carpool.isGetSuccess,
+        isGetStatusDone: state.auth.isGetStatusDone,                // get status 요청 완료 여부
+
+        isCarpoolGetDone: state.carpool.isGetSuccess,               // carpool 일정 데이터 요청 완료 여부
         
         totalOrMyOption: state.carpool.totalOrMyOption,
         eventsToRenderObj: state.carpool.eventsToRenderObj,

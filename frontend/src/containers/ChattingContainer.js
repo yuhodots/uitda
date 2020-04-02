@@ -4,42 +4,33 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import SocketIo from 'socket.io-client';
+// import SocketIo from 'socket.io-client';
 
 import { getStatusRequest, logoutRequest } from "../store/actions/auth";
 import ChattingHeader from "../components/Chatting/ChattingHeader";
 import ChattingBody from "../components/Chatting/ChattingBody";
 
-const chattingSocket = SocketIo.connect('/chatting');
+// const chattingSocket = SocketIo.connect('/chatting');
 
 class ChattingContainer extends Component {
 
-    state = {}
-
     componentDidMount() {
         const { getStatusRequest } = this.props;
-
         getStatusRequest();
-        this.setState({
-            ...this.state,
-            isLoaded: true
-        })
     }
-
 
     render() {
 
-        const { isLoaded } = this.state;
         const { 
+            isGetStatusDone,
             curUser, 
             isIndex,
         
             logoutRequest
         } = this.props;
 
-
         return(
-            isLoaded ?
+            isGetStatusDone ?
 
                 curUser ?
 
@@ -69,7 +60,8 @@ ChattingContainer.defaultProps = {
 
 const mapStateToProps = (state) => {
     return {
-        curUser: state.auth.user,           // 현재 유저 정보
+        curUser: state.auth.user,                               // 현재 유저 정보
+        isGetStatusDone: state.auth.isGetStatusDone,            // get status 요청 완료 여부
     }
 }
 

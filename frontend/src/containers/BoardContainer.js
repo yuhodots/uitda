@@ -24,33 +24,28 @@ class BoardContainer extends Component {
     state = {}
 
     componentDidMount() {
-
         const { 
             boardName,
             
+            getStatusRequest,
             initiateBoard,
             getBoardRequest,
             headerOn,
             topicSelect,
         } = this.props;
         
+        getStatusRequest();
         initiateBoard();
 
         headerOn();                                                 // 헤더 On
         topicSelect(boardName);                                     // app의 topic state를 boardName으로 설정
         
-        getStatusRequest();
         getBoardRequest(boardName);
 
         window.addEventListener('scroll', this._handleScroll);      // Scroll 이벤트가 생길 때, onScroll을 실행함
         window.addEventListener('resize', this._updateWindowSize);  // window 사이즈 변경 시, 변경된 값을 state에 저장
 
         this._updateWindowSize();
-
-        this.setState({
-            ...this.state,
-            isLoaded: true
-        })
     }
 
     componentWillUnmount () {
@@ -96,6 +91,7 @@ class BoardContainer extends Component {
         let {
             // properties
             curUser,
+            isGetStatusDone,
 
             boardName,
             postlist,
@@ -110,10 +106,10 @@ class BoardContainer extends Component {
             getBoardRequest
         } = this.props;
 
-        const { isLoaded, windowHeight, windowWidth } = this.state;
+        const { windowHeight, windowWidth } = this.state;
 
         return (
-            isLoaded ?
+            isGetStatusDone ?
 
                 curUser ? 
             
@@ -157,14 +153,16 @@ class BoardContainer extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        curUser: state.auth.user,                           // 현재 로그인 된 유저 정보
-        doesRenderOK: state.board.isFirstBoardGetSuccess,   // 첫 번째 GET 요청이 성공했는 지 여부 = Render할 준비가 되었는 지
-        postlist: state.board.postlist,                     // postlist 데이터
-        scroll: state.board.scroll,                         // 스크롤 횟수 (데이터를 받은 횟수)
-        search: state.board.search,                         // 검색어 데이터
-        isLoading: state.board.isLoading,                   // Scroll GET 대기 여부
-        isLast: state.board.isLast,                         // 요소가 마지막인 지 여부
-        isHeaderOn: state.board.isHeaderOn,                 // 헤더가 On 인지
+        curUser: state.auth.user,                               // 현재 로그인 된 유저 정보
+        isGetStatusDone: state.auth.isGetStatusDone,            // get status 요청 완료 여부
+        
+        doesRenderOK: state.board.isFirstBoardGetSuccess,       // 첫 번째 GET 요청이 성공했는 지 여부 = Render할 준비가 되었는 지
+        postlist: state.board.postlist,                         // postlist 데이터
+        scroll: state.board.scroll,                             // 스크롤 횟수 (데이터를 받은 횟수)
+        search: state.board.search,                             // 검색어 데이터
+        isLoading: state.board.isLoading,                       // Scroll GET 대기 여부
+        isLast: state.board.isLast,                             // 요소가 마지막인 지 여부
+        isHeaderOn: state.board.isHeaderOn,                     // 헤더가 On 인지
     }
 }
 

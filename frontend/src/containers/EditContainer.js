@@ -144,6 +144,7 @@ class EditContainer extends Component {
 
         const {
             curUser,
+            isGetStatusDone,
 
             /* create / update 구분 props */
             isNew,
@@ -188,7 +189,7 @@ class EditContainer extends Component {
            create의 경우 init 완료되었음을 의미하는 isEditInit을,
            update의 경우 get 요청이 완료되었음을 의미하는 isEditGetSuccess를
            load가 완료되었는가의 boolean 값 isLoad로 이용함 */
-        let isLoad = isNew ? didMount : isEditGetSuccess
+        let isLoad = isNew ? isGetStatusDone && didMount : isGetStatusDone && isEditGetSuccess
 
         return(
             isLoad ?
@@ -266,6 +267,7 @@ EditContainer.defaultProps = {
 const mapStateToProps = (state) => {
     return {
         curUser: state.auth.user,                           // 현재 로그인 된 유저 정보
+        isGetStatusDone: state.auth.isGetStatusDone,        // get status 요청 완료 여부
 
         isEditGetSuccess: state.manage.isEditGetSuccess,    // update 포스팅 데이터 받아졌는지 여부
         isEditInit: state.manage.isEditInit,                // Edit 페이지 초기화 완료 여부
