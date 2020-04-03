@@ -11,7 +11,7 @@ module.exports = function(passport){
       passport.authenticate(
           'local',
           {
-              successRedirect: '/board/market', // 로그인 성공 시
+              successRedirect: 'http://localhost:4000/', // 로그인 성공 시
               failureRedirect: '/api/login', // 로그인 실패 시
               failureFlash: false
           }

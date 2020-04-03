@@ -10,10 +10,10 @@ router.get('/', function (req, res, next) {
 
 /* Logout */
 router.get('/logout', function (req, res) {
-  req.logout();
-  req.session.save(function () {
-    res.redirect('/api/');
-  });
+    req.session.destroy(function(err) {
+      req.logOut();
+      res.redirect('/api/');
+    });
 });
 
 module.exports = router;
