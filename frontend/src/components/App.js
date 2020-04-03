@@ -16,6 +16,7 @@ import {
     Manage,
     Chatting,
 } from "../pages";
+import LocalLoginPage from "./Home/LocalLoginPage";
 
 import './App.css';
 
@@ -27,6 +28,7 @@ const App = () => {
             <Route path='/carpool' component={ Carpool } />
             <Route path='/manage' component={ Manage } />
             <Route path='/chatting' component={ Chatting } />
+            <Route path='/local-login' component={ LocalLoginPage } />
             <Route component={NotFound}/>
         </Switch>
     )

@@ -350,6 +350,48 @@
 
 
 
+### 3. 27 (금)
+
+* Components, Container 디렉토리 구조 개선 (Manage, Edit 분리)
+* Manage, Edit 헤더가 Base Header를 사용하도록 코드 개선
+
+
+
+### 3. 29 (일)
+
+* 공통 컴포넌트의 MoreButton을 UitdaPopover로 변경하고, Popover의 공통 속성을 갖는 컴포넌트로 변경.
+  Popover의 특성은 이용하되, Popover 트리거가 MoreIcon으로 고정된 것을 변경함
+* Header의 User 사진 아이콘에서 계정관리, Logout 기능을 추가함
+* manage user photo upload
+
+
+
+### 3.30 (월)
+
+* local login 구현
+* Message 보내기 클릭 시 chatting page로 이동
+
+
+
+### 4.2 (목)
+
+* Redux dev tool 사용
+
+* didmount시 홈으로 redirect되는 에러 해결
+  component Did Mount 함수 내에서 getStatusRequest의 실행 완료보다, setState(isLoaded:true)의 실행이 빨라서 모든 컨테이너가 처음 생성될 때 (새로고침 포함) EnterPage로 이동되었다가 market board로 리다이렉트되던 오류를 해결함
+
+  container의 state.isloaded를 이용하지 않고, app의 isGetStatusDone과 해당 컨테이너의 데이터 get이 완료된 후 container 컴포넌트가 render되도록 함
+
+* manage state에 IsManageItemsLoading 추가하고 관련된 action, reducer 제작
+
+
+
+### 4.3 (금)
+
+* Carpool Room Modal의 Popover Content 코드 리펙토링
+* Chatting Box Header 생성
+* Chatting Reducer, Action 생성
+
 
 
 
@@ -379,12 +421,12 @@
 
 #### Detail FrontEnd
 
-* socket.io 공부하기
 * socket.io를 이용해 클라이언트의 데이터 실시간 업데이트 되도록 하기
 * 사진이 없는 글 디자인 고려
 * 사진 Ant Design의 Carousel Component 검토
 * 댓글 더보기 기능
 * 답글 더보기 기능
+* 하얀색 부분의 min-width값 주기
 
 
 
@@ -472,6 +514,7 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 #### Carpool FrontEnd
 
 * 카풀 일정 업데이트 시에는 modal이 닫히지 않도록 할 것
+* 카풀 데이터 하나도 없을 때에도 화면이 뜰 수 있도록
 
 
 
@@ -484,6 +527,8 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
   마찬가지로, 참여자 입장에서는 마감된 후에는 참가 신청 비활성화
 * 카풀 이용 안내 모달 창 만들기
 * 배경 컴포넌트를 BackgroundTemplate로 코드 리펙토링
+* Calendar의 이벤트로 인해 생기는 skeleton때문에 빈칸에서 배경색의 hover 효과가 나타나지 않음
+* container의 isloaded에 들어간 isCarpoolGet을 carpoolbody로 가져와서 sidebar는 먼저 띄워질 수 있도록 하기
 
 
 
@@ -535,7 +580,15 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 
 
+* 채팅 방 목록에서 검색 기능 필요할까 ? 유니스트 구성원 전체가 나타나도 될까
+
+
+
 * 메시지에서 사진 업로드 기능 추가 ?
+
+
+
+* Manage에서 sidebar 사진은 크게 보기, 삭제만 가능하고 사진 upload는 계정관리 페이지에서 
 
 
 
@@ -576,6 +629,8 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 * 로그인이 안될 때 안내 문구
 * 공용 PC에서 outlook 로그아웃 방법
 * 카풀, manage의 created 형태 바꾸기
+* 카풀 일정 GET 에서 아무것도 없을 때 빈 리스트 보내주도록 backend
+* chatting backent url '/api/chatting/:user_id' => 'api/chatting/user/:user_id' 
 
 
 

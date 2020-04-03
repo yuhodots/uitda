@@ -10,15 +10,20 @@ import { colors } from "../../../styles/variables";
 
 const CircleArea = styled.div`
 
-    height: ${props => `${props.size}px`};
-    width: ${props => `${props.size}px`};
+    height: ${props => props.size ? `${props.size}px` : '100%'};
+    width: ${props => props.size ? `${props.size}px` : '100%'};
 
     border-radius: 50%;
 
     background-color: ${colors.photo_defaultgray}; 
     ${props => props.imgURL && css`
         background-image: url(${props.imgURL});
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
     `};
+
+    cursor: pointer;
 `;
 
 
@@ -38,7 +43,7 @@ UserPhoto.propTypes = {
 }
 
 UserPhoto.defaultProps = {
-    size: 40,
+    size: 0,
     imgURL: ''
 }
 

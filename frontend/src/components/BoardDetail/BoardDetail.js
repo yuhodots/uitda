@@ -28,7 +28,7 @@ const BackgroundDiv = styled.div`
     너비는 전체 가로의 70%만을 차지하는 반응 크기를 사용  */
 const ContainerDiv = styled.div`
     width: 70%;
-    min-width: 40rem;
+    min-width: 50rem;
     min-height: ${props => props.minHeight};
     margin: 0 auto;
     padding: 3rem 2rem;
