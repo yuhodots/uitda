@@ -15,8 +15,11 @@ import ChattingBody from "../components/Chatting/ChattingBody";
 class ChattingContainer extends Component {
 
     componentDidMount() {
-        const { getStatusRequest } = this.props;
+        const { isIndex, getStatusRequest } = this.props;
+        
         getStatusRequest();
+
+        if ( !isIndex ) {}
     }
 
     render() {
@@ -25,9 +28,12 @@ class ChattingContainer extends Component {
             isGetStatusDone,
             curUser, 
             isIndex,
+            match,
         
             logoutRequest
         } = this.props;
+
+        const opntID = match ? match.params.userID : 0;     // opponent ID. 대화 상대 ID (index 페이지의 경우 0)
 
         return(
             isGetStatusDone ?
@@ -39,7 +45,7 @@ class ChattingContainer extends Component {
                         curUser={curUser}
                         logoutRequest={logoutRequest}
                     />
-                    <ChattingBody isIndex={isIndex} />
+                    <ChattingBody isIndex={isIndex} opntID={opntID} />
                 </div> :
 
                 <Redirect to='/' /> :
@@ -51,6 +57,7 @@ class ChattingContainer extends Component {
 
 ChattingContainer.propTypes = {
     isIndex: PropTypes.bool,        // index 페이지인지 아닌 지
+    match: PropTypes.object,        // 상대방 user ID 정보를 담은 url params의 상위 객체
 }
 
 ChattingContainer.defaultProps = {
