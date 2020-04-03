@@ -43,12 +43,9 @@ module.exports = {
                 cal_events.findAll()
                 .then(function (results) { events_db = results; })
                 .then(function () { 
-                    if (events_db[0]){
-                        callback(null);
-                    }
-                    else {
-                        res.json({ events: null, user: req.user ? req.user : 0 });
-                    }
+                    (events_db[0])?
+                        callback(null):
+                        res.json({ events: [], user: req.user ? req.user : 0 });
                 })
                 .catch(function (err) { throw err; });
             },
