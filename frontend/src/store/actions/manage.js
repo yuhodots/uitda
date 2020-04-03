@@ -2,6 +2,7 @@ import axios from "axios";
 import qs from 'qs';
 
 import {
+    MANAGE_GET_ITEMS_LOADING,
     MANAGE_GET_MY_POSTS_SUCCESS,
     MANAGE_GET_MY_POSTS_FAILURE,
     MANAGE_EDIT_INIT_PAGE,
@@ -28,18 +29,23 @@ import {
     MANAGE_EDIT_CARPOOL_POST_FAILURE,
 } from './ActionTypes';
 
-/* Error Types */
-import {
-    NO_USER
-} from '../../constants/error_types'
 
+// Manage 시작 //
 
-// Manage Board 시작 //
+/* Manage Content 창이 로딩중이 뜨도록 isLoading: true 시켜주는 액션 */
+export function getManageItemsLoading() {
+    return {
+        type: MANAGE_GET_ITEMS_LOADING
+    }
+}
+
 ////////////////////////////////////////////////////////////
 /* '/manage/post/:board' 에서 내 포스팅 데이터를 get 요청하는 액션 */
 
 export function getMyPostRequest (boardName) {
     return (dispatch) => {
+        /* GET request 보내기 전에 로딩중으로 */
+        dispatch(getManageItemsLoading());
 
         /* get 요청을 보낼 URL */
         const GETurl = `/api/manage/${boardName}`;
@@ -48,25 +54,17 @@ export function getMyPostRequest (boardName) {
         return axios.get(GETurl)
 
         /* 성공하면 res.data.postlist를 성공 액션으로 보낸다. */
-        .then(res => res.data)
-        .then(data => {
-            data.user ?
-            dispatch(getMyPostSuccess(data.postlist, data.user)) :
-            dispatch(getMyPostFailure(NO_USER))
-        })
+        .then(res => dispatch(getMyPostSuccess(res.data.postlist)))
 
         /* 실패하면 error내용을 실패 액션으로 보낸다. */
-        .catch(err => {
-            dispatch(getMyPostFailure(err))
-        })
+        .catch(err => dispatch(getMyPostFailure(err)))
     }
 }
 
-export function getMyPostSuccess (postlist, user) {
+export function getMyPostSuccess (postlist) {
     return {
         type: MANAGE_GET_MY_POSTS_SUCCESS,       // postlist GET요청 성공
-        postlist,
-        user
+        postlist
     }
 }
 

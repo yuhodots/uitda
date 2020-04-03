@@ -20,6 +20,7 @@ import {
     MANAGE_EDIT_CARPOOL_STORE_DATA,
     MANAGE_EDIT_CARPOOL_POST_SUCCESS,
     MANAGE_EDIT_CARPOOL_POST_FAILURE,
+    MANAGE_GET_ITEMS_LOADING,
 } from '../actions/ActionTypes'
 
 import { MARKET } from '../../constants/categories'
@@ -29,10 +30,10 @@ import moment from 'moment'
 
 /* 초기 상태 및 manage state 항목 설명 */
 const InitialState = {
-    /* 공통 states */
-    err: '',
-    isGetSuccess: false,
-    user: 0,
+    
+    /* 'manage' states */
+    isGetManageItemsDone: false,                    // Manage 페이지의 GET 요청 완료 여부
+    isManageItemsLoading: true,                     // Manage 페이지에서 로딩중을 띄우는 지 여부 
 
     /* 'posts' states */
     postList: [],                                   // 포스팅 데이터 리스트
@@ -72,23 +73,31 @@ const InitialState = {
 /* manage reducer */
 export default function manage (state = InitialState, action) {
 
-    switch(action.type) {
+    switch (action.type) {
+
+        /* Manage 페이지의 content 부분을 loading 중으로 띄우기 */
+        case MANAGE_GET_ITEMS_LOADING: 
+            return {
+                ...state,
+                isManageItemsLoading: true
+            }
 
         /* 작성한 postlist GET 요청 액션으로 얻은 data 및 err 설정 */
         case MANAGE_GET_MY_POSTS_SUCCESS:
             return {
                 ...state,
-                isGetSuccess: true,
-                user: action.user,
+                isGetManageItemsDone: true,
                 postList: action.postlist,
+                isManageItemsLoading: false,
             }
         
         case MANAGE_GET_MY_POSTS_FAILURE:
             return {
                 ...state,
-                isGetSuccess: false,
+                isGetManageItemsDone: false,
                 err: action.err,
             }
+
 
         /* Edit page 초기화 액션 */
         case MANAGE_EDIT_INIT_PAGE:

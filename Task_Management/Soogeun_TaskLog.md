@@ -366,7 +366,31 @@
 
 
 
+### 3.30 (월)
 
+* local login 구현
+* Message 보내기 클릭 시 chatting page로 이동
+
+
+
+### 4.2 (목)
+
+* Redux dev tool 사용
+
+* didmount시 홈으로 redirect되는 에러 해결
+  component Did Mount 함수 내에서 getStatusRequest의 실행 완료보다, setState(isLoaded:true)의 실행이 빨라서 모든 컨테이너가 처음 생성될 때 (새로고침 포함) EnterPage로 이동되었다가 market board로 리다이렉트되던 오류를 해결함
+
+  container의 state.isloaded를 이용하지 않고, app의 isGetStatusDone과 해당 컨테이너의 데이터 get이 완료된 후 container 컴포넌트가 render되도록 함
+
+* manage state에 IsManageItemsLoading 추가하고 관련된 action, reducer 제작
+
+
+
+### 4.3 (금)
+
+* Carpool Room Modal의 Popover Content 코드 리펙토링
+* Chatting Box Header 생성
+* Chatting Reducer, Action 생성
 
 
 
@@ -402,6 +426,7 @@
 * 사진 Ant Design의 Carousel Component 검토
 * 댓글 더보기 기능
 * 답글 더보기 기능
+* 하얀색 부분의 min-width값 주기
 
 
 
@@ -503,6 +528,7 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 * 카풀 이용 안내 모달 창 만들기
 * 배경 컴포넌트를 BackgroundTemplate로 코드 리펙토링
 * Calendar의 이벤트로 인해 생기는 skeleton때문에 빈칸에서 배경색의 hover 효과가 나타나지 않음
+* container의 isloaded에 들어간 isCarpoolGet을 carpoolbody로 가져와서 sidebar는 먼저 띄워질 수 있도록 하기
 
 
 
@@ -604,6 +630,7 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 * 공용 PC에서 outlook 로그아웃 방법
 * 카풀, manage의 created 형태 바꾸기
 * 카풀 일정 GET 에서 아무것도 없을 때 빈 리스트 보내주도록 backend
+* chatting backent url '/api/chatting/:user_id' => 'api/chatting/user/:user_id' 
 
 
 

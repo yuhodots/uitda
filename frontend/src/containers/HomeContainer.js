@@ -11,26 +11,16 @@ import EnterPage from "../components/Home";
 
 class HomeContainer extends Component {    
 
-    state = {}
-
     componentDidMount() {
         const { getStatusRequest } = this.props;
-
         getStatusRequest();
-
-        this.setState({
-            ...this.state,
-            isLoaded: true,
-        })
     }
 
     render() {
 
-        const { isLoaded } = this.state;
+        const { curUser, isGetStatusDone } = this.props;
 
-        const { curUser } = this.props;
-
-        return isLoaded ?
+        return isGetStatusDone ?
             <div>
             {
                 curUser ?
@@ -44,7 +34,8 @@ class HomeContainer extends Component {
 
 const mapStateToProps = (state) => {
     return { 
-        curUser: state.auth.user,           // 현재 로그인 된 유저 정보
+        curUser: state.auth.user,                               // 현재 로그인 된 유저 정보
+        isGetStatusDone: state.auth.isGetStatusDone,            // get status 요청 완료 여부
     }
 }
 

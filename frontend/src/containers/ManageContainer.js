@@ -34,69 +34,58 @@ import {
 
 class ManageContainer extends Component {
 
-    state = { isLoad: false }
+    state = {}
 
-    async componentDidMount() {
-        try {
-            const {
-                kind
-            } = this.props
-    
-            let board;
+    componentDidMount() {
+        const {
+            kind,
+            getStatusRequest,
+            getMyPostRequest
+        } = this.props
 
-            await this.props.getStatusRequest();
+        let board;
 
-            switch(kind) {
-    
-                /* 계정 관리 */
-                case MANAGE_ACCOUNT:
-                    break;
+        getStatusRequest();
 
-                /* 게시글 관리 */
-                case MANAGE_POSTS_MARKET:
-                    board = MARKET;
-                    // eslint-disable-next-line
-                case MANAGE_POSTS_NETWORKING:
-                    board = board ? MARKET : NETWORKING;
-    
-                    // console.log(`posts/${board}`);
-                    await this.props.getMyPostRequest(board);
-                    break;
-    
-                /* 댓글단 게시글 보기 */
-                case MANAGE_COMMENTS:
-                    // console.log('comment category');
-                    break;
-    
-                /* 좋아요 표시한 게시글 */
-                case MANAGE_LIKEPOSTS:
-                    // console.log('likeposts category');
-                    break;
-    
-                /* 내 카풀 일정 */
-                case MANAGE_CONTACT:
-                    break;
+        switch(kind) {
 
-                /* kind가 post인 경우 */
-                default:
-                    break;
-            }
+            /* 계정 관리 */
+            case MANAGE_ACCOUNT:
+                break;
 
-            /* window size 변경 시, 변경된 사이즈를 state에 저장함 */
-            window.addEventListener('resize', this._updateWindowSize)
+            /* 게시글 관리 */
+            case MANAGE_POSTS_MARKET:
+                board = MARKET;
+                // eslint-disable-next-line
+            case MANAGE_POSTS_NETWORKING:
+                board = board ? MARKET : NETWORKING;
 
-            this.setState({
-                ...this.state,
-                isLoad: true,
-                windowHeight: window.innerHeight
-            })
+                // console.log(`posts/${board}`);
+                getMyPostRequest(board);
+                break;
+
+            /* 댓글단 게시글 보기 */
+            case MANAGE_COMMENTS:
+                // console.log('comment category');
+                break;
+
+            /* 좋아요 표시한 게시글 */
+            case MANAGE_LIKEPOSTS:
+                // console.log('likeposts category');
+                break;
+
+            /* 내 카풀 일정 */
+            case MANAGE_CONTACT:
+                break;
+
+            /* kind가 post인 경우 */
+            default:
+                break;
         }
-        catch {
-            this.setState({
-                ...this.state,
-                isLoad: false
-            })
-        }
+
+        /* window size 변경 시, 변경된 사이즈를 state에 저장함 */
+        window.addEventListener('resize', this._updateWindowSize)
+        this._updateWindowSize()
     }
 
     componentWillUnmount() {
@@ -115,9 +104,12 @@ class ManageContainer extends Component {
     render() {
 
         const {
-            // isGetSuccess,
+            isGetStatusDone,
             curUser,
             kind,
+
+            isGetManageItemsDone,
+            isManageItemsLoading,
 
             postList,
 
@@ -126,15 +118,14 @@ class ManageContainer extends Component {
             updatePostConditionRequest,
         } = this.props;
     
-        const { 
-            isLoad,
-            windowHeight
-        } = this.state;
+        const { windowHeight } = this.state;
+
+        const isLoaded = isGetStatusDone && isGetManageItemsDone;
 
         return(
             <div>
             {
-                isLoad ?
+                isLoaded ?
                 
                     curUser ? 
                     <div>
@@ -146,8 +137,9 @@ class ManageContainer extends Component {
                             curUser={curUser}
                             kind={kind}
                             windowHeight={windowHeight}
-
+                            isLoading={isManageItemsLoading}
                             postList={postList}
+
                             deletePost={deletePostRequest}
                             updatePostCondition={updatePostConditionRequest}
                         /> 
@@ -168,12 +160,13 @@ ManageContainer.propTypes = {
 
 const mapStateToProps = (state) => {
     return {
-        isGetSuccess: state.manage.isGetSuccess,    // GET 요청의 성공 여부
-        err: state.manage.err,                      // GET 실패 시 err 식별자
+        curUser: state.auth.user,                                   // 유저 정보
+        isGetStatusDone: state.auth.isGetStatusDone,                // get status 요청 완료 여부
 
-        curUser: state.auth.user,                      // 유저 정보
+        isGetManageItemsDone: state.manage.isGetManageItemsDone,    // Manage 페이지의 GET 요청 완료 여부
+        isManageItemsLoading: state.manage.isManageItemsLoading,    // Manage 페이지에서 로딩중을 띄우는 지 여부
 
-        postList: state.manage.postList,            // Posts GET 요청을 통해 얻은 post list
+        postList: state.manage.postList,                            // Posts GET 요청을 통해 얻은 post list
     }
 }
 

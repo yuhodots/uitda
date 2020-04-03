@@ -8,33 +8,33 @@ import { BoxHeaderArea, BoxHeaderTitle } from "../CommonComponents";
 
 
 /* Styled Components */
-const WholeBox = styled.div`
-    position: relative;
+const WholeArea = styled.div`
     height: 100%;
     width: 100%;
+
+    display: flex;
+    flex-flow: column nowrap;
 `;
 
 
 /* React Component */
-class ChatRoomBox extends Component {
+class ContectListBox extends Component {
 
 
     render() {
 
-
-
-        return (
-            <WholeBox>
+        return(
+            <WholeArea>
                 <BoxHeaderArea>
-                    <BoxHeaderTitle>ㅇ</BoxHeaderTitle>
+                    <BoxHeaderTitle>채팅방</BoxHeaderTitle>
                 </BoxHeaderArea>
-            </WholeBox>
+            </WholeArea>
         )
     }
 }
 
-ChatRoomBox.propTypes = {
+ContectListBox.propTypes = {
     opntID: PropTypes.number.isRequired,    // Opponent ID. 채팅 상대방 ID
 }
 
-export default ChatRoomBox;
+export default ContectListBox;

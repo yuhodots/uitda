@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 
 import BackgroundTemplate from "../Structure/CommonComponents/BackgroundTemplate";
 import { ChatRoomBox, IndexChatRoomBox } from "./ChatRoomBox";
+import ContectListBox from "./ContectListBox";
 import { colors } from "../../styles/variables";
 
 
@@ -46,9 +47,6 @@ const ContentArea = styled.div`
             height: 100%;
 
             border-right: ${colors.gray_line} solid 1px;
-
-            display: flex;
-            flex-flow: column nowrap;
         `;
 
         /* 우측의 채팅방 박스 스타일 */
@@ -64,20 +62,20 @@ class ChattingBody extends Component {
 
     _renderContent = () => {
 
-        const { isIndex } = this.props;
+        const { isIndex, opntID } = this.props;
 
         return(
             <ContentArea>
                 <ContentBox>
-                    <ContectListBoxArea>
-
+                    <ContectListBoxArea >
+                        <ContectListBox opntID={opntID} />
                     </ContectListBoxArea>
                     
                     <ChatRoomBoxArea>
                     {
                         isIndex ?
                         <IndexChatRoomBox /> :
-                        <ChatRoomBox />
+                        <ChatRoomBox opntID={opntID} />
                     }
                     </ChatRoomBoxArea>
                 </ContentBox>
@@ -98,6 +96,7 @@ class ChattingBody extends Component {
 
 ChattingBody.propTypes = {
     isIndex: PropTypes.bool.isRequired,     // 인덱스 페이지인지 아닌 지
+    opntID: PropTypes.number.isRequired,    // Opponent ID. 채팅 상대방 ID
 }
 
 
