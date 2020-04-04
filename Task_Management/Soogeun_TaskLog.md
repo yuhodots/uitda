@@ -394,6 +394,12 @@
 
 
 
+### 4.4 (토)
+
+* Chatting Begining Request action 및 reducer 제작
+
+
+
 
 
 
@@ -577,6 +583,30 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
   * 로그 아웃 시, 아웃룩까지 로그 아웃 가능 ?
   * 로그인 시, 아웃룩에 이 아이디로 로그인 하실 것인가요 묻기 가능 ?
   
+
+
+
+* chatting routes를 변경
+
+  현재 상황: chatting/t/:userID의 경우 backend요청을 '/api/chatting', 'api/chatting/user/:user_id' 두 번 해야함
+
+  해결방안 1) 'api/chatting/user/:user_id' 에 room_list를 보내주는 코드 추가
+
+  해결방안 2) 'api/chatting' 을 없애고, 'api/chatting/user/0'을 index로 사용하기 (0일 때는 room에 관련된 데이터 안보내기)
+
+  api/chatting/room/:id url은 불필요할 듯 ?
+
+
+
+* Chatting 페이지에서 아직 메시지 보내기 전일 때, chatting_room DB에 room create을 하는 게 좋을까, 첫 메시지를 보낼 때, room create를 하는게 좋을까
+
+  메시지 보내기 전에 create를 하면, room list에 있는게 직접 지우지 않으면 사라지지 않음
+
+  메시지 보낼 때 create를 하면, 코드 수정해야 함.
+
+
+
+* RoomList 데이터에서 가장 마지막 대화 내용 추가 필요
 
 
 
