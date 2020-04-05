@@ -33,9 +33,21 @@ class ContectListBox extends Component {
     _renderRoomList = (roomList) => {
         
         return roomList.map( (room, idx) => {
-            const { user, updated, unread, } = room;
+            const { user, updated, unread, last_chat } = room;
+            const { opntID } = this.props;
 
-            return <RoomListItem opntUser={user} updated={updated} unread={unread} key={idx} />
+            const isSelectedRoom = Number(opntID) === user.id
+
+            return (
+                <RoomListItem 
+                    isSelectedRoom={isSelectedRoom}
+                    user={user} 
+                    updated={updated} 
+                    unread={unread} 
+                    last_chat={last_chat} 
+                    key={idx} 
+                />
+            )
         })
     }
 

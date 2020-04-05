@@ -40,7 +40,8 @@ const WholeArea = styled.div`
 
     /* 선택된 방은 배경색을 갖는 div태그 */
     const SelectedWrapper = styled.div`
-    
+        ${ItemWrapperStyle}
+        background-color: ${colors.gray_bg};
     `;
 
 
@@ -72,28 +73,44 @@ class RoomListItem extends Component {
 
     render() {
 
-        const { opntUser, updated, unread } = this.props;
+        const { isSelectedRoom, user, updated, unread } = this.props;
 
-        const { id, username, pic_location } = opntUser;
+        const { id, username, pic_location } = user;
 
         const roomURL = `/chatting/t/${id}`;
 
+        console.log(isSelectedRoom)
+
         return (
             <WholeArea>
+            {
+                isSelectedRoom ?
+
+                <SelectedWrapper>
+                    <UserPhoto imgURL={pic_location} size={48} />
+                    <TextBox>
+                        <OpntUserName>{username}</OpntUserName>
+                        <AdditionText>{updated}</AdditionText>
+                    </TextBox>
+                </SelectedWrapper> :
+
                 <LinkWrapper to={roomURL} >
-                    <UserPhoto imgURL={pic_location} size='48' />
+                    <UserPhoto imgURL={pic_location} size={48} />
                     <TextBox>
                         <OpntUserName>{username}</OpntUserName>
                         <AdditionText>{updated}</AdditionText>
                     </TextBox>
                 </LinkWrapper>
+            }
+
             </WholeArea>
         )
     }
 }
 
 RoomListItem.propTypes = {
-    opntUser: PropTypes.object.isRequired,          // 상대 유저 데이터
+    isSelectedRoom: PropTypes.bool.isRequired,      // 현재 선택된 방인지 여부
+    user: PropTypes.object.isRequired,              // 상대 유저 데이터
     updated: PropTypes.string.isRequired,           // 가장 최근 업데이트 된 시각
     unread: PropTypes.number.isRequired,            // 안 읽은 개수
 }
