@@ -44,7 +44,8 @@ const renderCarpoolModalPopoverContent = ( curUser, selectedEvent, clickMethods 
         {
             icon: <MessageOutlined />,
             text: '메시지 보내기',
-            clickMethod: () => { window.location.assign(`/chatting/t/${user.id}`) }
+            type: 'link',
+            url: `/chatting/t/${user.id}`
         }
     ]
 
