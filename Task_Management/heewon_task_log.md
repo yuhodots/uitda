@@ -146,7 +146,18 @@ manage 페이지 들어갈 만한 카테고리
 
 #### 할 일
 4. 자동 로그인된거 삭제를 위한 refresh token 삭제해보기
+5. 쿠키 캐시
+6. 쿠키 세션 공부하기,,ㅠㅠㅠㅠㅠㅠㅠ
 - 파일을 나중에 분리 시킬 수 있으면 분리시키기
+
+/api/
+room create 하지 말고 0으로 보내기 room/0
+res.json({room: 0}), 상대방 정보도 같이
+
+/api/chatting/room 객체 opponent_user, message_list 만 보내기
+roomlist 보내기 할때 마지막 대화 내용도 필요
+main 에서 update 시간 상대적 시간으로 보내기
+
 
 #### 진행중 
 
