@@ -84,6 +84,11 @@
     line-height: 25px;
 }
 
+.Container_Right .Block .Block_Description p{
+    position: relative;
+    top: 10px;
+}
+
 .Container_Right .Block .Block_Image img{
     margin-right: 60px;
     width: 100px;

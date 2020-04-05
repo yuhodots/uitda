@@ -115,24 +115,24 @@ class Login extends Component {
           <div className="Block">
             <div className="Block_Image"><img src={market} onClick={this.marketClick}></img></div>
             <div className="Block_Description">
-              <p>과학기술 특성화 대학 및 SW 중심 대학의 강좌가 더 많은 사람들에게 나누어지도록 교육 기회를 제공하고 있습니다. 
-                우수 대학의 명품 강좌를 만나보세요. 과학기술 특성화 대학 : KAIST, POSTECH, UNIST, DGIST, GIST</p>
+              <p>사용하지 않는 전공 서적이나 사이즈가 맞지 않는 옷들은 유니마켓 게시판에 등록하여 판매해 보세요. 
+              중고 장터의 장점을 그대로 가져와 구매자에게는 합리적 소비를, 판매자에게는 소소한 용돈 벌이 기회를 제공합니다.</p>
             </div>
           </div>
 
           <div className="Block">
             <div className="Block_Image"><img src={networking} onClick={this.networkingClick}></img></div>
             <div className="Block_Description">
-              <p>학생들이 지금까지 배운 내용 마스터 할 수 있도록 전 영역에 걸쳐 문제를 제공합니다. 
-                이 기능을 통해 학습자의 진도를 한눈에 파악할 수 있습니다. 수준에 따라 자동으로 제공되는 문제로 완전학습을 경험해보세요.</p>
+              <p>배송비를 절약하고 싶은 분, 다양한 퀘스트를 가지고 있는 분, 유니스트에 숨겨진 고수를 찾는 분이라면 
+              네트워킹 게시판을 이용해 보세요. 보상도 함께 적어주신다면 더 빠른 참여를 유도해내실 수 있습니다.</p>
             </div>
           </div>
 
           <div class="Block">
             <div class="Block_Image"><img src={carpool} onClick={this.carpoolClick}></img></div>
             <div class="Block_Description">
-              <p>커넥트티처는 커넥트재단이 양성하고 인증한 소프트웨어 교육 전문가입니다. 
-                소프트웨어 교육 전문강사를 희망하는 누구나 교육을 받고 평가, 인증과정을 거쳐 커넥트티처로 가입할 수 있습니다.</p>
+              <p>택시카풀 게시판에서는 같은 방향으로 이동하는 학우들과 택시를 동승하여 택시비를 절약할 수 있습니다.
+                캘린더를 통해 일정을 직관적으로 확인하고 간편하게 일정을 만들어 빠르게 목적지에 도착해 보아요.</p>
             </div>
           </div>
 
