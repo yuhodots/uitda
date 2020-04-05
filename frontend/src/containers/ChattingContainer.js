@@ -2,9 +2,10 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import SocketIo from 'socket.io-client';
+import { Redirect } from 'react-router-dom';
+import { withLastLocation } from 'react-router-last-location';
 
 import { getStatusRequest, logoutRequest } from "../store/actions/auth";
 import ChattingHeader from "../components/Chatting/ChattingHeader";
@@ -42,8 +43,9 @@ class ChattingContainer extends Component {
         const { 
             isIndex,
             match,
-            curUser, 
             isGetStatusDone,
+            curUser, 
+            lastLocation,
             roomList,
         
             logoutRequest
@@ -51,24 +53,31 @@ class ChattingContainer extends Component {
 
         const opntID = match ? match.params.userID : 0;     // opponent ID. 대화 상대 ID (index 페이지의 경우 0)
 
-        console.log(roomList);
-
         return(
             isGetStatusDone ?
 
+                /* 유저 데이터가 없는 경우, 홈 화면으로 Redirect */
                 curUser ?
 
-                <div style={{height: '100%', width: '100%'}}>
-                    <ChattingHeader 
-                        curUser={curUser}
-                        logoutRequest={logoutRequest}
-                    />
-                    <ChattingBody 
-                        isIndex={isIndex} 
-                        opntID={opntID} 
-                        chatSocket={this.chatSocket}    
-                    />
-                </div> :
+                    /* 내부의 React Router Link를 통한 url 변경일 때만 채팅방을 render하고,
+                       그 외의 경우 index를 render한다 */
+                    lastLocation ?
+
+                    <div style={{height: '100%', width: '100%'}}>
+                        <ChattingHeader 
+                            curUser={curUser}
+                            logoutRequest={logoutRequest}
+                        />
+                        <ChattingBody 
+                            isIndex={isIndex} 
+                            opntID={opntID} 
+                            chatSocket={this.chatSocket}    
+
+                            roomList={roomList}
+                        />
+                    </div> :
+
+                    <Redirect to='/chatting/index' /> :
 
                 <Redirect to='/' /> :
 
@@ -110,4 +119,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChattingContainer);
+export default withLastLocation(connect(mapStateToProps, mapDispatchToProps)(ChattingContainer));

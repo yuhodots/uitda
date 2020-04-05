@@ -62,13 +62,17 @@ class ChattingBody extends Component {
 
     _renderContent = () => {
 
-        const { isIndex, opntID } = this.props;
+        const { 
+            isIndex, opntID,
+            
+            roomList,
+        } = this.props;
 
         return(
             <ContentArea>
                 <ContentBox>
                     <ContectListBoxArea >
-                        <ContectListBox opntID={opntID} />
+                        <ContectListBox opntID={opntID} roomList={roomList} />
                     </ContectListBoxArea>
                     
                     <ChatRoomBoxArea>
@@ -96,7 +100,13 @@ class ChattingBody extends Component {
 
 ChattingBody.propTypes = {
     isIndex: PropTypes.bool.isRequired,     // 인덱스 페이지인지 아닌 지
-    opntID: PropTypes.number.isRequired,    // Opponent ID. 채팅 상대방 ID
+    opntID: PropTypes.number,               // Opponent ID. 채팅 상대방 ID
+
+    roomList: PropTypes.array.isRequired,   // 채팅방 목록 데이터
+}
+
+ChattingBody.defaultProps = {
+    opntID: 0,
 }
 
 
