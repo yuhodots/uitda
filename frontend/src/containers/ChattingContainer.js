@@ -53,7 +53,6 @@ class ChattingContainer extends Component {
 
         const opntID = match ? match.params.userID : 0;     // opponent ID. 대화 상대 ID (index 페이지의 경우 0)
 
-        console.log(roomList);
         return(
             isGetStatusDone ?
 
@@ -73,6 +72,8 @@ class ChattingContainer extends Component {
                             isIndex={isIndex} 
                             opntID={opntID} 
                             chatSocket={this.chatSocket}    
+
+                            roomList={roomList}
                         />
                     </div> :
 
