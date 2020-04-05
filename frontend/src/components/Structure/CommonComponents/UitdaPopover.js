@@ -7,8 +7,9 @@
 */
 
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Popover } from "antd";
 
 import { colors } from "../../../styles/variables";
@@ -17,7 +18,7 @@ import './ant-popover.css'
 
 /* Styled Components */
 /* Content List의 각각의 Item 스타일 */
-const PopoverListItem = styled.div`
+const PopoverListItemStyle = css`
     padding: 0.375rem 1rem;
 
     display: flex;
@@ -28,6 +29,21 @@ const PopoverListItem = styled.div`
 
     :hover {
         background-color: ${colors.gray_bg};
+    }
+`;
+
+/* default type의 List Item */
+const PopoverListItem = styled.div`
+    ${PopoverListItemStyle}
+`;
+
+/* Link type의 List Item */
+const PopoverListItemLink = styled(Link)`
+    ${PopoverListItemStyle}
+
+    color: ${colors.font_default};
+    :hover {
+        color: ${colors.font_default};
     }
 `;
 
@@ -60,9 +76,21 @@ class UitdaPopover extends Component {
     _renderPopoverList = (contentList) => {
         return contentList.map( (contentData, idx) => {
             
-            const { text, icon, clickMethod } = contentData
+            const { text, icon, clickMethod, type, url } = contentData
 
-            return (
+            return type === 'link' ?
+            
+                /* link type인 경우, Link 태그를 render */
+                <PopoverListItemLink to={url} key={idx} >
+                    {
+                        icon ?
+                        <PopoverListItemIcon>{icon}</PopoverListItemIcon> :
+                        ''
+                    }
+                    {text}
+                </PopoverListItemLink> :
+
+                /* default type인 경우, clickMethod를 실행하는 div 태그를 render */
                 <PopoverListItem onClick={() => this._handleContentClick(clickMethod)} key={idx} >
                     {
                         icon ?
@@ -71,7 +99,7 @@ class UitdaPopover extends Component {
                     }
                     {text}
                 </PopoverListItem>
-            )
+            
         });
     }
 
