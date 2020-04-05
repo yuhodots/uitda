@@ -400,6 +400,23 @@
 
 
 
+### 4.5 (일)
+
+* Uitda Popover의 Content List Item 중 link type의 아이템을 render하는 기능 추가
+
+* 메시지 보내기를 window.location.assign 대신 link태그를 이용하도록 변경
+
+* 브라우저의 url 입력을 통해 채팅방 이동을 막음
+
+  내부의 React Router Link를 통한 url 변경일 때만 채팅방을 render하고,
+  그 외의 경우 index를 render한다.
+
+* Chatting Room List Box UI 작업
+
+* Chatting Room List Item 선택된 방 스타일
+
+
+
 
 
 
@@ -581,7 +598,7 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 * 한 기기에서 한 아이디만 사용할 수 있는 문제
 
   * 로그 아웃 시, 아웃룩까지 로그 아웃 가능 ?
-  * 로그인 시, 아웃룩에 이 아이디로 로그인 하실 것인가요 묻기 가능 ?
+  * 로그인 시, 아웃룩에 이 아이디로 로그인 하실 것인가요 묻기 가능 ? 
   
 
 
@@ -594,19 +611,30 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
   해결방안 2) 'api/chatting' 을 없애고, 'api/chatting/user/0'을 index로 사용하기 (0일 때는 room에 관련된 데이터 안보내기)
 
-  api/chatting/room/:id url은 불필요할 듯 ?
-
-
+  
 
 * Chatting 페이지에서 아직 메시지 보내기 전일 때, chatting_room DB에 room create을 하는 게 좋을까, 첫 메시지를 보낼 때, room create를 하는게 좋을까
 
-  메시지 보내기 전에 create를 하면, room list에 있는게 직접 지우지 않으면 사라지지 않음
-
+  메시지 보내기 전에 create를 하면, room list에 있는게 직접 지우지 않으면 사라지지 않음. 
+브라우저 url 창에 'chatting/t/:id' 를 입력했을 때, index로 Redirect되지만 방은 생겨버림
+  
   메시지 보낼 때 create를 하면, 코드 수정해야 함.
 
 
 
-* RoomList 데이터에서 가장 마지막 대화 내용 추가 필요
+* Room 데이터로 opponent_user 객체, message_list 배열만 보내주기 가능 ?
+
+  현재: room{email_1, email_2, unread_1, unread_2}, writers[user1, user2], messagelist[], user
+
+  => opponent_user, message_list
+
+* RoomList 데이터에서 가장 마지막 대화 내용 추가 필요 ( 상대 user, unread, updated, '**last_chat**-필요' )
+
+
+
+* RoomListItem 디자인을 카톡처럼 ? Facebook, Instagram 처럼 ?
+
+
 
 
 
