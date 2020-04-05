@@ -12,7 +12,7 @@ router.get('/', function (req, res, next) {
 router.get('/logout', function (req, res) {
     req.session.destroy(function(err) {
       req.logOut();
-      res.redirect('/api/');
+      res.redirect('/');
     });
 });
 

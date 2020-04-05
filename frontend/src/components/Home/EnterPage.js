@@ -18,11 +18,11 @@ import market_preview from './market_preview.png';
 import networking_preview from './networking_preview.png';
 import carpool_preview from './carpool_preview.png';
 
-const button_href = 'http://uitda.net/Login'
+const button_href = 'http://uitda.net/login'
 /* nginx 설정바꾸기 */
 // listen 80;
 // server_name uitda.net;
-// location /Login {
+// location /login {
 //    proxy_pass http://127.0.0.1:3000/api/login/outlook;
 // }
 // 출처: https://medium.com/sjk5766/nginx-reverse-proxy-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-e11e18fcf843
