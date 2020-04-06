@@ -25,7 +25,7 @@ return sequelize.define('chatting_message', {
   },
   is_unread: { //읽은 메세지 인가
     type:DataTypes.BOOLEAN,
-    default: true,
+    defaultValue: true,
     allowNull: false
   }
   },{
@@ -35,4 +35,4 @@ return sequelize.define('chatting_message', {
   });
 };
 
-//room_id description author created
+//room_id description email created is_unread

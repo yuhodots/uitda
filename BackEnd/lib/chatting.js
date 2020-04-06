@@ -30,121 +30,6 @@ function make_writers(user1,user2) {
 
 /* Board method */
 module.exports = {
-    main : function(req,res){
-        async.waterfall([
-            function (callback) {
-                chatting_room.findAll({
-                    order:[['updated','DESC']],
-                    where:{
-                        [Op.or]:[
-                            {email_1:req.user.email},
-                            {email_2:req.user.email}
-                        ]
-                    }
-                }).then(function(rooms){
-                    callback(null,rooms)
-                }).catch(function(err){ throw err;});
-            },
-            function (rooms, callback) {
-                var roomlist =[];
-                if(rooms.length == 0){
-                    callback(null, roomlist);
-                }
-                for (i=0; i<rooms.length;i++){ //상대방 정보 가져오기
-                    (function (i){
-                        var email2 = "";
-                        var unread = 0;
-                        if(rooms[i].email_1==req.user.email){
-                            email2 = rooms[i].email_2;
-                            unread = rooms[i].unread_1;
-                        } else if(rooms[i].email_2== req.user.email){
-                            email2 = rooms[i].email_1;
-                            unread = rooms[i].unread_2;
-                        }
-                        users.findOne({where:{ email: email2}}).then(function(user){
-                            var room = {id:"",updated:"",unread:"",user:""};
-                            room.id = rooms[i].id;
-                            room.updated = rooms[i].updated;
-                            room.unread = unread;
-                            room.user = user.dataValues;
-                            roomlist[i]=room;
-                            if(roomlist.length==rooms.length){
-                                callback(null,roomlist)
-                            }
-                        }).catch(function(err){throw err;});
-                    })(i)
-                }
-            },
-            function(roomlist,callback){
-                res.json({roomlist:roomlist, user: req.user ? req.user : 0});
-                callback(null);
-            }
-        ], function (err) {
-            if (err) throw (err);
-        });
-    },
-    room : function (req, res){
-        let room_id;
-        let user1;
-        let user2;
-        let writer1;
-        let writer2;
-        let writers;
-        async.waterfall([
-            function (callback) {
-                room_id = req.params.id;
-                callback(null);
-            },
-            function (callback) {
-                (!auth.isOwner(req, res)) ?
-                    res.json({ user: req.user ? req.user : 0 }) :
-                    callback(null);
-            },
-            function (callback) {
-                chatting_message.findAll({ where: { room_id: room_id }}).then(function(messagelist){
-                    callback(null,messagelist);
-                }).catch(function(err){
-                    throw err;
-                });
-            },
-            function (messagelist, callback) {
-              chatting_room.findOne({ where: { id: room_id } }).then(function(room){
-                  if(room){
-                    users.findAll({
-                        where: {
-                            [Op.or]:[
-                                {email:room.email_1},
-                                {email:room.email_2}
-                            ]
-                        }
-                    }).then(function(user) {
-                        user1 = user[0].dataValues;
-                        user2 = user[1].dataValues;
-                        if(auth.sameOwner(req, user1.email) || auth.sameOwner(req, user2.email)){
-                            writer1 = make_writer(user1.username, user1.pic_location,user1.email);
-                            writer2 = make_writer(user2.username, user2.pic_location,user2.email);
-                            writers = make_writers(writer1, writer2);
-                            res.json({ room: room, writers:writers, messagelist: messagelist, user: req.user ? req.user : 0 })
-                        } else{
-                            res.json({ user: req.user ? req.user : 0 })
-                        }
-                        callback(null)
-                    }).catch(function(err){
-                        throw err;
-                    });
-                  }else{
-                      res.statusCode = 404; // 404 상태 코드
-                      res.end('주소가 없습니다');
-                  }
-              }).catch(function(err){
-                  throw err;
-              });
-
-            },
-        ], function (err) {
-            if (err) throw (err);
-        });
-    },
     find_user: function(req, res){
         var user_id = req.params.user_id;
         users.findAll({where:{id:user_id}
@@ -164,13 +49,106 @@ module.exports = {
                 if(room){
                     res.redirect(`/api/chatting/room/${room.dataValues.id}`);
                 } else {
-                    chatting_room.create({
-                        email_1:req.user.email, email_2:user[0].dataValues.email, updated:moment().format('YYYY년MM월DD일HH시mm분ss초')
-                    }).then(function(new_room){
-                        res.redirect(`/api/chatting/room/${new_room.dataValues.id}`)
-                    }).catch(function(err){throw err;});
+                    req.session.opponent_user_id = user_id;
+                    res.redirect('/api/chatting/room/0')
                 }
             }).catch(function(err){throw err;});
         }).catch(function(err){throw err;});
+    },
+    room : function (req, res){
+        let user1;
+        let user2;
+        let writer1;
+        let writer2;
+        let writers;
+        let opponent_user_id;
+        var current_room = {id:"",opponent_user:"",messagelist:0};
+        var roomlist =[];
+        async.waterfall([
+            function (callback) {
+                (!auth.isOwner(req, res)) ?
+                    res.json({ user: req.user ? req.user : 0 }) :
+                    callback(null);
+            },
+            function (callback) {
+                opponent_user_id = req.session.opponent_user_id;
+                current_room.id = req.params.id;
+                req.session.opponent_user_id = null;
+                callback(null);
+            },
+            function (callback) {
+                chatting_room.findAll({
+                    order:[['updated','DESC']],
+                    where:{
+                        [Op.or]:[
+                            {email_1:req.user.email},
+                            {email_2:req.user.email}
+                        ]
+                    }
+                }).then(function(rooms){
+                    callback(null,rooms)
+                }).catch(function(err){ throw err;});
+            },
+            function (rooms, callback) {
+                if(opponent_user_id){
+                    users.findOne({where:{ id:opponent_user_id}}).then(function(user){
+                        current_room.opponent_user = user.dataValues;
+                    }).catch(function(err){throw err;});
+                }
+                if(rooms.length == 0){
+                    res.json({ roomlist: 0, current_room:current_room, user: req.user ? req.user : 0 })
+                }
+                for (i=0; i<rooms.length;i++){ //상대방 정보 가져오기
+                    (function (i){
+                        var email2 = "";
+                        var unread = 0;
+                        var last_chat = 0;
+                        chatting_message.findOne({where:{room_id:rooms[i].id}}).then(function(msg){
+                            if(msg){
+                                last_chat= msg.dataValues.description;
+                            }
+                        }).catch(function(err){throw err;})
+                        if(rooms[i].email_1==req.user.email){
+                            email2 = rooms[i].email_2;
+                            unread = rooms[i].unread_1;
+                        } else if(rooms[i].email_2== req.user.email){
+                            email2 = rooms[i].email_1;
+                            unread = rooms[i].unread_2;
+                        }
+                        users.findOne({where:{ email: email2}}).then(function(user){
+                            var room = {
+                                id: rooms[i].id,
+                                updated: moment(rooms[i].updated,'YYYY년MM월DD일HH시mm분ss초').fromNow(),
+                                unread: unread,
+                                opponent_user: user.dataValues,
+                                last_chat: last_chat
+                            };
+                            roomlist[i]=room;
+                            if(room.id == current_room.id){
+                                current_room.opponent_user = user.dataValues;
+                            }
+                            if(roomlist.length==rooms.length){
+                                if(current_room.id == 0){
+                                    res.json({ roomlist: roomlist, current_room:current_room, user: req.user ? req.user : 0 })
+                                }else{
+                                    callback(null)
+                                }
+                            }
+                        }).catch(function(err){throw err;});
+                    })(i)
+                }
+            },
+            function (callback) {
+                chatting_message.findAll({ where: { room_id: current_room.id }}).then(function(messagelist){
+                    current_room.messagelist = messagelist;
+                    res.json({ roomlist: roomlist, current_room:current_room, user: req.user ? req.user : 0 })
+                    callback(null);
+                }).catch(function(err){
+                    throw err;
+                });
+            }
+        ], function (err) {
+            if (err) throw (err);
+        });
     }
 }
