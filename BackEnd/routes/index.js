@@ -12,7 +12,7 @@ router.get('/', function (req, res, next) {
 router.get('/logout', function (req, res) {
     req.session.destroy(function(err) {
       req.logout();
-      res.redirect('/');
+      res.redirect('https://login.microsoftonline.com/common/oauth2/logout');
     });
 });
 
