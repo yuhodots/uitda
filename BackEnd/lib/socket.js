@@ -63,14 +63,14 @@ module.exports = function (httpServer) {
     const board_socket = socketServer.of('/board');
     const chatting_socket = socketServer.of('/chatting');
 
-    //notification
+    //home : notification
     home_socket.on('connection',socket =>{
         console.log('home: a user connected');
-        socket.on('socket_id',function(email){
+        socket.on('socket_id',function({email}){
           console.log('home: socket_id refreshed');
           users.update({ socket_id:socket.id }, { where: { email:email } }).catch(function (err) { throw err; });
         });
-        socket.on('chatting count', function(email){
+        socket.on('chatting count', function({email}){
             console.log('home: chatting count');
             chatting_room.findAll(
                 {where:{
@@ -93,13 +93,13 @@ module.exports = function (httpServer) {
                 }
             }).catch(function(err){ throw err; })
         });
-        socket.on('notification count', function(email){
+        socket.on('notification count', function({email}){
             console.log('home: notification counted');
             notification.findAll({where:{email_2:email, is_unread:true}}).then(function(notifications){
                 home_socket.emit('notification count', notifications.length);
             }).catch(function(err){ throw err; })
         });
-        socket.on('notification create',function(email, board_id, type, is_re_comment, parent_comment){
+        socket.on('notification create',function({email, board_id, type, is_re_comment, parent_comment}){
             console.log('home: notification created');
             let time;
             let time_dif;
@@ -156,7 +156,7 @@ module.exports = function (httpServer) {
                 if (err) throw (err);
             });
         });
-        socket.on('notification show',function(email){
+        socket.on('notification show',function({email}){
             console.log('home: notification show');
             notification.findAll({order:[['created','DESC']], where:{email_2:email}}).then(function(notifications){
                 var notificationlist = [];
@@ -189,10 +189,10 @@ module.exports = function (httpServer) {
         });
     })
 
-    //likey
+    //board : comment,likey
     board_socket.on('connection',socket =>{
         console.log('board: a user connected');
-        socket.on('comment create', function(email, description, type_board, board_id, is_re_comment, parent_comment){
+        socket.on('comment create', function({email, description, type_board, board_id, is_re_comment, parent_comment}){
             console.log('board: comment created');
             users.findOne({where:{email:email}}).then(function(user){
                 comment.create({
@@ -204,7 +204,7 @@ module.exports = function (httpServer) {
                 }).catch(function (err) { throw err; });
             }).catch(function (err) { throw err; });
         });
-        socket.on('comment update', function(email, comment_id, description){
+        socket.on('comment update', function({email, comment_id, description}){
             console.log('board: comment updated');
             console.log(email);
             comment.findOne({ where: { id: comment_id } }).then(function (content) {
@@ -219,7 +219,7 @@ module.exports = function (httpServer) {
                 }
             }).catch(function (err) { throw err; });
         });
-        socket.on('comment delete', function(email, comment_id){
+        socket.on('comment delete', function({email, comment_id}){
             console.log('board: comment deleted');
             comment.findOne({ where: { id: comment_id } }).then(function (content) {
                 var board_id = content.board_id;
@@ -232,7 +232,7 @@ module.exports = function (httpServer) {
                 }
             }).catch(function (err) { throw err; });
         });
-        socket.on('comment list', function(board_id, type_board){
+        socket.on('comment list', function({board_id, type_board}){
             console.log('board: comment list');
             comment.findAll({ where: { board_id: board_id, type_board: type_board } }).then(function(comments){
                 var commentlist = [];
@@ -250,7 +250,7 @@ module.exports = function (httpServer) {
                 }
             }).catch(function (err) { throw err; });
         });
-        socket.on('likey push', function(email, type_board, board_id, author){
+        socket.on('likey push', function({email, type_board, board_id, author}){
             likey.create({
                 type_board:type_board,
                 board_id:board_id,
@@ -259,7 +259,7 @@ module.exports = function (httpServer) {
                 created: moment().format('YYYY년MM월DD일HH시mm분ss초')
             }).catch(function (err) { throw err; });
         });
-        socket.on('likey cancel', function(email, type_board, board_id){
+        socket.on('likey cancel', function({email, type_board, board_id}){
             likey.destroy({
                 where: {
                     type_board:type_board,
@@ -276,7 +276,7 @@ module.exports = function (httpServer) {
     // chatting
     chatting_socket.on('connection', socket =>{
         console.log('chatting: a user connected');
-        socket.on('room in', function(room_id, email){
+        socket.on('room in', function({room_id, email}){
             console.log('chatting: room in '+ room_id)
             socket.room_id = room_id;
             chatting_message.update({ is_unread:false },
@@ -310,7 +310,7 @@ module.exports = function (httpServer) {
                 throw err;
             });
         });
-        socket.on('room out', function(room_id,email){
+        socket.on('room out', function({room_id,email}){
             socket.leave('room'+room_id);
             console.log('chatting: room out ' + socket.room_id);
             chatting_room.findOne({where:{id:room_id}})
@@ -320,7 +320,7 @@ module.exports = function (httpServer) {
                 .catch(function (err) { throw err; });
             }).catch(function (err) { throw err; });
         })
-        socket.on('chat message', function(message,room_id,email){
+        socket.on('chat message', function({message,room_id,email}){
             var writer;
             var time = moment().format('YYYY년MM월DD일HH시mm분ss초');
             var online_user;
@@ -380,7 +380,7 @@ module.exports = function (httpServer) {
                 if (err) throw (err);
             });
         });
-        socket.on('room list', function(email){
+        socket.on('room list', function({email}){
             async.waterfall([
                 function (callback) {
                     chatting_room.findAll({
@@ -433,7 +433,7 @@ module.exports = function (httpServer) {
                 if (err) throw (err);
             });
         });
-        socket.on('room create', function(email_1, email_2){
+        socket.on('room create', function({email_1, email_2}){
             time = moment().format('YYYY년MM월DD일HH시mm분ss초');
             chatting_room.create({
                 email_1:email_1, email_2:email_2, updated:time
@@ -449,7 +449,7 @@ module.exports = function (httpServer) {
                 }).catch(function(err){throw err;});
             }).catch(function(err){throw err;});
         });
-        socket.on('room delete', function(room_id, email){
+        socket.on('room delete', function({room_id, email}){
             console.log('chatting: room deleted '+ room_id);
             chatting_room.findOne({where : {id : room_id}}).then(function(room){
                 if( (email == room.email_1) || (email == room.email_2)){
@@ -474,7 +474,6 @@ module.exports = function (httpServer) {
             }
         });
     });
-
 
     return socketServer;
 }
