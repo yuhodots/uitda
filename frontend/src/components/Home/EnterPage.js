@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import './Login.css';
+
+/* componenets load */
+import PhotoBox from './PhotoBox';
 
 /* ant-design popover */
 import 'antd/dist/antd.css';
 import { Popover, Button, Modal } from 'antd';
 
 /* image import */
-import UI_uni from './UI_uni.png';
-import notice from './notice.png';
-import market from './market.png';
-import networking from './networking.png';
-import carpool from './carpool.png';
-import outlook from './outlook.png';
+import UI_uni from './img/UI_uni.png';
+import notice from './img/notice.png';
+import market from './img/market.png';
+import networking from './img/networking.png';
+import carpool from './img/carpool.png';
+import outlook from './img/outlook.png';
 
-import market_preview from './market_preview.png';
-import networking_preview from './networking_preview.png';
-import carpool_preview from './carpool_preview.png';
+import mp1 from './img/market_preview1.png';
+import mp2 from './img/market_preview2.png';
+import np1 from './img/networking_preview1.png';
+import np2 from './img/networking_preview2.png';
+import cp1 from './img/carpool_preview1.png';
+import cp2 from './img/carpool_preview2.png';
 
 const button_href = 'http://uitda.net/login'
 /* nginx 설정바꾸기 */
@@ -32,35 +37,34 @@ class Login extends Component {
   /* ant-design modal */
   state = { 
     visible: false,
-    title: null,
-    previewImage: null
+    previewImageList: null
   };
+
 
   marketClick = () => { 
     this.setState({
        visible: true,
-       title: "유니마켓: 사용하지 않는 전공 서적을 팔고 싶으신가요?",
-       previewImage: market_preview
+       previewImageList: [mp1,mp2]
     }); 
   };
 
   networkingClick = () => { 
     this.setState({
        visible: true,
-       title: "네트워킹: 음식을 같이 주문하고 배달비를 줄여보아요.",
-       previewImage: networking_preview
+       previewImageList: [np1,np2]
     }); 
   };
 
   carpoolClick = () => { 
     this.setState({
        visible: true,
-       title: "택시카풀: KTX 울산역까지 택시 타고 같이 가요!",
-       previewImage: carpool_preview
+       previewImageList: [cp1,cp2]
     }); 
   };
 
-  handleCancel = e => { this.setState({ visible: false }); };
+  handleCancel = e => { 
+    this.setState({ visible: false }); 
+  };
 
 
   render() {
@@ -115,15 +119,15 @@ class Login extends Component {
           <div className="Block">
             <div className="Block_Image"><img src={market} onClick={this.marketClick}></img></div>
             <div className="Block_Description">
-              <p>사용하지 않는 전공 서적이나 사이즈가 맞지 않는 옷들은 유니마켓 게시판에 등록하여 판매해 보세요. 
-              중고 장터의 장점을 그대로 가져와 구매자에게는 합리적 소비를, 판매자에게는 소소한 용돈 벌이 기회를 제공합니다.</p>
+              <p> 유니마켓은 학생들 간 물품 거래가 이루어지는 공간입니다. 사이즈가 맞지 않는 옷이나 더 이상 필요가 없는
+                전자기기 등 잉여 물품을 판매하거나, 애타게 구하던 신발, 급하게 필요한 전공 서적 등을 구매할 수 있습니다. </p>
             </div>
           </div>
 
           <div className="Block">
             <div className="Block_Image"><img src={networking} onClick={this.networkingClick}></img></div>
             <div className="Block_Description">
-              <p>배송비를 절약하고 싶은 분, 다양한 퀘스트를 가지고 있는 분, 유니스트에 숨겨진 고수를 찾는 분이라면 
+              <p> 배송비를 절약하고 싶은 분, 다양한 퀘스트를 가지고 있는 분, 유니스트에 숨겨진 고수를 찾는 분이라면 
               네트워킹 게시판을 이용해 보세요. 보상도 함께 적어주신다면 더 빠른 참여를 유도해내실 수 있습니다.</p>
             </div>
           </div>
@@ -131,8 +135,8 @@ class Login extends Component {
           <div class="Block">
             <div class="Block_Image"><img src={carpool} onClick={this.carpoolClick}></img></div>
             <div class="Block_Description">
-              <p>택시카풀 게시판에서는 같은 방향으로 이동하는 학우들과 택시를 동승하여 택시비를 절약할 수 있습니다.
-                캘린더를 통해 일정을 직관적으로 확인하고 간편하게 일정을 만들어 빠르게 목적지에 도착해 보아요.</p>
+              <p>택시카풀 게시판에서는 같은 방향으로 이동하는 학우들과 택시를 동승하여 교통비를 절약할 수 있습니다.
+                캘린더 UI를 통해 일정을 직관적으로 확인하고 간편하게 카풀 인원을 모아서 빠르게 목적지에 도착해 보아요.</p>
             </div>
           </div>
 
@@ -140,11 +144,14 @@ class Login extends Component {
 
         <Modal 
           width="70%" 
-          title={this.state.title} 
           visible={this.state.visible} 
           footer={null} 
           onCancel={this.handleCancel}>
-          <img style={{ width: '100%' }} src={this.state.previewImage} />
+          <PhotoBox 
+                filelist={this.state.previewImageList}
+                boardName={null}
+                postId={null}
+          />
         </Modal>
         
       </div>
