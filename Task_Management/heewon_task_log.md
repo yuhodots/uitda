@@ -159,6 +159,7 @@ roomlist 보내기 할때 마지막 대화 내용도 필요
 main 에서 update 시간 상대적 시간으로 보내기
 
 
+1.chatting message 제일 과거의 id get 요청
 #### 진행중 
 
 ### 질문
