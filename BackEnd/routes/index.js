@@ -9,11 +9,18 @@ router.get('/', function (req, res, next) {
 });
 
 /* Logout */
-router.get('/logout', function (req, res) {
+router.get('/logout/local', function (req, res) {
     req.session.destroy(function(err) {
       req.logout();
-      res.redirect('https://login.microsoftonline.com/common/oauth2/logout');
+      res.redirect('/');
     });
+});
+
+router.get('/logout/outlook', function (req, res) {
+  req.session.destroy(function(err) {
+    req.logout();
+    res.redirect('https://login.microsoftonline.com/common/oauth2/logout');
+  });
 });
 
 module.exports = router;
