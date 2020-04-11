@@ -78,6 +78,10 @@ const WholeArea = styled.div`
                     text-overflow: ellipsis;
                 `;
 
+                const MessageSkeleton = styled.div`
+                    height: 22px;
+                `;
+
             /* 오른쪽에 위치하는 시간, unread 정보를 담은 Box */
             const SubInfoBox = styled.div`
                 flex: 0 0;
@@ -169,7 +173,11 @@ const ItemContentBox = ({pic_location, username, lastMessage, updated, unread}) 
             <UserPhoto imgURL={pic_location} size={48} />
             <TextBox>
                 <OpntUserName>{username}</OpntUserName>
-                <MessageText>{lastMessage ? lastMessage: '메시지가 없습니다. dddddddddddddddddddd'}</MessageText>
+                {
+                    lastMessage ?
+                    <MessageText>{lastMessage}</MessageText> :
+                    <MessageSkeleton />
+                }
             </TextBox>
             <SubInfoBox>
                 <UpdatedInfo>{updated}</UpdatedInfo>
