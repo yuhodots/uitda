@@ -4,15 +4,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import SocketIo from 'socket.io-client';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import { withLastLocation } from 'react-router-last-location';
 
 import { getStatusRequest, logoutRequest } from "../store/actions/auth";
 import ChattingHeader from "../components/Chatting/ChattingHeader";
 import ChattingBody from "../components/Chatting/ChattingBody";
-import { 
-    getBeginingRoomListRequest,
-    getBeginingChatDataRequest,
+import {
+    getChatDataRequest, storeChatInputData
 } from '../store/actions/chatting';
 
 
@@ -22,20 +21,38 @@ class ChattingContainer extends Component {
 
     componentDidMount() {
         const { 
-            isIndex, match,
+            match,
             
             getStatusRequest,
-            getBeginingRoomListRequest,
-            getBeginingChatDataRequest,
+            getChatDataRequest,
         } = this.props;
         
-        const opntID = match ? match.params.userID : 0;     // opponent ID. 대화 상대 ID (index 페이지의 경우 0)
+        const opntID = match.params.userID;     // opponent ID. 대화 상대 ID (index 페이지의 경우 undefined)
 
         getStatusRequest();
+        getChatDataRequest(opntID);
+    }
 
-        getBeginingRoomListRequest();
+    componentWillUpdate (nextProps) {
+        const { match, getChatDataRequest } = this.props;
+        const { currentRoom, curUser } = nextProps;
 
-        if ( !isIndex ) { getBeginingChatDataRequest(opntID) }
+        const curOpntID = match.params.userID;
+        const nextOpntID = nextProps.match.params.userID;
+        if ( curOpntID !== nextOpntID ) {
+            getChatDataRequest(nextOpntID);
+        }
+
+        const curChatDataGetDone = this.props.isChatDataGetDone;
+        const nextChatDataGetDone = nextProps.isChatDataGetDone;
+        if ( curChatDataGetDone === false && nextChatDataGetDone === true ) {
+            const { id } = currentRoom;
+            const { email } = curUser;
+
+            if ( Number(id) !== 0 ) {
+                this.chatSocket.emit('room in', { room_id: id, email })
+            }
+        }
     }
 
     render() {
@@ -46,12 +63,17 @@ class ChattingContainer extends Component {
             isGetStatusDone,
             curUser, 
             lastLocation,
+            isChatDataGetDone,
             roomList,
+            currentRoom,
+            chatInputData,
         
-            logoutRequest
+            logoutRequest,
+            getChatDataRequest,
+            storeChatInputData,
         } = this.props;
 
-        const opntID = match ? match.params.userID : 0;     // opponent ID. 대화 상대 ID (index 페이지의 경우 0)
+        const opntID = match ? Number(match.params.userID) : 0;     // opponent ID. 대화 상대 ID (index 페이지의 경우 0)
 
         return(
             isGetStatusDone ?
@@ -72,8 +94,15 @@ class ChattingContainer extends Component {
                             isIndex={isIndex} 
                             opntID={opntID} 
                             chatSocket={this.chatSocket}    
+                            curUser={curUser}
 
+                            isChatDataGetDone={isChatDataGetDone}
                             roomList={roomList}
+                            currentRoom={currentRoom}
+                            chatInputData={chatInputData}
+
+                            getChatData={getChatDataRequest}
+                            storeChatInputData={storeChatInputData}
                         />
                     </div> :
 
@@ -98,9 +127,12 @@ ChattingContainer.defaultProps = {
 
 const mapStateToProps = (state) => {
     return {
-        curUser: state.auth.user,                               // 현재 유저 정보
-        isGetStatusDone: state.auth.isGetStatusDone,            // get status 요청 완료 여부
-        roomList: state.chatting.roomList,                      // 채팅방 목록 데이터
+        curUser: state.auth.user,                                       // 현재 유저 정보
+        isGetStatusDone: state.auth.isGetStatusDone,                    // get status 요청 완료 여부
+        isChatDataGetDone: state.chatting.isChatDataGetDone,            // Chatting 데이터 GET 요청 완료 여부
+        roomList: state.chatting.roomList,                              // 채팅방 목록 데이터
+        currentRoom: state.chatting.currentRoom,                        // 현재 채팅방 데이터
+        chatInputData: state.chatting.chatInputData,                    // 채팅창에 입력된 데이터
     }
 }
 
@@ -109,12 +141,12 @@ const mapDispatchToProps = (dispatch) => {
         getStatusRequest: () => dispatch(getStatusRequest()),           // 현재 유저 정보를 불러오는 request 액션
         logoutRequest: () => dispatch(logoutRequest()),                 // 로그아웃 GET request 액션
         
-        getBeginingRoomListRequest: () => {                             // Chatting 페이지를 띄울 때의 RoomList Data를 요청하는 액션
-            dispatch(getBeginingRoomListRequest())
+        getChatDataRequest: (opntID) => {                               // 첫 Chatting 페이지 띄울 때의 데이터를 요청하는 액션
+            dispatch(getChatDataRequest(opntID))
         },
-        getBeginingChatDataRequest: (opntID) => {                       // 첫 Chatting 페이지 띄울 때의 데이터를 요청하는 액션
-            dispatch(getBeginingChatDataRequest(opntID))
-        },
+        storeChatInputData: (dataKey, dataValue) => {                   // 채팅창에 입력한 데이터를 저장하는 메서드
+            dispatch(storeChatInputData(dataKey, dataValue))
+        }
     }
 }
 
