@@ -39,9 +39,6 @@ class ContectListBox extends Component {
             const curRoomID = currentRoom.id;
             const isSelectedRoom = curRoomID === id;
 
-            console.log(curRoomID, id)
-            console.log(typeof(curRoomID), typeof(id))
-
             return (
                 <RoomListItem 
                     chatSocket={chatSocket}

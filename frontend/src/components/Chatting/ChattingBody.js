@@ -43,7 +43,8 @@ const ContentArea = styled.div`
 
         /* 좌측의 연락처 리스트 박스 스타일 */
         const ContectListBoxArea = styled.div`
-            flex: 0 0 350px;
+            /* flex: 0 0 350px; */
+            width: 350px;
             height: 100%;
 
             border-right: ${colors.gray_line} solid 1px;
