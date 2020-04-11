@@ -198,12 +198,13 @@ export default function carpool (state = InitialState, action) {
 
         /* 수정 request를 보낼 데이터를 저장하는 액션 */
         case CARPOOL_STORE_EVENT_UPDATE_DATA: 
-            for ( let key in state.eventDataToUpdate) {
+            let newState = { ...state };
+            for ( let key in newState.eventDataToUpdate) {
                 if ( key === action.data_key ) {
-                    state.eventDataToUpdate[key] = action.data_value
+                    newState.eventDataToUpdate[key] = action.data_value
                 }
             }
-            return state;
+            return newState;
 
         /* 수정 요청 완료 시, 모달에 곧바로 변경을 주기 위해 
            eventDataToUpdate 데이터를 selectedEvent로 저장 */
