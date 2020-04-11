@@ -35,6 +35,10 @@ export const getChatDataStart = () => {
 
 /* GET 요청을 통해 받은 데이터를 reducer로 넘겨주는 액션 */
 export const getChatDataSuccess = (roomList, currentRoom) => {
+    
+    /* String으로 오는 id 값을 Number 형으로 변환 */
+    currentRoom.id = Number(currentRoom.id);
+
     return {
         type: CHATTING_GET_CHAT_DATA_SUCCESS,
         roomList, currentRoom

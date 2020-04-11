@@ -63,7 +63,7 @@ class ChattingBody extends Component {
     _renderContent = () => {
 
         const { 
-            isIndex, opntID, chatSocket, curUser,
+            isIndex, opntID, chatSocket,
             
             isChatDataGetDone,
             roomList,
@@ -74,13 +74,6 @@ class ChattingBody extends Component {
             storeChatInputData,
         } = this.props;
 
-        // const { id } = currentRoom;
-        // const { email } = curUser;
-
-        // console.log(id, email)
-
-        // chatSocket.emit('room in', { room_id: id, email })
-
         return(
             <ContentArea>
                 <ContentBox>
@@ -89,6 +82,7 @@ class ChattingBody extends Component {
                             chatSocket={chatSocket}
                             opntID={opntID} 
                             roomList={roomList} 
+                            currentRoom={currentRoom}
                             isChatDataGetDone={isChatDataGetDone}
                             
                             getChatData={getChatData}

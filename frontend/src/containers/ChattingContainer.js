@@ -34,27 +34,25 @@ class ChattingContainer extends Component {
     }
 
     componentWillUpdate (nextProps) {
-        const { match, getChatDataRequest } = this.props;
+        const { getChatDataRequest } = this.props;
         const { currentRoom, curUser } = nextProps;
-
-        const curOpntID = match.params.userID;
+        
+        /* url의 params가 바뀔 때에만 방 데이터를 받는 요청을 보냄 */
+        const curOpntID = this.props.match.params.userID;
         const nextOpntID = nextProps.match.params.userID;
-        if ( curOpntID !== nextOpntID ) {
-            getChatDataRequest(nextOpntID);
-        }
+        if ( curOpntID !== nextOpntID ) { getChatDataRequest(nextOpntID); }
 
+        /* 새로운 방의 데이터를 받았을 때에만 room in이 실행됨 */
         const curChatDataGetDone = this.props.isChatDataGetDone;
         const nextChatDataGetDone = nextProps.isChatDataGetDone;
         if ( curChatDataGetDone === false && nextChatDataGetDone === true ) {
             const { id } = currentRoom;
             const { email } = curUser;
-
-            if ( Number(id) !== 0 ) {
-                this.chatSocket.emit('room in', { room_id: id, email })
-            }
+            if ( Number(id) !== 0 ) { this.chatSocket.emit('room in', { room_id: id, email }) }
         }
     }
 
+    
     render() {
 
         const { 

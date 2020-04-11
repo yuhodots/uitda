@@ -74,12 +74,12 @@ class RoomListItem extends Component {
     render() {
 
         const { 
+            chatSocket,
+            curRoomID,
             isSelectedRoom, 
             opntUser, 
             updated, 
             unread, 
-            
-            getChatData,
         } = this.props;
 
         const { id, username, pic_location } = opntUser;
@@ -99,9 +99,9 @@ class RoomListItem extends Component {
                     </TextBox>
                 </SelectedWrapper> :
 
-                <LinkWrapper to={roomURL} 
-                    // onClick={() => getChatData(id)} 
-                    >
+                <LinkWrapper to={roomURL} onClick={() => { 
+                    if (curRoomID) { chatSocket.emit('room out', {room_id: curRoomID}) }    // curRoomID가 0이면 실행 안 됨
+                }} >
                     <UserPhoto imgURL={pic_location} size={48} />
                     <TextBox>
                         <OpntUserName>{username}</OpntUserName>
@@ -116,6 +116,8 @@ class RoomListItem extends Component {
 }
 
 RoomListItem.propTypes = {
+    chatSocket: PropTypes.object.isRequired,        // 채팅 socket
+    curRoomID: PropTypes.number.isRequired,         // 현재 선택된 방의 id 
     isSelectedRoom: PropTypes.bool.isRequired,      // 현재 선택된 방인지 여부
     opntUser: PropTypes.object.isRequired,          // 상대 유저 데이터
     updated: PropTypes.string.isRequired,           // 가장 최근 업데이트 된 시각
