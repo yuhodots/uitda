@@ -33,19 +33,21 @@ class ContectListBox extends Component {
     _renderRoomList = (roomList) => {
         
         return roomList.map( (room, idx) => {
-            const { user, updated, unread, last_chat } = room;
-            const { opntID } = this.props;
+            const { opponent_user, updated, unread, last_chat } = room;
+            const { opntID, getChatData } = this.props;
 
-            const isSelectedRoom = Number(opntID) === user.id
+            const isSelectedRoom = Number(opntID) === opponent_user.id
 
             return (
                 <RoomListItem 
                     isSelectedRoom={isSelectedRoom}
-                    user={user} 
+                    opntUser={opponent_user} 
                     updated={updated} 
                     unread={unread} 
                     last_chat={last_chat} 
                     key={idx} 
+
+                    getChatData={getChatData}
                 />
             )
         })
@@ -53,7 +55,7 @@ class ContectListBox extends Component {
 
     render() {
 
-        const { roomList } = this.props;
+        const { roomList, isChatDataGetDone } = this.props;
 
         return(
             <WholeArea>
@@ -63,7 +65,9 @@ class ContectListBox extends Component {
 
                 <RoomListBody>
                 {
-                    this._renderRoomList(roomList)
+                    isChatDataGetDone ?
+                    this._renderRoomList(roomList) :
+                    'loading'
                 }
                 </RoomListBody>
             </WholeArea>
@@ -72,8 +76,11 @@ class ContectListBox extends Component {
 }
 
 ContectListBox.propTypes = {
-    opntID: PropTypes.number.isRequired,    // Opponent ID. 채팅 상대방 ID
-    roomList: PropTypes.array.isRequired,   // 채팅방 목록 데이터
+    opntID: PropTypes.number.isRequired,                // Opponent ID. 채팅 상대방 ID
+    roomList: PropTypes.array.isRequired,               // 채팅방 목록 데이터
+    isChatDataGetDone: PropTypes.bool.isRequired,       // Chatting Container mount 될 때의 GET 요청 완료 여부
+
+    getChatData: PropTypes.func.isRequired,             // 방 선택 시, chatting data를 받는 액션
 }
 
 export default ContectListBox;

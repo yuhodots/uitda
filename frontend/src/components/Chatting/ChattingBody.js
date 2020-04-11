@@ -63,23 +63,52 @@ class ChattingBody extends Component {
     _renderContent = () => {
 
         const { 
-            isIndex, opntID,
+            isIndex, opntID, chatSocket, curUser,
             
+            isChatDataGetDone,
             roomList,
+            currentRoom,
+            chatInputData,
+
+            getChatData,
+            storeChatInputData,
         } = this.props;
+
+        // const { id } = currentRoom;
+        // const { email } = curUser;
+
+        // console.log(id, email)
+
+        // chatSocket.emit('room in', { room_id: id, email })
 
         return(
             <ContentArea>
                 <ContentBox>
                     <ContectListBoxArea >
-                        <ContectListBox opntID={opntID} roomList={roomList} />
+                        <ContectListBox 
+                            chatSocket={chatSocket}
+                            opntID={opntID} 
+                            roomList={roomList} 
+                            isChatDataGetDone={isChatDataGetDone}
+                            
+                            getChatData={getChatData}
+                        />
                     </ContectListBoxArea>
                     
                     <ChatRoomBoxArea>
                     {
-                        isIndex ?
-                        <IndexChatRoomBox /> :
-                        <ChatRoomBox opntID={opntID} />
+                        isChatDataGetDone ?
+
+                            isIndex ?
+                            <IndexChatRoomBox /> :
+                            <ChatRoomBox 
+                                currentRoom={currentRoom} 
+                                chatInputData={chatInputData} 
+
+                                storeChatInputData={storeChatInputData}
+                            /> :
+
+                        'loading'
                     }
                     </ChatRoomBoxArea>
                 </ContentBox>
@@ -99,10 +128,18 @@ class ChattingBody extends Component {
 }
 
 ChattingBody.propTypes = {
-    isIndex: PropTypes.bool.isRequired,     // 인덱스 페이지인지 아닌 지
-    opntID: PropTypes.number,               // Opponent ID. 채팅 상대방 ID
+    isIndex: PropTypes.bool.isRequired,                 // 인덱스 페이지인지 아닌 지
+    opntID: PropTypes.string,                           // Opponent ID. 채팅 상대방 ID
+    chatSocket: PropTypes.object.isRequired,            // 채팅 socket
+    curUser: PropTypes.object.isRequired,               // 현재 유저 정보
 
-    roomList: PropTypes.array.isRequired,   // 채팅방 목록 데이터
+    isChatDataGetDone: PropTypes.bool.isRequired,       // Chatting Container mount 될 때의 GET 요청 완료 여부
+    roomList: PropTypes.array.isRequired,               // 채팅방 목록 데이터
+    currentRoom: PropTypes.object.isRequired,           // 선택된 채팅방 데이터
+    chatInputData: PropTypes.object.isRequired,         // 채팅창에 입력된 데이터
+
+    getChatData: PropTypes.func.isRequired,             // 방 선택 시, chatting data를 받는 액션
+    storeChatInputData: PropTypes.func.isRequired,      // 채팅창에 입력한 데이터를 저장하는 메서드
 }
 
 ChattingBody.defaultProps = {

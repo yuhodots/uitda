@@ -73,13 +73,18 @@ class RoomListItem extends Component {
 
     render() {
 
-        const { isSelectedRoom, user, updated, unread } = this.props;
+        const { 
+            isSelectedRoom, 
+            opntUser, 
+            updated, 
+            unread, 
+            
+            getChatData,
+        } = this.props;
 
-        const { id, username, pic_location } = user;
+        const { id, username, pic_location } = opntUser;
 
         const roomURL = `/chatting/t/${id}`;
-
-        console.log(isSelectedRoom)
 
         return (
             <WholeArea>
@@ -94,7 +99,9 @@ class RoomListItem extends Component {
                     </TextBox>
                 </SelectedWrapper> :
 
-                <LinkWrapper to={roomURL} >
+                <LinkWrapper to={roomURL} 
+                    // onClick={() => getChatData(id)} 
+                    >
                     <UserPhoto imgURL={pic_location} size={48} />
                     <TextBox>
                         <OpntUserName>{username}</OpntUserName>
@@ -110,9 +117,11 @@ class RoomListItem extends Component {
 
 RoomListItem.propTypes = {
     isSelectedRoom: PropTypes.bool.isRequired,      // 현재 선택된 방인지 여부
-    user: PropTypes.object.isRequired,              // 상대 유저 데이터
+    opntUser: PropTypes.object.isRequired,          // 상대 유저 데이터
     updated: PropTypes.string.isRequired,           // 가장 최근 업데이트 된 시각
     unread: PropTypes.number.isRequired,            // 안 읽은 개수
+
+    getChatData: PropTypes.func.isRequired,         // 방 선택 시, chatting data를 받는 액션
 }
 
 

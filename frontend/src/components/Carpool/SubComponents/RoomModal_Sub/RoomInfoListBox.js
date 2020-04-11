@@ -7,7 +7,7 @@ import { DatePicker } from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import moment from "moment";
 
-import { UnderLineTextArea, UitdaTimePicker } from "../../../Structure/CommonComponents";
+import { UitdaTextArea, UitdaTimePicker } from "../../../Structure/CommonComponents";
 import { 
     DEPARTURE, DESTINATION, START_DATE, START_TIME, MEETING_PLACE, CONTACT
 } from "../../../../constants/calendar_consts";
@@ -80,9 +80,9 @@ const RoomInfoListBox = ({isUpdateMode, selectedEvent, storeEventUpdateData}) =>
         <InfoListBox>
             <InfoListItem>
                 <InfoSubtitle>이동 방향</InfoSubtitle>
-                <UnderLineTextArea storeDataFunc={storeEventUpdateData} data_key={DEPARTURE} size={120} defaultText={departure} />
+                <UitdaTextArea storeDataFunc={storeEventUpdateData} data_key={DEPARTURE} size={120} defaultText={departure} />
                 <ArrowRightIcon /> 
-                <UnderLineTextArea storeDataFunc={storeEventUpdateData} data_key={DESTINATION} size={120} defaultText={destination} />
+                <UitdaTextArea storeDataFunc={storeEventUpdateData} data_key={DESTINATION} size={120} defaultText={destination} />
             </InfoListItem>
 
             <InfoListItem>
@@ -93,11 +93,11 @@ const RoomInfoListBox = ({isUpdateMode, selectedEvent, storeEventUpdateData}) =>
             
             <InfoListItem>
                 <InfoSubtitle>집합 장소</InfoSubtitle>
-                <UnderLineTextArea storeDataFunc={storeEventUpdateData} data_key={MEETING_PLACE} size={240} defaultText={meeting_place} />
+                <UitdaTextArea storeDataFunc={storeEventUpdateData} data_key={MEETING_PLACE} size={240} defaultText={meeting_place} />
             </InfoListItem>
             <InfoListItem>
                 <InfoSubtitle>연락처</InfoSubtitle>
-                <UnderLineTextArea storeDataFunc={storeEventUpdateData} data_key={CONTACT} size={240} defaultText={contact} />
+                <UitdaTextArea storeDataFunc={storeEventUpdateData} data_key={CONTACT} size={240} defaultText={contact} />
             </InfoListItem>
         </InfoListBox> :
 
