@@ -10,7 +10,7 @@ import { Input } from "antd";
 
 const StyledTextArea = styled(Input.TextArea)`
 
-    width: ${props => props.size}px;
+    width: ${props => props.size};
 
     padding: 0.25rem;
 
@@ -19,6 +19,7 @@ const StyledTextArea = styled(Input.TextArea)`
     border-top: none;
     border-left: none;
     border-right: none;
+    border-bottom: ${props => !props.isUnderLine && 'none'};
     border-radius: 0;
     outline: 0;
 
@@ -35,13 +36,16 @@ const StyledTextArea = styled(Input.TextArea)`
 
 
 /* React Component */
-const UnderLineTextArea = ({size, defaultText, data_key, storeDataFunc}) => {
+const UnderLineTextArea = ({data_key, storeDataFunc, size, defaultText, placeHolder, isUnderLine}) => {
 
+    if (typeof(size) === 'number') { size = `${size}px` }
 
     return(
         <StyledTextArea 
             size={size}
             defaultValue={defaultText}
+            placeholder={placeHolder}
+            isUnderLine={isUnderLine}
             autoSize={true}
             onChange={(e) => storeDataFunc(data_key, e.target.value)}
         />
@@ -50,15 +54,24 @@ const UnderLineTextArea = ({size, defaultText, data_key, storeDataFunc}) => {
 }
 
 UnderLineTextArea.propTypes = {
-    size: PropTypes.number,                         // 가로 길이
-    data_key: PropTypes.string.isRequired,          // 인풋 데이터 키
+    size: PropTypes.oneOfType([                     // 가로 길이
+        PropTypes.string,
+        PropTypes.number,
+    ]),                         
     defaultText: PropTypes.string,                  // default Vaule
+    placeHolder: PropTypes.string,                  // place holder
+    isUnderLine: PropTypes.bool,                    // Under Line 스타일 여부
+    data_key: PropTypes.string.isRequired,          // 인풋 데이터 키
 
     storeDataFunc: PropTypes.func.isRequired,       // 인풋 데이터 저장 함수
 }
 
 UnderLineTextArea.defaultProps = {
     size: 160,
+    defaultText: '',
+    placeHolder: '',
+
+    isUnderLine: true,
 }
 
 export default UnderLineTextArea
