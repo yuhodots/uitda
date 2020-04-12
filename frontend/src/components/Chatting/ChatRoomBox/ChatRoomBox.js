@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 import { BoxHeaderArea, BoxHeaderTitle } from "../CommonComponents";
 import { UserPhoto } from "../../Structure/CommonComponents";
-import { ChatInputBox } from "./subcomponents";
+import { ChatInputBox, MessageBoard } from "./subcomponents";
 
 /* Styled Components */
 const WholeBox = styled.div`
@@ -50,14 +50,14 @@ class ChatRoomBox extends Component {
     render() {
 
         const { 
+            curUser,
+            chatSocket,
             currentRoom, 
             chatInputData,
             
             storeChatInputData
         } = this.props;
 
-        // console.log(currentRoom)
-        
         const { opponent_user } = currentRoom;
 
         const { username, pic_location } = opponent_user;
@@ -71,11 +71,17 @@ class ChatRoomBox extends Component {
 
                 <ChatRoomBody>
                     <MessageBoardArea>
-
+                        <MessageBoard 
+                            curUser={curUser}
+                            currentRoom={currentRoom}
+                        />
                     </MessageBoardArea>
 
                     <ChatInputBoxArea>
                         <ChatInputBox 
+                            chatSocket={chatSocket}
+                            curUser={curUser}
+                            currentRoom={currentRoom}
                             chatInputData={chatInputData}
                             storeChatInputData={storeChatInputData}
                         />
@@ -87,6 +93,8 @@ class ChatRoomBox extends Component {
 }
 
 ChatRoomBox.propTypes = {
+    chatSocket: PropTypes.object.isRequired,            // 채팅 socket
+    curUser: PropTypes.object.isRequired,               // 현재 유저 정보
     currentRoom: PropTypes.object.isRequired,           // 선택된 채팅방 데이터
     chatInputData: PropTypes.object.isRequired,         // 채팅창에 입력된 데이터
 
