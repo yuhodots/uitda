@@ -24,13 +24,6 @@ import cp1 from './img/carpool_preview1.png';
 import cp2 from './img/carpool_preview2.png';
 
 const button_href = 'http://uitda.net/login'
-/* nginx 설정바꾸기 */
-// listen 80;
-// server_name uitda.net;
-// location /login {
-//    proxy_pass http://127.0.0.1:3000/api/login/outlook;
-// }
-// 출처: https://medium.com/sjk5766/nginx-reverse-proxy-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-e11e18fcf843
 
 class Login extends Component {
 
@@ -40,6 +33,31 @@ class Login extends Component {
     previewImageList: null
   };
 
+  componentDidMount() {
+    this.setState({
+        photoOrder: 0
+    })
+  }
+
+  _ClickPrevButton = () => {
+    this.setState({
+        photoOrder: this.state.photoOrder - 1
+    })
+  }
+
+  _ClickNextButton = () => {
+    this.setState({
+        photoOrder: this.state.photoOrder + 1
+    })
+  }
+
+  _ClickCircleButton = (i) => {
+    console.log(i);
+    this.setState({
+        ...this.state,
+        photoOrder: i
+    })
+  }
 
   marketClick = () => { 
     this.setState({
@@ -64,7 +82,12 @@ class Login extends Component {
 
   handleCancel = e => { 
     this.setState({ visible: false }); 
+    this.setphotoOrder(0);
   };
+
+  setphotoOrder = e => {
+    this.setState({ photoOrder: 0 }); 
+  }
 
 
   render() {
@@ -151,6 +174,10 @@ class Login extends Component {
                 filelist={this.state.previewImageList}
                 boardName={null}
                 postId={null}
+                photoOrder = {this.state.photoOrder}
+                _ClickPrevButton = {this._ClickPrevButton}
+                _ClickNextButton = {this._ClickNextButton}
+                _ClickCircleButton = {this._ClickCircleButton}
           />
         </Modal>
         
