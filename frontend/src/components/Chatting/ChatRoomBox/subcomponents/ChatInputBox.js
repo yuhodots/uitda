@@ -42,11 +42,25 @@ const InputBox = styled.div`
 class ChatInputBox extends Component {
 
 
+    /* Chatting Message를 보내는 메서드 */
+    _handleSendMessage = () => {
+        const { 
+            chatSocket, 
+            curUser, currentRoom,
+            chatInputData 
+        } = this.props;
+
+        /* socket을 통해 데이터를 넘겨줌 */
+        chatSocket.emit('chat message', {
+            message: chatInputData.text, 
+            room_id: currentRoom.id,
+            email: curUser.email
+        })
+    }
+
     render () {
 
-        const { chatInputData, storeChatInputData } = this.props;
-
-        // console.log(chatInputData);
+        const { storeChatInputData } = this.props;
 
         return (
             <InputBox>
@@ -62,7 +76,7 @@ class ChatInputBox extends Component {
                 </TextAreaBox>
 
                 <SendButtonBox>
-                    <SendButton />
+                    <SendButton onClick={this._handleSendMessage} />
                 </SendButtonBox>
             </InputBox>
         )
@@ -70,6 +84,9 @@ class ChatInputBox extends Component {
 }
 
 ChatInputBox.propTypes = {
+    chatSocket: PropTypes.object.isRequired,            // 채팅 socket
+    curUser: PropTypes.object.isRequired,               // 현재 유저 정보
+    currentRoom: PropTypes.object.isRequired,           // 선택된 채팅방 데이터
     chatInputData: PropTypes.object.isRequired,         // 채팅창에 입력된 데이터
 
     storeChatInputData: PropTypes.func.isRequired,      // 채팅창에 입력한 데이터를 저장하는 메서드

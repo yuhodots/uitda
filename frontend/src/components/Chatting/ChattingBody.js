@@ -64,7 +64,7 @@ class ChattingBody extends Component {
     _renderContent = () => {
 
         const { 
-            isIndex, opntID, chatSocket,
+            isIndex, curUser, opntID, chatSocket,
             
             isChatDataGetDone,
             roomList,
@@ -97,6 +97,8 @@ class ChattingBody extends Component {
                             isIndex ?
                             <IndexChatRoomBox /> :
                             <ChatRoomBox 
+                                chatSocket={chatSocket}
+                                curUser={curUser}
                                 currentRoom={currentRoom} 
                                 chatInputData={chatInputData} 
 

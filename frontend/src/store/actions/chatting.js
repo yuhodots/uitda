@@ -4,6 +4,7 @@ import {
     CHATTING_GET_CHAT_DATA_START,
     CHATTING_GET_CHAT_DATA_SUCCESS,
     CHATTING_STORE_INPUT_DATA,
+    CHATTING_SOCKET_ON_CHAT_MESSAGE,
 } from "./ActionTypes";
 
 
@@ -51,5 +52,19 @@ export const storeChatInputData = (dataKey, dataValue) => {
     return {
         type: CHATTING_STORE_INPUT_DATA,
         dataKey, dataValue
+    }
+}
+
+
+/* chat message 이벤트에 대한 socket on 메서드를 처리하는 액션
+   추가될 message 데이터와 변경될 room 데이터를 받는다.
+   room의 경우, room_id에 해당하는 방을 roomList의 가장 앞으로 이동하고, 시간 값을 변경
+   message의 경우, currentRoom의 messageList에 추가한다.
+*/
+export const socketOnChatMessage = (data) => {
+    const { writer, message } = data;
+    return {
+        type: CHATTING_SOCKET_ON_CHAT_MESSAGE,
+        writer, message    
     }
 }
