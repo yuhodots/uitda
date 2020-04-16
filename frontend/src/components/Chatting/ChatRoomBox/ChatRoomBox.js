@@ -1,6 +1,6 @@
 
 
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
@@ -46,6 +46,13 @@ const MarginBox = styled.div`
 /* React Component */
 class ChatRoomBox extends Component {
 
+    messageBoardRef = createRef();
+
+    componentDidMount() {
+        /* Message Board의 scroll을 가장 아래로 위치시키기 */
+        const { offsetHeight, scrollHeight } = this.messageBoardRef.current;
+        this.messageBoardRef.current.scrollTop = scrollHeight - offsetHeight;
+    }
 
     render() {
 
@@ -70,7 +77,7 @@ class ChatRoomBox extends Component {
                 </BoxHeaderArea>
 
                 <ChatRoomBody>
-                    <MessageBoardArea>
+                    <MessageBoardArea ref={this.messageBoardRef} >
                         <MessageBoard 
                             curUser={curUser}
                             currentRoom={currentRoom}
