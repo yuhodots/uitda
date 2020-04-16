@@ -13,7 +13,6 @@ import { colors } from "../../../../styles/variables";
 const MessageArea = styled.div`
     margin-top: 0.5rem;
     width: 100%;
-    min-height: 3rem;
 
     display: flex;
     flex-flow: row nowrap;
