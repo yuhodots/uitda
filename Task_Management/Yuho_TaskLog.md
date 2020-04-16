@@ -448,10 +448,104 @@
 
 
 
+### 20.03.13 (금)
+
+- carpool modal 디자인 생각 후 수근이에게 전달 완료
+  - 방장이 아닌 사람들한테 지금 참여 인원 정보 공개하지 않기
+- chatting 방 UI 생각하기
+  1. chatting 내 검색 칸을 만들기 (outlook 처럼) 
+  2. 작성자의 게시글에 'chatting 보내기' 버튼을 만들기
+
+
+
+### 20.03.15 (일)
+
+- models/cal_events.js `update`
+  - created 컬럼 추가
+  - username 컬럼 제거
+  - title 컬럼 제거
+- lib/carpool.js `update`
+  - created 컬럼 추가, username, title 컬럼 제거를 위해 create, update 메소드 수정
+  - response에 username 대신에 user
+    - **guest들에 대해서는 이 처리를 아직 하지 않았음**
+- 채팅방 구현하는 예제 찾아보기
+  - node.js socket.io 치면 많이 나오는듯
+  - [Do it! Node.js 프로그래밍 ch10](https://www.inflearn.com/course/2017-node-js-프로그래밍)
+  - https://poiemaweb.com/nodejs-socketio (poiemaweb)
+- 채팅방 db를 관리자들이 볼 수 없도록 어떤 조치?
+  - 서버db가 아닌 로컬db에 저장: http://honeybearsoft.blogspot.com/2014/05/it.html
+  - 일단은 구현부터 하고 생각
+
+
+
+### 20.03.18 (목)
+
+- 프론트엔드 로고, 아이콘 수정
+- 작업물 서버 컴퓨터로 이동
+  - 에러 있어서 다시 clone
+  - 서버 볼륨 확장 작업 (8GB -> 25GB)
+
+
+
+### 20.03.29 (일)
+
+- 서버에 작업물 올리기 성공, 작동 테스트도 해봄
+- 백엔드에서 포트 4000 처리 되어있는 코드들, 8080으로 처리 바꾸기
+  - 프론트엔드 npm start가 8080에서만 작동하길래 이렇게 바꿔놓음
+- 프론트엔드 (글 관리, 글 작성): 잉력시장, 다판다라는 용어 사용
+  - 컨택 계획하기
+
+
+
+### 20.04.03 (금)
+
+- carpool no event 처리
+
+
+
+### 20.04.05 (일)
+
+- 로그아웃 처리 https (근데 딱히 변화가 없음)
+  - uitda.net/login으로 로그인
+  - uitda.net/logout으로 로그아웃
+- 홈 화면 글귀 수정, 빌드 후, 서버 인스턴스에 업로드
+
+
+
+### 20.04.09 (목)
+
+- 홈 화면 글귀 수정
+- 아이콘 클릭시 뜨는 modal 수정: 글 삭제, 사진 각 세 장 정도로 넘기면서 볼 수 있게
+  - PostCard - PhotoBox 컴포넌트 사용
+  - handleCancel 실행 시, PhotoBox의 photoOrder를 어떻게 초기화 해야하는지 모르겠음 (외부 컴포넌트의 state 어떻게 바꾸는지?)
+    - 자식의 state를 부모의 state로 가져온다음
+    - 부모꺼에서 this.setstate를 실행시키는 함수 생성
+    - 그 함수를 자식에게 props로 넘겨주기
+- 로그아웃 라우트 추가
+  - 기본 로그아웃: /api/logout/local
+  - 아웃룩 로그아웃:  /api/logout/outlook
+
+
+
+### 20.04.12 (일)
+
+- 홈 페이지 modal 수정
+
+  - handleCancel 실행 시, PhotoBox의 photoOrder를 어떻게 초기화
+  - BlackMask 지움
+
+  1. 자식의 state를 부모의 state로 가져온다음
+  2. 2부모꺼에서 this.setstate를 실행시키는 함수 생성
+  3. 그 함수를 자식에게 props로 넘겨주기
+
+- socket 공부 시작
+
+
+
+
 ### 해야할 일
 
-- **carpool modal 디자인 생각**
+- **유니스트만 로그인 가능하도록 로그인 설정 바꿔보기**
+- **socket.io 공부**
+- 사이트 이용하는 과정 동영상으로 만들면 좋을듯 (기록용)
 
-
-
-- 서버로 작업물 옮기기

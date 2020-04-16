@@ -13,20 +13,7 @@ moment.locale('ko');
 
 
 /* Model method */
-function make_writer(username, pic_location, email) {
-    let writer = {
-        username: username,
-        pic_location: pic_location,
-        email:email
-    }
-    return writer;
-}
-function make_writers(user1,user2) {
-    let writers = [];
-    writers.push(user1);
-    writers.push(user2);
-    return writers;
-}
+
 
 /* Board method */
 module.exports = {
@@ -56,13 +43,9 @@ module.exports = {
         }).catch(function(err){throw err;});
     },
     room : function (req, res){
-        let user1;
-        let user2;
-        let writer1;
-        let writer2;
-        let writers;
+        let last_message_id = Number(req.query.last_id);
         let opponent_user_id;
-        var current_room = {id:"",opponent_user:"",messagelist:0};
+        var current_room = {id:"",opponent_user:"",message_list:[]};
         var roomlist =[];
         async.waterfall([
             function (callback) {
@@ -103,7 +86,7 @@ module.exports = {
                         var email2 = "";
                         var unread = 0;
                         var last_chat = 0;
-                        chatting_message.findOne({where:{room_id:rooms[i].id}}).then(function(msg){
+                        chatting_message.findOne({where:{room_id:rooms[i].id},order:[['created','DESC']]}).then(function(msg){
                             if(msg){
                                 last_chat= msg.dataValues.description;
                             }
@@ -118,7 +101,7 @@ module.exports = {
                         users.findOne({where:{ email: email2}}).then(function(user){
                             var room = {
                                 id: rooms[i].id,
-                                updated: moment(rooms[i].updated,'YYYY년MM월DD일HH시mm분ss초').fromNow(),
+                                updated: moment(rooms[i].updated,'YYYY년MM월DD일HH시mm분ss초').format('YYYY-MM-DDTHH:mm:ss'),
                                 unread: unread,
                                 opponent_user: user.dataValues,
                                 last_chat: last_chat
@@ -138,14 +121,54 @@ module.exports = {
                     })(i)
                 }
             },
-            function (callback) {
-                chatting_message.findAll({ where: { room_id: current_room.id }}).then(function(messagelist){
-                    current_room.messagelist = messagelist;
-                    res.json({ roomlist: roomlist, current_room:current_room, user: req.user ? req.user : 0 })
-                    callback(null);
+            function(callback){
+                chatting_message.min('id',{
+                    where:{
+                        room_id:current_room.id,
+                    }
+                }).then(function(min){
+                    if(min){
+                        callback(null, min);
+                    } else{
+                        callback(null, 0);
+                    }
                 }).catch(function(err){
                     throw err;
                 });
+            },
+            function (min, callback) {
+                if(min){
+                    chatting_message.findAll({
+                        where: {
+                            room_id: current_room.id,
+                            id:{[Op.lt]:last_message_id}
+                        },
+                        limit: 20,
+                        order:[['created','DESC']]
+                    }).then(function(message_list){
+                        current_room.message_list = message_list.reverse();
+                        for(var i=0;i<current_room.message_list.length;i++){
+                            current_room.message_list[i].created = moment(current_room.message_list[i].created,'YYYY년MM월DD일HH시mm분ss초').format('YYYY-MM-DDTHH:mm:ss');
+                            if(i == current_room.message_list.length-1){
+                                if(message_list.length < 20){
+                                    res.json({ roomlist: roomlist, current_room:current_room, isLast:true, user: req.user ? req.user : 0 })
+                                } else if(message_list.length = 20) {
+                                    if(message_list[0].id == min){
+                                        res.json({ roomlist: roomlist, current_room:current_room, isLast:true, user: req.user ? req.user : 0 })
+                                    }else{
+                                        res.json({ roomlist: roomlist, current_room:current_room, isLast:false, user: req.user ? req.user : 0 })
+                                    }
+                                }
+                            }
+                        }
+                        callback(null);
+                    }).catch(function(err){
+                        throw err;
+                    });
+                } else{
+                    res.json({ roomlist: roomlist, current_room:current_room, isLast:true, user: req.user ? req.user : 0 })
+                }
+
             }
         ], function (err) {
             if (err) throw (err);

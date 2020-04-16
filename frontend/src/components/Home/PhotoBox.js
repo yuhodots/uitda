@@ -56,21 +56,6 @@ const ImgItem = styled.div`
     background-size: cover;
 `;
 
-const BlackMask = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.25);
-    opacity: 1;
-    transition: opacity 0.25s;
-
-    :hover {
-        opacity: 0.5;
-    }
-`;
-
 const ButtonContainer = styled.div`
     position: absolute;
     top: ${props => props.posTop};
@@ -138,7 +123,6 @@ class PhotoBox extends Component {
 
     componentDidMount() {
         this.setState({
-            photoOrder: 0,
             containerWidth: this.container.offsetWidth,
             isHover: false
         })
@@ -160,29 +144,9 @@ class PhotoBox extends Component {
 
     }
 
-    _ClickPrevButton = () => {
-        this.setState({
-            photoOrder: this.state.photoOrder - 1
-        })
-    }
-
-    _ClickNextButton = () => {
-        this.setState({
-            photoOrder: this.state.photoOrder + 1
-        })
-    }
-
-    _ClickCircleButton = (i) => {
-        console.log(i);
-        this.setState({
-            ...this.state,
-            photoOrder: i
-        })
-    }
-
     _renderContents() {
-        const { filelist, boardName, postId } = this.props;
-        const { photoOrder, containerWidth, isHover } = this.state;
+        const { filelist, photoOrder, boardName, postId, _ClickPrevButton, _ClickNextButton, _ClickCircleButton } = this.props;
+        const { containerWidth, isHover } = this.state;
         let hasPhoto = filelist.length !== 0;
 
         let listWidth = containerWidth * filelist.length;
@@ -212,15 +176,13 @@ class PhotoBox extends Component {
                             })}
                         </ImgList> 
                     }
-                    {/* 사진이 있든 없든 공통적으로 BlackMask 가짐 */}
-                    <BlackMask/>
                 </PhotoLink>
                 {
                     // 사진 넘기기 버튼
                     // filelist.length > 1 &&
                     <ButtonContainer isHover={isHover} posTop={`${buttonPosTop}px`} >
-                        <PrevButton isButtonOn={isPrevButtonOn} onClick={this._ClickPrevButton} />
-                        <NextButton isButtonOn={isNextButtonOn} onClick={this._ClickNextButton} />
+                        <PrevButton isButtonOn={isPrevButtonOn} onClick={_ClickPrevButton} />
+                        <NextButton isButtonOn={isNextButtonOn} onClick={_ClickNextButton} />
                     </ButtonContainer> 
                 }
                 {
@@ -231,7 +193,7 @@ class PhotoBox extends Component {
                             let isHighLight = photoOrder === i;
                             return <CircleButton 
                                 isHighLight={isHighLight} 
-                                onClick={(i) => {this._ClickCircleButton(i)}}
+                                onClick={(i) => {_ClickCircleButton(i)}}
                                 key={i}/>
                         })}
                     </CircleContainer> 
@@ -256,6 +218,10 @@ PhotoBox.propTypes = {
     filelist: PropTypes.array.isRequired,
     boardName: PropTypes.string.isRequired,
     postId: PropTypes.number.isRequired,
+    photoOrder: PropTypes.number.isRequired,
+    _ClickPrevButton: PropTypes.func.isRequired,
+    _ClickNextButton: PropTypes.func.isRequired,
+    _ClickCircleButton: PropTypes.func.isRequired,
 }
 
 export default PhotoBox;
