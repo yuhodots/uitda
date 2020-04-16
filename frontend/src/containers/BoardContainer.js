@@ -25,6 +25,7 @@ class BoardContainer extends Component {
 
     componentDidMount() {
         const { 
+            rootSocket,
             boardName,
             
             getStatusRequest,
@@ -34,6 +35,8 @@ class BoardContainer extends Component {
             topicSelect,
         } = this.props;
         
+        console.log(rootSocket);
+
         getStatusRequest();
         initiateBoard();
 

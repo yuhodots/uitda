@@ -37,9 +37,15 @@ class ChattingContainer extends Component {
     }
 
     componentWillUpdate (nextProps) {
-        const { getChatDataRequest } = this.props;
+        const { getChatDataRequest, rootSocket } = this.props;
         const { currentRoom, curUser } = nextProps;
         
+        const curStatusDone = this.props.isGetStatusDone;
+        const nextStatusDone = nextProps.isGetStatusDone;
+        if ( curStatusDone === false && nextStatusDone === true ) { 
+            rootSocket.emit('socket_id', {email: curUser.email});
+        }
+
         /* url의 params가 바뀔 때에만 방 데이터를 받는 요청을 보냄 */
         const curOpntID = this.props.match.params.userID;
         const nextOpntID = nextProps.match.params.userID;

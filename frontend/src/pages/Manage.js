@@ -19,14 +19,13 @@ import {
     MANAGE_ACCOUNT,
     MANAGE_COMMENTS,
     MANAGE_LIKEPOSTS,
-    MANAGE_NOTIFICATIONS,
     MANAGE_CONTACT,
 
     MANAGE_POSTS_MARKET,
     MANAGE_POSTS_NETWORKING,
 } from '../constants/manage_category';
 
-const Manage = () => {
+const Manage = (props) => {
     return (
         <Switch>
             {/* manage의 default는 market 포스팅 관리 페이지 */}
@@ -42,22 +41,22 @@ const Manage = () => {
 
             {/* 카테고리 별 해당 kind를 넘겨주기 */}
             <Route path={`/manage/${MANAGE_ACCOUNT}`} component={() => 
-                <ManageContainer kind={MANAGE_ACCOUNT} />
+                <ManageContainer kind={MANAGE_ACCOUNT} {...props} />
             } />
             <Route path={`/manage/posts/market`} component={() => 
-                <ManageContainer kind={MANAGE_POSTS_MARKET} />
+                <ManageContainer kind={MANAGE_POSTS_MARKET} {...props} />
             } />
             <Route path={`/manage/posts/networking`} component={() => 
-                <ManageContainer kind={MANAGE_POSTS_NETWORKING} />
+                <ManageContainer kind={MANAGE_POSTS_NETWORKING} {...props} />
             } />
             <Route path={`/manage/${MANAGE_COMMENTS}`} component={() => 
-                <ManageContainer kind={MANAGE_COMMENTS} />
+                <ManageContainer kind={MANAGE_COMMENTS} {...props} />
             } />
             <Route path={`/manage/${MANAGE_LIKEPOSTS}`} component={() => 
-                <ManageContainer kind={MANAGE_LIKEPOSTS} />
+                <ManageContainer kind={MANAGE_LIKEPOSTS} {...props} />
             } />
             <Route path={`/manage/${MANAGE_CONTACT}`} component={() => 
-                <ManageContainer kind={MANAGE_CONTACT} />
+                <ManageContainer kind={MANAGE_CONTACT} {...props} />
             } />
            
 

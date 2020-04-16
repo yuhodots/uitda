@@ -1,9 +1,9 @@
 import React from 'react';
 import CarpoolContainer from "../containers/CarpoolContainer";
 
-const Carpool = () => {
+const Carpool = (props) => {
     return (
-        <CarpoolContainer/>
+        <CarpoolContainer {...props} />
     )
 }
 
