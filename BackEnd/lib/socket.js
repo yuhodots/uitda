@@ -88,7 +88,7 @@ module.exports = function (httpServer) {
                         unread = unread +1;
                     }
                     if(i==rooms.length-1){
-                        home_socket.emit('chatting count', unread);
+                        home_socket.emit('chatting count', {unread});
                     }
                 }
             }).catch(function(err){ throw err; })
@@ -96,7 +96,8 @@ module.exports = function (httpServer) {
         socket.on('notification count', function({email}){
             console.log('home: notification counted');
             notification.findAll({where:{email_2:email, is_unread:true}}).then(function(notifications){
-                home_socket.emit('notification count', notifications.length);
+                var notification_length = notifications.length;
+                home_socket.emit('notification count', {notification_length});
             }).catch(function(err){ throw err; })
         });
         socket.on('notification create',function({email, board_id, type, is_re_comment, parent_comment}){
@@ -148,7 +149,7 @@ module.exports = function (httpServer) {
                 },
                 function (whom, callback) {
                     if(whom.socket_id){
-                        home_socket.to(whom.socket_id).emit('notification create',board_id, type, writer, time_dif, is_re_comment)
+                        home_socket.to(whom.socket_id).emit('notification create',{board_id, type, writer, time_dif, is_re_comment})
                     }
                     callback(null);
                 },
@@ -159,7 +160,7 @@ module.exports = function (httpServer) {
         socket.on('notification show',function({email}){
             console.log('home: notification show');
             notification.findAll({order:[['created','DESC']], where:{email_2:email}}).then(function(notifications){
-                var notificationlist = [];
+                var notification_list = [];
                 for(i=0;i<notifications.length;i++){
                     (function(i){
                         users.findOne({where:{email:notifications[i].email_1}}).then(function(user){
@@ -171,10 +172,10 @@ module.exports = function (httpServer) {
                                 created:moment(notifications[i].created,'YYYY년MM월DD일HH시mm분ss초').fromNow(),
                                 is_unread:notifications[i].is_unread
                             };
-                            notificationlist[i] = notification_ob;
-                            if(notifications.length == notificationlist.length){
+                            notification_list[i] = notification_ob;
+                            if(notifications.length == notification_list.length){
                                 notification.update({is_unread:false},{where:{email_2:email,is_unread:true}}).then(function(){
-                                    home_socket.emit('notification show', notificationlist);
+                                    home_socket.emit('notification show', {notification_list});
                                 }).catch(function(err){ throw err; });
                             }
                         }).catch(function(err){ throw err; })
@@ -200,13 +201,16 @@ module.exports = function (httpServer) {
                     author: user.username, email: email, created: moment().format('YYYY년MM월DD일HH시mm분ss초'),
                     is_re_comment: is_re_comment, parent_comment: parent_comment
                 }).then(function () {
-                    board_socket.emit('comment create', board_id, type_board);
+                    var data ={
+                        board_id:board_id,
+                        type_board:type_board
+                    };
+                    board_socket.emit('comment create', data);
                 }).catch(function (err) { throw err; });
             }).catch(function (err) { throw err; });
         });
         socket.on('comment update', function({email, comment_id, description}){
             console.log('board: comment updated');
-            console.log(email);
             comment.findOne({ where: { id: comment_id } }).then(function (content) {
                 console.log(content)
                 if(email == content.email){
@@ -214,7 +218,8 @@ module.exports = function (httpServer) {
                         description: description, created: moment().format('YYYY년MM월DD일HH시mm분ss초'), is_modified: true
                     }, { where: { id: comment_id } })
                     .then(function(){
-                        board_socket.emit('comment update', content.board_id, content.type_board);
+                        var data = { board_id:content.board_id, type_board:content.type_board};
+                        board_socket.emit('comment update', data);
                     }).catch(function (err) { throw err; });
                 }
             }).catch(function (err) { throw err; });
@@ -225,9 +230,13 @@ module.exports = function (httpServer) {
                 var board_id = content.board_id;
                 var type_board = content.type_board;
                 if(email == content.email){
-                    var commentlist = [];
+                    var comment_list = [];
                     comment.destroy({ where: { id: comment_id } }).then(function(){
-                        board_socket.emit('comment delete',board_id, type_board);
+                        var data ={
+                            board_id:board_id,
+                            type_board:type_board
+                        };
+                        board_socket.emit('comment delete',data);
                     }).catch(function (err) { throw err; });
                 }
             }).catch(function (err) { throw err; });
@@ -235,16 +244,16 @@ module.exports = function (httpServer) {
         socket.on('comment list', function({board_id, type_board}){
             console.log('board: comment list');
             comment.findAll({ where: { board_id: board_id, type_board: type_board } }).then(function(comments){
-                var commentlist = [];
+                var comment_list = [];
                 for (let i = 0; i < comments.length; i++) {
                     users.findOne({ where: { email: comments[i].email } }).then(function (user) {
                         let writer = make_writer(user.username, user.email, user.pic_location);
                         let time = moment(comments[i].created, 'YYYY년MM월DD일HH시mm분ss초').fromNow();
                         comment_ob = make_comment_ob(comments[i].id, comments[i].type_board, comments[i].board_id,
                             comments[i].description, writer, time, comments[i].is_re_comment, comments[i].parent_comment,comments[i].is_modified);
-                        commentlist[i] = comment_ob;
-                        if(commentlist.length == comments.length){
-                            board_socket.emit('comment list', commentlist)
+                        comment_list[i] = comment_ob;
+                        if(comment_list.length == comments.length){
+                            board_socket.emit('comment list', {comment_list})
                         }
                     }).catch(function (err) { throw err; });
                 }
@@ -365,14 +374,15 @@ module.exports = function (httpServer) {
                 function (callback) {
                     chatting_message.create({
                          room_id:room_id, description:message, email:email, created:time, is_unread: is_unread
-                    }).then(function(){
-                        callback(null);
+                    }).then(function(result){
+                        callback(null, result.id);
                     }).catch(function (err) { throw err; });
                 },
-                function (callback) {
+                function (message_id, callback) {
                     users.findOne({where:{email:email}}).then(function(user){
-                        writer = make_writer(user.username, user.pic_location,user.email)
-                        chatting_socket.in('room' + room_id).emit('chat message', writer, message, time);
+                        writer = make_writer(user.username, user.pic_location,user.email);
+                        time = moment(time,'YYYY년MM월DD일HH시mm분ss초').format('YYYY-MM-DDTHH:mm:ss');
+                        chatting_socket.in('room' + room_id).emit('chat message', {writer, message_id, message, time, is_unread});
                         callback(null);
                     }).catch(function (err) { throw err; });
                 }
@@ -414,7 +424,7 @@ module.exports = function (httpServer) {
                             users.findOne({where:{ email: email2}}).then(function(user){
                                 var room = {id:"",updated:"",unread:"",user:""};
                                 room.id = rooms[i].id;
-                                room.updated = rooms[i].updated;
+                                room.updated = moment(rooms[i].updated,'YYYY년MM월DD일HH시mm분ss초').format('YYYY-MM-DDTHH:mm:ss');
                                 room.unread = unread;
                                 room.user = user.dataValues;
                                 roomlist[i]=room;
@@ -426,7 +436,7 @@ module.exports = function (httpServer) {
                     }
                 },
                 function(roomlist,callback){
-                    chatting_socket.emit('room list', roomlist);
+                    chatting_socket.emit('room list', {roomlist});
                     callback(null);
                 }
             ], function (err) {
@@ -445,7 +455,7 @@ module.exports = function (httpServer) {
                     room.updated = time;
                     room.unread = 0;
                     room.user = user.dataValues;
-                    chatting_socket.emit('room create', room);
+                    chatting_socket.emit('room create', {room});
                 }).catch(function(err){throw err;});
             }).catch(function(err){throw err;});
         });
