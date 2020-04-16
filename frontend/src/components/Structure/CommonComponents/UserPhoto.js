@@ -22,15 +22,12 @@ const CircleArea = styled.div`
         background-position: center;
         background-size: cover;
     `};
-
-    cursor: pointer;
 `;
 
 
 
 /* React Component */
 const UserPhoto = ({size, imgURL}) => {
-
 
     return (
         <CircleArea size={size} imgURL={imgURL} />

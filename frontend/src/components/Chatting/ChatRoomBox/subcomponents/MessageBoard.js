@@ -1,34 +1,16 @@
 
 
 import React, { Component } from 'react';
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import { colors } from "../../../../styles/variables";
+import ChatMessage from "./ChatMessage";
 
 
 /* Styled Components */
 const WholeArea = styled.div`
     width: 100%;
 `;
-
-    const ChatMessage = styled.div`
-        width: 100%;
-        min-height: 3rem;
-
-        color: ${colors.font_default};
-
-        display: flex;
-        flex-flow: row nowrap;
-        align-items: flex-start;
-        justify-content: flex-start;
-
-        ${props => props.isMine && css`
-            /* color: ${colors.white}; */
-            flex-flow: row-reverse nowrap;
-        `}
-    `;
-
 
     const NoMessageBox = styled.div`
     
@@ -39,17 +21,23 @@ const WholeArea = styled.div`
 class MessageBoard extends Component {
 
     _renderMessageList = (messageList) => {
-        const { curUser } = this.props;
+        const { curUser, currentRoom } = this.props;
 
         return messageList.map( (message, idx) => {
             const { description, email, created, isUnread } = message;
-            
+            const { opponent_user } = currentRoom; 
+
             const isMine = curUser.email === email;
 
             return (
-                <ChatMessage isMine={isMine} key={idx} >
-                    {description}
-                </ChatMessage>
+                <ChatMessage 
+                    isMine={isMine}
+                    opntUser={opponent_user}
+                    description={description}
+                    created={created}
+                    isUnread={isUnread}
+                    key={idx}
+                />
             )
         })
     }
