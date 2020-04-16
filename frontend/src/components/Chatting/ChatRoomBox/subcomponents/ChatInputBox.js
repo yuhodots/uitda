@@ -10,6 +10,7 @@ import { UitdaTextArea } from "../../../Structure/CommonComponents";
 
 
 /* Styled Components */
+/* 메시지 입력 창 테두리 스타일을 갖는 상자 */
 const InputBox = styled.div`
     padding: 0.25rem 0.75rem;
     width: 100%;
@@ -23,17 +24,19 @@ const InputBox = styled.div`
     align-items: flex-end;
 `;
 
+    /* TextArea를 담는 영역의 div 태그 */
     const TextAreaBox = styled.div`
         flex: 1 0;
     `;
 
+    /* 보내기 버튼을 담는 박스 */
     const SendButtonBox = styled.div`
         flex: 0 0;
         padding-bottom: 4px;
     `;
 
+        /* 보내기 버튼 */
         const SendButton = styled(SendOutlined)`
-
             cursor: pointer;
         `;
 
@@ -41,6 +44,14 @@ const InputBox = styled.div`
 /* React Component */
 class ChatInputBox extends Component {
 
+    /* Enter 키 입력 시, handleSendMessage가 실행되도록 함 */
+    _handleEnterKey = (e) => {
+        const { shiftKey, keyCode } = e;
+        if ( keyCode === 13 && !shiftKey ) {    // enter 키에, shift키가 안 눌렸다면
+            e.preventDefault();
+            this._handleSendMessage();
+        }
+    }
 
     /* Chatting Message를 보내는 메서드 */
     _handleSendMessage = () => {
@@ -64,7 +75,7 @@ class ChatInputBox extends Component {
 
         return (
             <InputBox>
-                <TextAreaBox>
+                <TextAreaBox onKeyDown={ e => this._handleEnterKey(e) } >
                     <UitdaTextArea 
                         size='100%' 
                         isUnderLine={false} 
