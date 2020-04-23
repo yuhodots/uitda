@@ -108,8 +108,6 @@ class BoardContainer extends Component {
 
         const { windowHeight, windowWidth } = this.state;
 
-        console.log(isGetStatusDone);
-
         return (
             isGetStatusDone ?
 
