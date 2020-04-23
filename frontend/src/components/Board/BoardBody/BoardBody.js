@@ -17,6 +17,7 @@ const BoardArea = styled.div`
     min-height: ${props => {
         return `${props.minHeight}px`
     }};
+    min-width: 40rem;
     padding: 0;
     padding-top: 4rem;
     padding-left: 15rem;
