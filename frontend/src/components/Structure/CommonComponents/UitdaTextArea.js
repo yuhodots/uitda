@@ -36,7 +36,7 @@ const StyledTextArea = styled(Input.TextArea)`
 
 
 /* React Component */
-const UnderLineTextArea = ({data_key, storeDataFunc, size, defaultText, placeHolder, isUnderLine}) => {
+const UitdaTextArea = ({data_key, storeDataFunc, size, defaultText, placeHolder, isUnderLine}) => {
 
     if (typeof(size) === 'number') { size = `${size}px` }
 
@@ -53,7 +53,7 @@ const UnderLineTextArea = ({data_key, storeDataFunc, size, defaultText, placeHol
 
 }
 
-UnderLineTextArea.propTypes = {
+UitdaTextArea.propTypes = {
     size: PropTypes.oneOfType([                     // 가로 길이
         PropTypes.string,
         PropTypes.number,
@@ -66,7 +66,7 @@ UnderLineTextArea.propTypes = {
     storeDataFunc: PropTypes.func.isRequired,       // 인풋 데이터 저장 함수
 }
 
-UnderLineTextArea.defaultProps = {
+UitdaTextArea.defaultProps = {
     size: 160,
     defaultText: '',
     placeHolder: '',
@@ -74,4 +74,4 @@ UnderLineTextArea.defaultProps = {
     isUnderLine: true,
 }
 
-export default UnderLineTextArea
+export default UitdaTextArea;

@@ -47,7 +47,7 @@ class ContectListBox extends Component {
                     opntUser={opponent_user} 
                     updated={updated} 
                     unread={unread} 
-                    last_chat={last_chat} 
+                    lastChat={last_chat} 
                     key={idx}
                 />
             )

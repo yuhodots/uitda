@@ -7,6 +7,7 @@ import { SendOutlined } from "@ant-design/icons";
 
 import { colors } from "../../../../styles/variables";
 import { UitdaTextArea } from "../../../Structure/CommonComponents";
+import { clearValue } from "../../../Structure/CommonComponents/UitdaTextArea";
 
 
 /* Styled Components */
@@ -48,8 +49,8 @@ class ChatInputBox extends Component {
     _handleEnterKey = (e) => {
         const { shiftKey, keyCode } = e;
         if ( keyCode === 13 && !shiftKey ) {    // enter 키에, shift키가 안 눌렸다면
-            e.preventDefault();
-            this._handleSendMessage();
+            e.preventDefault();                 // 줄 바꿈 실행 X
+            this._handleSendMessage();          // enter 시 실행 함수
         }
     }
 
@@ -58,15 +59,18 @@ class ChatInputBox extends Component {
         const { 
             chatSocket, 
             curUser, currentRoom,
-            chatInputData 
+            chatInputData,
+            moveToBoardBottom
         } = this.props;
 
-        /* socket을 통해 데이터를 넘겨줌 */
-        chatSocket.emit('chat message', {
-            message: chatInputData.text, 
-            room_id: currentRoom.id,
-            email: curUser.email
-        })
+        /* 데이터가 있는 경우 에만 socket을 통해 데이터를 넘겨줌 */
+        if ( chatInputData.text ) {
+            chatSocket.emit('chat message', {
+                message: chatInputData.text, 
+                room_id: currentRoom.id,
+                email: curUser.email
+            })
+        }
     }
 
     render () {
@@ -75,7 +79,9 @@ class ChatInputBox extends Component {
 
         return (
             <InputBox>
-                <TextAreaBox onKeyDown={ e => this._handleEnterKey(e) } >
+                <TextAreaBox 
+                onKeyDown={ e => this._handleEnterKey(e) } 
+                >
                     <UitdaTextArea 
                         size='100%' 
                         isUnderLine={false} 

@@ -21,16 +21,16 @@ import LocalLoginPage from "./Home/LocalLoginPage";
 
 import './App.css';
 
-const rootSocket = socketio.connect('/');
+// const rootSocket = socketio.connect('/');
 
 const App = () => {
     return (
         <Switch>
             <Route exact path='/' component={ Home } />
-            <Route path='/board' component={ () => <Board rootSocket={rootSocket} /> } />
-            <Route path='/carpool' component={ () => <Carpool rootSocket={rootSocket} /> } />
-            <Route path='/manage' component={ () => <Manage rootSocket={rootSocket} /> } />
-            <Route path='/chatting' component={ () => <Chatting rootSocket={rootSocket} /> } />
+            <Route path='/board' component={ () => <Board /* rootSocket={rootSocket} */ /> } />
+            <Route path='/carpool' component={ () => <Carpool /* rootSocket={rootSocket} */ /> } />
+            <Route path='/manage' component={ () => <Manage /* rootSocket={rootSocket} */ /> } />
+            <Route path='/chatting' component={ () => <Chatting /* rootSocket={rootSocket} */ /> } />
             <Route path='/local-login' component={ LocalLoginPage } />
             <Route component={NotFound}/>
         </Switch>

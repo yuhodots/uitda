@@ -55,13 +55,14 @@ export default function chatting ( state = InitialState, action ) {
             }
 
         /* GET요청을 통해 받은 Chatting 데이터를 저장하는 액션 */
-        case CHATTING_GET_CHAT_DATA_SUCCESS:
+        case CHATTING_GET_CHAT_DATA_SUCCESS:{
+            const { roomList, currentRoom } = action;
             return {
                 ...state,
                 isChatDataGetDone: true,
-                roomList: action.roomList,
-                currentRoom: action.currentRoom
+                roomList, currentRoom
             }
+        }
 
         /* 채팅창에 입력한 데이터를 저장하는 액션 */
         case CHATTING_STORE_INPUT_DATA: 
@@ -72,16 +73,35 @@ export default function chatting ( state = InitialState, action ) {
             }
             return { ...state };
 
-        case CHATTING_SOCKET_ON_CHAT_MESSAGE:
+        /* Socket On을 통해 Chatting Message 데이터를 받은 액션 */
+        case CHATTING_SOCKET_ON_CHAT_MESSAGE:{
+            const { room_id, message_id, writer, message, time, is_unread } = action;
+            const { id, messageList } = state.currentRoom
+
+            console.log('in reducer')
+
+            /* 새로운 메시지의 room_id와 user의 currentRoom id가 일치하는 경우에는
+               currentRoom의 메시지 리스트에 새로운 메시지 데이터 추가 */
+            // if ( room_id === id ) {
+                const newMessage = {
+                    id: message_id,
+                    room_id,
+                    description: message,
+                    email: writer.email,
+                    created: time,
+                    is_unread
+                };
+                messageList.push(newMessage);
+            // }
+
             return {
                 ...state,
-                // currentRoom: {
-                //     ...state.currentRoom,
-                //     messageList: state.currentRoom.push({
-
-                //     })
-                // }
+                currentRoom: {
+                    ...state.currentRoom,
+                    messageList
+                }
             }
+        }
 
         default:
             return { ...state }

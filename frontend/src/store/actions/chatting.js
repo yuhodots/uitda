@@ -35,10 +35,15 @@ export const getChatDataStart = () => {
 }
 
 /* GET 요청을 통해 받은 데이터를 reducer로 넘겨주는 액션 */
-export const getChatDataSuccess = (roomList, currentRoom) => {
+export const getChatDataSuccess = (roomList, current_room) => {
     
-    /* String으로 오는 id 값을 Number 형으로 변환 */
-    currentRoom.id = Number(currentRoom.id);
+    /* Backend 변수명 (pot_hole_case) => Frontend 변수명 (camelCase) */
+    const { id, opponent_user, message_list } = current_room;
+    const currentRoom = { 
+        id: Number(id), 
+        opntUser: opponent_user, 
+        messageList: message_list 
+    }
 
     return {
         type: CHATTING_GET_CHAT_DATA_SUCCESS,
@@ -59,12 +64,15 @@ export const storeChatInputData = (dataKey, dataValue) => {
 /* chat message 이벤트에 대한 socket on 메서드를 처리하는 액션
    추가될 message 데이터와 변경될 room 데이터를 받는다.
    room의 경우, room_id에 해당하는 방을 roomList의 가장 앞으로 이동하고, 시간 값을 변경
-   message의 경우, currentRoom의 messageList에 추가한다.
+   message의 경우, room_id값과 current_room의 id와 일치하면, currentRoom의 messageList에 추가한다.
 */
 export const socketOnChatMessage = (data) => {
-    const { writer, message } = data;
+
+    console.log('action')
+
+    const { room_id, message_id, writer, message, time, is_unread } = data;
     return {
         type: CHATTING_SOCKET_ON_CHAT_MESSAGE,
-        writer, message    
+        room_id, message_id, writer, message, time, is_unread    
     }
 }

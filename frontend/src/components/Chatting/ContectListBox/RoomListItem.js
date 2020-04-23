@@ -132,7 +132,7 @@ class RoomListItem extends Component {
             curRoomID,
             isSelectedRoom, 
             opntUser, 
-            lastMessage,
+            lastChat,
             updated, 
             unread, 
         } = this.props;
@@ -149,7 +149,7 @@ class RoomListItem extends Component {
                 <SelectedWrapper>
                     <ItemContentBox 
                         pic_location={pic_location} username={username}
-                        lastMessage={lastMessage}updated={updated} unread={unread}
+                        lastChat={lastChat}updated={updated} unread={unread}
                     />
                 </SelectedWrapper> :
 
@@ -158,7 +158,7 @@ class RoomListItem extends Component {
                 }} >
                     <ItemContentBox 
                         pic_location={pic_location} username={username}
-                        lastMessage={lastMessage} updated={updated} unread={unread}
+                        lastChat={lastChat} updated={updated} unread={unread}
                     />
                 </LinkWrapper>
             }
@@ -167,15 +167,15 @@ class RoomListItem extends Component {
     }
 }
 
-const ItemContentBox = ({pic_location, username, lastMessage, updated, unread}) => {
+const ItemContentBox = ({pic_location, username, lastChat, updated, unread}) => {
     return (
         <ItemContainer>
             <UserPhoto imgURL={pic_location} size={48} />
             <TextBox>
                 <OpntUserName>{username}</OpntUserName>
                 {
-                    lastMessage ?
-                    <MessageText>{lastMessage}</MessageText> :
+                    lastChat ?
+                    <MessageText>{lastChat}</MessageText> :
                     <MessageSkeleton />
                 }
             </TextBox>
@@ -200,8 +200,13 @@ RoomListItem.propTypes = {
     opntUser: PropTypes.object.isRequired,          // 상대 유저 데이터
     updated: PropTypes.string.isRequired,           // 가장 최근 업데이트 된 시각
     unread: PropTypes.number.isRequired,            // 안 읽은 개수
+    lastChat: PropTypes.string,                     // 가장 최근 메시지          
 
     getChatData: PropTypes.func.isRequired,         // 방 선택 시, chatting data를 받는 액션
+}
+
+RoomListItem.defaultProps = {
+    lastChat: '',
 }
 
 

@@ -49,7 +49,11 @@ class ChatRoomBox extends Component {
     messageBoardRef = createRef();
 
     componentDidMount() {
-        /* Message Board의 scroll을 가장 아래로 위치시키기 */
+        this._moveToBoardBottom();
+    }
+
+    /* Message Board의 scroll을 가장 아래로 위치시키기 */
+    _moveToBoardBottom = () => {
         const { offsetHeight, scrollHeight } = this.messageBoardRef.current;
         this.messageBoardRef.current.scrollTop = scrollHeight - offsetHeight;
     }
@@ -65,9 +69,9 @@ class ChatRoomBox extends Component {
             storeChatInputData
         } = this.props;
 
-        const { opponent_user } = currentRoom;
+        const { opntUser } = currentRoom;
 
-        const { username, pic_location } = opponent_user;
+        const { username, pic_location } = opntUser;
 
         return (
             <WholeBox>
@@ -81,6 +85,7 @@ class ChatRoomBox extends Component {
                         <MessageBoard 
                             curUser={curUser}
                             currentRoom={currentRoom}
+                            moveToBoardBottom={this._moveToBoardBottom}
                         />
                     </MessageBoardArea>
 

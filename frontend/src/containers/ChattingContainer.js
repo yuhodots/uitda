@@ -33,13 +33,17 @@ class ChattingContainer extends Component {
         getStatusRequest();
         getChatDataRequest(opntID);
 
-        this.chatSocket.on('chat message', (data) => socketOnChatMessage(data));
+        this.chatSocket.on('chat message', (data) => { 
+            console.log('socket on')
+            socketOnChatMessage(data)
+        });
     }
 
     componentWillUpdate (nextProps) {
         const { getChatDataRequest, rootSocket } = this.props;
         const { currentRoom, curUser } = nextProps;
         
+        /* User State를 받았을 때에만 (전체 페이지 중 처음으로 컨테이너가 실행될 때만) socket_id 를 emit 함 */
         const curStatusDone = this.props.isGetStatusDone;
         const nextStatusDone = nextProps.isGetStatusDone;
         if ( curStatusDone === false && nextStatusDone === true ) { 
