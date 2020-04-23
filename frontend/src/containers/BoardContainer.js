@@ -25,7 +25,6 @@ class BoardContainer extends Component {
 
     componentDidMount() {
         const { 
-            rootSocket,
             boardName,
             
             getStatusRequest,
@@ -35,8 +34,6 @@ class BoardContainer extends Component {
             topicSelect,
         } = this.props;
         
-        console.log(rootSocket);
-
         getStatusRequest();
         initiateBoard();
 
@@ -110,6 +107,8 @@ class BoardContainer extends Component {
         } = this.props;
 
         const { windowHeight, windowWidth } = this.state;
+
+        console.log(isGetStatusDone);
 
         return (
             isGetStatusDone ?
