@@ -15,6 +15,7 @@ import {
     getUpdatePostRequest,
     EditPostRequest,
     storeEditTitleData,
+    storeEditPriceData,
     addFileData,
     deleteFileData,
     storeEditDescriptionData,
@@ -155,6 +156,7 @@ class EditContainer extends Component {
             editCategory,
 
             title,
+            price,
             files,
             deletedFileIDs,
             description,
@@ -169,6 +171,7 @@ class EditContainer extends Component {
             EditPostRequest,
             selectEditCategory,
             storeEditTitleData,
+            storeEditPriceData,
             addFileData,
             deleteFileData,
             storeEditDescriptionData,
@@ -202,6 +205,7 @@ class EditContainer extends Component {
                         id={id}                             // Update의 경우 해당 글의 id
 
                         title={title}                       // Edit 페이지에서 작성한 Title 데이터
+                        price={price}
                         files={files}                       // Edit 페이지에서 업로드한 사진 데이터
                         deletedFileIDs={deletedFileIDs}     // 수정 시, 삭제할 사진 id 리스트
                         description={description}           // Eidt 페이지에서 작성한 Description 데이터
@@ -229,6 +233,7 @@ class EditContainer extends Component {
 
                         /* property */
                         title={title}                                       // Edit 페이지에서 작성한 Title 데이터
+                        price={price}
                         files={files}                                       // Edit 페이지에서 업로드한 사진 데이터
                         description={description}                           // Edit 페이지에서 작성한 Description 데이터
 
@@ -237,6 +242,7 @@ class EditContainer extends Component {
 
                         /* methods */
                         storeTitleData={storeEditTitleData}
+                        storePriceData={storeEditPriceData}
                         addFileData={addFileData}
                         deleteFileData={deleteFileData}
                         storeDescriptionData={storeEditDescriptionData}
@@ -276,6 +282,7 @@ const mapStateToProps = (state) => {
         editCategory: state.manage.editCategory,            // edit 카테고리 정보 (market, networking, carpool)
 
         title: state.manage.editedTitle,                    // Title Data
+        price: state.manage.editedPrice,
         files: state.manage.editedFiles,                    // File List Data
         deletedFileIDs: state.manage.deletedFileIDs,        // 삭제할 파일 ID 리스트
         description: state.manage.editedDescription,        // Description Data
@@ -295,12 +302,13 @@ const mapDispatchToProps = (dispatch) => {
 
         initEditPage: () => {dispatch(initEditPage())},
         selectEditCategory: (category) => {dispatch(selectEditCategory(category))},             // edit 카테고리를 선택하는 메서드
-        EditPostRequest: (board, title, discription, files, id, deletedFileIDs) => {
-            dispatch(EditPostRequest(board, title, discription, files, id, deletedFileIDs))
+        EditPostRequest: (board, title, price, discription, files, id, deletedFileIDs) => {
+            dispatch(EditPostRequest(board, title, price, discription, files, id, deletedFileIDs))
         },
         getPostRequest: (board, id) => dispatch(getUpdatePostRequest(board, id)),
 
         storeEditTitleData: (title) => dispatch(storeEditTitleData(title)),
+        storeEditPriceData: (price) => dispatch(storeEditPriceData(price)),
         addFileData: (file) => dispatch(addFileData(file)),
         deleteFileData: (file) => dispatch(deleteFileData(file)),
         storeEditDescriptionData: (description) => {

@@ -6,6 +6,7 @@ import {
     MANAGE_EDIT_GET_POST_SUCCESS,
     MANAGE_EDIT_GET_POST_FAILURE,
     MANAGE_EDIT_STORE_TITLE_DATA,
+    MANAGE_EDIT_STORE_PRICE_DATA,
     MANAGE_EDIT_ADD_FILE_DATA,
     MANAGE_EDIT_DELETE_FILE_DATA,
     MANAGE_EDIT_STORE_DESCRIPTION_DATA,
@@ -45,6 +46,7 @@ const InitialState = {
     editCategory: MARKET,                           // Edit 페이지 카테고리 정보 (market, networking, carpool)
     
     editedTitle: '',                                // 작성한 제목 데이터
+    editedPrice: '',
     editedFiles: [],                                // 업로드할 파일 데이터 리스트
     deletedFileIDs: [],                             // 삭제할 파일의 id 리스트
     editedDescription: '',                          // 작성한 설명 부분 데이터
@@ -104,6 +106,7 @@ export default function manage (state = InitialState, action) {
             return {
                 ...state,
                 editedTitle: '',
+                editedPrice: '',
                 editedFiles: [],
                 editedDescription: '',
                 
@@ -138,6 +141,7 @@ export default function manage (state = InitialState, action) {
             return {
                 ...state,
                 editedTitle: action.title,
+                editedPrice: action.price,
                 editedDescription: action.description,
                 editedFiles: modifiedFileList,
                 isEditGetSuccess: true,
@@ -157,6 +161,13 @@ export default function manage (state = InitialState, action) {
             return {
                 ...state,
                 editedTitle: action.editedTitle,
+                isModified: true,
+            }
+
+        case MANAGE_EDIT_STORE_PRICE_DATA:
+            return {
+                ...state,
+                editedPrice: action.editedPrice,
                 isModified: true,
             }
 

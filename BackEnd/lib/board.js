@@ -315,11 +315,21 @@ module.exports = {
 
             /* 게시글 text data 생성 */
             function (callback) {
-                type_board.create({
-                    title: title, description: description, author: req.user.username, email: req.user.email, created: moment().format('YYYY년MM월DD일HH시mm분ss초'), filenum: files.length, count: 0
-                }).then(function () {
-                    callback(null)
-                }).catch(function (err) { throw err; });
+                if (type == 'market'){
+                    type_board.create({
+                        title: title, price:req.body.price, description: description, author: req.user.username, email: req.user.email, created: moment().format('YYYY년MM월DD일HH시mm분ss초'), filenum: files.length, count: 0
+                    }).then(function () {
+                        callback(null)
+                    }).catch(function (err) { throw err; });
+                }
+                else{
+                    type_board.create({
+                        title: title, description: description, author: req.user.username, email: req.user.email, created: moment().format('YYYY년MM월DD일HH시mm분ss초'), filenum: files.length, count: 0
+                    }).then(function () {
+                        callback(null)
+                    }).catch(function (err) { throw err; });
+                }
+                
             },
 
             /* 게시글 image data 생성 */
@@ -401,9 +411,17 @@ module.exports = {
 
             /* 게시글 제목, 내용 수정 */
             function (callback) {
-                type_board.update({ title: title, description: description, created: moment().format('YYYY년MM월DD일HH시mm분ss초') }, { where: { id: id } })
-                .then(function () { callback(null); })
-                .catch(function (err) { throw err; });
+                if(type == 'market'){
+                    type_board.update({ title: title, price: req.body.price, description: description, created: moment().format('YYYY년MM월DD일HH시mm분ss초') }, { where: { id: id } })
+                    .then(function () { callback(null); })
+                    .catch(function (err) { throw err; });
+                }
+                else{
+                    type_board.update({ title: title, description: description, created: moment().format('YYYY년MM월DD일HH시mm분ss초') }, { where: { id: id } })
+                    .then(function () { callback(null); })
+                    .catch(function (err) { throw err; });
+                }
+                
             },
 
             /* 파일 삭제 수행 */
@@ -411,6 +429,7 @@ module.exports = {
                 for (let i = 0;  i < deleted_files.length; i++){
                     type_files.findOne({ where: { id: deleted_files[i] } })
                     .then(function (file) {
+                        console.log(file)
                         s3.deleteObject(
                             { Bucket: "uitda.net", Key: file.filename },
                             (err, data) => {
