@@ -24,7 +24,7 @@ const ContentBoxDiv = styled.div`
 const ContentHead = styled.div`
     position: relative;
     padding-bottom: 2.75rem;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid ${colors.light_gray_line};
 
     display: flex;
     flex-flow: column nowrap;
@@ -39,7 +39,7 @@ const ContentHead = styled.div`
         margin-bottom: 1.5rem;
         
         font-size: .875rem;
-        color: gray;
+        color: ${colors.font_gray};
 
         display: flex;
         flex-flow: row nowrap;
@@ -198,7 +198,7 @@ const ContentBox = ({isPhotoCard, boardName, postId, title, user, created, condi
                 <TitleLink to={postURL} > {title} </TitleLink>
                 {
                     boardName === MARKET &&
-                    <PriceBox>1,000원</PriceBox>
+                    <PriceBox>{price}원</PriceBox>
                 }
             </ContentHead>
             <DescriptionBox isPhotoCard={isPhotoCard} >
