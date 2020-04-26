@@ -467,8 +467,14 @@
   라벨 Circle 추가
   NoPhoto Card 스타일 추가 (Info box 위치 변경, Description Box 사이즈 변경)
   네트워킹 카테고리에서는 가격 태그 제거
+  가격 업데이트
 * PhotoCard, NoPhotoCard 리팩토링 => PostCard에 통합하고, props를 변경하는 것으로 리팩토링 성공
 * UserPhoto의 basic 이미지를 '윤이'로 설정
+* Detail Page 스타일링
+  Header Info 스타일링 UserPhoto, Username, Created, Status 스타일링
+  NoPhoto 글은 세로 구분선 없앰
+  Comment Box는 하단에 위치 고정
+  하얀 배경 max-width 설정
 
 
 
@@ -505,7 +511,6 @@
 * 사진 Ant Design의 Carousel Component 검토
 * 댓글 더보기 기능
 * 답글 더보기 기능
-* 하얀색 부분의 min-width값 주기
 
 
 
@@ -653,6 +658,12 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 ### 논의 사항
 
+* market의 가격에 대한 논의. Edit 페이지에서 가격 입력란
+
+  가격을 입력하고 싶지 않은 게시글 논의 -> edit page에서의 UI
+
+
+
 * 채팅방 시간 정보
   인스타: 8분 전 / 2시간 전 / 어제 / 2주 ... => 데이터 갱신 필요, GET 요청할 때에만 변경되는 것으로 보여짐
   페북: 오후 1시 43분 / 4월 11일 / 19. 11. 21.
@@ -709,10 +720,6 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 
 * logout은 uitda 로그아웃 뿐만 아니라 outlook 로그아웃도 할 수 있도록 하는 것에 대해
-
-
-
-* market의 가격에 대한 논의. Edit 페이지에서 가격 입력란
 
 
 
