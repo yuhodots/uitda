@@ -439,6 +439,39 @@
 
 
 
+### 4.23 (목)
+
+* board 넘어갈 때, 흰 페이지에서 넘어가지 않는 오류 해결 (NoPhoto render)
+
+* Market, Network Card => Photo, NoPhoto Card
+
+* PhotoBox에 ant design의 carousel을 적용
+
+  자연스러운 애니메이션
+
+  a태그 대신 Link 태그
+
+  Button을 띄우는 조건 추가 - isHover, 사진이 1개라도 있을 때. Button은 carousel 메서드 이용
+
+  버튼 스타일링
+
+  BlackMask는 NoPhoto인 경우만 hover 효과
+
+* Board Body의 min-width 스타일 추가
+
+
+
+### 4.26 (일)
+
+* PostCard 스타일링
+  라벨 Circle 추가
+  NoPhoto Card 스타일 추가 (Info box 위치 변경, Description Box 사이즈 변경)
+  네트워킹 카테고리에서는 가격 태그 제거
+* PhotoCard, NoPhotoCard 리팩토링 => PostCard에 통합하고, props를 변경하는 것으로 리팩토링 성공
+* UserPhoto의 basic 이미지를 '윤이'로 설정
+
+
+
 
 
 
@@ -451,6 +484,7 @@
 
 * 디테일 페이지에서 뒤로가기 했을 때, render가 안되는 오류
 * 무한 스크롤 islast 점검 (간혹 2번 요청이 가는 경우가 있음)
+* 첫 get 요청 후 Render 되기 전에 Board Loading 페이지 제작
 
 
 
@@ -458,8 +492,6 @@
 * Header를 BaseHeader로 코드 리펙토링
 * 로딩 바 css 스타일 다듬기
 * 검색창에 자동완성 기능 추가
-* 사진 넘기기 아이콘 ant-design 적용
-* 사진 Ant Design의 Carousel Component 검토
 * postlist 초기화 및 중복 요청 제거
 * 상세 페이지에서 다시 돌아올때는 초기화 X
 * 검색 창 띄우기 아이콘이 안 보일 때 위치에 갖다대면 cursor 모양으로 바뀌는 에러
@@ -601,7 +633,9 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
   * 메시지 받는 액션
   * 검색창 이동 시, 데이터 GET
   * 검색 시 GET
-* 
+* socket on chat message 시, 스크롤 아래로 이동
+* chat message send 시, 인풋태그 내용 clear
+* websocket handshake error
 
 
 
@@ -626,10 +660,8 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 
 
-* 현재 백앤드에서 socket emit 'chat_message' 이벤트가 writer, message, time을 보내주는데, writer가 본인인 경우, room_list를 변경하는 것이 불가능. time 값이 YYYY년MM월DD일HH시mm분ss초 로 되어있음
-  writer, message, time => { room_id, writer, content, time(YYYY-MM-DDTHH:mm:ss) } 
-
-  message_id, isUnread는 어떻게 할 지
+* 백앤드에서 'chat_message' 보내줄 때, room_id도 필요. 
+  받는 사람 입장에서 현재 그 방에 들어가 있다면 current_room의 message_list에 받은 메시지 데이터를 추가하고, 다른 방에 있는 경우에는 message_list에 추가하면 안되기 때문
 
 
 
@@ -644,11 +676,6 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 * find user 할 때, id 대신 email 쓰는 이유 ?
   message의 email부분을 user_id로 변경 ?
-
-
-
-* 변수명은 camalCase 또는 '언더바(_)'로 연결하기
-  ex) 현재 current_room의 messagelist를 message_list 또는 messageList로 변경
 
 
 
