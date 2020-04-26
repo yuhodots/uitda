@@ -1,7 +1,8 @@
 // 상위 컴포넌트: components/BoardDetail.js
 
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import PropTypes from 'prop-types';
 
 
 /* Styled Components */
@@ -14,15 +15,24 @@ const DescriptionArea = styled.div`
 `;
 
 
-/* React Component */
+/* Custom Functions */
+const _transString = (originStr) => {
+    return originStr.split('\n').map( line => <span>{line}<br/></span>)
+}
 
-const DescriptionBox = ({description}) => {
+/* React Component */
+const DescriptionBox = ({isPhoto, description}) => {
 
     return (
-        <DescriptionArea>
-            { description }
+        <DescriptionArea isPhoto={isPhoto} >
+            { _transString(description) }
         </DescriptionArea>
     )
+}
+
+DescriptionBox.propTypes = {
+    description: PropTypes.string,              // description 내용
+    isPhoto: PropTypes.bool.isRequired,         // 사진 글인지
 }
 
 export default DescriptionBox;

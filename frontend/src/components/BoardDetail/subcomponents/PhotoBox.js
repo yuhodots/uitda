@@ -16,7 +16,7 @@ const BoxArea = styled.div`
     margin-top: 2rem;
     width: 100%;
     padding-top: 60%;
-    border-bottom: 1px solid ${colors.gray_bg};
+    border-bottom: 1px solid ${colors.light_gray_line};
 
     position: relative;
 `;

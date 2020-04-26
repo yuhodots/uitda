@@ -11,12 +11,14 @@ import { colors } from "../../../styles/variables";
 
 /* CommentBox 영역 div */
 const CommentArea = styled.div`
+    position: relative;
+    margin-bottom: 1rem;
     padding: 1.5rem 1rem;
-    background-color: ${colors.gray_bg};
-    border-radius: 8px;
     width: 100%;
     min-height: 10rem;
-    position: relative;
+
+    border-radius: 8px;
+    background-color: ${colors.gray_bg};
 
     display: flex;
     flex-direction: column;

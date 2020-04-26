@@ -28,8 +28,9 @@ const BackgroundDiv = styled.div`
     너비는 전체 가로의 70%만을 차지하는 반응 크기를 사용  */
 const ContainerDiv = styled.div`
     width: 70%;
-    min-width: 50rem;
     min-height: ${props => props.minHeight};
+    min-width: 50rem;
+    max-width: 60rem;
     margin: 0 auto;
     padding: 3rem 2rem;
 
@@ -37,7 +38,16 @@ const ContainerDiv = styled.div`
 
     /* 그림자 효과 */
     box-shadow: 0 0 10px rgba(0,0,0,.1);
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
 `;
+
+    const PostingBox = styled.div`
+        display: flex;
+        flex-flow: column nowrap;
+    `;
 
 
 /* React Component */
@@ -47,12 +57,10 @@ class BoardDetail extends Component {
     state = {}
 
     componentDidMount() {
-        this.setState({
-            clientHeight: document.documentElement.clientHeight     // 현재 창의 높이 크기
-        })
-
         /* 브라우저 창의 크기가 변하는 이벤트를 감지한다. */
         window.addEventListener('resize', this._handleResize) 
+        
+        this._handleResize();
     }
 
     componentWillUnmount() {
@@ -68,7 +76,19 @@ class BoardDetail extends Component {
 
     render() {
         
-        let { clientHeight } = this.state;
+        const { clientHeight } = this.state;
+
+        const {
+            curUser,            // 접속한 유저 정보
+
+            post,               // 포스팅 데이터
+            board,              // 게시판 정보 
+            commentList,        // comment data
+
+            createComment,      // 댓글 생성 메서드
+            updateComment,      // 댓글 수정 메서드
+            deleteComment,      // 댓글 삭제 메서드
+        } = this.props;
 
         const {
             /* PhotoBox에 전해줄 속성 */
@@ -85,39 +105,26 @@ class BoardDetail extends Component {
 
             /* CommentBox에 전해줄 속성 */
             id,                 // 게시글 정보
-        } = this.props.post;
+        } = post;
 
-        // console.log(this.props.post);
-        // console.log(filelist);
-
-        let isPhoto = filelist[0];     // filelist에 원소가 하나라도 있으면 true
-
-        const {
-            curUser,            // 접속한 유저 정보
-
-            board,              // 게시판 정보 
-            commentList,        // comment data
-
-            createComment,      // 댓글 생성 메서드
-            updateComment,      // 댓글 수정 메서드
-            deleteComment,      // 댓글 삭제 메서드
-        } = this.props;
-
-        // console.log(commentList);
-        // console.log(curUser)
+        let isPhoto = filelist.length;     // filelist에 원소가 하나라도 있으면 true
 
         return (
             <BackgroundDiv>
                 <ContainerDiv minHeight={`${clientHeight}px`} >
-                    <HeaderBox
-                        title={title}
-                        user={user}
-                        created={created}
-                        condition={condition}
-                        price={price}
-                    />
-                    { isPhoto ? <PhotoBox filelist={filelist} /> : '' }
-                    <DescriptionBox description={description} />
+                    <PostingBox>
+                        <HeaderBox
+                            isPhoto={isPhoto}
+                            board={board}
+                            title={title}
+                            user={user}
+                            created={created}
+                            condition={condition}
+                            price={price}
+                        />
+                        { isPhoto ? <PhotoBox filelist={filelist} /> : '' }
+                        <DescriptionBox description={description} isPhoto={isPhoto} />
+                    </PostingBox>
                     <CommentBox 
                         curUser={curUser}
                         board={board}
