@@ -417,6 +417,63 @@
 
 
 
+### 4.11 (토)
+
+* Chatting Room out 구현
+* Chatting Room List Item 스타일링
+
+
+
+### 4.12 (일)
+
+* socket emit on chat message 기능 제작
+* Message Board 작업 중
+
+
+
+### 4.16 (목)
+
+* 채팅 메시지 스타일링
+* 채팅 메시지 Input 박스에서 엔터키로 전송 기능 사용 구현
+* 채팅방 들어갔을 때, 스크롤을 가장 아래로 위치하도록 하기
+
+
+
+### 4.23 (목)
+
+* board 넘어갈 때, 흰 페이지에서 넘어가지 않는 오류 해결 (NoPhoto render)
+
+* Market, Network Card => Photo, NoPhoto Card
+
+* PhotoBox에 ant design의 carousel을 적용
+
+  자연스러운 애니메이션
+
+  a태그 대신 Link 태그
+
+  Button을 띄우는 조건 추가 - isHover, 사진이 1개라도 있을 때. Button은 carousel 메서드 이용
+
+  버튼 스타일링
+
+  BlackMask는 NoPhoto인 경우만 hover 효과
+
+* Board Body의 min-width 스타일 추가
+
+
+
+### 4.26 (일)
+
+* PostCard 스타일링
+  라벨 Circle 추가
+  NoPhoto Card 스타일 추가 (Info box 위치 변경, Description Box 사이즈 변경)
+  네트워킹 카테고리에서는 가격 태그 제거
+* PhotoCard, NoPhotoCard 리팩토링 => PostCard에 통합하고, props를 변경하는 것으로 리팩토링 성공
+* UserPhoto의 basic 이미지를 '윤이'로 설정
+
+
+
+
+
 
 
 
@@ -427,6 +484,7 @@
 
 * 디테일 페이지에서 뒤로가기 했을 때, render가 안되는 오류
 * 무한 스크롤 islast 점검 (간혹 2번 요청이 가는 경우가 있음)
+* 첫 get 요청 후 Render 되기 전에 Board Loading 페이지 제작
 
 
 
@@ -434,8 +492,6 @@
 * Header를 BaseHeader로 코드 리펙토링
 * 로딩 바 css 스타일 다듬기
 * 검색창에 자동완성 기능 추가
-* 사진 넘기기 아이콘 ant-design 적용
-* 사진 Ant Design의 Carousel Component 검토
 * postlist 초기화 및 중복 요청 제거
 * 상세 페이지에서 다시 돌아올때는 초기화 X
 * 검색 창 띄우기 아이콘이 안 보일 때 위치에 갖다대면 cursor 모양으로 바뀌는 에러
@@ -577,7 +633,9 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
   * 메시지 받는 액션
   * 검색창 이동 시, 데이터 GET
   * 검색 시 GET
-* 
+* socket on chat message 시, 스크롤 아래로 이동
+* chat message send 시, 인풋태그 내용 clear
+* websocket handshake error
 
 
 
@@ -595,54 +653,45 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 ### 논의 사항
 
-* 한 기기에서 한 아이디만 사용할 수 있는 문제
-
-  * 로그 아웃 시, 아웃룩까지 로그 아웃 가능 ?
-  * 로그인 시, 아웃룩에 이 아이디로 로그인 하실 것인가요 묻기 가능 ? 
-  
-
-
-
-* chatting routes를 변경
-
-  현재 상황: chatting/t/:userID의 경우 backend요청을 '/api/chatting', 'api/chatting/user/:user_id' 두 번 해야함
-
-  해결방안 1) 'api/chatting/user/:user_id' 에 room_list를 보내주는 코드 추가
-
-  해결방안 2) 'api/chatting' 을 없애고, 'api/chatting/user/0'을 index로 사용하기 (0일 때는 room에 관련된 데이터 안보내기)
-
-  
-
-* Chatting 페이지에서 아직 메시지 보내기 전일 때, chatting_room DB에 room create을 하는 게 좋을까, 첫 메시지를 보낼 때, room create를 하는게 좋을까
-
-  메시지 보내기 전에 create를 하면, room list에 있는게 직접 지우지 않으면 사라지지 않음. 
-브라우저 url 창에 'chatting/t/:id' 를 입력했을 때, index로 Redirect되지만 방은 생겨버림
-  
-  메시지 보낼 때 create를 하면, 코드 수정해야 함.
+* 채팅방 시간 정보
+  인스타: 8분 전 / 2시간 전 / 어제 / 2주 ... => 데이터 갱신 필요, GET 요청할 때에만 변경되는 것으로 보여짐
+  페북: 오후 1시 43분 / 4월 11일 / 19. 11. 21.
+  카톡: 오후 1시 43분 / 어제 / 2020-4-10
 
 
 
-* Room 데이터로 opponent_user 객체, message_list 배열만 보내주기 가능 ?
-
-  현재: room{email_1, email_2, unread_1, unread_2}, writers[user1, user2], messagelist[], user
-
-  => opponent_user, message_list
-
-* RoomList 데이터에서 가장 마지막 대화 내용 추가 필요 ( 상대 user, unread, updated, '**last_chat**-필요' )
-
-
-
-* RoomListItem 디자인을 카톡처럼 ? Facebook, Instagram 처럼 ?
-
-
-
-
-
-* 채팅 방 목록에서 검색 기능 필요할까 ? 유니스트 구성원 전체가 나타나도 될까
+* 백앤드에서 'chat_message' 보내줄 때, room_id도 필요. 
+  받는 사람 입장에서 현재 그 방에 들어가 있다면 current_room의 message_list에 받은 메시지 데이터를 추가하고, 다른 방에 있는 경우에는 message_list에 추가하면 안되기 때문
 
 
 
 * 메시지에서 사진 업로드 기능 추가 ?
+
+  카톡, 인스타: 사진 업로드 시 바로 전송됨
+  facebook: 사진을 선택 후 전송버튼 눌러야 전송됨
+
+  message의 description을 변경 ? => 변경안 type: enum [text / image], value: text(메시지 내용 또는 pic_location)
+
+
+
+* find user 할 때, id 대신 email 쓰는 이유 ?
+  message의 email부분을 user_id로 변경 ?
+
+
+
+* 채팅방(current_room) 기본값을 {id:0, opponent_user:0, messageList:[]} 로 변경 
+
+
+
+
+
+* api/chatting/user/:userID 에서 채팅방이 없는 상대에게 보냈을 때, opponent_user 값에 상대방 유저가 안 담기는 것 확인 필요
+
+
+
+* socket id를 저장하는 이유 ?
+
+
 
 
 

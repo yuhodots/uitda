@@ -35,7 +35,7 @@ export function getStatusFailure(err) {
 
 export function logoutRequest() {
     return (dispatch) => {
-        return axios.get('/api/logout')
+        return axios.get('/api/logout/local')
         .then((res) => {
             dispatch(logout());
         });

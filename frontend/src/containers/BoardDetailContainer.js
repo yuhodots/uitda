@@ -23,6 +23,7 @@ class BoardDetailContainer extends Component {
 
     componentDidMount () {
         const {
+            rootSocket,
             match,
 
             topicSelect,
@@ -31,6 +32,8 @@ class BoardDetailContainer extends Component {
             getBoardDetailRequest,
         } = this.props
         
+        console.log(rootSocket);
+
         const { 
             boardName, id 
         } = match.params;

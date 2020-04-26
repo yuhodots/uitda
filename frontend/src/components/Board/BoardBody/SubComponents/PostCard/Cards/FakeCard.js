@@ -1,11 +1,16 @@
-import React from "react";
 
+
+import React from "react";
+import styled from 'styled-components';
+
+/* Styled Components */
+const FakeCardBox = styled.div`
+`;
+
+/* React Component */
 const FakeCard = () => {
     return (
-        <div className='FakeCard'>
-            착한 사람한테만 보이는 카드입니다 :)<br/>
-            다음 학기 올 A+ 받게 해주세요
-        </div>
+        <FakeCardBox />
     )
 }
 

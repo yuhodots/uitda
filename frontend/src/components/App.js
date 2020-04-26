@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
+import socketio from 'socket.io-client';
 import 'antd/dist/antd.css'
 
 // 컴포넌트
@@ -20,14 +21,16 @@ import LocalLoginPage from "./Home/LocalLoginPage";
 
 import './App.css';
 
+// const rootSocket = socketio.connect('/');
+
 const App = () => {
     return (
         <Switch>
             <Route exact path='/' component={ Home } />
-            <Route path='/board' component={ Board } />
-            <Route path='/carpool' component={ Carpool } />
-            <Route path='/manage' component={ Manage } />
-            <Route path='/chatting' component={ Chatting } />
+            <Route path='/board' component={ () => <Board /* rootSocket={rootSocket} */ /> } />
+            <Route path='/carpool' component={ () => <Carpool /* rootSocket={rootSocket} */ /> } />
+            <Route path='/manage' component={ () => <Manage /* rootSocket={rootSocket} */ /> } />
+            <Route path='/chatting' component={ () => <Chatting /* rootSocket={rootSocket} */ /> } />
             <Route path='/local-login' component={ LocalLoginPage } />
             <Route component={NotFound}/>
         </Switch>

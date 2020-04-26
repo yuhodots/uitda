@@ -43,7 +43,8 @@ const ContentArea = styled.div`
 
         /* 좌측의 연락처 리스트 박스 스타일 */
         const ContectListBoxArea = styled.div`
-            flex: 0 0 350px;
+            /* flex: 0 0 350px; */
+            width: 350px;
             height: 100%;
 
             border-right: ${colors.gray_line} solid 1px;
@@ -63,7 +64,7 @@ class ChattingBody extends Component {
     _renderContent = () => {
 
         const { 
-            isIndex, opntID, chatSocket, curUser,
+            isIndex, curUser, opntID, chatSocket,
             
             isChatDataGetDone,
             roomList,
@@ -74,13 +75,6 @@ class ChattingBody extends Component {
             storeChatInputData,
         } = this.props;
 
-        // const { id } = currentRoom;
-        // const { email } = curUser;
-
-        // console.log(id, email)
-
-        // chatSocket.emit('room in', { room_id: id, email })
-
         return(
             <ContentArea>
                 <ContentBox>
@@ -89,6 +83,7 @@ class ChattingBody extends Component {
                             chatSocket={chatSocket}
                             opntID={opntID} 
                             roomList={roomList} 
+                            currentRoom={currentRoom}
                             isChatDataGetDone={isChatDataGetDone}
                             
                             getChatData={getChatData}
@@ -102,6 +97,8 @@ class ChattingBody extends Component {
                             isIndex ?
                             <IndexChatRoomBox /> :
                             <ChatRoomBox 
+                                chatSocket={chatSocket}
+                                curUser={curUser}
                                 currentRoom={currentRoom} 
                                 chatInputData={chatInputData} 
 

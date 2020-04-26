@@ -5,6 +5,8 @@ import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 
 import { colors } from "../../../styles/variables";
+import { UserBasicImage } from "../../../styles/images";
+
 
 /* Styled Components */
 
@@ -15,22 +17,24 @@ const CircleArea = styled.div`
 
     border-radius: 50%;
 
-    background-color: ${colors.photo_defaultgray}; 
+    background-image: url(${props => props.imgURL ? props.imgURL : UserBasicImage});
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+
+    /* background-color: ${colors.photo_defaultgray}; 
     ${props => props.imgURL && css`
         background-image: url(${props.imgURL});
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
-    `};
-
-    cursor: pointer;
+    `}; */
 `;
 
 
 
 /* React Component */
 const UserPhoto = ({size, imgURL}) => {
-
 
     return (
         <CircleArea size={size} imgURL={imgURL} />
