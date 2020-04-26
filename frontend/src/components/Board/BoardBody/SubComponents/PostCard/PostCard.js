@@ -6,10 +6,9 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { PhotoCard, NoPhotoCard, FakeCard } from "./Cards";
+import { FakeCard, PhotoBox, ContentBox } from "./Cards";
 import { colors } from "../../../../../styles/variables";
 import { MARKET } from "../../../../../constants/categories";
-import './PostCard.css';
 
 
 /* Styled Components */
@@ -24,6 +23,12 @@ const PostCardArea = styled.div`
     display: flex;
     flex-flow: column nowrap;  
 `;
+
+    /* 카드 div 태그 */
+    const Card = styled.div`
+        display: flex;
+        flex-flow: column nowrap;
+    `;
 
 
 /* React Component */
@@ -45,39 +50,26 @@ class PostCard extends Component {
         } = this.props
 
         const isMarketCard = boardName === MARKET;
+        /* Market 카드는 온전히 Photo Card, Network 카드 중에서도 사진이 존재하면 PhotoCard */
+        const isPhotoCard = isMarketCard || filelist.length;
+
+        const contentBoxProps = {
+            isPhotoCard,
+            postId: id, boardName,
+            title, user, created, condition,
+            description,
+            price,
+        };
 
         return (
             <PostCardArea >
             {
                 isFake ?
-                
                 <FakeCard/> :
-                
-                /* Market 카드는 온전히 Photo Card, Network 카드 중에서도 사진이 존재하면 PhotoCard */
-                isMarketCard || filelist.length ?
-                
-                    <PhotoCard
-                        boardName = {boardName}
-                        id = {id}
-                        title = {title}
-                        user = {user}
-                        created = {created}
-                        description = {description}
-                        condition = {condition}
-                        filelist = {filelist}
-                        price = {price}
-                    /> :
-                    
-                    <NoPhotoCard 
-                        boardName = {boardName}
-                        id = {id}
-                        title = {title}
-                        user = {user}
-                        created = {created}
-                        description = {description}
-                        condition = {condition}
-                        filelist = {filelist}
-                    />
+                <Card>
+                    { isPhotoCard ? <PhotoBox filelist={filelist} boardName={boardName} postId={id} /> : '' }
+                    <ContentBox {...contentBoxProps} />
+                </Card>
             }
             </PostCardArea>
         )

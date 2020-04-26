@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { Carousel } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
-import { BoardBasicImage as BasicImg } from '../../../../../../../styles/images';
+import { BoardBasicImage as BasicImg } from '../../../../../../styles/images';
 
 /* Styled-Components */
 /* PhotoBox 전체 영역 div 태그 */
@@ -67,7 +67,7 @@ const PhotoWrapper = styled.div`
         transition: opacity 0.25s;
 
         /* Basic 이미지인 경우에만 hover 효과를 줌 */
-        ${props => !props.hasPhoto && css`
+        ${props => !props.hasHoverEffect && css`
             :hover {
                 opacity: 0.5;
             }
@@ -202,7 +202,7 @@ class PhotoBox extends Component {
                         </PhotoContainer>
 
                     }
-                    <BlackMask hasPhoto={hasPhoto} />
+                    <BlackMask hasHoverEffect={filelist.length > 1} />
                 </PhotoLink>
 
                 {
