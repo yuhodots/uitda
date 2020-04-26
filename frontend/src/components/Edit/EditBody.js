@@ -48,12 +48,14 @@ class EditBody extends Component {
             editCategory,
 
             title,
+            price,
             files,
             description,
             selectedDate,
             eventsObj,
 
             storeTitleData,
+            storePriceData,
             addFileData,
             deleteFileData,
             storeDescriptionData,
@@ -75,7 +77,9 @@ class EditBody extends Component {
                 /> :
                 
                 <EditBoard minHeight={windowHeight}
+                    editCategory={editCategory}
                     title={title} storeTitleData={storeTitleData}
+                    price={price} storePriceData={storePriceData}
                     files={files} addFileData={addFileData} deleteFileData={deleteFileData}
                     description={description} storeDescriptionData={storeDescriptionData}
                 />
@@ -89,6 +93,7 @@ EditBody.propTypes = {
     editCategory: PropTypes.string.isRequired,          // Edit Category
     
     title: PropTypes.string,                            // Edit 페이지에서 작성한 Title 데이터
+    price: PropTypes.string,
     files: PropTypes.array,                             // Edit 페이지에서 업로드한 사진 데이터
     description: PropTypes.string,                      // Eidt 페이지에서 작성한 Description 데이터
 
@@ -97,6 +102,7 @@ EditBody.propTypes = {
 
     /* Methods */
     storeTitleData: PropTypes.func.isRequired,          // Title 데이터를 App State로 저장하는 함수
+    storePriceData: PropTypes.func.isRequired,
     addFileData: PropTypes.func.isRequired,             // Files 데이터를 App State로 저장하는 함수
     deleteFileData: PropTypes.func.isRequired,          // App State에 있는 파일 데이터 중 해당 파일을 지우는 함수
     storeDescriptionData: PropTypes.func.isRequired,    // Description 데이터를 App State로 저장하는 함수
@@ -107,7 +113,8 @@ EditBody.propTypes = {
 }
 
 EditBody.defaultProps = {
-    title: '',                            
+    title: '', 
+    price: '',                           
     files: [],                             
     description: '',
 

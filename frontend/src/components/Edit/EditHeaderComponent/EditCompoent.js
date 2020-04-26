@@ -117,6 +117,7 @@ class EditComponent extends Component {
             editSuccess,
 
             title,
+            price,
             files,
             deletedFileIDs,
             description,
@@ -250,6 +251,7 @@ class EditComponent extends Component {
                     editCategory={editCategory}
 
                     title={title}
+                    price={price}
                     files={files}
                     deletedFileIDs={deletedFileIDs}
                     description={description}
@@ -275,6 +277,7 @@ EditComponent.propTypes = {
 
     /* 글 내용에 대한 데이터 */
     title: PropTypes.string.isRequired,             // Title Data
+    price: PropTypes.string.isRequired,
     files: PropTypes.array.isRequired,              // Files Data
     deletedFileIDs: PropTypes.array.isRequired,     // 수정 시, 삭제할 사진 id 리스트
     description: PropTypes.string.isRequired,       // Description Data

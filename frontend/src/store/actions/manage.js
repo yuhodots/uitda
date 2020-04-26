@@ -14,6 +14,7 @@ import {
     MANAGE_EDIT_UPDATE_POST_SUCCESS,
     MANAGE_EDIT_UPDATE_POST_FAILURE,
     MANAGE_EDIT_STORE_TITLE_DATA,
+    MANAGE_EDIT_STORE_PRICE_DATA,
     MANAGE_EDIT_ADD_FILE_DATA,
     MANAGE_EDIT_DELETE_FILE_DATA,
     MANAGE_EDIT_STORE_DESCRIPTION_DATA,
@@ -172,6 +173,7 @@ export function getUpdatePostSuccess(post) {
     return {
         type: MANAGE_EDIT_GET_POST_SUCCESS,     // edit 페이지의 get 요청 성공
         title: post.title,
+        price: post.price,
         description: post.description,
         filelist: post.filelist,
     }
@@ -189,7 +191,7 @@ export function getUpdatePostFailure(err) {
 /* '/manage/edit/'에서의 POST 메서드로 글 생성 및 없데이트 액션 
    id의 여부에 따라 update/create를 구분 (id 있으면 update, 없으면 create) */
 
-export function EditPostRequest (board, title, description, files, id, deletedFileIDs) {
+export function EditPostRequest (board, title, price, description, files, id, deletedFileIDs) {
     return (dispatch) => {
 
         /* POST 요청 시 사용되는 url */
@@ -200,6 +202,9 @@ export function EditPostRequest (board, title, description, files, id, deletedFi
         /* POST 요청에 사용되는 Form Data */
         const formData = new FormData();
         formData.append('title', title);
+        if(board==='market'){
+            formData.append('price', price);
+        }
         formData.append('description', description);
         files.forEach(file => {
             /* 현재 file은 데이터를 가진 Object 객체이고,
@@ -265,6 +270,13 @@ export function storeEditTitleData (editedTitle) {
     return {
         type: MANAGE_EDIT_STORE_TITLE_DATA,
         editedTitle
+    }
+}
+
+export function storeEditPriceData (editedPrice) {
+    return {
+        type: MANAGE_EDIT_STORE_PRICE_DATA,
+        editedPrice
     }
 }
 

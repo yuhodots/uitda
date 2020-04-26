@@ -44,6 +44,7 @@ class RightBox extends Component {
             id, editCategory, isCarpool,
 
             title, description,
+            price,
             files, deletedFileIDs,
             
             selectedDate, roomInfoData,
@@ -68,8 +69,8 @@ class RightBox extends Component {
             const uploadFiles = files.filter( file => !file.url )
 
             id ?    // id가 있으면 수정 액션, 없으면 생성 액션
-            EditPostRequest(editCategory, title, description, uploadFiles, id, deletedFileIDs) :
-            EditPostRequest(editCategory, title, description, uploadFiles)
+            EditPostRequest(editCategory, title, price, description, uploadFiles, id, deletedFileIDs) :
+            EditPostRequest(editCategory, title, price, description, uploadFiles)
         }
     }
 
@@ -133,6 +134,7 @@ RightBox.propTypes = {
 
     /* 글 내용에 대한 데이터 */
     title: PropTypes.string.isRequired,             // Title Data
+    price: PropTypes.string.isRequired,
     files: PropTypes.array.isRequired,              // Files Data
     deletedFileIDs: PropTypes.array.isRequired,     // 수정 시, 삭제할 사진 id 리스트
     description: PropTypes.string.isRequired,       // Description Data
