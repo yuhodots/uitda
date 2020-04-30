@@ -35,6 +35,16 @@ const PopoverListItemStyle = css`
 /* default type의 List Item */
 const PopoverListItem = styled.div`
     ${PopoverListItemStyle}
+
+    ${props => {
+        switch (props.theme) {
+            case 'danger':
+                return css`
+                    color: ${colors.font_red};
+                `
+            default: return
+        }
+    }}
 `;
 
 /* Link type의 List Item */
@@ -76,7 +86,7 @@ class UitdaPopover extends Component {
     _renderPopoverList = (contentList) => {
         return contentList.map( (contentData, idx) => {
             
-            const { text, icon, clickMethod, type, url } = contentData
+            const { text, icon, clickMethod, type, url, theme } = contentData
 
             return type === 'link' ?
             
@@ -91,7 +101,7 @@ class UitdaPopover extends Component {
                 </PopoverListItemLink> :
 
                 /* default type인 경우, clickMethod를 실행하는 div 태그를 render */
-                <PopoverListItem onClick={() => this._handleContentClick(clickMethod)} key={idx} >
+                <PopoverListItem onClick={() => this._handleContentClick(clickMethod)} key={idx} theme={theme} >
                     {
                         icon ?
                         <PopoverListItemIcon>{icon}</PopoverListItemIcon> :
