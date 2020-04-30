@@ -475,6 +475,22 @@
   NoPhoto 글은 세로 구분선 없앰
   Comment Box는 하단에 위치 고정
   하얀 배경 max-width 설정
+  Description Box 줄 띄어쓰기 (\n) 제대로 처리
+
+
+
+### 4.30 (목)
+
+* Detail Page 하얀 배경의 좌우 Border 스타일을 추가. 가로길이를 축소했을 때, 세로 구분선이 생기도록 함.
+* Uitda Popover list item에 theme danger 속성 추가
+  theme danger 인 경우, 글자 색이 빨간색
+* Detail Page Header Box 코드 리펙토링
+  HeaderBox -> InfoTextBox 분리, renderPopoverContent 분리
+* 게시글 수정 / 삭제 기능 추가. 게시글 페이지 우측 상단에 popover 컴포넌트 추가.
+  내 글인 경우 수정하기, 삭제하기가 뜨고, 수정하기는 edit page로 이동하고 삭제하기는 게시글 삭제 후 board로 이동하는 기능
+  내 글이 아닌 경우, 관심글 등록, 메시지 보내기 항목이 나타나도록 함
+
+
 
 
 
@@ -507,13 +523,13 @@
 #### Detail FrontEnd
 
 * socket.io를 이용해 클라이언트의 데이터 실시간 업데이트 되도록 하기
-* 사진이 없는 글 디자인 고려
 * 사진 Ant Design의 Carousel Component 검토
 * 댓글 더보기 기능
 * 답글 더보기 기능
 
 
 
+* 가로 길이가 많이 줄어들면, 좌측 탭이 사라지는 대신 상단의 헤더로 이동하기
 * CommonComponents의 UserPhoto와 MoreButton을 이용하기
 * 가끔 댓글 전체가 안담기는 에러가 있음. 백엔드 문제인지 프론트 문제인지 확인 필요
 * 배경 컴포넌트를 BackgroundTemplate로 코드 리펙토링
@@ -553,7 +569,10 @@
 
 
 
-* Carpool 탭의 Time Picker에서 OK 안누르고 바깥을 눌러도 저장되도록 변경
+* Manage Board 사진 부분 확인하기
+
+
+
 * Manage Carpool Calendar의 경우, 옛날 날짜를 선택하는 경우 경고 메시지 띄우기
   * 1) 날짜 누를 때 방지 2) 등록하기 버튼을 누를 때 날짜를 확인하세요라고 경고
 * store/manage에 있는 selectDate 액션 및 selectedDate는 Carpool로 통일해도 좋을 듯 
@@ -657,6 +676,13 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 ---
 
 ### 논의 사항
+
+* board 에서 user 객체 넘겨줄 때, id도 포함해주면 좋을 듯
+
+  lib/board.js에서 make_writer 함수를 보면 username, email, pic_location 3가지만 담는 것으로 확인
+  179 라인 같은 경우, find_one(where : )에서 user.email을 사용하던데, user.id를 사용하는게 더 빠르지 않을까 ?
+
+
 
 * market의 가격에 대한 논의. Edit 페이지에서 가격 입력란
 
