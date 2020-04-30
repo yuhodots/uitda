@@ -1,7 +1,7 @@
 // 상위 컴포넌트: components/BoardDetail.js
 
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 

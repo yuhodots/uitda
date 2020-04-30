@@ -4,6 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
+import { InfoTextBox } from "./HeaderBox_Sub";
 import { colors } from "../../../styles/variables";
 import { UserPhoto } from "../../Structure/CommonComponents";
 import { MARKET } from '../../../constants/categories';
@@ -23,7 +24,6 @@ const HeaderArea = styled.div`
     display: flex;
     flex-flow: column nowrap;
 `;
-
 
     /* 유저 정보, 생성일, 판매 상태를 담은 정보 박스 */
     const InfoBox = styled.div`
@@ -47,53 +47,6 @@ const HeaderArea = styled.div`
             flex: 0, 4.5rem;
         `;
 
-        /* 작성자, 작성일, Status 정보를 담은 row box */
-        const InfoTextBox = styled.div`
-            flex: 1;
-            
-            cursor: default;
-            
-            display: flex;
-            flex-flow: row nowrap;
-            justify-content: space-between;
-            align-items: flex-start;
-        `;
-
-            /* 작성자, 작성일의 정보를 담은 div */
-            const UsernameCreatedBox = styled.div`
-                color: ${colors.gray_fontColor};
-                
-                display: flex;
-                flex-flow: column nowrap;
-                justify-content: center;
-            `;
-                
-                const UserNameText = styled.div`
-                    font-size: 1.125rem;
-                    font-weight: bold;
-                `;
-
-                const CreatedText = styled.div`
-                    font-size: 0.875rem;
-                `;
-
-            /* 상태 정보 박스 Status Circle + Text */
-            const StatusBox = styled.div`
-                display: flex;
-                flex-flow: row nowrap;
-                align-items: center;
-            `;
-
-                const StatusCircle = styled.div`
-                    height: 0.5rem;
-                    width: 0.5rem;
-                    margin-right: 0.75rem;
-
-                    border-radius: 50%;
-                    background-color: ${props => props.labelColor};
-                `;
-
-
     /* 제목 */
     const Title = styled.h1`
         margin: 0;
@@ -108,27 +61,14 @@ const HeaderArea = styled.div`
         margin-top: 0.5rem;
 
         align-self: flex-end;
-        
         font-size: 1.375rem;
     `;
 
 
-/* Custom Functions */
-const _getLabelColor = (condition) => {
-    switch (condition) {
-        case '판매 중': case '진행 중': return colors.active_blue;
-        case '거래 중': return colors.owner_yellow;
-        case '판매 완료': case '완료': return colors.closed_gray;
-        default: return;
-    }
-}
-
 /* React Component */
-const HeaderBox = ({board, isPhoto, title, user, created, condition, price}) => {
+const HeaderBox = ({postId, board, isPhoto, isOwner, title, user, created, condition, price, headerMethods}) => {
 
     const { username, pic_location } = user;
-
-    const labelColor = _getLabelColor(condition);
 
     return (
         <HeaderArea isPhoto={isPhoto} >
@@ -136,13 +76,12 @@ const HeaderBox = ({board, isPhoto, title, user, created, condition, price}) => 
                 <UserPhotoBox>
                     <UserPhoto imgURL={pic_location} />
                 </UserPhotoBox>
-                <InfoTextBox>
-                    <UsernameCreatedBox>
-                        <UserNameText>{username}</UserNameText>
-                        <CreatedText>{created}</CreatedText>
-                    </UsernameCreatedBox>
-                    <StatusBox> <StatusCircle labelColor={labelColor} /> {condition}</StatusBox>
-                </InfoTextBox>
+                <InfoTextBox
+                    board={board} postId={postId}
+                    username={username} created={created}
+                    condition={condition} isOwner={isOwner}
+                    headerMethods={headerMethods}
+                />
             </InfoBox>
             <Title>{title}</Title>
             { board === MARKET && <Price>{price} 원</Price> } 
@@ -151,7 +90,9 @@ const HeaderBox = ({board, isPhoto, title, user, created, condition, price}) => 
 }
 
 HeaderBox.propTypes = {
+    postId: PropTypes.number.isRequired,        // 게시글 id
     isPhoto: PropTypes.bool.isRequired,         // 사진이 있는 글 인지
+    isOwner: PropTypes.bool.isRequired,         // 해당 게시글이 내 글인지
     board: PropTypes.string.isRequired,         // 게시판 정보
     title: PropTypes.string.isRequired,         // 글 제목
     user: PropTypes.object.isRequired,          // 글 작성자 데이터
@@ -159,6 +100,8 @@ HeaderBox.propTypes = {
     condition: PropTypes.string.isRequired,     // 글 상태
 
     price: PropTypes.string,                    // Market 글의 가격 정보 
+
+    headerMethods: PropTypes.object.isRequired,  // 게시글 페이지의 header 부분에서 사용하는 method 모음 객체
 }
 
 export default HeaderBox;

@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
+// import SocketIo from 'socket.io-client';
 
 import SideBar from "../components/Structure/SideBar";
 import BoardDetail from "../components/BoardDetail";
@@ -18,8 +19,11 @@ import {
     deleteComment,
 } from '../store/actions/board';
 import { topicSelect } from "../store/actions/topic";
+import { deletePostRequest } from "../store/actions/manage";
 
 class BoardDetailContainer extends Component {
+
+    // boardSocket = SocketIo.connect('/board');
 
     componentDidMount () {
         const {
@@ -49,6 +53,7 @@ class BoardDetailContainer extends Component {
             post,
             commentList,
             
+            deletePost,
             createComment,
             updateComment,
             deleteComment,
@@ -71,6 +76,7 @@ class BoardDetailContainer extends Component {
                         post={post} 
                         commentList={commentList} 
 
+                        deletePost={deletePost}
                         createComment={createComment}
                         updateComment={updateComment}
                         deleteComment={deleteComment}
@@ -110,6 +116,8 @@ const mapDispatchToProps = (dispatch) => {
         getBoardDetailRequest: (boardName, id) => {                                     // backend 서버에 GET 요청
             dispatch(getBoardDetailRequest(boardName, id))
         },
+        deletePost: (board, id) => dispatch(deletePostRequest(board, id)),              // 게시글을 삭제하는 메서드
+
         createComment: (description, type_board, board_id, parent_comment) => {         // 댓글을 생성하는 메서드
             dispatch(createComment(description, type_board, board_id, parent_comment))
         },
