@@ -37,7 +37,9 @@ const ContainerDiv = styled.div`
     background-color: ${colors.white};
 
     /* 그림자 효과 */
-    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    box-shadow: 0 0 12px rgba(80,80,80,.1);
+    border-left: 2px solid ${colors.gray_bg};
+    border-right: 2px solid ${colors.gray_bg};
 
     display: flex;
     flex-flow: column nowrap;
@@ -85,12 +87,15 @@ class BoardDetail extends Component {
             board,              // 게시판 정보 
             commentList,        // comment data
 
+            deletePost,         // 게시글을 삭제하는 메서드
             createComment,      // 댓글 생성 메서드
             updateComment,      // 댓글 수정 메서드
             deleteComment,      // 댓글 삭제 메서드
         } = this.props;
 
         const {
+            id,                 // 게시글 id
+
             /* PhotoBox에 전해줄 속성 */
             filelist,           // 사진 파일들을 담은 리스트 (array)
 
@@ -102,25 +107,29 @@ class BoardDetail extends Component {
             description,        // 상세 
 
             price,              // Market Post만이 가지고 있는 가격 정보
-
-            /* CommentBox에 전해줄 속성 */
-            id,                 // 게시글 정보
         } = post;
 
-        let isPhoto = filelist.length;     // filelist에 원소가 하나라도 있으면 true
+        const isPhoto = filelist.length > 0;        // filelist에 원소가 하나라도 있으면 true
+        // const isOwner = curUser.id === user.id;     // 해당 게시글이 내 글인지
+        const isOwner = curUser.email === user.email;     // 해당 게시글이 내 글인지 (나중에 백엔드에서 id 넘겨주면 변경)
+
+        const headerMethods = { deletePost };
 
         return (
             <BackgroundDiv>
                 <ContainerDiv minHeight={`${clientHeight}px`} >
                     <PostingBox>
                         <HeaderBox
+                            postId={id}
                             isPhoto={isPhoto}
+                            isOwner={isOwner}
                             board={board}
                             title={title}
                             user={user}
                             created={created}
                             condition={condition}
                             price={price}
+                            headerMethods={headerMethods}
                         />
                         { isPhoto ? <PhotoBox filelist={filelist} /> : '' }
                         <DescriptionBox description={description} isPhoto={isPhoto} />
@@ -150,6 +159,7 @@ BoardDetail.propTypes = {
     post: PropTypes.object.isRequired,          // 포스팅 데이터
     commentList: PropTypes.array,               // 댓글 데이터
 
+    deletePost: PropTypes.func.isRequired,      // 게시글을 삭제하는 메서드
     createComment: PropTypes.func.isRequired,   // 댓글 생성 메서드
     updateComment: PropTypes.func.isRequired,   // 댓글 수정 메서드
     deleteComment: PropTypes.func.isRequired,   // 댓글 삭제 메서드
