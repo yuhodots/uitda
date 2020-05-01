@@ -21,6 +21,7 @@ db.comment = require('./comment')(sequelize, Sequelize);
 db.guest = require('./guest')(sequelize, Sequelize);
 db.chatting_room = require('./chatting_room')(sequelize, Sequelize);
 db.chatting_message = require('./chatting_message')(sequelize, Sequelize);
+db.chatting_files = require('./chatting_files')(sequelize, Sequelize);
 db.likey = require('./likey')(sequelize, Sequelize);
 db.notification = require('./notification')(sequelize, Sequelize);
 

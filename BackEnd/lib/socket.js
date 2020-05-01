@@ -1,4 +1,3 @@
-var io = require('socket.io');
 let auth = require('./auth');
 let async = require('async');
 const { chatting_message } = require('../models');
@@ -15,6 +14,10 @@ let moment = require('moment');
 require('moment-timezone');
 moment.tz.setDefault("Asia/Seoul");
 moment.locale('ko');
+
+let multerS3 = require('../lib/multerS3')();
+let s3 = multerS3.s3;
+let upload = multerS3.upload;
 
 function type_board_assign(type) {
     if (type == 'market') {
@@ -55,13 +58,11 @@ function make_comment_ob(id, type_board, board_id, description, user, created, i
     return comment_ob;
 }
 
-module.exports = function (httpServer) {
+module.exports = function (io) {
 
-    const socketServer = io(httpServer);
-
-    const home_socket = socketServer.of('/');
-    const board_socket = socketServer.of('/board');
-    const chatting_socket = socketServer.of('/chatting');
+    const home_socket = io.of('/');
+    const board_socket = io.of('/board');
+    const chatting_socket = io.of('/chatting');
 
     //home : notification
     home_socket.on('connection',socket =>{
@@ -88,7 +89,7 @@ module.exports = function (httpServer) {
                         unread = unread +1;
                     }
                     if(i==rooms.length-1){
-                        home_socket.emit('chatting count', {unread});
+                        home_socket.emit('chatting count', {num_of_chatting_message:unread});
                     }
                 }
             }).catch(function(err){ throw err; })
@@ -97,7 +98,7 @@ module.exports = function (httpServer) {
             console.log('home: notification counted');
             notification.findAll({where:{email_2:email, is_unread:true}}).then(function(notifications){
                 var notification_length = notifications.length;
-                home_socket.emit('notification count', {notification_length});
+                home_socket.emit('notification count', {num_of_notification:notification_length});
             }).catch(function(err){ throw err; })
         });
         socket.on('notification create',function({email, board_id, type, is_re_comment, parent_comment}){
@@ -149,7 +150,7 @@ module.exports = function (httpServer) {
                 },
                 function (whom, callback) {
                     if(whom.socket_id){
-                        home_socket.to(whom.socket_id).emit('notification create',{board_id, type, writer, time_dif, is_re_comment})
+                        home_socket.to(whom.socket_id).emit('notification create',{oard_id:board_id, type:type, writer:writer, time:time_dif, is_recomment:is_re_comment})
                     }
                     callback(null);
                 },
@@ -175,7 +176,7 @@ module.exports = function (httpServer) {
                             notification_list[i] = notification_ob;
                             if(notifications.length == notification_list.length){
                                 notification.update({is_unread:false},{where:{email_2:email,is_unread:true}}).then(function(){
-                                    home_socket.emit('notification show', {notification_list});
+                                    home_socket.emit('notification show', {notification_list:notification_list});
                                 }).catch(function(err){ throw err; });
                             }
                         }).catch(function(err){ throw err; })
@@ -201,11 +202,7 @@ module.exports = function (httpServer) {
                     author: user.username, email: email, created: moment().format('YYYY년MM월DD일HH시mm분ss초'),
                     is_re_comment: is_re_comment, parent_comment: parent_comment
                 }).then(function () {
-                    var data ={
-                        board_id:board_id,
-                        type_board:type_board
-                    };
-                    board_socket.emit('comment create', data);
+                    board_socket.emit('comment create', {board_id:board_id,type_board:type_board});
                 }).catch(function (err) { throw err; });
             }).catch(function (err) { throw err; });
         });
@@ -218,8 +215,7 @@ module.exports = function (httpServer) {
                         description: description, created: moment().format('YYYY년MM월DD일HH시mm분ss초'), is_modified: true
                     }, { where: { id: comment_id } })
                     .then(function(){
-                        var data = { board_id:content.board_id, type_board:content.type_board};
-                        board_socket.emit('comment update', data);
+                        board_socket.emit('comment update', {board_id:content.board_id, type_board:content.type_board});
                     }).catch(function (err) { throw err; });
                 }
             }).catch(function (err) { throw err; });
@@ -232,11 +228,7 @@ module.exports = function (httpServer) {
                 if(email == content.email){
                     var comment_list = [];
                     comment.destroy({ where: { id: comment_id } }).then(function(){
-                        var data ={
-                            board_id:board_id,
-                            type_board:type_board
-                        };
-                        board_socket.emit('comment delete',data);
+                        board_socket.emit('comment delete',{board_id:board_id, type_board:type_board});
                     }).catch(function (err) { throw err; });
                 }
             }).catch(function (err) { throw err; });
@@ -253,7 +245,7 @@ module.exports = function (httpServer) {
                             comments[i].description, writer, time, comments[i].is_re_comment, comments[i].parent_comment,comments[i].is_modified);
                         comment_list[i] = comment_ob;
                         if(comment_list.length == comments.length){
-                            board_socket.emit('comment list', {comment_list})
+                            board_socket.emit('comment list', {comment_list:comment_list})
                         }
                     }).catch(function (err) { throw err; });
                 }
@@ -328,16 +320,18 @@ module.exports = function (httpServer) {
                 chatting_room.update({ online_user:online_user-1 }, { where: { id: room_id } })
                 .catch(function (err) { throw err; });
             }).catch(function (err) { throw err; });
-        })
-        socket.on('chat message', function({message,room_id,email}){
-            var writer;
-            var time = moment().format('YYYY년MM월DD일HH시mm분ss초');
-            var online_user;
-            var email_1;
-            var email_2;
-            var unread_1;
-            var unread_2;
-            var is_unread;
+        });
+        socket.on('chat message', function({room_id, email,message}){
+            let writer;
+            let time;
+            let online_user;
+            let email_1;
+            let email_2;
+            let unread_1;
+            let unread_2;
+            let is_unread;
+            let type;
+            let value;
             async.waterfall([
                 function (callback) {
                     chatting_room.findOne({where:{id:room_id}})
@@ -346,11 +340,14 @@ module.exports = function (httpServer) {
                     }).catch(function(err){throw err;});
                 },
                 function (room,callback) {
+                    time = moment().format('YYYY년MM월DD일HH시mm분ss초');
                     email_1 =room.email_1;
                     email_2 = room.email_2;
                     unread_1 = room.unread_1;
                     unread_2 = room.unread_2;
                     online_user = room.online_user;
+                    type = "text";
+                    value = message;
                     if (online_user==2){
                         is_unread =  false;
                     } else {
@@ -373,7 +370,7 @@ module.exports = function (httpServer) {
                 },
                 function (callback) {
                     chatting_message.create({
-                         room_id:room_id, description:message, email:email, created:time, is_unread: is_unread
+                         room_id:room_id, type:type, value:value, email:email, created:time, is_unread: is_unread
                     }).then(function(result){
                         callback(null, result.id);
                     }).catch(function (err) { throw err; });
@@ -382,7 +379,7 @@ module.exports = function (httpServer) {
                     users.findOne({where:{email:email}}).then(function(user){
                         writer = make_writer(user.username, user.pic_location,user.email);
                         time = moment(time,'YYYY년MM월DD일HH시mm분ss초').format('YYYY-MM-DDTHH:mm:ss');
-                        chatting_socket.in('room' + room_id).emit('chat message', {writer, message_id, message, time, is_unread});
+                        chatting_socket.in('room' + room_id).emit('chat message', {writer:writer, message_id:message_id, message:message, time:time, is_unread:is_unread});
                         callback(null);
                     }).catch(function (err) { throw err; });
                 }
@@ -436,7 +433,7 @@ module.exports = function (httpServer) {
                     }
                 },
                 function(roomlist,callback){
-                    chatting_socket.emit('room list', {roomlist});
+                    chatting_socket.emit('room list', {roomlist:roomlist});
                     callback(null);
                 }
             ], function (err) {
@@ -455,7 +452,7 @@ module.exports = function (httpServer) {
                     room.updated = time;
                     room.unread = 0;
                     room.user = user.dataValues;
-                    chatting_socket.emit('room create', {room});
+                    chatting_socket.emit('room create', {room:room});
                 }).catch(function(err){throw err;});
             }).catch(function(err){throw err;});
         });
@@ -463,6 +460,28 @@ module.exports = function (httpServer) {
             console.log('chatting: room deleted '+ room_id);
             chatting_room.findOne({where : {id : room_id}}).then(function(room){
                 if( (email == room.email_1) || (email == room.email_2)){
+                    chatting_message.findAll({where:{room_id:room_id}}).then(function(msgs){
+                        if(msgs){
+                            for(var i=0;i<msgs.length;i++){
+                                if(msgs[i].type=="image"){
+                                    chatting_files.findAll({where:{message_id:msgs[i].id}}).then(function(filelist){
+                                        if(filelist.length){
+                                            for (let i = 0; i < filelist.length; i++) {
+                                                s3.deleteObject(
+                                                    { Bucket: "uitda.net", Key: filelist[i].filename },
+                                                    (err, data) => {
+                                                        if (err) throw err;
+                                                        console.log(data);
+                                                    }
+                                                );
+                                            }
+                                        }
+                                        chatting_files.destroy({where:{message_id:msgs[i].id}}).catch(function(err){ throw err;});
+                                    }).catch(function(err){ throw err;});
+                                }
+                            }
+                        }
+                    }).catch(function(err){ throw err;});
                     chatting_message.destroy({ where : { room_id : room_id } }).then(function(){
                         chatting_room.destroy({ where : { id : room_id } }).catch(function(err){ throw err;});
                     }).catch(function(err){ throw err;});
@@ -485,5 +504,5 @@ module.exports = function (httpServer) {
         });
     });
 
-    return socketServer;
+    return io;
 }

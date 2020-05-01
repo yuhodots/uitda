@@ -11,7 +11,12 @@ return sequelize.define('chatting_message', {
     type: DataTypes.INTEGER(11).UNSIGNED,
     allowNull: false
   },
-  description: { //채팅 내용
+  type: { // 메세지 종류
+    type: DataTypes.ENUM('text', 'image'),
+    defaultValue:'text',
+    allowNull:false
+  },
+  value: { //채팅 내용 or 사진명
     type: DataTypes.TEXT,
     allowNull: true
   },
@@ -35,4 +40,4 @@ return sequelize.define('chatting_message', {
   });
 };
 
-//room_id description email created is_unread
+//id,room_id,type, value email created is_unread

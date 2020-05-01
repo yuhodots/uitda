@@ -10,7 +10,10 @@ var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 var session_store_object = require('./config/session-store');
 var app = express();
-var http = require('http');
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+app.io = io;
+
 var sequelize = require('./models/index').sequelize;
 sequelize.sync();
 /* Increase event listener */
@@ -40,6 +43,7 @@ var commentRouter = require('./routes/comment');
 var proposalRouter = require('./routes/proposal');
 var likeyRouter = require('./routes/likey');
 
+
 /* View engine setup */
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -66,6 +70,7 @@ app.use('/api/comment', commentRouter);
 app.use('/api/proposal', proposalRouter);
 app.use('/api/likey', likeyRouter);
 
+
 /* Catch 404 and forward to error handler */
 app.use(function(req, res, next) {
   next(createError(404));
@@ -81,5 +86,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-let httpServer= http.createServer(app).listen(3000,'127.0.0.1',() => console.log('App listening on port 3000!'))
-let socket = require('./lib/socket')(httpServer);
+server.listen(3000,'127.0.0.1',() => console.log('App listening on port 3000!'))
+
+let socket = require('./lib/socket')(io);
