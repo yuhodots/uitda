@@ -169,5 +169,11 @@ main 에서 update 시간 상대적 시간으로 보내기
 2. socket emit으로 프론트에 알려주기
 3. res.socket 되는지 찾아보기
 #### 진행중 
+###
+
+댓글 추가 수정 - 수근오빠 글 참고
+board writer id 추가 필요
+댓글 시간 YYYY-MM-DDTHH:mm:ss
+
 
 ### 질문
