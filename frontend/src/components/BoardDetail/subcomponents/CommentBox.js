@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { Divider } from "antd";
 
 import { CommentItem, CommentInput } from './Comment_Materials'
 import { colors } from "../../../styles/variables";
@@ -25,23 +26,20 @@ const CommentArea = styled.div`
     flex-wrap: nowrap;
 `;
 
-/* 댓글 갯수의 정보 + 작성자에게 메시지 보내기 링크 태그 */
-const CommentHeader = styled.div`
-    width: 100%;
-    margin-bottom: 1.5rem;
+    /* 댓글 갯수의 정보 + 작성자에게 메시지 보내기 링크 태그 */
+    const CommentHeader = styled.div`
+        width: 100%;
+        margin-bottom: 1.5rem;
+        height: 2rem;
 
-    height: 2rem;
-    line-height: 2rem;
-    font-size: 1.5rem;
-`;
+        line-height: 2rem;
+        font-size: 1.5rem;
+    `;
 
-/* CommentInput 아래에 margin과 흰색 마감 선을 넣을 것임 */
-const BottomOfInputDiv = styled.div`
-    width: 100%;
-    padding-bottom: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid ${colors.white};
-`;
+    /* CommentInput 아래의 마감 선*/
+    const InputDivider = styled(Divider)`
+        height: 2px;
+    `;
 
 /////////////////////////////////////////
 
@@ -59,44 +57,36 @@ class CommentBox extends Component {
 
         const { 
             curUser,
-
-            updateComment,
-            deleteComment,
-
-            /* CommentInput에 전해줄 속성 */
             board,
             post_id,
+            boardSocket,
+            
             createComment, 
+            updateComment,
+            deleteComment,
         } = this.props;
 
-        return commentList.map((comment) => {
+        return commentList.map( (comment) => {
             const {
-                id,
-                user,
+                id, user, created,
                 description,
-                created,
                 subCommentList
             } = comment;
-
-            // console.log(comment)
 
             return (
                 <CommentItem
                     curUser={curUser}
+                    board={board} post_id={post_id}
+                    boardSocket={boardSocket}
 
-                    comment_id={id}
-                    user={user}
+                    comment_id={id} key={id}
+                    user={user} created={created}
                     description={description}
-                    created={created}
                     subCommentList={subCommentList}
+                    
+                    createComment={createComment}
                     updateComment={updateComment}
                     deleteComment={deleteComment}
-                    key={id}
-
-                    /* CommentInput에 전해줄 속성 */
-                    board={board}
-                    post_id={post_id}
-                    createComment={createComment}
                 />
             )
         })
@@ -105,6 +95,7 @@ class CommentBox extends Component {
     render() {
 
         const { 
+            boardSocket,
             curUser,
 
             board,
@@ -114,8 +105,6 @@ class CommentBox extends Component {
             createComment, 
         } = this.props;
         const numOfComments = commentList.length;
-
-        // console.log(commentList);
 
         return (
             <CommentArea>
@@ -129,6 +118,7 @@ class CommentBox extends Component {
                 <CommentInput 
                     isSubComment={false} 
                     
+                    boardSocket={boardSocket}
                     curUser={curUser}
 
                     board={board}
@@ -137,7 +127,8 @@ class CommentBox extends Component {
                 />
 
                 {/* 댓글 입력란 밑의 영역 및 흰색 선 */}
-                <BottomOfInputDiv />
+                {/* <BottomOfInputDiv /> */}
+                <InputDivider />
                 
                 {/* 댓글 render */}
                 {
@@ -154,10 +145,8 @@ class CommentBox extends Component {
 
 
 CommentBox.propTypes = {
-    curUser: PropTypes.oneOfType([                  // 유저 정보
-        PropTypes.number,
-        PropTypes.object
-    ]).isRequired,
+    boardSocket: PropTypes.object.isRequired,       // Board Socket
+    curUser: PropTypes.object.isRequired,           // 로그인한 유저 정보
 
     board: PropTypes.string.isRequired,             // 게시판 정보
     post_id: PropTypes.number.isRequired,           // 포스팅 id          

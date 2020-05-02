@@ -11,6 +11,7 @@ import {
     CommentItemText,
     TextZone, 
 } from './CommentItem'
+import { UserPhoto } from "../../../Structure/CommonComponents";
 import { colors } from "../../../../styles/variables";
 
 
@@ -150,6 +151,8 @@ class SubCommentItem extends Component {
             isUpdateMode,
         } = this.state;
 
+        const { pic_location } = user;
+
         return (
             <SubCommentLeaf 
                 isDisplay={isReplySee} 
@@ -175,7 +178,8 @@ class SubCommentItem extends Component {
                     </UpdateComponent> :
                     
                     <PhotoTextItem>
-                        <CommentItemPhoto />
+                        {/* <CommentItemPhoto /> */}
+                        <UserPhoto imgURL={pic_location} size={40} />
                         <TextZone>
                             <CommentItemText>
                                 <b>{user.username}</b>&nbsp;
@@ -208,10 +212,8 @@ class SubCommentItem extends Component {
 
 /* propTypes, defaultProps */
 SubCommentItem.propTypes = {
-    curUser: PropTypes.oneOfType([                  // 유저 정보
-        PropTypes.number,
-        PropTypes.object
-    ]).isRequired,
+    curUser: PropTypes.object.isRequired,           // 현재 로그인한 유저 정보
+    boardSocket: PropTypes.object.isRequired,       // Board Socket
     subComment_id: PropTypes.number.isRequired,     // 답글의 comment id
     deleteComment: PropTypes.func.isRequired,       // UD에 전해 줄 delete action
 

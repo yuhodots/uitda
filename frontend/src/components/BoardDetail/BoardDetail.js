@@ -81,8 +81,8 @@ class BoardDetail extends Component {
         const { clientHeight } = this.state;
 
         const {
+            boardSocket,        // Board Socket
             curUser,            // 접속한 유저 정보
-
             post,               // 포스팅 데이터
             board,              // 게시판 정보 
             commentList,        // comment data
@@ -135,6 +135,7 @@ class BoardDetail extends Component {
                         <DescriptionBox description={description} isPhoto={isPhoto} />
                     </PostingBox>
                     <CommentBox 
+                        boardSocket={boardSocket}
                         curUser={curUser}
                         board={board}
                         post_id={id}
@@ -150,11 +151,8 @@ class BoardDetail extends Component {
 }
 
 BoardDetail.propTypes = {
-    curUser: PropTypes.oneOfType([                 // 유저 정보
-        PropTypes.number,
-        PropTypes.object
-    ]).isRequired,
-
+    boardSocket: PropTypes.object.isRequired,   // Board Socket
+    curUser: PropTypes.object.isRequired,       // 로그인한 유저 정보
     board: PropTypes.string.isRequired,         // 게시판 정보
     post: PropTypes.object.isRequired,          // 포스팅 데이터
     commentList: PropTypes.array,               // 댓글 데이터

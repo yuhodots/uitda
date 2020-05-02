@@ -61,7 +61,7 @@ UitdaTextArea.propTypes = {
     defaultText: PropTypes.string,                  // default Vaule
     placeHolder: PropTypes.string,                  // place holder
     isUnderLine: PropTypes.bool,                    // Under Line 스타일 여부
-    data_key: PropTypes.string.isRequired,          // 인풋 데이터 키
+    data_key: PropTypes.string,                     // 인풋 데이터 키
 
     storeDataFunc: PropTypes.func.isRequired,       // 인풋 데이터 저장 함수
 }
@@ -71,6 +71,7 @@ UitdaTextArea.defaultProps = {
     defaultText: '',
     placeHolder: '',
 
+    data_key: '',
     isUnderLine: true,
 }
 

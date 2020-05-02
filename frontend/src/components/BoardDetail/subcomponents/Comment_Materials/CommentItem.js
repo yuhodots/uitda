@@ -9,6 +9,7 @@ import {
     CommentInput,
     CommentUD
 } from './';
+import { UserPhoto } from "../../../Structure/CommonComponents";
 import { colors } from "../../../../styles/variables";
 
 
@@ -41,11 +42,10 @@ export const PhotoTextItem = styled.div`
 `;
 
     /* 댓글 작성자 사진 */
-    export const CommentItemPhoto = styled.div`
+    const UserPhotoContainer = styled.div`
         height: 2.5rem;
         width: 2.5rem;
         border-radius: 50%;
-        background-color: ${colors.white};
 
         flex-basis: 2.5rem;
     `;
@@ -119,11 +119,11 @@ class CommentItem extends Component {
     _renderSubComment = (subCommentList) => {
         const { 
             curUser,
+            boardSocket,
+
             deleteComment,
             updateComment
         } = this.props;
-
-        // console.log(subCommentList)
 
         return subCommentList.map((subComment, idx) => {
             const {
@@ -138,6 +138,7 @@ class CommentItem extends Component {
             return (
                 <SubCommentItem 
                     curUser={curUser}
+                    boardSocket={boardSocket}
                     deleteComment={deleteComment}
                     updateComment={updateComment}
                     subComment_id={id}
@@ -209,6 +210,7 @@ class CommentItem extends Component {
 
         const {
             curUser,
+            boardSocket,
 
             comment_id,
             user,
@@ -227,7 +229,7 @@ class CommentItem extends Component {
 
         let NumOfSubComment = subCommentList.length;
 
-        // console.log(typeof(isUDVisible))
+        const { pic_location } = user;
 
         return (
             /* Comment Stem: 댓글 + 답글 리스트 전체를 포함하는 줄기 */
@@ -252,7 +254,8 @@ class CommentItem extends Component {
                             onMouseEnter={this._handleMouseEnter}
                             onMouseLeave={this._handleMouseLeave}
                         >
-                            <CommentItemPhoto />
+                            {/* <CommentItemPhoto /> */}
+                            <UserPhoto imgURL={pic_location} size={40} />
                             <TextZone>
                                 {/* 하얀색 둥근네모 안에 담기는 내용 (작성자 + 글 내용) */}
                                 <CommentItemText>
@@ -316,10 +319,11 @@ class CommentItem extends Component {
 
                 {/* 답글 입력 창 */}
                 <CommentInput
+                    curUser={curUser}
+                    boardSocket={boardSocket}
+
                     isSubComment={true}
                     isReplySee={isReplySee}
-
-                    curUser={curUser}
 
                     board={board}
                     post_id={post_id}
@@ -336,23 +340,20 @@ class CommentItem extends Component {
 /* propTypes, defaultProps */
 
 CommentItem.propTypes = {
-    curUser: PropTypes.oneOfType([              // 유저 정보
-        PropTypes.number,
-        PropTypes.object
-    ]).isRequired,
+    curUser: PropTypes.object.isRequired,       // 로그인한 유저 정보
+    boardSocket: PropTypes.object.isRequired,   // Board Socket
+    board: PropTypes.string.isRequired,         // 게시판 정보
+    post_id: PropTypes.number.isRequired,       // 포스팅 id          
 
     comment_id: PropTypes.number.isRequired,    // 댓글 ID
     user: PropTypes.object.isRequired,          // 작성자 정보
     description: PropTypes.string.isRequired,   // 댓글 데이터
     created: PropTypes.string.isRequired,       // 작성일 정보
     subCommentList: PropTypes.array,            // 답글들의 데이터 array
+
+    createComment: PropTypes.func.isRequired,   // 댓글 생성 메서드
     deleteComment: PropTypes.func.isRequired,   // 댓글 삭제 메서드
     updateComment: PropTypes.func.isRequired,   // 댓글 수정 메서드
-
-    /* CommentInput에 전해줄 속성 */
-    board: PropTypes.string.isRequired,         // 게시판 정보
-    post_id: PropTypes.number.isRequired,       // 포스팅 id          
-    createComment: PropTypes.func.isRequired,   // 댓글 생성 메서드
 }
 
 CommentItem.defaultProps = {

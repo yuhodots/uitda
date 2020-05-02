@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-// import SocketIo from 'socket.io-client';
+import SocketIo from 'socket.io-client';
 
 import SideBar from "../components/Structure/SideBar";
 import BoardDetail from "../components/BoardDetail";
@@ -23,7 +23,7 @@ import { deletePostRequest } from "../store/actions/manage";
 
 class BoardDetailContainer extends Component {
 
-    // boardSocket = SocketIo.connect('/board');
+    boardSocket = SocketIo.connect('/board');
 
     componentDidMount () {
         const {
@@ -42,6 +42,11 @@ class BoardDetailContainer extends Component {
 
         getStatusRequest();                      // 유저 정보 request
         getBoardDetailRequest(boardName, id);    // 포스팅 데이터 request
+
+
+        this.boardSocket.on('comment create', (data) => {
+            console.log('댓글 생성', data)
+        })
     }
 
     render() {
@@ -70,6 +75,7 @@ class BoardDetailContainer extends Component {
                     <SideBar topic={boardName} />
 
                     <BoardDetail 
+                        boardSocket={this.boardSocket}
                         curUser={curUser}
 
                         board={boardName}

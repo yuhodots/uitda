@@ -492,6 +492,16 @@
 
 
 
+### 5.1 (금)
+
+* Chatting Frontend 작업
+  Chatting Input css 스타일링 작업
+  UserPhoto 컴포넌트로 업데이트
+
+
+
+
+
 
 
 
@@ -524,8 +534,7 @@
 
 * socket.io를 이용해 클라이언트의 데이터 실시간 업데이트 되도록 하기
 * 사진 Ant Design의 Carousel Component 검토
-* 댓글 더보기 기능
-* 답글 더보기 기능
+* 
 
 
 
@@ -677,10 +686,24 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 ### 논의 사항
 
-* board 에서 user 객체 넘겨줄 때, id도 포함해주면 좋을 듯
+* board 에서 개별 포스팅의 user 객체 넘겨줄 때, id도 포함해주면 좋을 듯
 
   lib/board.js에서 make_writer 함수를 보면 username, email, pic_location 3가지만 담는 것으로 확인
   179 라인 같은 경우, find_one(where : )에서 user.email을 사용하던데, user.id를 사용하는게 더 빠르지 않을까 ?
+
+
+
+* Board socket에서 room을 구현하기 -> 게시글 별로 room name을 갖도록 ('board_type' + 'posting_id')
+  Backend의 socket on 'comment_create, comment_update, comment_delete'에서 각각 해당 socket room에 join한 모든 유저들에게 해당 comment 데이터를 보내줘야 함.
+* create: 새로 생성한 댓글의 모든 정보 (comment id, type board, board id, user, description 등 모델의 모든 데이터)
+  update: 업데이트한 댓글의 comment id와 description
+  delete: 지운 댓글의 comment id 
+
+
+
+* 댓글 더보기 기능 필요 ? -> 한 번에 GET 요청하는 댓글 개수 제한 (10개 정도 씩) X
+* 댓글 순서 논의
+* 댓글에 사진 업로드 기능 필요 ? X
 
 
 
