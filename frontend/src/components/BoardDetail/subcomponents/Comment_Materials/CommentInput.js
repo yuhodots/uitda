@@ -5,10 +5,11 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import TextareaAutosize from 'react-textarea-autosize';
 import { message } from 'antd';
+import { SendOutlined } from "@ant-design/icons";
 
-import SendIcon from '../resources/SendIcon_Blue.png';
-import { CommentItemPhoto } from "./CommentItem";
+import { UserPhoto, UitdaTextArea } from "../../../Structure/CommonComponents";
 import { colors } from "../../../../styles/variables";
+
 
 /* Styled Components */
 
@@ -37,51 +38,27 @@ const CommentInputTextArea = styled.div`
 
     border-radius: 1rem;
     background-color: ${colors.white};
-    padding: 0.5rem 1rem 0.25rem 1rem;
+    padding: 0.25rem 0.75rem ;
 
     flex: 1;
     display: flex;
     flex-flow: row nowrap;
+    align-items: flex-end;
 `;
 
-/* CommentInput이 TextArea이기 때문에 이를 감싸는 flex item */
-const TextAreaDiv = styled.div`
-    flex: 1;
-`;
+    /* CommentInput이 TextArea이기 때문에 이를 감싸는 flex item */
+    const TextAreaDiv = styled.div`
+        flex: 1;
+    `;
 
-/* 텍스트를 입력할 수 있는 태그
-   'react-textarea-autosize'라이브러리를 이용해서 
-   줄 바꿈 시 자동으로 높이가 조정되는 textarea 태그이다. */
-const TextArea = styled(TextareaAutosize)`
-    width: 100%;
-    padding: 0;
+    /* 작성한 댓글의 데이터를 전송하는 버튼 */
+    const SendButton = styled(SendOutlined)`
+        margin-left: 0.5rem;
+        height: 1.5rem;
+        width: 1rem;
 
-    /* textarea 스타일과 관련된 속성 */
-    resize: none;
-    border: none;
-    outline: 0;
-
-    line-height: 1.5rem;
-    font-size: 0.875rem;
-`;
-
-/* 작성한 댓글의 데이터를 전송하는 버튼 */
-const SendButton = styled.button`
-    margin-left: 0.5rem;
-    height: 1.5rem;
-    width: 1rem;
-
-    /* button 스타일과 관련된 속성 */
-    padding: 0;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    
-    background-image: ${props => `url(${props.ImgURL})`};
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center center;
-`;
+        cursor: pointer;
+    `;
 
 
 /* React Component */
@@ -96,24 +73,23 @@ class CommentInput extends Component {
     componentDidMount () {
         const { isUpdateMode } = this.props;
 
-        if (isUpdateMode){
-            this.textRef.focus();
-        }
+        // if (isUpdateMode){
+        //     this.textRef.focus();
+        // }
     }
 
-    /* 입력 시, 데이터를 state에 저장하는 함수 */
-    _handleChange = (e) => {
+    _storeTextToState = (type, value) => {
         this.setState({
-            content: e.target.value
+            content: value
         })
-
-        // console.log(this.state.content);
     }
 
     /* 버튼을 누르면 POST 요청을 통해 DB 서버에 전송하고,
        Post Detail 페이지에 대한 GET 요청을 다시 한다. or 리다이렉션 */
-    _handleClick = () => {
+    _handleSend = () => {
         const {
+            boardSocket,
+
             isUpdateMode,
             updateComment,
             comment_id,
@@ -122,24 +98,15 @@ class CommentInput extends Component {
 
             board,
             post_id,
-            createComment,
+            // createComment,
 
             parent_comment,     // subComment의 경우에만 존재
         } = this.props;
 
         const { content } = this.state;
 
-        /* 로그인되어 있지 않은 경우, 로그인을 하라는 안내를 하고 종료 */
-        if(!curUser) {
-            message.warn('로그인을 해주세요')
-            return
-        }
-
         /* 내용이 없으면 경고창 띄우고 종료 */
-        if(!content) { 
-            message.warning('댓글 내용을 입력하세요')
-            return
-        }
+        if(!content) { message.warning('댓글 내용을 입력하세요'); return; }
 
         /* Update Comment Action */
         if (isUpdateMode) {
@@ -148,29 +115,33 @@ class CommentInput extends Component {
 
         /* Create Comment Action */
         else {
-            if (parent_comment) {
-                createComment(content, board, post_id, parent_comment);
-            }
-            else {
-                createComment(content, board, post_id);
-            }
+            const { email } = curUser;
+            let data = {
+                email, description: content, 
+                type_board: board, board_id: post_id, 
+            };
+            data = parent_comment ? 
+            { ...data, is_re_comment: true, parent_comment: parent_comment} :
+            { ...data, is_re_comment: false }
+
+            boardSocket.emit('comment create', data);
         }
         
 
         /* 현재는 새로고침으로 요청 보냄.
            나중에는 socket.io를 이용해서 자동으로 업데이트되도록 하기 */
-        window.location.reload();
+        // window.location.reload();
     }
 
-    /* 키 입력 이벤트 핸들러 (Enter, Esc) */
-    /* KeyDown은 한글 + Enter 시, 두 번 이벤트를 처리한다 ㅡㅡ */
+    /* 키 입력 이벤트 핸들러 (Enter, Esc)
+       KeyDown은 한글 + Enter 시, 두 번 이벤트를 처리한다 ㅡㅡ */
     _handleKeyPress = (e) => {
         switch(e.key) {
             case 'Enter':
                 if(e.shiftKey) { console.log('shift + enter'); break; }
 
                 e.preventDefault();
-                this._handleClick();
+                this._handleSend();
                 break;
 
             default:
@@ -197,37 +168,40 @@ class CommentInput extends Component {
         }
     }
 
-
     render() {
 
         const { 
             isSubComment,
             isReplySee,
 
+            curUser,
+
             defaultValue
         } = this.props;
+
+        const { pic_location } = curUser;
 
         return (
             <CommentInputArea 
                 isSubComment={isSubComment} 
                 isDisplay={isReplySee}
             >
-                <CommentItemPhoto />
+                <UserPhoto imgURL={pic_location} size={40} />
                 <CommentInputTextArea>
-                    <TextAreaDiv>
-                        <TextArea 
-                            inputRef={tag => {this.textRef = tag}}
+                    <TextAreaDiv
+                        onKeyPress={this._handleKeyPress}
+                        onKeyDown={this._handleKeyDown}
+                    >
+                        <UitdaTextArea 
+                            size='100%' 
+                            isUnderLine={false} 
+                            placeHolder='댓글을 입력하세요.'
+                            defaultText={defaultValue}
 
-                            onKeyDown={this._handleKeyDown} 
-                            onKeyPress={this._handleKeyPress}
-                            onChange={this._handleChange} 
-                            defaultValue={defaultValue} 
+                            storeDataFunc={this._storeTextToState}
                         />
                     </TextAreaDiv>
-                    <SendButton 
-                        ImgURL={SendIcon} 
-                        onClick={this._handleClick}
-                    />                   
+                    <SendButton onClick={this._handleSend} />                   
                 </CommentInputTextArea>
             </CommentInputArea>
         )
@@ -241,19 +215,17 @@ CommentInput.propTypes = {
     isUpdateMode: PropTypes.bool,                   // 댓글 수정 Input 컴포넌트인지
 
     /* 댓글 생성 액션 관련 props */
-    board: PropTypes.string.isRequired,
-    post_id: PropTypes.number.isRequired,
-    parent_comment: PropTypes.number,
-
-    createComment: PropTypes.func,                  // 댓글 생성 메서드
-    updateComment: PropTypes.func,                  // 댓글 수정 메서드
+    curUser: PropTypes.object.isRequired,           // 로그인한 유저 정보
+    board: PropTypes.string.isRequired,             // 게시판 정보
+    post_id: PropTypes.number.isRequired,           // 포스팅 id
+    parent_comment: PropTypes.number,               // 답글의 경우, 부모 댓글의 id
     comment_id: PropTypes.number,                   // 댓글 수정의 경우, 해당 댓글의 id
     defaultValue: PropTypes.string,                 // 댓글 수정의 경우, 해당 댓글의 이전 값
 
-    curUser: PropTypes.oneOfType([                  // 유저 정보
-        PropTypes.number,
-        PropTypes.object
-    ]).isRequired,
+    boardSocket: PropTypes.object.isRequired,       // Board Socket
+
+    createComment: PropTypes.func,                  // 댓글 생성 메서드
+    updateComment: PropTypes.func,                  // 댓글 수정 메서드
 
     cancleUpdate: PropTypes.func,                   // 수정 상태를 취소하는 메서드
 }
