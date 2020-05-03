@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Input } from "antd";
 
+import { useFocus } from "../../../useHooks";
+
 
 /* Styled Components */
 
@@ -36,12 +38,15 @@ const StyledTextArea = styled(Input.TextArea)`
 
 
 /* React Component */
-const UitdaTextArea = ({data_key, storeDataFunc, size, defaultText, placeHolder, isUnderLine}) => {
+const UitdaTextArea = ({data_key, storeDataFunc, size, defaultText, placeHolder, isUnderLine, letFocus}) => {
 
     if (typeof(size) === 'number') { size = `${size}px` }
 
+    const textAreaRef = useFocus( letFocus );
+
     return(
         <StyledTextArea 
+            ref={textAreaRef}
             size={size}
             defaultValue={defaultText}
             placeholder={placeHolder}
@@ -61,6 +66,7 @@ UitdaTextArea.propTypes = {
     defaultText: PropTypes.string,                  // default Vaule
     placeHolder: PropTypes.string,                  // place holder
     isUnderLine: PropTypes.bool,                    // Under Line 스타일 여부
+    letFocus: PropTypes.bool,                       // 첫 render시 focus 시킬지 여부
     data_key: PropTypes.string,                     // 인풋 데이터 키
 
     storeDataFunc: PropTypes.func.isRequired,       // 인풋 데이터 저장 함수
@@ -70,6 +76,7 @@ UitdaTextArea.defaultProps = {
     size: 160,
     defaultText: '',
     placeHolder: '',
+    letFocus: false,
 
     data_key: '',
     isUnderLine: true,

@@ -3,7 +3,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import TextareaAutosize from 'react-textarea-autosize';
 import { message } from 'antd';
 import { SendOutlined } from "@ant-design/icons";
 
@@ -15,18 +14,11 @@ import { colors } from "../../../../styles/variables";
 
 /* CommentInput의 세부 컴포넌트들을 모두 담는 div 태그
    (CommentItemPhoto + CommentInputTextArea)
-   isSubComment(bool값)을 props로 받아서 Sub의 경우 왼쪽에 3rem 범위를 준다. 
    isDisplay(bool값) 또한 받아서 false인 경우 display none 시킨다. */
 const CommentInputArea = styled.div`
     margin: 0;
 
-    margin-left: ${props => {
-        return props.isSubComment ? '3rem' : 0
-    }};
-
-    display: ${props => {
-        return props.isDisplay ? 'flex' : 'none'
-    }};
+    display: flex;
     flex-flow: row nowrap;
 `;
 
@@ -67,16 +59,6 @@ class CommentInput extends Component {
 
     // state에 text 내용 저장하기
     state = { content: '' }
-
-    
-    /* 수정 모드로 렌더링 된 경우 textarea에 포커스 주기 */
-    componentDidMount () {
-        const { isUpdateMode } = this.props;
-
-        // if (isUpdateMode){
-        //     this.textRef.focus();
-        // }
-    }
 
     _storeTextToState = (type, value) => {
         this.setState({
@@ -130,7 +112,7 @@ class CommentInput extends Component {
 
         /* 현재는 새로고침으로 요청 보냄.
            나중에는 socket.io를 이용해서 자동으로 업데이트되도록 하기 */
-        // window.location.reload();
+        window.location.reload();
     }
 
     /* 키 입력 이벤트 핸들러 (Enter, Esc)
@@ -171,10 +153,8 @@ class CommentInput extends Component {
     render() {
 
         const { 
-            isSubComment,
-            isReplySee,
-
             curUser,
+            isUpdateMode,
 
             defaultValue
         } = this.props;
@@ -182,10 +162,7 @@ class CommentInput extends Component {
         const { pic_location } = curUser;
 
         return (
-            <CommentInputArea 
-                isSubComment={isSubComment} 
-                isDisplay={isReplySee}
-            >
+            <CommentInputArea >
                 <UserPhoto imgURL={pic_location} size={40} />
                 <CommentInputTextArea>
                     <TextAreaDiv
@@ -197,6 +174,7 @@ class CommentInput extends Component {
                             isUnderLine={false} 
                             placeHolder='댓글을 입력하세요.'
                             defaultText={defaultValue}
+                            letFocus={isUpdateMode}
 
                             storeDataFunc={this._storeTextToState}
                         />
@@ -210,14 +188,12 @@ class CommentInput extends Component {
 
 
 CommentInput.propTypes = {
-    isSubComment: PropTypes.bool.isRequired,        // SubComment인지. 답글이라면 margin-left 값이 추가된다.
-    isReplySee: PropTypes.bool,                     // SubComment의 경우 답글 보기의 여부에 따라 CommentInput가 display none이 결정된다.
     isUpdateMode: PropTypes.bool,                   // 댓글 수정 Input 컴포넌트인지
 
     /* 댓글 생성 액션 관련 props */
-    curUser: PropTypes.object.isRequired,           // 로그인한 유저 정보
-    board: PropTypes.string.isRequired,             // 게시판 정보
-    post_id: PropTypes.number.isRequired,           // 포스팅 id
+    curUser: PropTypes.object,                      // 로그인한 유저 정보
+    board: PropTypes.string,                        // 게시판 정보
+    post_id: PropTypes.number,                      // 포스팅 id
     parent_comment: PropTypes.number,               // 답글의 경우, 부모 댓글의 id
     comment_id: PropTypes.number,                   // 댓글 수정의 경우, 해당 댓글의 id
     defaultValue: PropTypes.string,                 // 댓글 수정의 경우, 해당 댓글의 이전 값
@@ -231,8 +207,10 @@ CommentInput.propTypes = {
 }
 
 CommentInput.defaultProps = {
-    isReplySee: true,                           // SubComment가 아닌 경우 isReplySee가 없고 항상 display되기 때문에 true값을 준다.
     isUpdateMode: false,
+    curUser: 0,
+    board: '',
+    post_id: 0,
     parent_comment: 0,
     comment_id: 0,
     defaultValue: '',

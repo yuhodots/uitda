@@ -4,13 +4,13 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import { CommentInput, CommentUD } from './';
+import { CommentInput, MoreButtonPopover } from './';
 import { 
     PhotoTextItem,
     CommentItemPhoto,
     CommentItemText,
     TextZone, 
-} from './CommentItem'
+} from './CommentItem_Backup'
 import { UserPhoto } from "../../../Structure/CommonComponents";
 import { colors } from "../../../../styles/variables";
 
@@ -189,7 +189,7 @@ class SubCommentItem extends Component {
                             </CommentItemText>
                             {
                                 isUDVisible ?
-                                <CommentUD 
+                                <MoreButtonPopover 
                                     comment_id={subComment_id}
                                     deleteComment={deleteComment}
 
