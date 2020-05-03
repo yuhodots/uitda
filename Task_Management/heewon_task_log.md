@@ -134,21 +134,13 @@ manage 페이지 들어갈 만한 카테고리
 7. room list 만듦.
 
 ### 2020년 3월 27일
-
 1. comment list 만들기 (댓글 리스트 전체 전달하기)
 2. git push
 
 
 ### 2020년 3월 30일
-#### 완료
 1. local login
 2. user_id 받으면 해당 user의 채팅방으로 이동하기 구현
-
-#### 할 일
-4. 자동 로그인된거 삭제를 위한 refresh token 삭제해보기
-5. 쿠키 캐시
-6. 쿠키 세션 공부하기,,ㅠㅠㅠㅠㅠㅠㅠ
-- 파일을 나중에 분리 시킬 수 있으면 분리시키기
 
 ### 2020년 4월 초
 /api/
@@ -168,12 +160,12 @@ main 에서 update 시간 상대적 시간으로 보내기
 1. 이미지 보내기 -> routes
 2. socket emit으로 프론트에 알려주기
 3. res.socket 되는지 찾아보기
+### 2020년 5월 3일
+1.댓글 socket 추가 수정(emit 내용 수정)
+2.댓글 시간 YYYY-MM-DDTHH:mm:ss
+3. board writer id 추가 필요
+#### 완료
 #### 진행중 
-###
-
-댓글 추가 수정 - 수근오빠 글 참고
-board writer id 추가 필요
-댓글 시간 YYYY-MM-DDTHH:mm:ss
-
 
 ### 질문
+#### 할 일

@@ -30,6 +30,10 @@ module.exports =(sequelize, DataTypes) => {
           type:DataTypes.STRING(30),
           allowNull: false
         },
+        updated: {
+          type:DataTypes.STRING(30),
+          allowNull: false
+        },
         is_re_comment:{
           type:DataTypes.BOOLEAN,
           allowNull:false,
@@ -38,11 +42,6 @@ module.exports =(sequelize, DataTypes) => {
         parent_comment:{
           type:DataTypes.INTEGER(11).UNSIGNED,
           allowNull:true
-        },
-        is_modified:{
-          type:DataTypes.BOOLEAN,
-          allowNull:false,
-          defaultValue:false
         }
       },{
         timestamps: false,

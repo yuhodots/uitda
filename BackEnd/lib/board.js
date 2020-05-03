@@ -19,8 +19,9 @@ let multerS3 = require('../lib/multerS3')();
 let s3 = multerS3.s3;
 
 /* Model method */
-function make_writer(username, email, pic_location) {
+function make_writer(id, username, email, pic_location) {
     let writer = {
+        id:id,
         username: username,
         email: email,
         pic_location: pic_location
@@ -75,7 +76,7 @@ function type_files_assign(type) {
         return networking_files;
     }
 }
-function make_comment_ob(id, type_board, board_id, description, user, created, is_re_comment, parent_comment, is_modified) {
+function make_comment_ob(id, type_board, board_id, description, user, created, updated, is_re_comment, parent_comment) {
     let comment_ob = {
         id: id,
         type_board: type_board,
@@ -83,9 +84,9 @@ function make_comment_ob(id, type_board, board_id, description, user, created, i
         description: description,
         user: user,
         created: created,
+        updated: updated,
         is_re_comment: is_re_comment,
-        parent_comment: parent_comment,
-        is_modified: is_modified
+        parent_comment: parent_comment
     }
     return comment_ob;
 }
@@ -181,7 +182,7 @@ module.exports = {
                                     if (files.length > 0) {
                                         filelist = make_file(files, files.length);
                                     }
-                                    let writer = make_writer(user.username, user.email, user.pic_location);
+                                    let writer = make_writer(user.id, user.username, user.email, user.pic_location);
                                     let time = moment(content.created, 'YYYY년MM월DD일HH시mm분ss초').fromNow();
                                     (type == 'market') ?
                                         post = make_market_ob(content.id, content.title, writer, time, content.price, content.condition, content.description, filelist) :
@@ -236,10 +237,11 @@ module.exports = {
                 comment.findAll({ where: { board_id: board_id, type_board: comment_type_board } }).then(function(comments){
                     for (let i = 0; i < comments.length; i++) {
                         users.findOne({ where: { email: comments[i].email } }).then(function (user) {
-                            let writer = make_writer(user.username, user.email, user.pic_location);
-                            let time = moment(comments[i].created, 'YYYY년MM월DD일HH시mm분ss초').fromNow();
+                            let writer = make_writer(user.id, user.username, user.email, user.pic_location);
+                            let created_time = moment(comments[i].created,'YYYY년MM월DD일HH시mm분ss초').format('YYYY-MM-DDTHH:mm:ss');
+                            let updated_time = moment(comments[i].updated,'YYYY년MM월DD일HH시mm분ss초').format('YYYY-MM-DDTHH:mm:ss');
                             comment_ob = make_comment_ob(comments[i].id, comments[i].type_board, comments[i].board_id,
-                                comments[i].description, writer, time, comments[i].is_re_comment, comments[i].parent_comment,comments[i].is_modified);
+                                comments[i].description, writer, created_time, updated_time, comments[i].is_re_comment, comments[i].parent_comment);
                             commentlist[i] = comment_ob;
                         }).catch(function (err) { throw err; });
                     }
@@ -265,7 +267,7 @@ module.exports = {
             function (content, callback) {
                 type_files.findAll({ where: { board_id: board_id } }).then(function (files) {
                     users.findOne({ where: { email: content.email } }).then(function (user) {
-                        let writer = make_writer(user.username, user.email, user.pic_location);
+                        let writer = make_writer(user.id, user.username, user.email, user.pic_location);
                         let filelist = make_file(files, files.length);
                         let time = moment(content.created, 'YYYY년MM월DD일HH시mm분ss초').fromNow();
                         let post;
@@ -329,7 +331,7 @@ module.exports = {
                         callback(null)
                     }).catch(function (err) { throw err; });
                 }
-                
+
             },
 
             /* 게시글 image data 생성 */
@@ -421,7 +423,7 @@ module.exports = {
                     .then(function () { callback(null); })
                     .catch(function (err) { throw err; });
                 }
-                
+
             },
 
             /* 파일 삭제 수행 */
