@@ -17,7 +17,7 @@ function make_writer(username, email, pic_location) {
     }
     return writer;
 }
-function make_comment_ob(id, type_board, board_id, description, user, created, is_re_comment, parent_comment, is_modified) {
+function make_comment_ob(id, type_board, board_id, description, user, created, updated, is_re_comment, parent_comment) {
     let comment_ob = {
         id: id,
         type_board: type_board,
@@ -25,9 +25,9 @@ function make_comment_ob(id, type_board, board_id, description, user, created, i
         description: description,
         user: user,
         created: created,
+        updated: updated,
         is_re_comment: is_re_comment,
-        parent_comment: parent_comment,
-        is_modified: is_modified
+        parent_comment: parent_comment
     }
     return comment_ob;
 }
@@ -59,9 +59,10 @@ module.exports = {
                 let temp = comment;
                 users.findOne({ where: { email: temp.email } }).then(function (user) {
                     let writer = make_writer(user.username, user.email, user.pic_location);
-                    let time = moment(temp.created, 'YYYY년MM월DD일HH시mm분ss초').fromNow();
+                    let created_time = moment(temp.created, 'YYYY년MM월DD일HH시mm분ss초').fromNow();
+                    let updated_time = moment(temp.updated, 'YYYY년MM월DD일HH시mm분ss초').fromNow();
                     comment = make_comment_ob(temp.id, temp.type_board, temp.board_id,
-                        temp.description, writer, time, temp.is_re_comment, temp.parent_comment, temp.is_modified);
+                        temp.description, writer, created_time, updated_time, temp.is_re_comment, temp.parent_comment);
                     res.json({ comment: comment, user: req.user ? req.user : 0 });
                 }).catch(function (err) { throw err; });
                 callback(null);

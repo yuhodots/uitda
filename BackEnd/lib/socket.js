@@ -35,8 +35,9 @@ function type_comment_assign(is_re_comment) {
         return "recomment";
     }
 }
-function make_writer(username, pic_location,email) {
+function make_writer(id, username, pic_location,email) {
     let writer = {
+        id: id,
         username: username,
         pic_location: pic_location,
         email:email
@@ -57,6 +58,7 @@ function make_comment_ob(id, type_board, board_id, description, user, created, i
     }
     return comment_ob;
 }
+
 
 module.exports = function (io) {
 
@@ -120,7 +122,7 @@ module.exports = function (io) {
                     users.findOne({
                         where:{email:email}
                     }).then(function(user){
-                        writer = make_writer(user.username,user.pic_location,user.email);
+                        writer = make_writer(user.id, user.username,user.pic_location,user.email);
                         callback(null);
                     })
                 },
@@ -150,7 +152,7 @@ module.exports = function (io) {
                 },
                 function (whom, callback) {
                     if(whom.socket_id){
-                        home_socket.to(whom.socket_id).emit('notification create',{oard_id:board_id, type:type, writer:writer, time:time_dif, is_recomment:is_re_comment})
+                        home_socket.to(whom.socket_id).emit('notification create',{board_id:board_id, type:type, writer:writer, time:time_dif, is_recomment:is_re_comment})
                     }
                     callback(null);
                 },
@@ -165,7 +167,7 @@ module.exports = function (io) {
                 for(i=0;i<notifications.length;i++){
                     (function(i){
                         users.findOne({where:{email:notifications[i].email_1}}).then(function(user){
-                            var writer = make_writer(user.username, user.pic_location, user.email);
+                            var writer = make_writer(user.id, user.username, user.pic_location, user.email);
                             var notification_ob = {
                                 board_id:notifications[i].board_id,
                                 writer: writer,
@@ -194,28 +196,40 @@ module.exports = function (io) {
     //board : comment,likey
     board_socket.on('connection',socket =>{
         console.log('board: a user connected');
+        socket.on('room in', function({type_board, posting_id}){
+            console.log('board: room in '+ posting_id)
+            socket.posting_id = posting_id;
+            socket.join(type_board + posting_id);
+        });
+        socket.on('room out', function({type_board, posting_id}){
+            console.log('board: room out ' + socket.posting_id);
+            socket.leave(type_board + posting_id);
+        });
         socket.on('comment create', function({email, description, type_board, board_id, is_re_comment, parent_comment}){
             console.log('board: comment created');
+            var time = moment().format('YYYY년MM월DD일HH시mm분ss초');
             users.findOne({where:{email:email}}).then(function(user){
                 comment.create({
-                    type_board: type_board,  board_id: board_id, description: description,
-                    author: user.username, email: email, created: moment().format('YYYY년MM월DD일HH시mm분ss초'),
-                    is_re_comment: is_re_comment, parent_comment: parent_comment
-                }).then(function () {
-                    board_socket.emit('comment create', {board_id:board_id,type_board:type_board});
+                    type_board: type_board,  board_id: board_id, description: description,author: user.username, email: email,
+                    created: time, updated: time, is_re_comment: is_re_comment, parent_comment: parent_comment
+                }).then(function (comment) {
+                    comment.dataValues.created = moment(comment.dataValues.created,'YYYY년MM월DD일HH시mm분ss초').format('YYYY-MM-DDTHH:mm:ss');
+                    comment.dataValues.updated = moment(comment.dataValues.updated,'YYYY년MM월DD일HH시mm분ss초').format('YYYY-MM-DDTHH:mm:ss');
+                    board_socket.in(type_board + board_id).emit('comment create', {user:user.dataValues, comment:comment.dataValues});
                 }).catch(function (err) { throw err; });
             }).catch(function (err) { throw err; });
         });
         socket.on('comment update', function({email, comment_id, description}){
             console.log('board: comment updated');
+            var updated_time = moment().format('YYYY년MM월DD일HH시mm분ss초');
             comment.findOne({ where: { id: comment_id } }).then(function (content) {
-                console.log(content)
                 if(email == content.email){
                     comment.update({
-                        description: description, created: moment().format('YYYY년MM월DD일HH시mm분ss초'), is_modified: true
+                        description: description, updated: updated_time
                     }, { where: { id: comment_id } })
                     .then(function(){
-                        board_socket.emit('comment update', {board_id:content.board_id, type_board:content.type_board});
+                        var updated = moment(updated_time,'YYYY년MM월DD일HH시mm분ss초').format('YYYY-MM-DDTHH:mm:ss');
+                        board_socket.in(content.type_board + content.board_id).emit('comment update', {comment_id:comment_id, description:description, updated:updated});
                     }).catch(function (err) { throw err; });
                 }
             }).catch(function (err) { throw err; });
@@ -223,12 +237,9 @@ module.exports = function (io) {
         socket.on('comment delete', function({email, comment_id}){
             console.log('board: comment deleted');
             comment.findOne({ where: { id: comment_id } }).then(function (content) {
-                var board_id = content.board_id;
-                var type_board = content.type_board;
                 if(email == content.email){
-                    var comment_list = [];
                     comment.destroy({ where: { id: comment_id } }).then(function(){
-                        board_socket.emit('comment delete',{board_id:board_id, type_board:type_board});
+                        board_socket.in(content.dataValues.type_board +content.dataValues.board_id).emit('comment delete',{comment_id:comment_id});
                     }).catch(function (err) { throw err; });
                 }
             }).catch(function (err) { throw err; });
@@ -239,10 +250,11 @@ module.exports = function (io) {
                 var comment_list = [];
                 for (let i = 0; i < comments.length; i++) {
                     users.findOne({ where: { email: comments[i].email } }).then(function (user) {
-                        let writer = make_writer(user.username, user.email, user.pic_location);
-                        let time = moment(comments[i].created, 'YYYY년MM월DD일HH시mm분ss초').fromNow();
+                        let writer = make_writer(user.id, user.username, user.email, user.pic_location);
+                        let created_time = moment(comments[i].created, 'YYYY년MM월DD일HH시mm분ss초').fromNow();
+                        let updated_time = moment(comments[i].updated, 'YYYY년MM월DD일HH시mm분ss초').fromNow();
                         comment_ob = make_comment_ob(comments[i].id, comments[i].type_board, comments[i].board_id,
-                            comments[i].description, writer, time, comments[i].is_re_comment, comments[i].parent_comment,comments[i].is_modified);
+                            comments[i].description, writer, created_time, updated_time, comments[i].is_re_comment, comments[i].parent_comment);
                         comment_list[i] = comment_ob;
                         if(comment_list.length == comments.length){
                             board_socket.emit('comment list', {comment_list:comment_list})
@@ -377,7 +389,7 @@ module.exports = function (io) {
                 },
                 function (message_id, callback) {
                     users.findOne({where:{email:email}}).then(function(user){
-                        writer = make_writer(user.username, user.pic_location,user.email);
+                        writer = make_writer(user.id, user.username, user.pic_location,user.email);
                         time = moment(time,'YYYY년MM월DD일HH시mm분ss초').format('YYYY-MM-DDTHH:mm:ss');
                         chatting_socket.in('room' + room_id).emit('chat message', {writer:writer, message_id:message_id, message:message, time:time, is_unread:is_unread});
                         callback(null);
