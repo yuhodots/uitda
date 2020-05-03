@@ -119,7 +119,8 @@ class UitdaPopover extends Component {
         const { popoverVisible } = this.state;
 
         const {
-            PopButton, CustomContent, contentList
+            PopButton, CustomContent, contentList,
+            placement
         } = this.props;
 
         const content = CustomContent ? CustomContent : this._renderPopoverList(contentList);
@@ -129,7 +130,7 @@ class UitdaPopover extends Component {
                 content={content} 
                 trigger='click' 
                 title={false} 
-                placement='bottomRight' 
+                placement={placement} 
                 visible={popoverVisible}
                 onVisibleChange={this._handleVisibleChange}    
             >
@@ -148,11 +149,15 @@ UitdaPopover.propTypes = {
                                                    배열의 elem은 text과 clickMethod 메서드를 반드시 필요로 하고, 
                                                    icon은 추가할 수 있는 객체이어야 한다. */ 
     CustomContent: PropTypes.node,              // List가 아닌 Custom Content도 허용한다.
+
+    /* Popover Property */
+    placement: PropTypes.string,                
 }
 
 UitdaPopover.defaultProps = {
     contentList: [],
     CustomContent: undefined,
+    placement: 'bottomRight',
 }
 
 export default UitdaPopover;

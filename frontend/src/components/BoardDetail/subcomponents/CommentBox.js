@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Divider } from "antd";
 
-import { CommentItem, CommentInput } from './Comment_Materials'
+import { CommentBranch, CommentInput } from './Comment_Materials'
 import { colors } from "../../../styles/variables";
 
 /* Styled Components */
@@ -52,7 +52,7 @@ class CommentBox extends Component {
     componentDidMount() {
     }
 
-    // map을 이용해 array 데이터를 render하는 함수
+    // map을 이용해 Comment Array 데이터를 render하는 함수
     _renderComments = (commentList) => {
 
         const { 
@@ -74,7 +74,7 @@ class CommentBox extends Component {
             } = comment;
 
             return (
-                <CommentItem
+                <CommentBranch
                     curUser={curUser}
                     board={board} post_id={post_id}
                     boardSocket={boardSocket}
