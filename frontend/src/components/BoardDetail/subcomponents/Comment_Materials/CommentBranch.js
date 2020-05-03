@@ -27,6 +27,7 @@ const CommentBranch = ( props ) => {
     const [isReplySee, setReplySee] = useState(false);
 
     const { 
+        boardSocket,
         curUser, user, comment_id, 
         description, created,
         subCommentList,
@@ -46,6 +47,7 @@ const CommentBranch = ( props ) => {
 
             {/* Root Comment Item */}
             <CommentItem 
+                boardSocket={boardSocket}
                 isRootComment={true} isMine={isMine}
                 isReplySee={isReplySee}
                 comment_id={comment_id} user={user}

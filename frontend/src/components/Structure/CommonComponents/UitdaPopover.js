@@ -120,7 +120,7 @@ class UitdaPopover extends Component {
 
         const {
             PopButton, CustomContent, contentList,
-            placement
+            placement,
         } = this.props;
 
         const content = CustomContent ? CustomContent : this._renderPopoverList(contentList);

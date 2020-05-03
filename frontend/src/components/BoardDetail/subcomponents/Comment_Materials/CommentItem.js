@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 
-import { MoreButtonPopover } from "./";
+import { MoreButtonPopover, CommentInput } from "./";
 import { UserPhoto } from "../../../Structure/CommonComponents";
 import { colors } from "../../../../styles/variables";
 import { useHover } from '../../../../useHooks'
@@ -69,6 +69,7 @@ const CommentItem = (props) => {
     const [ isUpdateMode, setUpdateMode ] = useState(false);
 
     const { 
+        boardSocket,
         isRootComment,
         isMine,
     
@@ -76,10 +77,11 @@ const CommentItem = (props) => {
         description,
         subCommentList,
 
+        updateComment,
         deleteComment,
     } = props;
 
-    /*  */
+    /* useHover: CommentItem Area에 마우스를 올리면 More Button visible을 true로 설정 */
     const handleHover = () => { if (isMine) { setMoreButtonVisible(true) } }
     const handleMouseLeave = () => { if (isMine) { setMoreButtonVisible(false) } }
     const commentItemRef = useHover(handleHover, handleMouseLeave);
@@ -87,26 +89,39 @@ const CommentItem = (props) => {
     const { pic_location } = user;
 
     return (
-        <CommentItemArea  isRootComment={isRootComment} >
-            <PhotoTextBox ref={commentItemRef}>
-                <UserPhoto imgURL={pic_location} size={40} />
-                <TextBox>
-                    <TextContainer> {description} </TextContainer>
-                    {
-                        // moreButtonVisible &&
+        <CommentItemArea ref={commentItemRef} isRootComment={isRootComment} >
+            {
+                isUpdateMode ?
+
+                <CommentInput 
+                    isUpdateMode={true}             
+
+                    curUser={user}
+                    comment_id={comment_id}
+                    defaultValue={description}
+                    boardSocket={boardSocket}
+
+                    updateComment={updateComment}
+                    cancleUpdate={() => setUpdateMode(false)}
+                /> :
+
+                <PhotoTextBox>
+                    <UserPhoto imgURL={pic_location} size={40} />
+                    <TextBox>
+                        <TextContainer> {description} </TextContainer>
+
                         <MoreButtonPopover 
                             comment_id={comment_id}
                             subCommentList={subCommentList}
-
-                            isVisible={moreButtonVisible}
+                            moreButtonVisible={moreButtonVisible}
 
                             deleteComment={deleteComment}
                             setUpdateMode={setUpdateMode}
                         />
-                    }
-                </TextBox>
-            </PhotoTextBox>
-        
+                    </TextBox>
+                </PhotoTextBox>
+            }
+            
             <BottomBox>
 
             </BottomBox>
@@ -116,6 +131,7 @@ const CommentItem = (props) => {
 
 
 CommentItem.propTypes = {
+    boardSocket: PropTypes.object.isRequired,   // Board Socket
     isRootComment: PropTypes.bool.isRequired,   // Root 댓글인지 답글인지
     isMine: PropTypes.bool.isRequired,          // 내 댓글인지 (로그인한 유저의 댓글인지)
     isReplySee: PropTypes.bool,                 // 답글 보기 상태인지
