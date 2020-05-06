@@ -14,9 +14,9 @@ import { getStatusRequest } from '../store/actions/auth'
 import { 
     initiateDetailPage,
     getBoardDetailRequest,
-    createComment,
+    socketOnCreateComment,
     updateComment,
-    deleteComment,
+    socketOnDeleteComment,
 } from '../store/actions/board';
 import { topicSelect } from "../store/actions/topic";
 import { deletePostRequest } from "../store/actions/manage";
@@ -33,6 +33,8 @@ class BoardDetailContainer extends Component {
             initiateDetailPage,
             getStatusRequest,
             getBoardDetailRequest,
+            socketOnCreateComment,
+            socketOnDeleteComment,
         } = this.props
 
         const { boardName, id } = match.params;
@@ -44,9 +46,20 @@ class BoardDetailContainer extends Component {
         getBoardDetailRequest(boardName, id);    // 포스팅 데이터 request
 
 
-        this.boardSocket.on('comment create', (data) => {
-            console.log('댓글 생성', data)
+        this.boardSocket.emit('room in', {type_board: boardName, posting_id: id})
+
+        this.boardSocket.on('comment create', ({user, comment}) => {
+            socketOnCreateComment(user, comment);
         })
+        this.boardSocket.on('comment delete', ({comment_id}) => {
+            socketOnDeleteComment(comment_id);
+        })
+    }
+
+    componentWillUnmount() {
+        const { match } = this.props;
+        const { boardName, id } = match.params;
+        this.boardSocket.emit('room out', {type_board: boardName, posting_id: id})
     }
 
     render() {
@@ -59,7 +72,6 @@ class BoardDetailContainer extends Component {
             commentList,
             
             deletePost,
-            createComment,
             updateComment,
             deleteComment,
         } = this.props;
@@ -83,9 +95,7 @@ class BoardDetailContainer extends Component {
                         commentList={commentList} 
 
                         deletePost={deletePost}
-                        createComment={createComment}
                         updateComment={updateComment}
-                        deleteComment={deleteComment}
                     />
                 </div> :
                 <Redirect to='/' /> :
@@ -124,13 +134,15 @@ const mapDispatchToProps = (dispatch) => {
         },
         deletePost: (board, id) => dispatch(deletePostRequest(board, id)),              // 게시글을 삭제하는 메서드
 
-        createComment: (description, type_board, board_id, parent_comment) => {         // 댓글을 생성하는 메서드
-            dispatch(createComment(description, type_board, board_id, parent_comment))
+        socketOnCreateComment: (user, comment) => {                                     // comment create socket on 메서드
+            dispatch(socketOnCreateComment(user, comment))
         },
         updateComment: (comment_id, description) => {                                   // 댓글 수정 액션
             dispatch(updateComment(comment_id, description))
         },
-        deleteComment: (comment_id) => {dispatch(deleteComment(comment_id))},           // 댓글 삭제 메서드
+        socketOnDeleteComment: (comment_id) => {                                        // comment delete socket on 메서드
+            dispatch(socketOnDeleteComment(comment_id))
+        },           
     }
 }
 

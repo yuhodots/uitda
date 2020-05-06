@@ -112,7 +112,7 @@ class CommentInput extends Component {
 
         /* 현재는 새로고침으로 요청 보냄.
            나중에는 socket.io를 이용해서 자동으로 업데이트되도록 하기 */
-        window.location.reload();
+        // window.location.reload();
     }
 
     /* 키 입력 이벤트 핸들러 (Enter, Esc)
@@ -189,20 +189,17 @@ class CommentInput extends Component {
 
 CommentInput.propTypes = {
     isUpdateMode: PropTypes.bool,                   // 댓글 수정 Input 컴포넌트인지
-
-    /* 댓글 생성 액션 관련 props */
+    boardSocket: PropTypes.object.isRequired,       // Board Socket
     curUser: PropTypes.object,                      // 로그인한 유저 정보
     board: PropTypes.string,                        // 게시판 정보
     post_id: PropTypes.number,                      // 포스팅 id
+    
     parent_comment: PropTypes.number,               // 답글의 경우, 부모 댓글의 id
     comment_id: PropTypes.number,                   // 댓글 수정의 경우, 해당 댓글의 id
     defaultValue: PropTypes.string,                 // 댓글 수정의 경우, 해당 댓글의 이전 값
 
-    boardSocket: PropTypes.object.isRequired,       // Board Socket
-
     createComment: PropTypes.func,                  // 댓글 생성 메서드
     updateComment: PropTypes.func,                  // 댓글 수정 메서드
-
     cancleUpdate: PropTypes.func,                   // 수정 상태를 취소하는 메서드
 }
 
