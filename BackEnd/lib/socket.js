@@ -213,9 +213,17 @@ module.exports = function (io) {
                     type_board: type_board,  board_id: board_id, description: description,author: user.username, email: email,
                     created: time, updated: time, is_re_comment: is_re_comment, parent_comment: parent_comment
                 }).then(function (comment) {
-                    comment.dataValues.created = moment(comment.dataValues.created,'YYYY년MM월DD일HH시mm분ss초').format('YYYY-MM-DDTHH:mm:ss');
-                    comment.dataValues.updated = moment(comment.dataValues.updated,'YYYY년MM월DD일HH시mm분ss초').format('YYYY-MM-DDTHH:mm:ss');
-                    board_socket.in(type_board + board_id).emit('comment create', {user:user.dataValues, comment:comment.dataValues});
+                    var new_comment = {
+                        id:comment.dataValues.id,
+                        type_board:comment.dataValues.type_board,
+                        board_id:comment.dataValues.board_id,
+                        description:comment.dataValues.description,
+                        created:moment(comment.dataValues.created,'YYYY년MM월DD일HH시mm분ss초').format('YYYY-MM-DDTHH:mm:ss'),
+                        updated:moment(comment.dataValues.updated,'YYYY년MM월DD일HH시mm분ss초').format('YYYY-MM-DDTHH:mm:ss'),
+                        is_re_comment:comment.dataValues.is_re_comment,
+                        parent_comment:comment.dataValues.parent_comment
+                    };
+                    board_socket.in(type_board + board_id).emit('comment create', {user:user.dataValues, comment:new_comment});
                 }).catch(function (err) { throw err; });
             }).catch(function (err) { throw err; });
         });
