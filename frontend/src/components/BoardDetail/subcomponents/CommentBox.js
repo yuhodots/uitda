@@ -60,8 +60,6 @@ class CommentBox extends Component {
             board,
             post_id,
             boardSocket,
-            
-            updateComment,
         } = this.props;
 
         return commentList.map( (comment) => {
@@ -81,8 +79,6 @@ class CommentBox extends Component {
                     user={user} created={created}
                     description={description}
                     subCommentList={subCommentList}
-                    
-                    updateComment={updateComment}
                 />
             )
         })
@@ -144,8 +140,6 @@ CommentBox.propTypes = {
     board: PropTypes.string.isRequired,             // 게시판 정보
     post_id: PropTypes.number.isRequired,           // 포스팅 id          
     commentList: PropTypes.array.isRequired,        // 댓글 데이터를 가지고 있는 array
-
-    updateComment: PropTypes.func.isRequired,       // 댓글 수정 메서드
 }
 
 // CommentBox.defaultProps = {

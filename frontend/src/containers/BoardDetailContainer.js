@@ -15,7 +15,7 @@ import {
     initiateDetailPage,
     getBoardDetailRequest,
     socketOnCreateComment,
-    updateComment,
+    socketOnUpdateComment,
     socketOnDeleteComment,
 } from '../store/actions/board';
 import { topicSelect } from "../store/actions/topic";
@@ -34,6 +34,7 @@ class BoardDetailContainer extends Component {
             getStatusRequest,
             getBoardDetailRequest,
             socketOnCreateComment,
+            socketOnUpdateComment,
             socketOnDeleteComment,
         } = this.props
 
@@ -50,6 +51,9 @@ class BoardDetailContainer extends Component {
 
         this.boardSocket.on('comment create', ({user, comment}) => {
             socketOnCreateComment(user, comment);
+        })
+        this.boardSocket.on('comment update', ({comment_id, description, updated}) => {
+            socketOnUpdateComment(comment_id, description, updated);
         })
         this.boardSocket.on('comment delete', ({comment_id}) => {
             socketOnDeleteComment(comment_id);
@@ -72,8 +76,6 @@ class BoardDetailContainer extends Component {
             commentList,
             
             deletePost,
-            updateComment,
-            deleteComment,
         } = this.props;
 
         /* 게시판 정보 */
@@ -95,7 +97,6 @@ class BoardDetailContainer extends Component {
                         commentList={commentList} 
 
                         deletePost={deletePost}
-                        updateComment={updateComment}
                     />
                 </div> :
                 <Redirect to='/' /> :
@@ -137,8 +138,8 @@ const mapDispatchToProps = (dispatch) => {
         socketOnCreateComment: (user, comment) => {                                     // comment create socket on 메서드
             dispatch(socketOnCreateComment(user, comment))
         },
-        updateComment: (comment_id, description) => {                                   // 댓글 수정 액션
-            dispatch(updateComment(comment_id, description))
+        socketOnUpdateComment: (comment_id, description, updated) => {                  // 댓글 수정 액션
+            dispatch(socketOnUpdateComment(comment_id, description, updated))
         },
         socketOnDeleteComment: (comment_id) => {                                        // comment delete socket on 메서드
             dispatch(socketOnDeleteComment(comment_id))

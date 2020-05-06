@@ -129,7 +129,6 @@ const CommentItem = (props) => {
         description, created,
         subCommentList,
 
-        updateComment,
         changeReplySee,
     } = props;
 
@@ -156,7 +155,6 @@ const CommentItem = (props) => {
                     defaultValue={description}
                     boardSocket={boardSocket}
 
-                    updateComment={updateComment}
                     cancleUpdate={() => setUpdateMode(false)}
                 /> :
 
@@ -226,7 +224,6 @@ CommentItem.propTypes = {
     created: PropTypes.string.isRequired,       // 작성일 정보
     subCommentList: PropTypes.array,            // 답글들의 데이터 array
 
-    updateComment: PropTypes.func.isRequired,   // 댓글 수정 메서드
     changeReplySee: PropTypes.func,             // 답글 보기 상태 변경 메서드
 }
 

@@ -88,7 +88,6 @@ class BoardDetail extends Component {
             commentList,        // comment data
 
             deletePost,         // 게시글을 삭제하는 메서드
-            updateComment,      // 댓글 수정 메서드
         } = this.props;
 
         const {
@@ -137,8 +136,7 @@ class BoardDetail extends Component {
                         curUser={curUser}
                         board={board}
                         post_id={id}
-                        commentList={commentList} 
-                        updateComment={updateComment}
+                        commentList={commentList}
                     />
                 </ContainerDiv>
             </BackgroundDiv>
@@ -154,7 +152,6 @@ BoardDetail.propTypes = {
     commentList: PropTypes.array,               // 댓글 데이터
 
     deletePost: PropTypes.func.isRequired,      // 게시글을 삭제하는 메서드
-    updateComment: PropTypes.func.isRequired,   // 댓글 수정 메서드
 }
 
 BoardDetail.defaultProps = {

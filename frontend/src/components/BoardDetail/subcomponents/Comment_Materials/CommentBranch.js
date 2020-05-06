@@ -56,8 +56,6 @@ const CommentBranch = ( props ) => {
                 comment_id={comment_id} user={user}
                 description={description} created={created}
                 subCommentList={subCommentList}
-
-                updateComment={updateComment}
                 changeReplySee={changeReplySee} 
             />
 
@@ -68,9 +66,7 @@ const CommentBranch = ( props ) => {
                     boardSocket={boardSocket} curUser={curUser}
                     board={board} post_id={post_id}
                     comment_id={comment_id}
-                    subCommentList={subCommentList} 
-
-                    updateComment={updateComment}
+                    subCommentList={subCommentList}
                 />
             }
         </WholeArea>
@@ -89,8 +85,6 @@ CommentBranch.propTypes = {
     description: PropTypes.string.isRequired,   // 댓글 데이터
     created: PropTypes.string.isRequired,       // 작성일 정보
     subCommentList: PropTypes.array,            // 답글들의 데이터 array
-
-    updateComment: PropTypes.func.isRequired,   // 댓글 수정 메서드
 }
 
 CommentBranch.defaultProps = {

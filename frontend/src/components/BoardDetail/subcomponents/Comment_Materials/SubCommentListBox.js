@@ -23,10 +23,6 @@ const SubCommentListBox = (props) => {
         board, post_id,
 
         comment_id, subCommentList,
-
-        createComment,
-        updateComment,
-        deleteComment,
     } = props
 
     return (
@@ -51,9 +47,6 @@ const SubCommentListBox = (props) => {
                         comment_id={id} user={user}
                         description={description}
                         created={created}
-
-                        updateComment={updateComment}
-                        deleteComment={deleteComment}
                     />
                 )
             })
@@ -63,8 +56,6 @@ const SubCommentListBox = (props) => {
                 boardSocket={boardSocket} curUser={curUser}
                 board={board} post_id={[post_id]}
                 parent_comment={comment_id}
-
-                createComment={createComment}
             />
         </WholeBox>
     )
@@ -77,10 +68,6 @@ SubCommentListBox.propTypes = {
     post_id: PropTypes.number.isRequired,           // 포스팅 id 
     comment_id: PropTypes.number.isRequired,        // 댓글 ID
     subCommentList: PropTypes.array.isRequired,     // 답글들의 데이터 array
-
-    createComment: PropTypes.func.isRequired,       // 댓글 생성 메서드
-    deleteComment: PropTypes.func.isRequired,       // 댓글 삭제 메서드
-    updateComment: PropTypes.func.isRequired,       // 댓글 수정 메서드
 }
 
 export default SubCommentListBox;

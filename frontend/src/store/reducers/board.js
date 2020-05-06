@@ -12,6 +12,7 @@ import {
     BOARD_DETAIL_INIT,
     BOARD_SOCKET_ON_COMMENT_CREATE,
     BOARD_SOCKET_ON_COMMENT_DELETE,
+    BOARD_SOCKET_ON_COMMENT_UPDATE,
 } from "../actions/ActionTypes";
 
 
@@ -137,6 +138,7 @@ export default function board (state = InitialState, action) {
                 err: action.err
             }
 
+        /* Comment Create */
         case BOARD_SOCKET_ON_COMMENT_CREATE: {
 
             const { user, comment } = action;
@@ -170,11 +172,66 @@ export default function board (state = InitialState, action) {
             }
         }
 
+        /* Comment Update */
+        case BOARD_SOCKET_ON_COMMENT_UPDATE: {
+            const { commentList } = state;
+            const { comment_id, description, updated } = action;
+
+            const [ u_root_idx, u_sub_idx ] = findCommentIdx(commentList, comment_id);
+
+            /* update 할 댓글이 있는 경우. update 실행 */
+            if ( u_root_idx !== -1 ) {
+                /* Root Comment Update */
+                if ( u_sub_idx === -1 ) {
+                    return {
+                        ...state,
+                        commentList: commentList.map( (comment, idx) => {
+                            if (idx !== u_root_idx) { return comment; }
+                            else {
+                                return {
+                                    ...comment,
+                                    description, updated
+                                }
+                            }
+                        })
+                    }
+                }
+
+                /* Sub Comment Update */
+                else {
+                    return {
+                        ...state,
+                        commentList: commentList.map( (comment, root_idx) => {
+                            if (root_idx !== u_root_idx) { return comment; }
+                            else {
+                                return {
+                                    ...comment,
+                                    subCommentList: comment.subCommentList.map( (subComment, sub_idx) => {
+                                        if( sub_idx !== u_sub_idx ) { return subComment; }
+                                        else {
+                                            return {
+                                                ...subComment,
+                                                description, updated
+                                            }
+                                        }
+                                    })
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+
+            /* 수정할 댓글이 없는 경우 */
+            return { ...state };
+        }
+
+        /* Comment Delete */
         case BOARD_SOCKET_ON_COMMENT_DELETE: {
             const { commentList } = state;
             const { comment_id } = action;
 
-            const [ d_root_idx, d_sub_idx ] = findDeleteCommentIdx(commentList, comment_id)
+            const [ d_root_idx, d_sub_idx ] = findCommentIdx(commentList, comment_id);
 
             /* 지울 댓글이 있는 경우. delete 실행 */
             if ( d_root_idx !== -1) {
@@ -210,9 +267,7 @@ export default function board (state = InitialState, action) {
             }
 
             /* 지울 댓글이 없는 경우 */
-            return {
-                ...state,
-            }
+            return { ...state }
         }
 
         default:
@@ -272,7 +327,7 @@ const convertCommentList = (commentList) => {
 
 
 /* 삭제할 댓글의 index를 찾는 메서드 */
-const findDeleteCommentIdx = (commentList, deleteComment_id) => {
+const findCommentIdx = (commentList, findComment_id) => {
 
     let root_idx = -1;
     let sub_idx = -1;
@@ -281,12 +336,12 @@ const findDeleteCommentIdx = (commentList, deleteComment_id) => {
         const comment = commentList[i];
 
         /* Root Comment에서 deleteComment_id와 일치하는 것이 있다면, [해당 root index, -1] */
-        if (comment.id === deleteComment_id) {
+        if (comment.id === findComment_id) {
             root_idx = i;
             return [root_idx, sub_idx];
         }
 
-        sub_idx = comment.subCommentList.findIndex( subComment => subComment.id === deleteComment_id);
+        sub_idx = comment.subCommentList.findIndex( subComment => subComment.id === findComment_id);
         /* Sub Comment 중에서 deleteComment_id와 일치하는 것이 있다면, [해당 root index, 해당 sub index] */
         if (sub_idx !== -1) {
             root_idx = i;

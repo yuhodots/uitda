@@ -171,15 +171,10 @@ export function socketOnCreateComment (user, comment) {
 }
 
 /* Comment Update Action */
-export function updateComment (comment_id, description) {
-    return (dispatch) => {
-        const POSTurl = `/api/comment/update/${comment_id}`
-        const requestBody = { description };
-        const config = {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        }
-
-        return axios.post(POSTurl, qs.stringify(requestBody), config)
+export function socketOnUpdateComment (comment_id, description, updated) {
+    return {
+        type: BOARD_SOCKET_ON_COMMENT_UPDATE,
+        comment_id, description, updated
     }
 }
 
