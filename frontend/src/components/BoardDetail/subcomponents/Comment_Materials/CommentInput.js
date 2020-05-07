@@ -1,6 +1,6 @@
 // 상위 컴포넌트: components/BoardDetail/subcomponents/CommentBox.js
 
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { message } from 'antd';
@@ -60,6 +60,8 @@ class CommentInput extends Component {
     // state에 text 내용 저장하기
     state = { content: '' }
 
+    textAreaRef = createRef()
+
     _storeTextToState = (type, value) => {
         this.setState({
             content: value
@@ -71,16 +73,16 @@ class CommentInput extends Component {
     _handleSend = () => {
         const {
             boardSocket,
-
             isUpdateMode,
-            comment_id,
 
             curUser,
-
             board,
             post_id,
-
+            
+            comment_id,
             parent_comment,     // subComment의 경우에만 존재
+
+            cancleUpdate,
         } = this.props;
 
         const { content } = this.state;
@@ -94,6 +96,7 @@ class CommentInput extends Component {
         if (isUpdateMode) {
             const data = { email, comment_id, description: content }
             boardSocket.emit('comment update', data);
+            cancleUpdate();
         }
 
         /* Create Comment Action */
@@ -107,6 +110,7 @@ class CommentInput extends Component {
             { ...data, is_re_comment: false }
 
             boardSocket.emit('comment create', data);
+            this.textAreaRef.current.clearTextArea();
         }
     }
 
@@ -115,14 +119,10 @@ class CommentInput extends Component {
     _handleKeyPress = (e) => {
         switch(e.key) {
             case 'Enter':
-                if(e.shiftKey) { console.log('shift + enter'); break; }
+                if(e.shiftKey) { break; }
+                e.preventDefault(); this._handleSend(); break;
 
-                e.preventDefault();
-                this._handleSend();
-                break;
-
-            default:
-                return;        
+            default: return;        
         }
     }
 
@@ -137,11 +137,9 @@ class CommentInput extends Component {
         switch(e.key) {
             case 'Escape':
                 if ( !isUpdateMode ) { return }
-                cancleUpdate();
-                break;
+                cancleUpdate(); break;
 
-            default:
-                return;
+            default: return;
         }
     }
 
@@ -165,6 +163,7 @@ class CommentInput extends Component {
                         onKeyDown={this._handleKeyDown}
                     >
                         <UitdaTextArea 
+                            ref={this.textAreaRef}
                             size='100%' 
                             isUnderLine={false} 
                             placeHolder='댓글을 입력하세요.'
