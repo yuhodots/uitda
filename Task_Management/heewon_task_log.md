@@ -164,8 +164,12 @@ main 에서 update 시간 상대적 시간으로 보내기
 1.댓글 socket 추가 수정(emit 내용 수정)
 2.댓글 시간 YYYY-MM-DDTHH:mm:ss
 3. board writer id 추가 필요
+
+### 2020년 5월 7일
+1.carpool socket으로 바꾸기
+
 #### 완료
 #### 진행중 
 
-### 질문
 #### 할 일
+카풀 소개 이미지 만들기
