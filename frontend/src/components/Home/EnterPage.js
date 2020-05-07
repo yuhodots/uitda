@@ -37,6 +37,9 @@ class Login extends Component {
     this.setState({
         photoOrder: 0
     })
+    window.addEventListener('resize', this._updateWindowSize);  // window 사이즈 변경 시, 변경된 값을 state에 저장
+
+    this._updateWindowSize();
   }
 
   _ClickPrevButton = () => {
@@ -89,6 +92,17 @@ class Login extends Component {
     this.setState({ photoOrder: 0 }); 
   }
 
+  componentWillUnmount () {
+    window.removeEventListener('resize', this._updateWindowSize);
+  }
+
+  _updateWindowSize = () => {
+    this.setState({
+        ...this.state,
+        windowHeight: window.innerHeight,
+        windowWidth: window.innerWidth,
+    })  
+}
 
   render() {
 
@@ -96,6 +110,10 @@ class Login extends Component {
     const tempStyle={
       padding: "10px 10px 0px 10px",
       fontSize: "small"
+    }
+
+    const tempStyle2={
+      paddingTop: `${(this.state.windowHeight-660)/2}px`
     }
 
     const content = (
@@ -107,8 +125,12 @@ class Login extends Component {
       </div>
     );
 
+    
+
     /* rendering */
     return (
+      <>
+      {((this.state.windowWidth)>700)?
       <div>
 
         {/* 왼쪽 컨테이너 (파란색 배경) */}
@@ -120,12 +142,14 @@ class Login extends Component {
             <p>학우들에게 팔고 싶은 물건이 있거나, 부탁하고 싶은 퀘스트가 있으신가요?<br></br>
               유잇다를 통해 가막골 유니스타의 삶의 질을 한 단계 높여보아요</p>
           </div>
-          <Popover content={content}>
-            <Button className="Button" href={button_href}>
-              <img src={outlook}></img>
-              <strong>Outlook 로그인</strong>
-            </Button>
-          </Popover>
+          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+            <Popover content={content}>
+              <Button className="Button" href={button_href}>
+                <img src={outlook}></img>
+                <strong>Outlook 로그인</strong>
+              </Button>
+            </Popover>
+          </div>
           <div className="Privacy">
             개인정보처리방침 | 서비스이용약관
           </div>
@@ -133,7 +157,7 @@ class Login extends Component {
         </div>
 
         {/* 오른쪽 컨테이너 (흰색 배경) */}
-        <div className="Container_Right">
+        <div className="Container_Right" style={tempStyle2}>
           
           <div className="Notice">
             <img src={notice}></img>
@@ -181,9 +205,32 @@ class Login extends Component {
           />
         </Modal>
         
+      </div>:
+        <div className="Container_Left2">
+
+        <div className="Image"><img src={UI_uni}></img></div>
+        <div className="Description">
+          <h1>유니스트를 잇다!</h1>
+          <p>학우들에게 팔고 싶은 물건이 있거나, 부탁하고 싶은 퀘스트가 있으신가요?<br></br>
+            유잇다를 통해 가막골 유니스타의 삶의 질을 한 단계 높여보아요</p>
+        </div>
+        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+          <Popover content={content}>
+            <Button className="Button" href={button_href}>
+              <img src={outlook}></img>
+              <strong>Outlook 로그인</strong>
+            </Button>
+          </Popover>
+        </div>
+        <div className="Privacy">
+          개인정보처리방침 | 서비스이용약관
+        </div>
+        
       </div>
+      }
+      </>
     );
-  }
+  } 
 }
 
 export default Login;

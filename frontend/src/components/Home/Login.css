@@ -6,6 +6,7 @@
     left: 0;
     height: 100%;
     width: 40%;
+    min-width: 450px;
     display: flex;
     flex-direction: column;
 
@@ -38,11 +39,11 @@
 
 .Container_Left .Button{
     background-color: white;
-    margin: 0px 190px 0px 190px;
     padding-top: 8px;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+    box-shadow: 0 2px 4px 0 #00000033;
     margin-bottom: 35px;
     height: 50px;
+    width: 200px;
 }
 
 .Container_Left .Button img{ 
@@ -59,11 +60,16 @@
 
 
 .Container_Right {
-    position: fixed;
     height: 100%;
     width: 60%;
-    top: 70px;
-    right: 0;
+
+    min-width: 500px;
+    display: flex;
+    flex-direction: column;
+    float:right;
+
+    padding-left: 120px;
+    padding-right: 120px;
 }
 
 .Container_Right .Notice img{
@@ -75,13 +81,15 @@
 .Container_Right .Block{
     display: flex;
     flex-direction: row;
-    margin: 20px 140px 20px 140px;
-    height: 20%;
+    margin: 10px 10px 10px 10px;
+    height: 165px;
 }
 
 .Container_Right .Block .Block_Description{
     color:#56565a;
     line-height: 25px;
+    min-width: 430px;
+    min-width: 300px;
 }
 
 .Container_Right .Block .Block_Description p{
@@ -99,3 +107,63 @@
 }
 
 
+
+
+.Container_Left2 {
+    background-color: #1E90FF;
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    min-width: 450px;
+    display: flex;
+    flex-direction: column;
+
+    box-shadow: 4px 0px 4px rgba(0,0,0,.2);
+}
+
+.Container_Left2 .Image{
+  text-align: center;
+  padding: 130px 0px 40px;
+}
+
+.Container_Left2 .Image img{
+    width: 55%;
+}
+
+.Container_Left2 .Description{
+    text-align: center;
+    color: White;
+}
+
+.Container_Left2 .Description h1{
+    margin-bottom: 25px;
+    color: White;
+}
+
+.Container_Left2 .Description p{
+    margin-bottom: 110px;
+    line-height: 30px;
+}
+
+.Container_Left2 .Button{
+    background-color: white;
+    padding-top: 8px;
+    box-shadow: 0 2px 4px 0 #00000033;
+    margin-bottom: 35px;
+    height: 50px;
+    width: 200px;
+}
+
+.Container_Left2 .Button img{ 
+    width:22px;
+    margin-right: 12px;
+}
+
+.Container_Left2 .Privacy{
+    text-align: center;
+    font-size: small;
+    color: rgb(241, 243, 245);
+}
