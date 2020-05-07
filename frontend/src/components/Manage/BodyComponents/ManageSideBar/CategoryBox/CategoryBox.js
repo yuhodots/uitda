@@ -10,12 +10,12 @@ import { colors } from '../../../../../styles/variables'
 import { BoxTemplate } from '../../../../../styles/templates/manage'
 
 import {
-    MANAGE_ACCOUNT,
+    // MANAGE_ACCOUNT,
     MANAGE_POSTS_MARKET,
     MANAGE_POSTS_NETWORKING,
     MANAGE_COMMENTS,
     MANAGE_LIKEPOSTS,
-    MANAGE_CONTACT
+    // MANAGE_CONTACT
 } from '../../../../../constants/manage_category'
 
 

@@ -7,7 +7,11 @@ import { Redirect } from 'react-router-dom';
 
 import { UserPhoto, UitdaPopover } from "../CommonComponents";
 import IconBadge from "./subComponents/IconBadge";
-import { BellFilled, BellOutlined, MessengerFilled, MessengerOutlined } from '../../../styles/icon';
+import { 
+    // BellFilled, 
+    BellOutlined, MessengerFilled, 
+    // MessengerOutlined 
+} from '../../../styles/icon';
 
 
 /* Styled Components */

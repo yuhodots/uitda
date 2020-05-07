@@ -1,5 +1,4 @@
 import axios from 'axios';
-import qs from 'qs';
 
 import { 
     BOARD_INIT,
@@ -12,7 +11,10 @@ import {
     BOARD_HEADER_OFF,
     BOARD_DETAIL_INIT,
     BOARD_DETAIL_GET_SUCCESS,
-    BOARD_DETAIL_GET_FAILURE
+    BOARD_DETAIL_GET_FAILURE,
+    BOARD_SOCKET_ON_COMMENT_CREATE,
+    BOARD_SOCKET_ON_COMMENT_UPDATE,
+    BOARD_SOCKET_ON_COMMENT_DELETE,
 } from "./ActionTypes";
 
 
@@ -141,11 +143,11 @@ export function getBoardDetailRequest(boardName, id) {
     }
 }
 
-export function getBoardDetailSuccess (post, commentlist) {
+export function getBoardDetailSuccess (post, commentList) {
     return {
         type: BOARD_DETAIL_GET_SUCCESS,
         post,
-        commentlist
+        commentList
     }
 }
 
@@ -160,37 +162,25 @@ export function getBoardDetailFailure (err) {
 
 /* Comment Actions */
 /* Comment Create Action */
-export function createComment (description, type_board, board_id, parent_comment) {
-    return (dispatch) => {
-        const POSTurl = `/api/comment/create`
-        const is_re_comment = parent_comment ? true : false;
-        let requestBody = { description, type_board, board_id, is_re_comment }
-        if (parent_comment) { requestBody = {...requestBody, parent_comment} }
-        const config = {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        }
-
-        return axios.post(POSTurl, qs.stringify(requestBody), config)
+export function socketOnCreateComment (user, comment) {
+    return {
+        type: BOARD_SOCKET_ON_COMMENT_CREATE,
+        user, comment
     }
 }
 
 /* Comment Update Action */
-export function updateComment (comment_id, description) {
-    return (dispatch) => {
-        const POSTurl = `/api/comment/update/${comment_id}`
-        const requestBody = { description };
-        const config = {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        }
-
-        return axios.post(POSTurl, qs.stringify(requestBody), config)
+export function socketOnUpdateComment (comment_id, description, updated) {
+    return {
+        type: BOARD_SOCKET_ON_COMMENT_UPDATE,
+        comment_id, description, updated
     }
 }
 
 /* Comment Delete Action */
-export function deleteComment (comment_id) {
-    return (dispatch) => {
-        const POSTurl = `/api/comment/delete/${comment_id}`;
-        return axios.post(POSTurl)
+export function socketOnDeleteComment (comment_id) {
+    return {
+        type: BOARD_SOCKET_ON_COMMENT_DELETE,
+        comment_id
     }
 }

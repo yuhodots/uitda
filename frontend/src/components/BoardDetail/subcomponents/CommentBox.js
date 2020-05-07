@@ -60,10 +60,6 @@ class CommentBox extends Component {
             board,
             post_id,
             boardSocket,
-            
-            createComment, 
-            updateComment,
-            deleteComment,
         } = this.props;
 
         return commentList.map( (comment) => {
@@ -83,10 +79,6 @@ class CommentBox extends Component {
                     user={user} created={created}
                     description={description}
                     subCommentList={subCommentList}
-                    
-                    createComment={createComment}
-                    updateComment={updateComment}
-                    deleteComment={deleteComment}
                 />
             )
         })
@@ -101,8 +93,6 @@ class CommentBox extends Component {
             board,
             post_id,
             commentList,
-
-            createComment, 
         } = this.props;
         const numOfComments = commentList.length;
 
@@ -123,7 +113,6 @@ class CommentBox extends Component {
 
                     board={board}
                     post_id={post_id}
-                    createComment={createComment}
                 />
 
                 {/* 댓글 입력란 밑의 영역 및 흰색 선 */}
@@ -151,10 +140,6 @@ CommentBox.propTypes = {
     board: PropTypes.string.isRequired,             // 게시판 정보
     post_id: PropTypes.number.isRequired,           // 포스팅 id          
     commentList: PropTypes.array.isRequired,        // 댓글 데이터를 가지고 있는 array
-
-    createComment: PropTypes.func.isRequired,       // 댓글 생성 메서드
-    updateComment: PropTypes.func.isRequired,       // 댓글 수정 메서드
-    deleteComment: PropTypes.func.isRequired,       // 댓글 삭제 메서드
 }
 
 // CommentBox.defaultProps = {

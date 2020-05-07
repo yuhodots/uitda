@@ -1,6 +1,6 @@
 
 
-import React from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Input } from "antd";
@@ -38,25 +38,33 @@ const StyledTextArea = styled(Input.TextArea)`
 
 
 /* React Component */
-const UitdaTextArea = ({data_key, storeDataFunc, size, defaultText, placeHolder, isUnderLine, letFocus}) => {
+const UitdaTextArea = forwardRef( ({data_key, storeDataFunc, size, defaultText, placeHolder, isUnderLine, letFocus}, ref) => {
+
+    const [value, setValue] = useState(defaultText);
+    const textAreaRef = useFocus( letFocus );
+
+    useImperativeHandle(ref, () => ({
+        clearTextArea: () => { setValue('') }
+    }))
 
     if (typeof(size) === 'number') { size = `${size}px` }
-
-    const textAreaRef = useFocus( letFocus );
 
     return(
         <StyledTextArea 
             ref={textAreaRef}
+            value={value}
             size={size}
             defaultValue={defaultText}
             placeholder={placeHolder}
             isUnderLine={isUnderLine}
             autoSize={true}
-            onChange={(e) => storeDataFunc(data_key, e.target.value)}
+            onChange={(e) => {
+                setValue(e.target.value);
+                storeDataFunc(data_key, e.target.value)
+            }}
         />
     )
-
-}
+})
 
 UitdaTextArea.propTypes = {
     size: PropTypes.oneOfType([                     // 가로 길이

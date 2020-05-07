@@ -28,7 +28,7 @@ const MoreButton = styled(MoreOutlined)`
 /* Custom Functions */
 const renderPopoverContent = (popoverMethods) => {
     
-    const { deleteComment, setUpdateMode } = popoverMethods;
+    const { setUpdateMode, deleteComments } = popoverMethods;
     
     return [
         {
@@ -39,18 +39,28 @@ const renderPopoverContent = (popoverMethods) => {
         {
             icon: <DeleteOutlined />,
             text: '삭제하기',
-            clickMethod: () => {},
+            clickMethod: deleteComments,
             theme: 'danger'
         }
     ]
 }
 
 /* React Component */
-const MoreButtonPopover = ({comment_id, subCommentList, moreButtonVisible, deleteComment, setUpdateMode }) => {
+const MoreButtonPopover = ({ boardSocket, comment_id, user, subCommentList, moreButtonVisible, setUpdateMode }) => {
 
-    const popoverMethods = { deleteComment, setUpdateMode }
+    const deleteComment = (email, id) => { boardSocket.emit('comment delete', {email, comment_id: id}) }
+    const deleteComments = () => {
+        console.log('delete commentes')
+        subCommentList.forEach( subComment => {
+            const { user: {email}, id } = subComment;
+            deleteComment( email, id ) 
+        })
+        deleteComment(user.email, comment_id)
+    }
 
-    const contentList = renderPopoverContent(popoverMethods)
+    const popoverMethods = { setUpdateMode, deleteComments }
+
+    const contentList = renderPopoverContent(popoverMethods, boardSocket)
 
     return (
         <MoreButtonContainer moreButtonVisible={moreButtonVisible} >
@@ -70,11 +80,12 @@ const MoreButtonPopover = ({comment_id, subCommentList, moreButtonVisible, delet
 }
 
 MoreButtonPopover.propTypes = {
+    boardSocket: PropTypes.object.isRequired,       // Board Socket
     comment_id: PropTypes.number.isRequired,        // 댓글 ID
+    user: PropTypes.object.isRequired,              // 작성자 정보
     subCommentList: PropTypes.array,                // 답글들의 데이터 array
     moreButtonVisible: PropTypes.bool.isRequired,   // Visiblity 속성값
     
-    deleteComment: PropTypes.func.isRequired,       // 댓글 삭제 메서드
     setUpdateMode: PropTypes.func.isRequired,       // 수정 모드로 변경하는 메서드
 }
 

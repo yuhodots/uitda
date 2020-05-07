@@ -8,7 +8,7 @@ const useFocus = ( isFocus ) => {
         if (isFocus) {
             element.current.focus();
         }
-    }, [])
+    }, [isFocus])
 
     return(element)
 }

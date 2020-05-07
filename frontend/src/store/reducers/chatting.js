@@ -82,7 +82,7 @@ export default function chatting ( state = InitialState, action ) {
 
             /* 새로운 메시지의 room_id와 user의 currentRoom id가 일치하는 경우에는
                currentRoom의 메시지 리스트에 새로운 메시지 데이터 추가 */
-            // if ( room_id === id ) {
+            if ( room_id === id ) {
                 const newMessage = {
                     id: message_id,
                     room_id,
@@ -92,7 +92,7 @@ export default function chatting ( state = InitialState, action ) {
                     is_unread
                 };
                 messageList.push(newMessage);
-            // }
+            }
 
             return {
                 ...state,

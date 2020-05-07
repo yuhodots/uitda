@@ -1,6 +1,6 @@
 // 상위 컴포넌트: components/BoardDetail/subcomponents/CommentBox.js
 
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { message } from 'antd';
@@ -60,6 +60,8 @@ class CommentInput extends Component {
     // state에 text 내용 저장하기
     state = { content: '' }
 
+    textAreaRef = createRef()
+
     _storeTextToState = (type, value) => {
         this.setState({
             content: value
@@ -71,33 +73,34 @@ class CommentInput extends Component {
     _handleSend = () => {
         const {
             boardSocket,
-
             isUpdateMode,
-            updateComment,
-            comment_id,
 
             curUser,
-
             board,
             post_id,
-            // createComment,
-
+            
+            comment_id,
             parent_comment,     // subComment의 경우에만 존재
+
+            cancleUpdate,
         } = this.props;
 
         const { content } = this.state;
+
+        const { email } = curUser;
 
         /* 내용이 없으면 경고창 띄우고 종료 */
         if(!content) { message.warning('댓글 내용을 입력하세요'); return; }
 
         /* Update Comment Action */
         if (isUpdateMode) {
-            updateComment(comment_id, content);
+            const data = { email, comment_id, description: content }
+            boardSocket.emit('comment update', data);
+            cancleUpdate();
         }
 
         /* Create Comment Action */
         else {
-            const { email } = curUser;
             let data = {
                 email, description: content, 
                 type_board: board, board_id: post_id, 
@@ -107,12 +110,8 @@ class CommentInput extends Component {
             { ...data, is_re_comment: false }
 
             boardSocket.emit('comment create', data);
+            this.textAreaRef.current.clearTextArea();
         }
-        
-
-        /* 현재는 새로고침으로 요청 보냄.
-           나중에는 socket.io를 이용해서 자동으로 업데이트되도록 하기 */
-        window.location.reload();
     }
 
     /* 키 입력 이벤트 핸들러 (Enter, Esc)
@@ -120,14 +119,10 @@ class CommentInput extends Component {
     _handleKeyPress = (e) => {
         switch(e.key) {
             case 'Enter':
-                if(e.shiftKey) { console.log('shift + enter'); break; }
+                if(e.shiftKey) { break; }
+                e.preventDefault(); this._handleSend(); break;
 
-                e.preventDefault();
-                this._handleSend();
-                break;
-
-            default:
-                return;        
+            default: return;        
         }
     }
 
@@ -142,11 +137,9 @@ class CommentInput extends Component {
         switch(e.key) {
             case 'Escape':
                 if ( !isUpdateMode ) { return }
-                cancleUpdate();
-                break;
+                cancleUpdate(); break;
 
-            default:
-                return;
+            default: return;
         }
     }
 
@@ -170,6 +163,7 @@ class CommentInput extends Component {
                         onKeyDown={this._handleKeyDown}
                     >
                         <UitdaTextArea 
+                            ref={this.textAreaRef}
                             size='100%' 
                             isUnderLine={false} 
                             placeHolder='댓글을 입력하세요.'
@@ -189,19 +183,14 @@ class CommentInput extends Component {
 
 CommentInput.propTypes = {
     isUpdateMode: PropTypes.bool,                   // 댓글 수정 Input 컴포넌트인지
-
-    /* 댓글 생성 액션 관련 props */
+    boardSocket: PropTypes.object.isRequired,       // Board Socket
     curUser: PropTypes.object,                      // 로그인한 유저 정보
     board: PropTypes.string,                        // 게시판 정보
     post_id: PropTypes.number,                      // 포스팅 id
+    
     parent_comment: PropTypes.number,               // 답글의 경우, 부모 댓글의 id
     comment_id: PropTypes.number,                   // 댓글 수정의 경우, 해당 댓글의 id
     defaultValue: PropTypes.string,                 // 댓글 수정의 경우, 해당 댓글의 이전 값
-
-    boardSocket: PropTypes.object.isRequired,       // Board Socket
-
-    createComment: PropTypes.func,                  // 댓글 생성 메서드
-    updateComment: PropTypes.func,                  // 댓글 수정 메서드
 
     cancleUpdate: PropTypes.func,                   // 수정 상태를 취소하는 메서드
 }
@@ -215,8 +204,6 @@ CommentInput.defaultProps = {
     comment_id: 0,
     defaultValue: '',
 
-    createComment: () => {},
-    updateComment: () => {},
     cancleUpdate: () => {},
 }
 

@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import socketio from 'socket.io-client';
+// import socketio from 'socket.io-client';
 import 'antd/dist/antd.css'
 
 // 컴포넌트

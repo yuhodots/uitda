@@ -25,7 +25,8 @@ const SidebarBox = styled.div`
     z-index: 100;
 
     background-color: ${colors.white};
-    
+    border-right: 2px solid ${colors.gray_bg};
+
     display: flex;
     flex-flow: column nowrap;
 `;

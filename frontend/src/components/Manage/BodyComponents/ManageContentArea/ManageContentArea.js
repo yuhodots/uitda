@@ -15,9 +15,9 @@ import {
     MANAGE_ACCOUNT,
     MANAGE_POSTS_MARKET,
     MANAGE_POSTS_NETWORKING,
-    MANAGE_COMMENTS,
-    MANAGE_LIKEPOSTS,
-    MANAGE_CONTACT,
+    // MANAGE_COMMENTS,
+    // MANAGE_LIKEPOSTS,
+    // MANAGE_CONTACT,
 } from '../../../../constants/manage_category'
 
 import {

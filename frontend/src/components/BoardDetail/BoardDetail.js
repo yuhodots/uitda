@@ -38,8 +38,8 @@ const ContainerDiv = styled.div`
 
     /* 그림자 효과 */
     box-shadow: 0 0 12px rgba(80,80,80,.1);
-    border-left: 2px solid ${colors.gray_bg};
-    border-right: 2px solid ${colors.gray_bg};
+    /* border-left: 2px solid ${colors.gray_bg};
+    border-right: 2px solid ${colors.gray_bg}; */
 
     display: flex;
     flex-flow: column nowrap;
@@ -88,9 +88,6 @@ class BoardDetail extends Component {
             commentList,        // comment data
 
             deletePost,         // 게시글을 삭제하는 메서드
-            createComment,      // 댓글 생성 메서드
-            updateComment,      // 댓글 수정 메서드
-            deleteComment,      // 댓글 삭제 메서드
         } = this.props;
 
         const {
@@ -139,10 +136,7 @@ class BoardDetail extends Component {
                         curUser={curUser}
                         board={board}
                         post_id={id}
-                        commentList={commentList} 
-                        createComment={createComment}
-                        updateComment={updateComment}
-                        deleteComment={deleteComment}
+                        commentList={commentList}
                     />
                 </ContainerDiv>
             </BackgroundDiv>
@@ -158,9 +152,6 @@ BoardDetail.propTypes = {
     commentList: PropTypes.array,               // 댓글 데이터
 
     deletePost: PropTypes.func.isRequired,      // 게시글을 삭제하는 메서드
-    createComment: PropTypes.func.isRequired,   // 댓글 생성 메서드
-    updateComment: PropTypes.func.isRequired,   // 댓글 수정 메서드
-    deleteComment: PropTypes.func.isRequired,   // 댓글 삭제 메서드
 }
 
 BoardDetail.defaultProps = {
