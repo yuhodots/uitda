@@ -7,7 +7,6 @@ import { SendOutlined } from "@ant-design/icons";
 
 import { colors } from "../../../../styles/variables";
 import { UitdaTextArea } from "../../../Structure/CommonComponents";
-import { clearValue } from "../../../Structure/CommonComponents/UitdaTextArea";
 
 
 /* Styled Components */
@@ -60,7 +59,6 @@ class ChatInputBox extends Component {
             chatSocket, 
             curUser, currentRoom,
             chatInputData,
-            moveToBoardBottom
         } = this.props;
 
         /* 데이터가 있는 경우 에만 socket을 통해 데이터를 넘겨줌 */

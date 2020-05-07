@@ -18,7 +18,7 @@ const useHover = (onHover, onLeave) => {
             element.current.removeEventListener('mouseover', onHover);
             element.current.removeEventListener('mouseleave', onLeave);
         }
-    }, [])
+    }, [onHover, onLeave])
 
     return element;
 }

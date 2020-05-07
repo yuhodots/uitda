@@ -35,8 +35,6 @@ const CommentBranch = ( props ) => {
         curUser, user, comment_id, 
         description, created,
         subCommentList,
-
-        updateComment,
     } = props;
 
     /* 해당 댓글 (Root) 이 로그인한 유저의 것인지 */
