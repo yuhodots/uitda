@@ -19,7 +19,7 @@ import { getStatusRequest, logoutRequest } from '../store/actions/auth'
 
 /* Constants */
 import {
-    MANAGE_ACCOUNT,
+    MANAGE_PROFILE,
     MANAGE_POSTS_MARKET,
     MANAGE_POSTS_NETWORKING,
     MANAGE_COMMENTS,
@@ -50,7 +50,7 @@ class ManageContainer extends Component {
         switch(kind) {
 
             /* 계정 관리 */
-            case MANAGE_ACCOUNT:
+            case MANAGE_PROFILE:
                 break;
 
             /* 게시글 관리 */

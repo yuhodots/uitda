@@ -16,7 +16,7 @@ import ManageContainer from '../containers/ManageContainer';
 import EditContainer from "../containers/EditContainer";
 
 import {
-    MANAGE_ACCOUNT,
+    MANAGE_PROFILE,
     MANAGE_COMMENTS,
     MANAGE_LIKEPOSTS,
     MANAGE_CONTACT,
@@ -40,8 +40,8 @@ const Manage = (props) => {
             <Route path='/manage/edit/:boardName/:id' component={EditContainer} />
 
             {/* 카테고리 별 해당 kind를 넘겨주기 */}
-            <Route path={`/manage/${MANAGE_ACCOUNT}`} component={() => 
-                <ManageContainer kind={MANAGE_ACCOUNT} {...props} />
+            <Route path={`/manage/${MANAGE_PROFILE}`} component={() => 
+                <ManageContainer kind={MANAGE_PROFILE} {...props} />
             } />
             <Route path={`/manage/posts/market`} component={() => 
                 <ManageContainer kind={MANAGE_POSTS_MARKET} {...props} />
