@@ -516,6 +516,10 @@
 
 * Manage Content Header 컴포넌트 생성 (Content 공통 컴포넌트)
 * Manage Profile 생성
+* Manage Profile 디자인 작업 
+* Manage Footer 추가
+* Edit Board 카테고리의 Header 글자 스타일 관련 내용 주석처리
+* 잉력시장, 다판다 게시글 수정 후 다시 수정하기를 했을 때, manage 페이지로 redirect되는 오류 해결
 
 
 
