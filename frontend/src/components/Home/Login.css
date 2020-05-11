@@ -57,6 +57,11 @@
     color: rgb(241, 243, 245);
 }
 
+.Container_Left .Privacy a{
+    display: inline;
+    font-size: small;
+    color: rgb(241, 243, 245);
+}
 
 
 .Container_Right {
