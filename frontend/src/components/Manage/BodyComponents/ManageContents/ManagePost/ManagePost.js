@@ -6,88 +6,41 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Button } from 'antd'
 
+import { ContentHeader } from "../CommonComponents";
+import { ContentBoxStyle } from '../CommonComponents/CommonCSS'
 import ConditionSelector from './Subcomponents/ConditionSelector'
 import { colors } from '../../../../../styles/variables'
 import { 
     PostManageButtonStyle,
     BoxTemplate,
-    LinkBoxTemplate
  } from '../../../../../styles/templates/manage'
 
 /* Styled Components */
 /* 전체 포스팅 관리 박스 영역 */
 const WholeBox = styled.div`
-    width: 100%;
-    padding: 0 1rem;
-
-    position: relative;
-
-    display: flex;
-    flex-flow: column nowrap;
+    ${ContentBoxStyle}
 `;
 
-/* //////////////////////////////// */
-/* 제목, 글 개수, 글쓰기 항목 담는 div 태그 */
-const HeaderBox = styled.div`
-    margin-bottom: 2rem;
-    
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: baseline;
-`;
+    /* NoPostBox / PostBox 처리를 위한 div 태그 */
+    const BodyBox = styled.div`
+        width: 100%;
+    `;
 
-/* 관리 페이지 제목 (~~ 글 관리) */
-const Title = styled.div`
-    font-size: 1.75rem;
-`;
+        /* 포스트 아이템이 없는 경우 render되는 박스 */
+        const NoPostBox = styled(BoxTemplate)`
+            padding: 2rem;
 
-/* 글 개수 정보 */
-const SubInfo = styled.div`
-    margin-left: 2rem;
-    font-size: 1.125rem;
-`;
+            color: ${colors.font_lightgray};
+            text-align: center;
+        `;
 
-/* 글 쓰기 버튼 */
-const CreateButton = styled(LinkBoxTemplate)`
-    padding: 0.375rem 1rem;
+        /* 포스트 아이템이 있는 경우 render되는 박스
+        PostItems + BoardOrderBox */
+        const PostsBox = styled.div`
+            display: flex;
+            flex-flow: column nowrap;
+        `;
 
-    color: ${colors.font_gray};
-    font-size: 0.875rem;
-
-    cursor: pointer;
-
-    position: absolute;
-    right: 1rem;
-
-    :hover {
-        color: ${colors.font_darkgray};
-        box-shadow: 0 0 3px rgba(0,0,0,.2);
-    }
-`
-///////////////////////////
-
-/*///////////////////////////////////// */
-/* NoPostBox / PostBox 처리를 위한 div 태그 */
-const BodyBox = styled.div`
-    width: 100%;
-`;
-
-/* 포스트 아이템이 없는 경우 render되는 박스 */
-const NoPostBox = styled(BoxTemplate)`
-    padding: 2rem;
-
-    color: ${colors.font_lightgray};
-    text-align: center;
-`;
-
-/* 포스트 아이템이 있는 경우 render되는 박스
-   PostItems + BoardOrderBox */
-const PostsBox = styled.div`
-    display: flex;
-    flex-flow: column nowrap;
-`;
-
-//////////////
 /* PostItem */
 const PostItem = styled(BoxTemplate)`
     padding: 1rem 2rem;
@@ -290,13 +243,13 @@ class ManagePost extends Component{
 
         /* 전체 작성한 글의 개수 */
         let postsNum = postList.length;
-        // let postsNum = 0;    // post가 없는 경우 테스트용
         
         /* 게시판 순서의 최댓값 */
         let maxOrder = Math.ceil(postsNum / MAX_ITEM);
 
-        /* 게시판 제목 */
-        let title = (board === 'market') ? '다판다' : '잉력시장';
+        /* 게시판 상단의 텍스트 내용 */
+        const title = (board === 'market') ? '다판다 글 관리' : '잉력시장 글 관리';
+        const subInfo = `${postsNum} 개`;
 
         /* 게시판 페이지에 해당되는 리스트만 뽑은 리스트 */
         let parsedList = postList.slice((curOrder - 1) * MAX_ITEM, curOrder * MAX_ITEM);
@@ -308,11 +261,7 @@ class ManagePost extends Component{
 
         return (
             <WholeBox>
-                <HeaderBox>
-                    <Title>{title} 글 관리</Title>
-                    <SubInfo>{postsNum} 개</SubInfo>
-                    <CreateButton to='/manage/edit/newpost' >글쓰기</CreateButton>
-                </HeaderBox>
+                <ContentHeader title={title} subInfo={subInfo} hasCreatedButton={true} />
                 <BodyBox>
                     {
                         /* post가 있으면 PostBox, 없으면 NoPostBox */
