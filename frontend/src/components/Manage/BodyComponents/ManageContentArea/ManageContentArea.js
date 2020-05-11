@@ -2,31 +2,25 @@
 
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import {
     ErrorPage,
-    ManagePost
+    ManagePost,
+    ManageProfile,
 } from '../ManageContents';
-
-/* Constants */
 import {
-    MANAGE_ACCOUNT,
+    MANAGE_PROFILE,
     MANAGE_POSTS_MARKET,
     MANAGE_POSTS_NETWORKING,
     // MANAGE_COMMENTS,
     // MANAGE_LIKEPOSTS,
     // MANAGE_CONTACT,
 } from '../../../../constants/manage_category'
+import { MARKET, NETWORKING} from '../../../../constants/categories'
 
-import {
-    MARKET,
-    NETWORKING
-} from '../../../../constants/categories'
 
 /* Styled Components */
-
 /* Content 영역을 나타내는 div 태그 */
 const ContentBoxArea = styled.div`
     margin: 0;
@@ -42,61 +36,40 @@ class ManageContentArea extends Component {
     /* Manage 카테고리에 따라 해당 컴포넌트 렌더 */
     _renderContent = (kind) => {
 
-        let component,      // Content Component
-            isPost,         // Post
-            board;          // Market or Networking
-
         const {
+            curUser,
+
             /* Posts */
             postList,
             deletePost,
             updatePostCondition
         } = this.props;
-
+        
+        let board;          // Market or Networking
+        
         switch (kind) {
-            case MANAGE_ACCOUNT:
-                break;
+            case MANAGE_PROFILE:
+                return (
+                    <ManageProfile 
+                        curUser={curUser}
+                    />
+                )
 
-            case MANAGE_POSTS_MARKET:
-                board = MARKET;
-                // eslint-disable-next-line
+            case MANAGE_POSTS_MARKET: board = MARKET;
+            // eslint-disable-next-line 
             case MANAGE_POSTS_NETWORKING:
                 board = board ? MARKET : NETWORKING;
-                isPost = true;
-                component = ManagePost;
-                break;
-
-            // case MANAGE_COMMENTS:
-            //     break;
-            //     // eslint-disable-next-line
-            // case MANAGE_LIKEPOSTS:
-            //     break;
-            //     // eslint-disable-next-line
-            // case MANAGE_CONTACT:
-            //     break;
-            //     // eslint-disable-next-line
-
-            default:
-                component = ErrorPage;
-                break;
-        }
-
-        // console.log(component, isPost, board);
-
-        return isPost ?
-        
-        /* 게시글 관리 페이지 경우, 어떤 게시판인지를 알려야 함 */
-        <Route component={() => {
-            return <ManagePost 
+                return (
+                    <ManagePost 
                         board={board} 
                         postList={postList}
                         deletePost={deletePost}
                         updatePostCondition={updatePostCondition}
                     />
-        }} /> :
+                )
 
-        /* 그 외 카테고리는 바로 렌더하면 됨 */
-        <Route component={component} />
+            default: return <ErrorPage />
+        }
     }
 
 
@@ -121,6 +94,7 @@ class ManageContentArea extends Component {
 
 ManageContentArea.propTypes = {
     isLoading: PropTypes.bool.isRequired,               // Manage 컨텐츠의 항목이 loading중인지 여부
+    curUser: PropTypes.object.isRequired,               // 현재 로그인된 유저 정보
     kind: PropTypes.string.isRequired,                  // 메니지 카테고리 정보
 
     postList: PropTypes.array,                          // Posts 데이터 리스트
