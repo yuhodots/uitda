@@ -59,9 +59,6 @@ class EditContainer extends Component {
             const lastPath = lastLocation ? lastLocation.pathname : '';
             const defaultCategory = this._getDefaultCategoryForCreate(lastPath);
 
-            console.log(lastPath)
-            console.log(defaultCategory)
-
             selectEditCategory(defaultCategory);
         }
 
@@ -192,7 +189,7 @@ class EditContainer extends Component {
            create의 경우 init 완료되었음을 의미하는 isEditInit을,
            update의 경우 get 요청이 완료되었음을 의미하는 isEditGetSuccess를
            load가 완료되었는가의 boolean 값 isLoad로 이용함 */
-        let isLoad = isNew ? isGetStatusDone && didMount : isGetStatusDone && isEditGetSuccess
+        const isLoad = isNew ? didMount && isGetStatusDone : didMount && isGetStatusDone && isEditGetSuccess
 
         return(
             isLoad ?
