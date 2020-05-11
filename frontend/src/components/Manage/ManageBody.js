@@ -15,8 +15,7 @@ import { colors } from "../../styles/variables";
    backgrond color를 가지고, 전체를 덮는 크기를 정함 */
 const BodyArea = styled.div`
     margin: 0;
-    padding: 2.5rem;
-    padding-top: 6.5rem;
+    padding: 6.5rem 2.5rem 5rem;
 
     /* 최소 높이가 50rem보다 큰 경우, 화면 크기에 맞춤 */
     min-height: ${props => {

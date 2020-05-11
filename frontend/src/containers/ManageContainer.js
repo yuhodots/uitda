@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 
 /* Components */
-import { ManageBody, ManageHeader } from '../components/Manage'
+import { ManageBody, ManageHeader, ManageFooter } from '../components/Manage'
 
 /* Actions */
 import {
@@ -128,7 +128,7 @@ class ManageContainer extends Component {
                 isLoaded ?
                 
                     curUser ? 
-                    <div>
+                    <div style={{position: 'relative'}} >
                         <ManageHeader
                             curUser={curUser}
                             logoutRequest={logoutRequest}
@@ -143,6 +143,7 @@ class ManageContainer extends Component {
                             deletePost={deletePostRequest}
                             updatePostCondition={updatePostConditionRequest}
                         /> 
+                        <ManageFooter />
                     </div> :
                     <Redirect to='/' />:
 
