@@ -1,6 +1,6 @@
 
 
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
@@ -9,40 +9,26 @@ import PictureBox from './PictureBox'
 
 /* Styled Components */
 const SideArea = styled.div`
-
     margin-right: 2rem;
 
-    height: 40rem;
-    /* width: 14rem; */
     flex: 1;
 
     display: flex;
     flex-flow: column nowrap;
 `;
 
-
-class ManageSideBox extends Component {
-
-
-
-    render () {
-
-        const {
-            curUser,
-            kind,    
-        } = this.props
-
-        return (
-            <SideArea>
-                <PictureBox 
-                    curUser={curUser}
-                />
-                <CategoryBox 
-                    kind={kind}
-                />
-            </SideArea>
-        )
-    }
+/* React Component */
+const ManageSideBox = ({curUser, kind}) => {
+    return (
+        <SideArea>
+            <PictureBox 
+                curUser={curUser}
+            />
+            <CategoryBox 
+                kind={kind}
+            />
+        </SideArea>
+    )
 }
 
 ManageSideBox.propTypes = {
