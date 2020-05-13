@@ -523,6 +523,12 @@
 
 
 
+### 5.13 (수)
+
+* app.css에 body font 추가
+
+
+
 
 
 
@@ -592,6 +598,7 @@
   Redirect 문제 (포스트 delete 시, '/board/market'으로 이동)
   reload (새로고침) 하는데 왜 '/board/market' 으로 이동할까 ?
   예상 -> manage container의 user가 없는 경우 auth/login 가고 auth/login에서 /로 갈 듯
+* Manage Profile - 글 작성 => 더보기 버튼
 
 
 
