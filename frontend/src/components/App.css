@@ -1,7 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&family=Noto+Sans+KR&family=Roboto&display=swap');
+
 * {
     box-sizing: border-box;
 }
 
 #root {
     height: 100%;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', 'Noto Sans KR', 'Roboto', sans-serif, 'Nanum Gothic Coding';
 }
