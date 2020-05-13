@@ -8,7 +8,7 @@ require('moment-timezone');
 moment.tz.setDefault("Asia/Seoul");
 moment.locale('ko');
 
-function make_event_ob(id, departure, destination, start, meeting_place, 
+function make_event_ob(id, departure, destination, start, meeting_place,
     contact, description, created, user, label, guestlist) {
 
     let event = {
@@ -42,7 +42,7 @@ module.exports = {
             function (callback) {
                 cal_events.findAll()
                 .then(function (results) { events_db = results; })
-                .then(function () { 
+                .then(function () {
                     (events_db[0])?
                         callback(null):
                         res.json({ events: [], user: req.user ? req.user : 0 });
@@ -64,7 +64,7 @@ module.exports = {
                         if (diffHour < 8){
                             overdue = true;
                         }
-    
+
                         /* label 값 설정 */
                         let label;
                         if( events_db[i]['condition'] == '마감' || overdue ){
@@ -77,7 +77,7 @@ module.exports = {
                         /* events obeject 생성 */
                         let user_ob;
                         users.findOne({ where: { email: events_db[i].email } })
-                        .then(function (result) { 
+                        .then(function (result) {
                             user_ob = {
                                 id: result.dataValues.id,
                                 email: result.dataValues.email,
@@ -88,9 +88,9 @@ module.exports = {
                         .catch(function (err) { throw err; });
 
                         guest.findAll({ where: { event_id: events_db[i].id } })
-                        .then(function (guestlist) { 
-                            events_response[i] = make_event_ob(events_db[i].id, events_db[i].departure, events_db[i].destination, 
-                                events_db[i].start, events_db[i].meeting_place, events_db[i].contact, events_db[i].description, 
+                        .then(function (guestlist) {
+                            events_response[i] = make_event_ob(events_db[i].id, events_db[i].departure, events_db[i].destination,
+                                events_db[i].start, events_db[i].meeting_place, events_db[i].contact, events_db[i].description,
                                 events_db[i].created, user_ob, label, guestlist);
                         })
                         .then(function () {
@@ -166,12 +166,12 @@ module.exports = {
                     }
                     else{
                         label = 'active';
-                    } 
+                    }
 
                     /* events obeject 생성 */
                     let user_ob;
                     users.findOne({ where: { email: events_db[i].email } })
-                    .then(function (result) { 
+                    .then(function (result) {
                         user_ob = {
                             id: result.dataValues.id,
                             email: result.dataValues.email,
@@ -182,9 +182,9 @@ module.exports = {
                     .catch(function (err) { throw err; });
 
                     guest.findAll({ where: { event_id: events_db[i].id } })
-                    .then(function (guestlist) { 
-                        events_response[i] = make_event_ob(events_db[i].id, events_db[i].departure, events_db[i].destination, 
-                            events_db[i].start, events_db[i].meeting_place, events_db[i].contact, events_db[i].description, 
+                    .then(function (guestlist) {
+                        events_response[i] = make_event_ob(events_db[i].id, events_db[i].departure, events_db[i].destination,
+                            events_db[i].start, events_db[i].meeting_place, events_db[i].contact, events_db[i].description,
                             events_db[i].created, user_ob, label, guestlist);
                     })
                     .then(function () {
@@ -213,7 +213,6 @@ module.exports = {
         let start;
         let meeting_place;
         let contact;
-        let account;
         let description;
         let condition;
         let created;
@@ -227,7 +226,6 @@ module.exports = {
                 start = req.body.start;
                 meeting_place = req.body.meeting_place;
                 contact = req.body.contact;
-                account = req.body.account;
                 description = req.body.description;
                 created = moment().format('YYYY년MM월DD일HH시mm분ss초');
                 condition = req.body.condition;
@@ -243,8 +241,8 @@ module.exports = {
 
             /* 이벤트 생성 */
             function (callback) {
-                cal_events.create({ departure : departure, destination : destination, 
-                    start : start, meeting_place : meeting_place, contact : contact, account : account, 
+                cal_events.create({ departure : departure, destination : destination,
+                    start : start, meeting_place : meeting_place, contact : contact,
                     description : description, email: req.user.email, created: created, condition: condition })
                 .then(function(){ callback(null); }).catch(function(err){throw err;});
             },
@@ -259,7 +257,7 @@ module.exports = {
             if (err) throw (err);
         });
     },
-  
+
     update : function(req, res){
 
         /* 변수 선언 */
@@ -269,7 +267,6 @@ module.exports = {
         let start;
         let meeting_place;
         let contact;
-        let account;
         let description;
         let condition;
 
@@ -283,7 +280,6 @@ module.exports = {
                 start = req.body.start;
                 meeting_place = req.body.meeting_place;
                 contact = req.body.contact;
-                account = req.body.account;
                 description = req.body.description;
                 condition = req.body.condition;
                 callback(null);
@@ -307,9 +303,9 @@ module.exports = {
 
             /* 이벤트 수정 */
             function (callback) {
-                cal_events.update({ departure : departure, destination : destination, 
-                    start : start, meeting_place : meeting_place, contact : contact, account : account, 
-                    description : description, email : req.user.email, condition: condition }, 
+                cal_events.update({ departure : departure, destination : destination,
+                    start : start, meeting_place : meeting_place, contact : contact,
+                    description : description, email : req.user.email, condition: condition },
                     { where: { id: id } })
                 .then(function () { callback(null); }).catch(function (err) { throw err; });
             },
@@ -359,7 +355,7 @@ module.exports = {
                 cal_events.destroy({ where: { id: id } })
                 .then(function () { res.end(); })
                 .catch(function (err) { throw err; });
-                callback(null); 
+                callback(null);
             }
         ], function (err) {
             if (err) throw (err);
@@ -531,5 +527,3 @@ module.exports = {
         });
     }
 }
-
-

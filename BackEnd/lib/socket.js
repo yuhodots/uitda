@@ -8,6 +8,8 @@ const { notification } = require('../models');
 const { likey } = require('../models');
 const { market_board } = require('../models');
 const { networking_board } = require('../models');
+const { cal_events } = require('../models');
+const { guest } = require('../models');
 const sequelize = require("sequelize");
 const Op = sequelize.Op;
 let moment = require('moment');
@@ -65,6 +67,7 @@ module.exports = function (io) {
     const home_socket = io.of('/');
     const board_socket = io.of('/board');
     const chatting_socket = io.of('/chatting');
+    const carpool_socket = io.of('/carpool');
 
     //home : notification
     home_socket.on('connection',socket =>{
@@ -522,6 +525,201 @@ module.exports = function (io) {
                 }).catch(function (err) { throw err; });
             }
         });
+    });
+
+    //carpool
+    carpool_socket.on('connection', socket =>{
+        console.log('carpool: a user connected');
+        socket.on('event create', function({email, departure, destination, start, meeting_place, contact, description, condition}){
+            //카풀 이벤트 생성
+            console.log('carpool: event created')
+            let created = moment().format('YYYY년MM월DD일HH시mm분ss초');
+            cal_events.create({ departure : departure, destination : destination,
+                start : start, meeting_place : meeting_place, contact : contact,
+                description : description, email: email, created: created, condition: condition })
+            .then(function(new_event){
+                carpool_socket.emit('event create', {event:new_event.dataValues});
+            }).catch(function(err){throw err;});
+        });
+        socket.on('event update', function({email, id, departure, destination, start, meeting_place, contact, description, condition}){
+            //카풀 이벤트 수정
+            console.log('carpool: event updated')
+            async.waterfall([
+                /* 작성자인지 확인 */
+                function (callback) {
+                    cal_events.findOne({ where: { id: id } }).then(function (content) {
+                        if(email==content.email){
+                            callback(null,true);
+                        }else{
+                            callback(null,false);
+                        }
+                    }).catch(function (err) { throw err; });
+                },
+
+                /* 이벤트 수정 */
+                function (sameOwner, callback) {
+                    if(sameOwner){
+                        cal_events.update({ departure : departure, destination : destination,
+                            start : start, meeting_place : meeting_place, contact : contact,
+                            description : description, email : email, condition: condition },
+                            { where: { id: id }
+                        }).then(function () {
+                            var new_event = {
+                                id: id,
+                                departure: departure,
+                                destination: destination,
+                                start: start,
+                                meeting_place: meeting_place,
+                                contact: contact,
+                                description: description,
+                                email:email,
+                                condition:condition
+                            };
+                            carpool_socket.emit('event update', {event:new_event});
+                            callback(null);
+                        }).catch(function (err) { throw err; });
+                    } else {
+                        callback(null);
+                    }
+                }
+            ], function (err) {
+                if (err) throw (err);
+            });
+
+        });
+        socket.on('event delete', function({email, id}){
+            //카풀 이벤트 삭제
+            console.log('carpool: event deleted')
+            async.waterfall([
+                /* 작성자인지 확인 */
+                function (callback) {
+                    cal_events.findOne({ where: { id: id } }).then(function (content) {
+                        if(email == content.email){
+                            callback(null,true);
+                        }else{
+                            callback(null,false);
+                        }
+                    }).catch(function (err) { throw err; });
+                },
+
+                /* 댓글 삭제 */
+                function (sameOwner, callback) {
+                    if(sameOwner){
+                        cal_events.destroy({ where: { id: id }
+                        }).then(function () {
+                            carpool_socket.emit('event delete', {event_id:id});
+                        }).catch(function (err) { throw err; });
+                        callback(null);
+                    } else{
+                        callback(null);
+                    }
+                }
+            ], function (err) {
+                if (err) throw (err);
+            });
+        });
+        socket.on('guest create', function({email, event_id}){
+            console.log('carpool: guest created');
+            let username;
+            let created;
+            async.waterfall([
+
+                /* 변수 값 할당 */
+                function (callback) {
+                    created = moment().format('YYYY년MM월DD일HH시mm분ss초');
+                    callback(null);
+                },
+
+                function (callback) {
+                    users.findOne({where:{email:email}}).then(function(user){
+                        username = user.username;
+                        callback(null);
+                    }).catch(function(err){
+                        throw err;
+                    });
+                },
+
+                /* guest 생성 */
+                function (callback) {
+                    guest.create({ event_id : event_id, username : username, email : email, created : created })
+                    .then(function(guest){
+                        carpool_socket.emit('guest create', {guest:guest.dataValues})
+                        callback(null);
+                     })
+                    .catch(function(err){throw err;});
+                },
+
+            ], function (err) {
+                if (err) throw (err);
+            });
+        });
+        socket.on('guest update', function({email, id, condition}){
+            console.log('carpool: guest updated');
+            async.waterfall([
+
+                /* 작성자인지 확인 */
+                function (callback) {
+                    guest.findOne({ where: { id: id } }).then(function (result) {
+                        if(result.email == email){
+                            callback(null,true);
+                        } else {
+                            callback(null, false);
+                        }
+                    }).catch(function (err) { throw err; });
+                },
+
+                /* guest 상태 수정 */
+                function (sameOwner, callback) {
+                    if(sameOwner){
+                        guest.update({ condition : condition }, { where: { id: id } })
+                        .then(function(){
+                            carpool_socket.emit('guest update', {id: id, condition: condition});
+                        }).catch(function(err){throw err;});
+                    } else {
+                        callback(null);
+                    }
+                }
+            ], function (err) {
+                if (err) throw (err);
+            });
+        });
+        socket.on('guest delete', function({email, id}){
+            console.log('carpool: guest deleted');
+            async.waterfall([
+
+                /* 작성자인지 확인 */
+                function (callback) {
+                    guest.findOne({ where: { id: id } }).then(function (result) {
+                        if(result.email == email){
+                            callback(null,true);
+                        } else {
+                            callback(null, false);
+                        }
+                    }).catch(function (err) { throw err; });
+                },
+
+                /* guest 삭제 */
+                function (sameOwner, callback) {
+                    if(sameOwner){
+                        guest.destroy({ where: { id: id } })
+                        .then(function(){
+                            carpool_socket.emit('guest delete', {id:id})
+                        })
+                        .catch(function(err){throw err;});
+                    } else {
+                        callback(null);
+                    }
+                }
+
+            ], function (err) {
+                if (err) throw (err);
+            });
+
+        });
+        socket.on('disconnect', function({}){
+            console.log('carpool: a user disconnected');
+        });
+
     });
 
     return io;
