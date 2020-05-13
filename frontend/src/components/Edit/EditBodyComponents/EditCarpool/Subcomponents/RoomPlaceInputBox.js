@@ -11,7 +11,7 @@ import { DEPARTURE, DESTINATION } from "../../../../../constants/edit_RoomInfo_D
 /* Styled Components */
 
 const WholeBox = styled.div`
-    margin: 1rem 0;
+    margin: 0;
     
     display: flex;
     flex-flow: row nowrap;

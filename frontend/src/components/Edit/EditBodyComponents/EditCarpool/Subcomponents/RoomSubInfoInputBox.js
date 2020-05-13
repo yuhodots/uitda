@@ -12,7 +12,7 @@ import TitleHintDatas from "./Subinfo_TitleHint.json";
 /* Styled Components */
 const WholeBox = styled.div`
     margin: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
     
     display: flex;
     flex-flow: column nowrap;
@@ -52,7 +52,7 @@ const WholeBox = styled.div`
         `;
 
     const HintBox = styled.div`
-        font-size: 0.625rem;
+        font-size: 0.6875rem;
         font-weight: lighter;
         color: ${colors.font_lightgray};
     `;

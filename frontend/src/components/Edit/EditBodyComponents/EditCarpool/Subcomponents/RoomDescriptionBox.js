@@ -18,6 +18,7 @@ const WholeBox = styled.div`
 `;
 
     const DescriptionTextArea = styled(Input.TextArea)`
+        min-height: 10rem !important;
 
         font-size: 1rem;
         background-color: inherit;
@@ -49,6 +50,7 @@ const RoomDescriptionBox = ({storeCarpoolData}) => {
                 placeholder="추가 정보를 입력하세요."
                 autoSize={true}
                 onChange={(e) => storeCarpoolData(DESCRIPTION, e.target.value)}
+                style={{height: '100%'}}
             />
         </WholeBox>
     )

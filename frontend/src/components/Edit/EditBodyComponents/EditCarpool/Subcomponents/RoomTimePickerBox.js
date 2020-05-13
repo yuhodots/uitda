@@ -10,7 +10,7 @@ import { START_TIME } from "../../../../../constants/edit_RoomInfo_DataKeys";
 
 /* Styled Components */
 const WholeBox = styled.div`
-    margin: 1rem 0;
+    margin: 1.25rem 0;
     
     display: flex;
     flex-flow: row nowrap;
