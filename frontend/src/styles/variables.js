@@ -9,6 +9,7 @@ export const colors = {
     light_gray_line: '#e6e6e6',
     white: '#FFFFFF',
     black: '#000000',
+    black_mask: 'rgba(0, 0, 0, 0.5)',
 
     /* font colors */
     font_default: 'rgba(0, 0, 0, 0.65)',

@@ -1,5 +1,10 @@
 /* Action Types Import */
 import {
+    MANAGE_GET_ITEMS_LOADING,
+    MANAGE_GET_MY_PROFILE_SUCCESS,
+    MANAGE_DELETE_UPLOADED_PROFILE_IMAGE,
+    MANAGE_UPLOAD_PROFILE_IMAGE,
+    MANAGE_INITIALIZE_PROFILE_IMAGE,
     MANAGE_GET_MY_POSTS_SUCCESS,
     MANAGE_GET_MY_POSTS_FAILURE,
     MANAGE_EDIT_INIT_PAGE,
@@ -21,7 +26,6 @@ import {
     MANAGE_EDIT_CARPOOL_STORE_DATA,
     MANAGE_EDIT_CARPOOL_POST_SUCCESS,
     MANAGE_EDIT_CARPOOL_POST_FAILURE,
-    MANAGE_GET_ITEMS_LOADING,
 } from '../actions/ActionTypes'
 
 import { MARKET } from '../../constants/categories'
@@ -35,6 +39,9 @@ const InitialState = {
     /* 'manage' states */
     isGetManageItemsDone: false,                    // Manage 페이지의 GET 요청 완료 여부
     isManageItemsLoading: true,                     // Manage 페이지에서 로딩중을 띄우는 지 여부 
+
+    uploadedProfileImage: '',                       // 업로드한 사진
+    isDeleteProfileImage: false,                    // 프로필 이미지를 지웠는지 여부
 
     /* 'posts' states */
     postList: [],                                   // 포스팅 데이터 리스트
@@ -61,7 +68,6 @@ const InitialState = {
     edit_textAlign: TEXT_ALIGN.justify,             // p 태그 text align 속성
 
     carpool_RoomInfoData: {                         // 카풀 방 정보
-        title: '',                                  // 제목
         departure: '',                              // 출발지
         destination: '',                            // 도착지
         start_time: moment().format('hh:mm a'),     // 출발 시각
@@ -82,6 +88,37 @@ export default function manage (state = InitialState, action) {
             return {
                 ...state,
                 isManageItemsLoading: true
+            }
+
+        /* Manage Profile */
+        case MANAGE_GET_MY_PROFILE_SUCCESS:
+            return {
+                ...state,
+                isGetManageItemsDone: true,
+                isManageItemsLoading: false,
+            }
+
+        /* 프로필 사진 업로드 액션 */
+        case MANAGE_UPLOAD_PROFILE_IMAGE:
+            return {
+                ...state,
+                uploadedProfileImage: action.file,
+            }
+
+        /* 프로필 사진 삭제 액션 */
+        case MANAGE_DELETE_UPLOADED_PROFILE_IMAGE:
+            return {
+                ...state,
+                uploadedProfileImage: '',
+                isDeleteProfileImage: true,
+            }
+
+        /* 프로필 사진 초기화 액션 */
+        case MANAGE_INITIALIZE_PROFILE_IMAGE:
+            return {
+                ...state,
+                uploadedProfileImage: '',
+                isDeleteProfileImage: false,
             }
 
         /* 작성한 postlist GET 요청 액션으로 얻은 data 및 err 설정 */
@@ -262,7 +299,7 @@ export default function manage (state = InitialState, action) {
         /* Manage Edit Carpool Actions */
 
         /* Data의 key, value 값을 받아서 해당 key에 해당하는 데이터 변경
-           keys = [title, departure, destination, start_time, meeting_place, contact, description ]  */
+           keys = [departure, destination, start_time, meeting_place, contact, description ]  */
         case MANAGE_EDIT_CARPOOL_STORE_DATA:
             for ( let key in state.carpool_RoomInfoData ) {
                 if ( key === action.data_key ){

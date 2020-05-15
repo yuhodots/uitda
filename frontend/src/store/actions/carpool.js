@@ -166,7 +166,7 @@ export function postJoinEventRequest ( eventID ) {
     const POSTurl = '/api/carpool/guest/create';
 
     /* POST Request Body Data */
-    const reqBody = { eventID }
+    const reqBody = { event_id: eventID };
 
     return postRequestFuction(POSTurl, reqBody, postJoinEventSuccess);
 }
