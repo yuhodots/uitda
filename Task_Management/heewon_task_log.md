@@ -168,6 +168,13 @@ main 에서 update 시간 상대적 시간으로 보내기
 ### 2020년 5월 7일
 1.carpool socket으로 바꾸기
 
+### 2020년 5월 15일
+1. 카풀 설명 페이지 디자인 하기
+
+프로필 삭제 구현하기
+api/users/profile/update 로 routes 수정
+api/users/profile/delete 
+
 #### 완료
 #### 진행중 
 
