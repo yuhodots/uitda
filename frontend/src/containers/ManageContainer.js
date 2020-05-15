@@ -11,9 +11,15 @@ import { ManageBody, ManageHeader, ManageFooter } from '../components/Manage'
 
 /* Actions */
 import {
+    getMyProfileRequest,
+    uploadProfileImage,
+    deleteUploadedProfileImage,
+    initProfileImage,
     getMyPostRequest,               // Posts GET request 함수
     deletePostRequest,              // Post Delete Post request 함수  
     updatePostConditionRequest,
+    postProfileUpdateRequest,
+    postProfileDeleteRequest,
 } from '../store/actions/manage'
 import { getStatusRequest, logoutRequest } from '../store/actions/auth'
 
@@ -40,6 +46,7 @@ class ManageContainer extends Component {
         const {
             kind,
             getStatusRequest,
+            getMyProfile,
             getMyPostRequest
         } = this.props
 
@@ -51,6 +58,7 @@ class ManageContainer extends Component {
 
             /* 계정 관리 */
             case MANAGE_PROFILE:
+                getMyProfile();
                 break;
 
             /* 게시글 관리 */
@@ -111,11 +119,19 @@ class ManageContainer extends Component {
             isGetManageItemsDone,
             isManageItemsLoading,
 
+            uploadedProfileImage,
+            isDeleteProfileImage,
+
             postList,
 
             logoutRequest,
             deletePostRequest,
             updatePostConditionRequest,
+            uploadProfileImage,
+            deleteUploadedProfileImage,
+            initProfileImage,
+            postProfileUpdateRequest,
+            postProfileDeleteRequest,
         } = this.props;
     
         const { windowHeight } = this.state;
@@ -138,10 +154,17 @@ class ManageContainer extends Component {
                             kind={kind}
                             windowHeight={windowHeight}
                             isLoading={isManageItemsLoading}
+                            uploadedProfileImage={uploadedProfileImage}
+                            isDeleteProfileImage={isDeleteProfileImage}
                             postList={postList}
 
                             deletePost={deletePostRequest}
                             updatePostCondition={updatePostConditionRequest}
+                            uploadProfileImage={uploadProfileImage}
+                            deleteUploadedProfileImage={deleteUploadedProfileImage}
+                            initProfileImage={initProfileImage}
+                            postProfileUpdateRequest={postProfileUpdateRequest}
+                            postProfileDeleteRequest={postProfileDeleteRequest}
                         /> 
                         <ManageFooter />
                     </div> :
@@ -167,6 +190,9 @@ const mapStateToProps = (state) => {
         isGetManageItemsDone: state.manage.isGetManageItemsDone,    // Manage 페이지의 GET 요청 완료 여부
         isManageItemsLoading: state.manage.isManageItemsLoading,    // Manage 페이지에서 로딩중을 띄우는 지 여부
 
+        uploadedProfileImage: state.manage.uploadedProfileImage,    // 업로드한 프로필 사진
+        isDeleteProfileImage: state.manage.isDeleteProfileImage,    // 프로필 사진을 delete 했는 지 여부
+
         postList: state.manage.postList,                            // Posts GET 요청을 통해 얻은 post list
     }
 }
@@ -175,6 +201,13 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getStatusRequest: () => {dispatch(getStatusRequest())},                         // 접속된 유저 정보를 요청하는 액션
         logoutRequest: () => dispatch(logoutRequest()),                                 // 로그아웃 액션
+
+        getMyProfile: () => dispatch(getMyProfileRequest()),
+        uploadProfileImage: (file) => dispatch(uploadProfileImage(file)),               // 사진 업로드 액션
+        deleteUploadedProfileImage: () => dispatch(deleteUploadedProfileImage()),       // 업로드 된 사진을 지우는 액션
+        initProfileImage: () => dispatch(initProfileImage()),                           // 프로필 사진 초기화 액션
+        postProfileUpdateRequest: (file) => dispatch(postProfileUpdateRequest(file)),   // 프로필 사진 업데이트 POST 요청
+        postProfileDeleteRequest: (email) => dispatch(postProfileDeleteRequest(email)), // 프로필 사진 삭제 POST 요청
 
         getMyPostRequest: (board) => {dispatch(getMyPostRequest(board))},               // 내가 작성한 전체 Post 데이터 GET request 함수
         deletePostRequest: (board, id) => {dispatch(deletePostRequest(board, id))},     // Post Delete POST request 함수
