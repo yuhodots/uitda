@@ -1,8 +1,12 @@
 import axios from "axios";
-import qs from 'qs';
 
+import { x_www_PostRequestFuction, formData_PostRequestFuction } from "./RefactoringFuncs";
 import {
     MANAGE_GET_ITEMS_LOADING,
+    MANAGE_GET_MY_PROFILE_SUCCESS,
+    MANAGE_UPLOAD_PROFILE_IMAGE,
+    MANAGE_DELETE_UPLOADED_PROFILE_IMAGE,
+    MANAGE_INITIALIZE_PROFILE_IMAGE,
     MANAGE_GET_MY_POSTS_SUCCESS,
     MANAGE_GET_MY_POSTS_FAILURE,
     MANAGE_EDIT_INIT_PAGE,
@@ -39,6 +43,51 @@ export function getManageItemsLoading() {
         type: MANAGE_GET_ITEMS_LOADING
     }
 }
+
+export function getMyProfileRequest() {
+    return {
+        type: MANAGE_GET_MY_PROFILE_SUCCESS
+    }
+}
+
+/* 프로필 사진 업로드 액션 */
+export function uploadProfileImage(file) {
+    return {
+        type: MANAGE_UPLOAD_PROFILE_IMAGE,
+        file
+    }
+}
+
+/* 프로필 사진 삭제 액션 */
+export function deleteUploadedProfileImage() {
+    return {
+        type: MANAGE_DELETE_UPLOADED_PROFILE_IMAGE,
+    }
+}
+
+/* 프로필 사진 초기화 액션 */
+export function initProfileImage () {
+    return {
+        type: MANAGE_INITIALIZE_PROFILE_IMAGE,
+    }
+}
+
+/* Profile 사진 update post 요청 액션 */
+export function postProfileUpdateRequest (photoFile) {
+    const POSTurl = '/api/users/update';
+    const formData = new FormData();
+    formData.append('userfile', photoFile.originFileObj);
+
+    return formData_PostRequestFuction(POSTurl, formData, initProfileImage);
+}
+
+/* Profile 사진 delete post 요청 액션 */
+export function postProfileDeleteRequest (email) {
+    const POSTurl = '/api/users/delete';
+    const reqBody = { email };
+    return x_www_PostRequestFuction(POSTurl, reqBody, initProfileImage);    
+}
+
 
 ////////////////////////////////////////////////////////////
 /* '/manage/post/:board' 에서 내 포스팅 데이터를 get 요청하는 액션 */
@@ -107,17 +156,9 @@ export function deletePostFailure (err) {
 
 /* '/manage/post/:board'에서의 포스팅 상태 변경 액션 */
 export function updatePostConditionRequest (board, id, condition) {
-    return (dispatch) => {
-
-        const POSTurl = `/api/${board}/update/condition/${id}`;
-
-        let requestBody = { condition }
-        const config = {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        }
-
-        return axios.post(POSTurl, qs.stringify(requestBody), config)
-    }
+    const POSTurl = `/api/${board}/update/condition/${id}`;
+    const requestBody = { condition }
+    return x_www_PostRequestFuction(POSTurl, requestBody);
 }
 
 
@@ -192,49 +233,35 @@ export function getUpdatePostFailure(err) {
    id의 여부에 따라 update/create를 구분 (id 있으면 update, 없으면 create) */
 
 export function EditPostRequest (board, title, price, description, files, id, deletedFileIDs) {
-    return (dispatch) => {
+    /* POST 요청 시 사용되는 url */
+    const POSTurl = id ?
+    `/api/${board}/update/${id}`:   // id가 있으면 update
+    `/api/${board}/create`;         // id가 없으면 create
 
-        /* POST 요청 시 사용되는 url */
-        const POSTurl = id ?
-        `/api/${board}/update/${id}`:   // id가 있으면 update
-        `/api/${board}/create`;         // id가 없으면 create
-
-        /* POST 요청에 사용되는 Form Data */
-        const formData = new FormData();
-        formData.append('title', title);
-        if(board==='market'){
-            formData.append('price', price);
-        }
-        formData.append('description', description);
-        files.forEach(file => {
-            /* 현재 file은 데이터를 가진 Object 객체이고,
-               originFileObj 프로퍼티에 File 객체를 담음 */
-            const FILE_TYPE = id ? 'added' : 'userfile';
-            formData.append(FILE_TYPE, file.originFileObj);
-        });
-
-        /* update의 경우, delete_id list를 추가 */
-        if (id) { formData.append('deleted_files', deletedFileIDs) }
-
-        /* POST 요청 성공 시 보내지는 액션 생성자 */
-        const successAction = id ?
-        updatePostSuccess :
-        createPostSuccess ;
-
-        /* POST 요청 실패 시 보내지는 액션 생성자 */
-        const failureAction = id ?
-        updatePostFailure :
-        createPostFailure ;
-
-        /* create POST 요청 */
-        return axios.post(POSTurl, formData, {
-            headers: { 'Content-Type': 'multipart/form-data'}
-        })
-
-        /* 성공, 실패 시 각각에 맞는 액션을 dispatch하기 */
-        .then(res => {dispatch(successAction())})
-        .catch(err => {dispatch(failureAction(err))})
+    /* POST 요청에 사용되는 Form Data */
+    const formData = new FormData();
+    formData.append('title', title);
+    if(board==='market'){
+        formData.append('price', price);
     }
+    formData.append('description', description);
+    files.forEach(file => {
+        /* 현재 file은 데이터를 가진 Object 객체이고,
+            originFileObj 프로퍼티에 File 객체를 담음 */
+        const FILE_TYPE = id ? 'added' : 'userfile';
+        formData.append(FILE_TYPE, file.originFileObj);
+    });
+
+    /* update의 경우, delete_id list를 추가 */
+    if (id) { formData.append('deleted_files', deletedFileIDs) }
+
+    /* POST 요청 성공 시 보내지는 액션 생성자 */
+    const successAction = id ? updatePostSuccess : createPostSuccess ;
+
+    /* POST 요청 실패 시 보내지는 액션 생성자 */
+    const failureAction = id ? updatePostFailure : createPostFailure ;
+
+    return formData_PostRequestFuction(POSTurl, formData, successAction, failureAction);
 }
 
 /* create POST 액션 생성자 함수들 */
@@ -349,30 +376,19 @@ export function storeCarpoolData (data_key, data_value) {
 }
 
 /* Carpool 이벤트 등록 POST 액션 */
-export function postCarpoolEvent (title, departure, destination, start_date, start_time, meeting_place, contact, description) {
-    return (dispatch) => {
+export function postCarpoolEvent (departure, destination, start_date, start_time, meeting_place, contact, description) {
+    /* POST 요청 시 사용되는 url */
+    const POSTurl = '/api/carpool/create';
 
-        /* POST 요청 시 사용되는 url */
-        const POSTurl = '/api/carpool/create';
+    /* POST Request Body Data */
+    const DateToTime = start_date.getTime();
+    const HoursToTime = start_time.getHours() * 60 * 60 * 1000;
+    const MinutesToTime = start_time.getMinutes() * 60 * 1000;
+    const start = new Date(DateToTime + HoursToTime + MinutesToTime);
 
-        /* POST Request Body Data */
-        const DateToTime = start_date.getTime();
-        const HoursToTime = start_time.getHours() * 60 * 60 * 1000;
-        const MinutesToTime = start_time.getMinutes() * 60 * 1000;
-        const start = new Date(DateToTime + HoursToTime + MinutesToTime);
+    const reqBody = { departure, destination, start, meeting_place, contact, description }
 
-        const requestBody = { title, departure, destination, start, meeting_place, contact, description }
-
-        /* POST Request config Data */
-        const config = {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        }
-
-        /* POST Request */
-        return axios.post(POSTurl, qs.stringify(requestBody), config)
-        .then(res => {dispatch(postCarpoolEventSuccess(res))})
-        .catch(err => {dispatch(postCarpoolEventFailure(err))})
-    }
+    return x_www_PostRequestFuction(POSTurl, reqBody, postCarpoolEventSuccess, postCarpoolEventFailure);
 }
 
 export function postCarpoolEventSuccess () {
