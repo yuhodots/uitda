@@ -526,6 +526,37 @@
 ### 5.13 (수)
 
 * app.css에 body font 추가
+* Edit Carpool Style Update
+* carpool 참가신청 front error 해결
+
+
+
+### 5.14, 5.15 (목,금)
+
+* actions/ POST request action refactoring
+
+* 프로필 사진 업로드, 삭제 / POST 요청 액션 및 reducer 작업 완료
+
+* Manage Profile 뼈대 컴포넌트 생성 (PhotoEdit / UsageHistory )
+
+* PhotoEditbox 가능한 프론트 작업 완료
+
+  * Title / SubInfo 텍스트, 프로필 사진 DropZone + UserInfo, ButtonBox 배치
+
+  * DropZone 사진 띄우기 = uploadedProfileImage, isProfileImageDeleted 이용 => 
+
+    upload 액션: uploaded에 업로드한 파일을 저장
+    delete 액션: uploaded를 초기화 하고, isdelete를 true로 설정
+    init 액션: uploaded와 isdelete를 초기화
+
+
+    uploaded가 있으면 무조건 그 사진 띄움, isDelete가 아니고 user_pic_location 있으면 현재 프사를 띄우고 그 외는 기본 이미지
+
+  * uploaded가 있거나, user_pic_location이 있으면서 isdelete가 false인 경우, hover 시 '지우기 / 바꾸기'가 나타나도록 함
+
+  * 변경사항이 있을 때, (uploaded가 있거나, isDelete가 true인 경우) 취소 / 변경 버튼 컨테이너가 나타남
+
+  * 변경 버튼 클릭 시 uploaded가 있는 경우는 수정 요청을, 그 외에는 삭제 요청을 보냄 (하지만 아직 삭제하는 건 Backend 구현이 안됨)
 
 
 
