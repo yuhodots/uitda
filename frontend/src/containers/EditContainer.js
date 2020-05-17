@@ -326,9 +326,7 @@ const mapDispatchToProps = (dispatch) => {
         storeCarpoolData: (data_key, data_value) => {                                           // Carpool 탭의 Room Info Data를 담는 액션
             dispatch(storeCarpoolData(data_key, data_value))
         },
-        postCarpoolEvent: (title, departure, destination, start_date, start_time, meeting_place, contact, description) => {         // Carpool Event 등록하는 Post Action
-            dispatch(postCarpoolEvent(title, departure, destination, start_date, start_time, meeting_place, contact, description))
-        }
+        postCarpoolEvent: carpoolData => dispatch( postCarpoolEvent(carpoolData) ),             // Carpool Event 등록하는 Post Action
     }
 }
 

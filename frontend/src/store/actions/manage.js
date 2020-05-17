@@ -376,7 +376,7 @@ export function storeCarpoolData (data_key, data_value) {
 }
 
 /* Carpool 이벤트 등록 POST 액션 */
-export function postCarpoolEvent (departure, destination, start_date, start_time, meeting_place, contact, description) {
+export function postCarpoolEvent ({departure, destination, start_date, start_time, meeting_place, contact, description}) {
     /* POST 요청 시 사용되는 url */
     const POSTurl = '/api/carpool/create';
 

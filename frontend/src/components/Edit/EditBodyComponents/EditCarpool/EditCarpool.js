@@ -114,8 +114,8 @@ class EditCarpool extends Component {
                 <RoomInfoBox boxHeight={height} >
                     <PlaceInputBox storeCarpoolData={storeCarpoolData} />
                     <TimePickerBox storeCarpoolData={storeCarpoolData} />
-                    <SubInfoInputBox dataKey={CONTACT} storeCarpoolData={storeCarpoolData} />
                     <SubInfoInputBox dataKey={MEETING_PALCE} storeCarpoolData={storeCarpoolData} />
+                    <SubInfoInputBox dataKey={CONTACT} storeCarpoolData={storeCarpoolData} />
                     <DescriptionBox storeCarpoolData={storeCarpoolData} />
                 </RoomInfoBox>
             </WholeArea> :

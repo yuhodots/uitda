@@ -54,13 +54,8 @@ class RightBox extends Component {
         } = this.props;
 
         if ( isCarpool ) {
-            const { 
-                title, departure, destination, 
-                start_time, meeting_place, 
-                contact, description 
-            } = roomInfoData
-
-            postCarpoolEvent(title, departure, destination, selectedDate, start_time, meeting_place, contact, description);
+            const carpoolData = { ...roomInfoData, start_date: selectedDate }
+            postCarpoolEvent(carpoolData);
         }
 
         else {
