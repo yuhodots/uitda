@@ -12,10 +12,14 @@ import TitleHintDatas from "./Subinfo_TitleHint.json";
 /* Styled Components */
 const WholeBox = styled.div`
     margin: 0;
-    margin-bottom: 1.25rem;
+    margin-bottom: 2.5rem;
     
     display: flex;
     flex-flow: column nowrap;
+
+    @media (max-width: 1500px) {
+        margin-bottom: 1.25rem;
+    }
 `;
 
     const SubTitleInputBox = styled.div`

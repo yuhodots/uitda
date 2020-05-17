@@ -1,44 +1,40 @@
 
 
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 import { Input } from "antd";
 
 import { DESCRIPTION } from "../../../../../constants/edit_RoomInfo_DataKeys";
 import { colors } from "../../../../../styles/variables";
+import { UitdaTextArea } from "../../../../Structure/CommonComponents";
+
 
 /* Styled Components */
 const WholeBox = styled.div`
-    padding: 0.5rem;
-    flex: 1;
+    padding: 1.125rem 1.25rem;
+    flex: 1 0;
     border-radius: 1rem;
 
+    overflow-y: auto;
+
     background-color: ${colors.gray_bg};
+
+    @media (max-width: 1500px) {
+        padding: 0.8rem 1rem;
+    }
 `;
 
-    const DescriptionTextArea = styled(Input.TextArea)`
-        min-height: 10rem !important;
-
-        font-size: 1rem;
-        background-color: inherit;
-
-        /* TextArea 속성 */
-        resize: none;
-        border: none;
-        outline: 0;
-
-        /* Ant-Design 속성 무효화를 위해 */
-        :focus {
-            border: none;
-            box-shadow: none;
-        }
-
-        /* 노트북 사이즈 디자인 */
-        /* @media (max-width: 1500px) {
-            
-        } */
+    const TextAreaBox = styled.div`
+        height: 100%;
+        width: 100%;
+    
+        overflow-y: auto;
     `;
+
+        const textAreaCustomCSS = css`
+            word-spacing: 0.125rem;
+        `;
 
 
 /* React Component */
@@ -46,12 +42,17 @@ const RoomDescriptionBox = ({storeCarpoolData}) => {
 
     return (
         <WholeBox>
-            <DescriptionTextArea 
-                placeholder="추가 정보를 입력하세요."
-                autoSize={true}
-                onChange={(e) => storeCarpoolData(DESCRIPTION, e.target.value)}
-                style={{height: '100%'}}
-            />
+            <TextAreaBox>
+                <UitdaTextArea
+                    size='100%'
+                    placeHolder="추가 정보를 입력하세요."
+                    isUnderLine={false}
+                    isFullHeight={true}
+                    customCSS={textAreaCustomCSS}
+                    data_key={DESCRIPTION}
+                    storeDataFunc={storeCarpoolData}
+                />
+            </TextAreaBox>
         </WholeBox>
     )
 }
