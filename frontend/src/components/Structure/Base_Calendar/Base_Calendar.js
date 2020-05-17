@@ -38,6 +38,8 @@ class Calendar extends Component {
                 let dayElbg = dayElBgs[i]
                 dayHeads[i].addEventListener('mouseover', (e) => this._handleHoverDayHead(e, dayElbg) )
                 dayHeads[i].addEventListener('mouseleave', (e) => this._handleMouseLeaveDayHead(e, dayElbg) )
+                dayHeads[i].addEventListener('mousedown', (e) => this._handleMouseDownDayHead(e, dayElbg) )
+                dayHeads[i].addEventListener('mouseup', (e) => this._handleMouseUpDayHead(e, dayElbg) )
             }
         })
     }
@@ -52,19 +54,22 @@ class Calendar extends Component {
                 let dayElbg = dayElBgs[i]
                 dayHeads[i].removeEventListener('mouseover', (e) => this._handleHoverDayHead(e, dayElbg) )
                 dayHeads[i].removeEventListener('mouseleave', (e) => this._handleMouseLeaveDayHead(e, dayElbg) )
+                dayHeads[i].removeEventListener('mousedown', (e) => this._handleMouseDownDayHead(e, dayElbg) )
+                dayHeads[i].removeEventListener('mouseup', (e) => this._handleMouseUpDayHead(e, dayElbg) )
             }
         })
     }
 
 
     /* dayEl의 Head 부분 hover 할 때, 스타일 변경하는 함수 */
-    _handleHoverDayHead = (e, dayEl) => {
-        dayEl.style.opacity = 0.1;
-    }
+    _handleHoverDayHead = (e, dayEl) => { dayEl.style.opacity = 0.1 }       // 마우스를 올렸을 때
     _handleMouseLeaveDayHead = (e, dayEl) => {
-        if ( dayEl !== this.state.prevElem ) { dayEl.style.opacity = 0 }
+        if ( dayEl !== this.state.prevElem ) { dayEl.style.opacity = 0 }    // 마우스가 벗어났을 때
     }
+    _handleMouseDownDayHead = (e, dayEl) => { dayEl.style.opacity = 0.2 }   // 좌클릭 버튼을 누른 상태 
+    _handleMouseUpDayHead = (e, dayEl) => { dayEl.style.opacity = 0.1 }     // 좌클릭 버튼을 땐 상태
 
+    
     /* dateClick 시 실행되는 함수 (날짜 부분을 클릭할 때 실행)
        클릭된 날짜의 색을 바꾸고, 선택된 날짜를 app state에 저장 */
     _selectDate = (info) => {
