@@ -151,9 +151,9 @@ class Login extends Component {
             </Popover>
           </div>
           <div className="Privacy">
-            <a href="/개인정보처리방침.pdf">개인정보처리방침 </a>
+            <a href="/policy.pdf">개인정보처리방침 </a>
              | 
-            <a href="/서비스이용약관.pdf"> 서비스이용약관</a>
+            <a href="/service.pdf"> 서비스이용약관</a>
           </div>
       
         </div>
