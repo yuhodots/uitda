@@ -12,6 +12,16 @@ class UitdaTimePicker extends Component {
 
     state={}
 
+    componentDidMount () {
+        const { data_key, storeDataFunc } = this.props;
+        const midnightTime = new Date()
+        midnightTime.setHours(0);
+        midnightTime.setMinutes(0);
+        midnightTime.setSeconds(0);
+        midnightTime.setMilliseconds(0);
+
+        storeDataFunc(data_key, midnightTime)
+    }
 
     render () {
 
