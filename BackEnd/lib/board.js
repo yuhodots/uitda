@@ -377,6 +377,11 @@ module.exports = {
         let id;
         let deleted_files;
 
+        let deleted_files_parse = (deleted_files)=>{
+            let splited = deleted_files.split(",");
+            return splited;
+        };
+
         async.waterfall([
 
             /* 변수 값 할당 */
@@ -388,7 +393,7 @@ module.exports = {
                 type_board = type_board_assign(type);
                 type_files = type_files_assign(type);
                 (req.body.deleted_files) ?
-                    deleted_files = req.body.deleted_files:
+                    deleted_files = deleted_files_parse(req.body.deleted_files):
                     deleted_files = [];
                 callback(null);
             },
@@ -431,7 +436,6 @@ module.exports = {
                 for (let i = 0;  i < deleted_files.length; i++){
                     type_files.findOne({ where: { id: deleted_files[i] } })
                     .then(function (file) {
-                        console.log(file)
                         s3.deleteObject(
                             { Bucket: "uitda.net", Key: file.filename },
                             (err, data) => {
