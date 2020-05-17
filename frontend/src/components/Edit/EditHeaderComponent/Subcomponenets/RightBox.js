@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Button } from "antd";
+import { Button, message } from "antd";
 
 import { colors } from "../../../../styles/variables";
 
@@ -55,6 +55,16 @@ class RightBox extends Component {
 
         if ( isCarpool ) {
             const carpoolData = { ...roomInfoData, start_date: selectedDate }
+
+            const { departure, destination } = carpoolData;
+
+            /* 출발지, 도착지 정보가 없으면 경고 메시지 띄우기 */
+            if ( !departure || !destination ) {
+                const neededData = !departure ? !destination ? '출발지와 도착지' : '출발지' : '도착지';
+                message.error(`${neededData}를 입력해주세요.`);
+                return;
+            }
+            
             postCarpoolEvent(carpoolData);
         }
 
