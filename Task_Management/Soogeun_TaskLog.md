@@ -545,12 +545,11 @@
 
   * DropZone 사진 띄우기 = uploadedProfileImage, isProfileImageDeleted 이용 => 
 
-    upload 액션: uploaded에 업로드한 파일을 저장
-    delete 액션: uploaded를 초기화 하고, isdelete를 true로 설정
-    init 액션: uploaded와 isdelete를 초기화
-
-
-    uploaded가 있으면 무조건 그 사진 띄움, isDelete가 아니고 user_pic_location 있으면 현재 프사를 띄우고 그 외는 기본 이미지
+    > upload 액션: uploaded에 업로드한 파일을 저장
+    > delete 액션: uploaded를 초기화 하고, isdelete를 true로 설정
+    > init 액션: uploaded와 isdelete를 초기화
+    >
+    > uploaded가 있으면 무조건 그 사진 띄움, isDelete가 아니고 user_pic_location 있으면 현재 프사를 띄우고 그 외는 기본 이미지
 
   * uploaded가 있거나, user_pic_location이 있으면서 isdelete가 false인 경우, hover 시 '지우기 / 바꾸기'가 나타나도록 함
 
