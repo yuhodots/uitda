@@ -559,6 +559,28 @@
 
 
 
+### 5. 17 (일)
+
+* post carpool request 함수 에러 해결
+* Edit Carpool Room 정보 입력 창 데스크탑 버전 스타일 추가
+* Time Picker가 맨 처음에는 오전 0시 0분이 선택되도록 함
+* Calendar 상단 클릭 시, opacity 스타일 변화 handle
+* Edit Carpool에서 출발지, 도착지 정보가 없으면 에러 메시지 띄우기
+
+
+
+### 5.20 (수)
+
+* Calender Elem Header 클릭 애니메이션 추가
+
+
+
+
+
+
+
+
+
 
 
 
