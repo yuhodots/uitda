@@ -21,6 +21,10 @@ router.post('/profile/create', [ usercheck, upload.single('userfile') ], functio
   user.profile_create(req, res);
 });
 
+router.post('/profile/update', [ usercheck, upload.single('userfile') ], function(req, res) {
+  user.profile_update(req, res);
+});
+
 router.post('/profile/delete', function(req, res) {
   user.profile_delete(req, res);
 });

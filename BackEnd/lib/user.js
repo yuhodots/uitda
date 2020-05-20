@@ -23,8 +23,8 @@ module.exports = {
 
         /* 변수 값 할당 */
         function (callback) {
-          file = req.file;
-          callback(null);
+            file = req.file;
+            callback(null);
         },
 
         /* 로그인한 사람의 요청인지 확인 */
@@ -36,10 +36,64 @@ module.exports = {
 
         /* pic_location에 사진주소 추가 */
         function (callback) {
-          users.update({ pic_location: file.location }, { where: { email: req.user.email } })
-          .then(function () { res.end(); })
-          .catch(function (err) { throw err });
-          callback(null);
+            users.update({ pic_location: file.location }, { where: { email: req.user.email } })
+            .then(function () { res.end(); })
+            .catch(function (err) { throw err });
+            callback(null);
+        }
+
+    ], function (err) {
+        if (err) throw (err);
+    });
+
+  },
+
+  profile_update: function(req, res){
+
+    let file;
+
+    async.waterfall([
+
+        /* 변수 값 할당 */
+        function (callback) {
+            file = req.file;
+            callback(null);
+        },
+
+        /* 로그인한 사람의 요청인지 확인 */
+        function (callback) {
+            (!auth.isOwner(req, res)) ?
+                res.json({ user: req.user ? req.user : 0 }) :
+                callback(null);
+        },
+
+        /*해당 프로필 사진 삭제*/
+        function(callback){
+            users.findOne({ where:{ email:req.user.email } }).then(function(user){
+                var pattern = /uitda.net\//;
+                var location = user.pic_location;
+                var pic_name = location.split(pattern);
+                callback(null, pic_name[1]);
+            }).catch(function(err){ throw err; });
+        },
+
+        function (pic_name, callback) {
+            s3.deleteObject(
+                { Bucket: "uitda.net", Key: pic_name },
+                (err, data) => {
+                    if (err) throw err;
+                    console.log(data);
+                    callback(null);
+                }
+            );
+        },
+
+        /* pic_location에 사진주소 추가 */
+        function (callback) {
+            users.update({ pic_location: file.location }, { where: { email: req.user.email } })
+            .then(function () { res.end(); })
+            .catch(function (err) { throw err });
+            callback(null);
         }
 
     ], function (err) {
@@ -163,6 +217,36 @@ module.exports = {
           function (callback) {
               req.logout();
               req.session.save(function () { callback(null) });
+          },
+
+          function(callback){
+              users.findOne({ where:{ email:req.user.email } }).then(function(user){
+                  if(user.pic_location){
+                      var pattern = /uitda.net\//;
+                      var location = user.pic_location;
+                      var pic_name = location.split(pattern);
+                      callback(null, pic_name[1]);
+                  } else{
+                      callback(null, 0);
+                  }
+
+              }).catch(function(err){ throw err; });
+          },
+
+          function (pic_name, callback) {
+              if(pic_name){
+                  s3.deleteObject(
+                      { Bucket: "uitda.net", Key: pic_name },
+                      (err, data) => {
+                          if (err) throw err;
+                          console.log(data);
+                          callback(null);
+                      }
+                  );
+              } else {
+                  callback(null);
+              }
+
           },
 
           /* users 데이터 삭제 */
