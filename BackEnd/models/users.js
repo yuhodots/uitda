@@ -13,13 +13,13 @@ return sequelize.define('users', {
     unique: true
   },
   username: {
-  type: DataTypes.STRING(60),
-  allowNull: false,
-  unique: true
+    type: DataTypes.STRING(60),
+    allowNull: false,
+    unique: true
   },
   pic_location: {
-  type: DataTypes.TEXT,
-  allowNull: true
+    type: DataTypes.TEXT,
+    allowNull: true
   },
   socket_id: {
     type: DataTypes.STRING(100),

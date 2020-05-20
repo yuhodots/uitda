@@ -17,9 +17,14 @@ router.get('/', function(req, res) {
   res.json({ user: req.user ? req.user : 0 });
 });
 
-router.post('/update', [ usercheck, upload.single('userfile') ], function(req, res) {
-  user.update(req, res);
+router.post('/profile/create', [ usercheck, upload.single('userfile') ], function(req, res) {
+  user.profile_create(req, res);
 });
+
+router.post('/profile/delete', function(req, res) {
+  user.profile_delete(req, res);
+});
+
 
 router.post('/delete', function(req, res) {
   /* req.body.email 정보를 넘겨줘야 함 */

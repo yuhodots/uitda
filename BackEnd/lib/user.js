@@ -9,11 +9,15 @@ const { cal_events } = require('../models');
 const { comment } = require('../models');
 const { users } = require('../models');
 
+/* AWS SDK, multer-s3 */
+let multerS3 = require('../lib/multerS3')();
+let s3 = multerS3.s3;
+
 module.exports = {
 
-  update: function(req, res){
+  profile_create: function(req, res){
 
-    let file; 
+    let file;
 
     async.waterfall([
 
@@ -35,13 +39,58 @@ module.exports = {
           users.update({ pic_location: file.location }, { where: { email: req.user.email } })
           .then(function () { res.end(); })
           .catch(function (err) { throw err });
-          callback(null); 
+          callback(null);
         }
 
     ], function (err) {
         if (err) throw (err);
     });
 
+  },
+
+  profile_delete:function(req, res){
+
+      async.waterfall([
+
+          /* 로그인한 사람의 요청인지 확인*/
+          function (callback) {
+              (!auth.isOwner(req, res)) ?
+                  res.json({ user: req.user ? req.user : 0 }) :
+                  callback(null);
+          },
+
+          /*해당 프로필 사진 삭제*/
+          function(callback){
+              users.findOne({ where:{ email:req.user.email } }).then(function(user){
+                  var pattern = /uitda.net\//;
+                  var location = user.pic_location;
+                  var pic_name = location.split(pattern);
+                  callback(null, pic_name[1]);
+              }).catch(function(err){ throw err; });
+          },
+
+          function (pic_name, callback) {
+              s3.deleteObject(
+                  { Bucket: "uitda.net", Key: pic_name },
+                  (err, data) => {
+                      if (err) throw err;
+                      console.log(data);
+                      callback(null);
+                  }
+              );
+          },
+
+          /*users 모델 수정*/
+          function (callback) {
+              users.update({ pic_location: null }, { where: { email: req.user.email } })
+              .then(function () { res.end(); })
+              .catch(function (err) { throw err });
+              callback(null);
+          }
+
+      ], function (err) {
+          if (err) throw (err);
+      })
   },
 
   delete: function(req, res){
@@ -54,7 +103,7 @@ module.exports = {
                   res.json({ user: req.user ? req.user : 0 }) :
                   callback(null);
           },
-        
+
           /* 작성자인지 확인 */
           function (callback) {
               (auth.sameOwner(req, req.body.email) === 0) ?
@@ -119,9 +168,9 @@ module.exports = {
           /* users 데이터 삭제 */
           function (callback) {
               users.destroy({ where: { email: req.body.email } })
-              .then(function (result) { 
+              .then(function (result) {
                   res.end();
-                  callback(null); 
+                  callback(null);
               })
               .catch(function (err) { throw err });
           }
