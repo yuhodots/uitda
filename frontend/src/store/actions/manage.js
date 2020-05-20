@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { x_www_PostRequestFuction, formData_PostRequestFuction } from "./RefactoringFuncs";
+import { no_args_PostRequestFuction, x_www_PostRequestFuction, formData_PostRequestFuction } from "./RefactoringFuncs";
 import {
     MANAGE_GET_ITEMS_LOADING,
     MANAGE_GET_MY_PROFILE_SUCCESS,
@@ -72,9 +72,18 @@ export function initProfileImage () {
     }
 }
 
+/* Profile 사진 create post 요청 액션 */
+export function postProfileCreateRequest (photoFile) {
+    const POSTurl = '/api/users/profile/create';
+    const formData = new FormData();
+    formData.append('userfile', photoFile.originFileObj);
+
+    return formData_PostRequestFuction(POSTurl, formData, initProfileImage);
+}
+
 /* Profile 사진 update post 요청 액션 */
 export function postProfileUpdateRequest (photoFile) {
-    const POSTurl = '/api/users/update';
+    const POSTurl = '/api/users/profile/update';
     const formData = new FormData();
     formData.append('userfile', photoFile.originFileObj);
 
@@ -82,10 +91,9 @@ export function postProfileUpdateRequest (photoFile) {
 }
 
 /* Profile 사진 delete post 요청 액션 */
-export function postProfileDeleteRequest (email) {
-    const POSTurl = '/api/users/delete';
-    const reqBody = { email };
-    return x_www_PostRequestFuction(POSTurl, reqBody, initProfileImage);    
+export function postProfileDeleteRequest () {
+    const POSTurl = '/api/users/profile/delete';
+    return no_args_PostRequestFuction(POSTurl, initProfileImage);    
 }
 
 
