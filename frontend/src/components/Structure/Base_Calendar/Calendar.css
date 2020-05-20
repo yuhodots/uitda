@@ -1,56 +1,12 @@
-/* html, body {
-    margin: 0;
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-      "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-      sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    
-    font-size: 14px; 
-}
-  
-.Calendar {
-    max-width: 900px;
-    margin: 40px auto;
-}
-  
-code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-      monospace;
-}
-  
-.modal_ul { 
-  line-height: 40px; 
-}
-
-.modal_direction{
-  background-color: yellow;
-}
-
-.modal_description{
-  background-color: #F2F2F2;
-  padding: 20px 20px 20px 20px;
-  margin: 10px 20px 20px 20px;
-  border-radius: 5px 5px 5px 5px;
-}
-
-.modal_condition{
-  text-align: center;
-  color: #FA5858;
-  text-decoration: underline;
-  margin-bottom: 5px;
-}
-
-.CarpoolTemplate{
-  margin-top: 80px;
-} */
-
 /* 캘린더의 버튼 속성 */
 .fc-button {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.fc-left {
+  /* width: 180px; */
 }
 
 /* 캘린더 header의 center 부분 스타일 */
@@ -67,6 +23,17 @@ code {
 .fc-center .fc-button {
   margin: 0;
 }
+
+/* 캘린더 header의 우측 부분 스타일 */
+.fc-right {
+  /* width: 180px; */
+
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-end;
+}
+
 
 /* 캘린더 day box의 스타일 */
 .fc-day {

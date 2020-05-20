@@ -7,10 +7,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
 import { MANAGE } from "../../../constants/categories";
-import { 
-    TOTAL, CLOSED, ACTIVE, OWNER, GUEST, OWNER_CLOSED, GUEST_CLOSED 
-} from '../../../constants/calendar_consts'
-import { colors } from "../../../styles/variables";
+import { dataObjToviewObjList, dateToStr } from "./calendarFuncs";
 
 import '@fullcalendar/core/main.css';
 import '@fullcalendar/daygrid/main.css';
@@ -20,6 +17,9 @@ import './Calendar.css';
 class Calendar extends Component {
 
     state = {}
+    // /* view mode: 이벤트 확인 mode
+    //    false이면, 새로운 이벤트를 추가할 날짜를 선택하는 모드 */
+    // state = { isViewMode: true }
     calendarRef = React.createRef()
 
     componentDidMount () {
@@ -28,11 +28,14 @@ class Calendar extends Component {
         initCalenderEvents(category);
         this._today();
 
+        /* MANAGE 카테고리인 경우, view 모드가 아닌 새로운 이벤트 생성모드가 default다. */
+        // if (category === MANAGE) { this.setState({isViewMode: false}) }
+
         /* dayEl Head 부분에 hover event listener 등록 */
         const TableRows = this.calendarRef.current.calendar.el.lastChild.lastChild.lastChild.lastChild.lastChild.lastChild.lastChild.lastChild.childNodes;
         TableRows.forEach(row => {
-            const dayHeads = row.lastChild.lastChild.firstChild.lastChild.childNodes;
-            const dayElBgs = row.firstChild.lastChild.lastChild.lastChild.childNodes;
+            const dayHeads = row.lastChild.lastChild.firstChild.lastChild.childNodes;   // 캘린더의 한 칸 중 Header 부분
+            const dayElBgs = row.firstChild.lastChild.lastChild.lastChild.childNodes;   // 캘린더의 한 칸의 전체 영역 부분
 
             for (let i = 0; i < 7; i++) {
                 let dayElbg = dayElBgs[i]
@@ -47,8 +50,8 @@ class Calendar extends Component {
     componentWillUnmount () {
         const TableRows = this.calendarRef.current.calendar.el.lastChild.lastChild.lastChild.lastChild.lastChild.lastChild.lastChild.lastChild.childNodes;
         TableRows.forEach(row => {
-            const dayHeads = row.lastChild.lastChild.firstChild.lastChild.childNodes;
-            const dayElBgs = row.firstChild.lastChild.lastChild.lastChild.childNodes;
+            const dayHeads = row.lastChild.lastChild.firstChild.lastChild.childNodes;   // 캘린더의 한 칸 중 Header 부분
+            const dayElBgs = row.firstChild.lastChild.lastChild.lastChild.childNodes;   // 캘린더의 한 칸의 전체 영역 부분
 
             for (let i = 0; i < 7; i++) {
                 let dayElbg = dayElBgs[i]
@@ -60,11 +63,10 @@ class Calendar extends Component {
         })
     }
 
-
     /* dayEl의 Head 부분 hover 할 때, 스타일 변경하는 함수 */
     _handleHoverDayHead = (e, dayEl) => { dayEl.style.opacity = 0.1 }       // 마우스를 올렸을 때
     _handleMouseLeaveDayHead = (e, dayEl) => {
-        if ( dayEl !== this.state.prevElem ) { dayEl.style.opacity = 0 }    // 마우스가 벗어났을 때
+        if ( dayEl !== this.state.selectedElem ) { dayEl.style.opacity = 0 }    // 마우스가 벗어났을 때
     }
     _handleMouseDownDayHead = (e, dayEl) => { dayEl.style.opacity = 0.2 }   // 좌클릭 버튼을 누른 상태 
     _handleMouseUpDayHead = (e, dayEl) => { dayEl.style.opacity = 0.1 }     // 좌클릭 버튼을 땐 상태
@@ -103,12 +105,12 @@ class Calendar extends Component {
        dayEl로 받은 새로운 html DOM 객체의 스타일을 추가한 뒤, 해당 elem을
        state의 prevElem값으로 설정하는 함수 */
     _changeDayElStyle = (dayEl) => {
-        const { prevElem } = this.state;
-        if ( prevElem ) { prevElem.style.opacity = 0; }
+        const { selectedElem } = this.state;
+        if ( selectedElem ) { selectedElem.style.opacity = 0; }
         dayEl.style.opacity = 0.1;
         this.setState({
             ...this.state,
-            prevElem: dayEl
+            selectedElem: dayEl
         })
     }
 
@@ -123,56 +125,9 @@ class Calendar extends Component {
         });
 
         /* dayEls의 DOM 오브젝트 중, date 값이 입력받은 dateStr과 일치하는 DOM를 리턴 */
-        const dateStr = this._dateToStr(date);
+        const dateStr = dateToStr(date);
         const result = dayEls.find( dayEl => dayEl.dataset.date === dateStr )
         return result;
-    }
-
-    /* Date => yyyy-mm-dd */
-    _dateToStr = (date) => {
-        const yyyy = date.getFullYear();
-        let mm = date.getMonth() + 1 ;
-        let dd = date.getDate();
-
-        if ( mm < 10 ) { mm = `0${mm}` }
-        if ( dd < 10 ) { dd = `0${dd}` }
-
-        return `${yyyy}-${mm}-${dd}`;
-    }
-
-    /* 백엔드에서 받은 이벤트 객체를 calendar render view 데이터로 변형하는 함수 */
-    _dataObjToviewObjList = (obj) => {
-        /* C,A,O,G로 구분된 객체를 하나의 array로 변환 */
-        const eventList = [...obj.C, ...obj.A, ...obj.O, ...obj.G];
-        const { totalOrMyOption } = this.props;
-
-        /* 데이터 객체 -> calendar view 객체 */
-        const events = eventList.map( event => {
-            const { id, start, destination, label } = event;
-            
-            /* label에 해당하는 색을 갖도록 변환 */
-            let color;
-            switch (label) {
-                case CLOSED: color = colors.closed_gray; break;
-                case ACTIVE: color = colors.active_blue; break;
-                case OWNER: color = colors.owner_yellow; break;
-                case GUEST: color = colors.guest_green; break;
-                case OWNER_CLOSED: 
-                    color = totalOrMyOption === TOTAL ? 
-                            colors.owner_yellow : colors.closed_gray; break; 
-                case GUEST_CLOSED: 
-                    color = totalOrMyOption === TOTAL ? 
-                            colors.guest_green : colors.closed_gray; break;
-                default:  color = colors.active_blue; break;
-            }
-
-            return {
-                id, color, start,
-                title: `${destination} 방향`,
-            }
-        })
-
-        return(events);
     }
 
     _handleClickEvent = (info) => {
@@ -188,9 +143,10 @@ class Calendar extends Component {
         const { 
             category,
             eventsObj,
+            totalOrMyOption
         } = this.props;
 
-        const events = this._dataObjToviewObjList(eventsObj);
+        const events = dataObjToviewObjList(eventsObj, totalOrMyOption);
 
         let props = ( category === MANAGE ?
         /* Manage Calendar Properties */
@@ -198,6 +154,7 @@ class Calendar extends Component {
             header: {                                           // 달력의 헤더 설정
                 left: 'custom_today',
                 center: 'prev, title, next',
+                // right: 'see_events, select_date'
                 right: ''
             },
         } :
@@ -222,6 +179,14 @@ class Calendar extends Component {
                 custom_today: {                                 // today 버튼 클릭 시, 달력 페이지 이동뿐만 아니라, 오늘자 dayEl이 선택되는 버튼
                     text: 'today',
                     click: this._today
+                },
+                see_events: {                                   // View mode로 변경하는 버튼
+                    text: '일정 보기',
+                    // click: () => this.setState({isViewMode: true}),
+                },
+                select_date: {                                  // Select mode로 변경하는 버튼
+                    text: '날짜 선택',
+                    // click: () => this.setState({isViewMode: true}),
                 }
             },
 
