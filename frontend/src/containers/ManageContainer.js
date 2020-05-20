@@ -19,6 +19,7 @@ import {
     deletePostRequest,              // Post Delete Post request 함수  
     updatePostConditionRequest,
     postProfileUpdateRequest,
+    postProfileCreateRequest,
     postProfileDeleteRequest,
 } from '../store/actions/manage'
 import { getStatusRequest, logoutRequest } from '../store/actions/auth'
@@ -131,6 +132,7 @@ class ManageContainer extends Component {
             deleteUploadedProfileImage,
             initProfileImage,
             postProfileUpdateRequest,
+            postProfileCreateRequest,
             postProfileDeleteRequest,
         } = this.props;
     
@@ -164,6 +166,7 @@ class ManageContainer extends Component {
                             deleteUploadedProfileImage={deleteUploadedProfileImage}
                             initProfileImage={initProfileImage}
                             postProfileUpdateRequest={postProfileUpdateRequest}
+                            postProfileCreateRequest={postProfileCreateRequest}
                             postProfileDeleteRequest={postProfileDeleteRequest}
                         /> 
                         <ManageFooter />
@@ -207,7 +210,8 @@ const mapDispatchToProps = (dispatch) => {
         deleteUploadedProfileImage: () => dispatch(deleteUploadedProfileImage()),       // 업로드 된 사진을 지우는 액션
         initProfileImage: () => dispatch(initProfileImage()),                           // 프로필 사진 초기화 액션
         postProfileUpdateRequest: (file) => dispatch(postProfileUpdateRequest(file)),   // 프로필 사진 업데이트 POST 요청
-        postProfileDeleteRequest: (email) => dispatch(postProfileDeleteRequest(email)), // 프로필 사진 삭제 POST 요청
+        postProfileCreateRequest: (file) => dispatch(postProfileCreateRequest(file)),   // 프로필 사진 생성 POST 요청
+        postProfileDeleteRequest: () => dispatch(postProfileDeleteRequest()),           // 프로필 사진 삭제 POST 요청
 
         getMyPostRequest: (board) => {dispatch(getMyPostRequest(board))},               // 내가 작성한 전체 Post 데이터 GET request 함수
         deletePostRequest: (board, id) => {dispatch(deletePostRequest(board, id))},     // Post Delete POST request 함수

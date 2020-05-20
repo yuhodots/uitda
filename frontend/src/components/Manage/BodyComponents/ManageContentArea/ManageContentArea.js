@@ -46,6 +46,7 @@ class ManageContentArea extends Component {
             deleteUploadedProfileImage,
             initProfileImage,
             postProfileUpdateRequest,
+            postProfileCreateRequest,
             postProfileDeleteRequest,
 
             /* Posts */
@@ -67,6 +68,7 @@ class ManageContentArea extends Component {
                         deleteUploadedProfileImage={deleteUploadedProfileImage}
                         initProfileImage={initProfileImage}
                         postProfileUpdateRequest={postProfileUpdateRequest}
+                        postProfileCreateRequest={postProfileCreateRequest}
                         postProfileDeleteRequest={postProfileDeleteRequest}
                     />
                 )
@@ -124,6 +126,7 @@ ManageContentArea.propTypes = {
     deleteUploadedProfileImage: PropTypes.func.isRequired,  // 업로드 된 사진을 지우는 액션
     initProfileImage: PropTypes.func.isRequired,            // 프로필 사진 초기화 액션
     postProfileUpdateRequest: PropTypes.func.isRequired,    // 프로필 사진 업데이트 POST 요청 메서드
+    postProfileCreateRequest: PropTypes.func.isRequired,    // 프로필 사진 생성 POST 요청 메서드
     postProfileDeleteRequest: PropTypes.func.isRequired,    // 프로필 사진 삭제 POST 요청 메서드
     deletePost: PropTypes.func.isRequired,                  // Post를 지우는 함수
     updatePostCondition: PropTypes.func.isRequired,         // 포스팅의 상태 변경 메서드

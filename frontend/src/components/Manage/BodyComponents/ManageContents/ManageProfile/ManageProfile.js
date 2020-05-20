@@ -49,6 +49,7 @@ const ManageProfile = (props) => {
         uploadProfileImage,
         deleteUploadedProfileImage,
         initProfileImage,
+        postProfileCreateRequest,
         postProfileUpdateRequest,
         postProfileDeleteRequest,
     } = props;
@@ -67,6 +68,7 @@ const ManageProfile = (props) => {
                     uploadProfileImage={uploadProfileImage}
                     deleteUploadedProfileImage={deleteUploadedProfileImage}
                     initProfileImage={initProfileImage}
+                    postProfileCreateRequest={postProfileCreateRequest}
                     postProfileUpdateRequest={postProfileUpdateRequest}
                     postProfileDeleteRequest={postProfileDeleteRequest}
                 />
@@ -89,6 +91,7 @@ ManageProfile.propTypes = {
     deleteUploadedProfileImage: PropTypes.func.isRequired,  // 업로드 된 사진을 지우는 액션
     initProfileImage: PropTypes.func.isRequired,            // 프로필 사진 초기화 액션
     postProfileUpdateRequest: PropTypes.func.isRequired,    // 프로필 사진 업데이트 POST 요청 메서드
+    postProfileCreateRequest: PropTypes.func.isRequired,    // 프로필 사진 생성 POST 요청 메서드
     postProfileDeleteRequest: PropTypes.func.isRequired,    // 프로필 사진 삭제 POST 요청 메서드
 }
 

@@ -92,6 +92,7 @@ const PhotoEditBox = (props) => {
         uploadProfileImage,
         deleteUploadedProfileImage,
         initProfileImage,
+        postProfileCreateRequest,
         postProfileUpdateRequest,
         postProfileDeleteRequest,
     } = props;
@@ -104,9 +105,15 @@ const PhotoEditBox = (props) => {
 
     /* 변경 데이터를 Backend에 POST 요청을 통해 전달하는 함수 */
     const handlePost = () => {
-        /* 업데이트 사진이 있으면 update 요청, 없으면 delete 요창 */
-        if ( uploadedProfileImage ) { postProfileUpdateRequest(uploadedProfileImage) }
+        /* 업로드한 사진이 있고 이미 프로필이 있으면 update 요청,
+           업로드한 사진이 있고 프로필 사진도 없으면 create 요청, 
+           업로드한 사진이 없으면 delete 요청 */
+        if ( uploadedProfileImage ) { 
+            if (pic_location) { postProfileUpdateRequest(uploadedProfileImage) }
+            else { postProfileCreateRequest(uploadedProfileImage) }
+        }
         else { postProfileDeleteRequest(email) }
+        window.location.reload();
     }
 
     return (
@@ -150,6 +157,7 @@ PhotoEditBox.propTypes = {
     uploadProfileImage: PropTypes.func.isRequired,          // 사진 업로드 액션
     deleteUploadedProfileImage: PropTypes.func.isRequired,  // 업로드 된 사진을 지우는 액션
     initProfileImage: PropTypes.func.isRequired,            // 프로필 사진 초기화 액션
+    postProfileCreateRequest: PropTypes.func.isRequired,    // 프로필 사진 생성 POST 요청 메서드
     postProfileUpdateRequest: PropTypes.func.isRequired,    // 프로필 사진 업데이트 POST 요청 메서드
     postProfileDeleteRequest: PropTypes.func.isRequired,    // 프로필 사진 삭제 POST 요청 메서드
 }
