@@ -34,7 +34,7 @@ module.exports = {
 
         let events_response = [];
         let events_db;
-        let is_guest;
+        let is_guest = [];
         let counter = 1;
 
         async.waterfall([
@@ -110,24 +110,35 @@ module.exports = {
 
             /* is_guest 값 설정 */
             function (callback) {
-                is_guest = [];
 
-                for(let i = 0; i < events_db.length; i++){
-                    is_guest[i] = false;
-                    guest.findAll({ where: { event_id: events_db[i].id } })
-                    .then(function(guestlist){
-                        if (guestlist){
-                            for (let j = 0; j < guestlist.length; j++){
-                                if (req.user.email == guestlist[j]['email']) {
-                                    is_guest[i] = true;
-                                    break;
+                let temp_counter = 0;
+
+                if(events_db.length != 0){
+                    for(let i = 0; i < events_db.length; i++){
+                        is_guest[i] = false;
+                        guest.findAll({ where: { event_id: events_db[i].id } })
+                        .then(function(guestlist){
+                            if (guestlist){
+                                for (let j = 0; j < guestlist.length; j++){
+                                    if (req.user.email == guestlist[j]['email']) {
+                                        is_guest[i] = true;
+                                        break;
+                                    }
+                                    
                                 }
                             }
-                        }
-                    })
+                        })
+                        .then(()=>{ temp_counter = temp_counter + 1 })
+                        .then(()=>{
+                            if (temp_counter == events_db.length){
+                                callback(null);
+                            }
+                        })
+                    }
                 }
-
-                callback(null);
+                else{
+                    callback(null);
+                }
             },
 
             /* 로그인 한 유저의 요청 */
@@ -386,6 +397,14 @@ module.exports = {
                     res.json({ user: req.user ? req.user : 0 }) :
                     callback(null);
             },
+
+            /* 이미 guest인 유저의 요청인지 확인 */
+
+            function (callback) {
+
+                callback(null);
+            },
+
 
             /* guest 생성 */
             function (callback) {
