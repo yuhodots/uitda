@@ -1,43 +1,38 @@
 
 
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import { colors } from "../../../styles/variables";
 import { UserBasicImage } from "../../../styles/images";
 
 
 /* Styled Components */
-
 const CircleArea = styled.div`
-
     height: ${props => props.size ? `${props.size}px` : '100%'};
     width: ${props => props.size ? `${props.size}px` : '100%'};
 
     border-radius: 50%;
-
-    background-image: url(${props => props.imgURL ? props.imgURL : UserBasicImage});
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-
-    /* background-color: ${colors.photo_defaultgray}; 
-    ${props => props.imgURL && css`
-        background-image: url(${props.imgURL});
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-    `}; */
+    overflow: hidden;
 `;
 
+    const StyledImg = styled.img`
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+    `;
 
 
 /* React Component */
 const UserPhoto = ({size, imgURL}) => {
 
+    imgURL = imgURL ? imgURL : UserBasicImage;
+
     return (
-        <CircleArea size={size} imgURL={imgURL} />
+        <CircleArea size={size}>
+            <StyledImg src={imgURL} />
+        </CircleArea>
     )
 }
 
