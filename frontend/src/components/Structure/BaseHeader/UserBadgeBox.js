@@ -7,11 +7,11 @@ import { Redirect } from 'react-router-dom';
 
 import { UserPhoto, UitdaPopover } from "../CommonComponents";
 import IconBadge from "./subComponents/IconBadge";
-import { 
-    // BellFilled, 
-    BellOutlined, MessengerFilled, 
-    // MessengerOutlined 
-} from '../../../styles/icon';
+// import { 
+//     BellFilled, 
+//     BellOutlined, MessengerFilled, 
+//     MessengerOutlined 
+// } from '../../../styles/icon';
 
 
 /* Styled Components */
@@ -22,6 +22,7 @@ const WholeBox = styled.div`
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
+    justify-content: flex-end;
 `;
 
     const GiveMargin = styled.div`
@@ -64,14 +65,16 @@ class UserBadgeBox extends Component {
 
         const userPopoverContent = this._getUserPopoverContent();
 
+        const renderUserPhoto = () => <UserPhoto imgURL={curUser.pic_location} size={28} />
+
         return gotoManage ?
-            <Redirect to='/manage' /> :
+            <Redirect to='/manage/profile' /> :
             <WholeBox>
-                <IconBadge iconPath={MessengerFilled} size={24} />
-                <GiveMargin><IconBadge iconPath={BellOutlined} size={24} badgeCount={2} /></GiveMargin>
+                {/* <IconBadge iconPath={MessengerFilled} size={24} />
+                <GiveMargin><IconBadge iconPath={BellOutlined} size={24} badgeCount={2} /></GiveMargin> */}
                 <GiveMargin>
                     <UitdaPopover 
-                        PopButton={() => <UserPhoto imgURL={curUser.pic_location} size={28} /> }
+                        PopButton={() => <IconBadge size={28} ComponentItem={renderUserPhoto} />}
                         contentList={userPopoverContent}
                     />
                 </GiveMargin>

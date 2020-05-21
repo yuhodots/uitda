@@ -13,6 +13,8 @@ const IconContainer = styled.div`
 
     height: ${props => `${props.size}px`};
 
+    cursor: pointer;
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -43,35 +45,37 @@ const IconContainer = styled.div`
 
 
 /* React Component */
-class IconBadge extends Component {
-
-
-    render() {
-
-        const { size, iconPath, badgeCount } = this.props;
-
-        return (
-            <IconContainer size={size} >
-                <Icon src={iconPath} />
-                {
-                    badgeCount ?
-                    <BadgeCount>{badgeCount}</BadgeCount> :
-                    ''
-                }
-            </IconContainer>
-        )
-    }
+const IconBadge = ({size, iconPath, badgeCount, ComponentItem }) => {
+    
+    return (
+        <IconContainer size={size} >
+        {
+            ComponentItem ?
+            <ComponentItem /> :
+            <Icon src={iconPath} />
+        }
+        {
+            badgeCount ?
+            <BadgeCount>{badgeCount}</BadgeCount> :
+            ''
+        }
+        </IconContainer>
+    )
 }
 
 IconBadge.propTypes = {
     size: PropTypes.number,                     //
     iconPath: PropTypes.string.isRequired,      //
     badgeCount: PropTypes.number,               //
+
+    ComponentItem: PropTypes.func,              // 아이콘이 아닌 다른 컴포넌트를 render 할 경우 
 }
 
 IconBadge.defaultProps = {
     size: 24,
     badgeCount: 0,
+
+    ComponentItem: undefined
 }
 
 
