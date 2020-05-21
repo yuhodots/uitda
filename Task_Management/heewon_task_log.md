@@ -160,6 +160,7 @@ main 에서 update 시간 상대적 시간으로 보내기
 1. 이미지 보내기 -> routes
 2. socket emit으로 프론트에 알려주기
 3. res.socket 되는지 찾아보기
+
 ### 2020년 5월 3일
 1.댓글 socket 추가 수정(emit 내용 수정)
 2.댓글 시간 YYYY-MM-DDTHH:mm:ss
@@ -175,8 +176,11 @@ main 에서 update 시간 상대적 시간으로 보내기
 api/users/profile/update 로 routes 수정
 api/users/profile/delete 
 
+### 2002년 5월 21일 
+
+1. users/profile/create & delete & update
+
 #### 완료
 #### 진행중 
 
 #### 할 일
-카풀 소개 이미지 만들기
