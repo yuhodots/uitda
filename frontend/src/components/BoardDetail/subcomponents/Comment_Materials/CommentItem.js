@@ -10,6 +10,7 @@ import { MoreButtonPopover, CommentInput } from "./";
 import { UserPhoto } from "../../../Structure/CommonComponents";
 import { colors } from "../../../../styles/variables";
 import { useHover } from '../../../../useHooks'
+import { addLineToString } from "../../../RefactoringFuncs";
 
 
 /* Styled Components */
@@ -53,6 +54,11 @@ const CommentItemArea = styled.div`
 
                 line-height: 1.5rem;
                 font-size: 0.875rem;
+            `;
+
+            const UserName = styled.span`
+                font-weight: bold;
+                margin-right: 0.5rem;
             `;
 
             /* 답글의 경우 생성시각 정보를 우측에 표기 */
@@ -137,7 +143,7 @@ const CommentItem = (props) => {
     const handleMouseLeave = () => { if (isMine) { setMoreButtonVisible(false) } }
     const commentItemRef = useHover(handleHover, handleMouseLeave);
 
-    const { pic_location } = user;
+    const { username, pic_location } = user;
 
     const displayTime = dateStrToDisplayTimeStr(created);
     const NumOfSubComment = subCommentList.length;
@@ -161,7 +167,7 @@ const CommentItem = (props) => {
                 <PhotoTextBox>
                     <UserPhoto imgURL={pic_location} size={40} />
                     <TextBox>
-                        <TextContainer> {description} </TextContainer>
+                        <TextContainer> <UserName> {username} </UserName> {addLineToString(description)} </TextContainer>
 
                         {
                             !isRootComment &&
