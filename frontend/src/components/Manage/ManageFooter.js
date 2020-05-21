@@ -49,9 +49,9 @@ const ManageFooter = () => {
     return (
         <FooterBox>
             <FooterContentBox>
-                <FooterLink>개인정보처리방침</FooterLink>
+                <FooterLink to='/policy.pdf' >개인정보처리방침</FooterLink>
                 <Divider type='vertical' />
-                <FooterLink>서비스이용약관</FooterLink>
+                <FooterLink to='/service.pdf' >서비스이용약관</FooterLink>
             </FooterContentBox>
         </FooterBox>
     )

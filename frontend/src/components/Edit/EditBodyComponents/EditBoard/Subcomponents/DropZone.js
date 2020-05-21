@@ -137,7 +137,6 @@ class DropZone extends Component {
 }
 
 DropZone.propTypes = {
-    
     files: PropTypes.array.isRequired,              // 사진 파일 데이터 리스트
 
     addFileData: PropTypes.func.isRequired,

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { Input } from "antd";
 
 import Subtitle from './RoomSubtitle';
-import { DEPARTURE, DESTINATION } from "../../../../../constants/edit_RoomInfo_DataKeys";
+import { DEPARTURE, DESTINATION } from "../../../../../constants/edit_Input_Data_Keys";
 
 /* Styled Components */
 

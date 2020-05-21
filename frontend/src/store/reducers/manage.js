@@ -10,11 +10,9 @@ import {
     MANAGE_EDIT_INIT_PAGE,
     MANAGE_EDIT_GET_POST_SUCCESS,
     MANAGE_EDIT_GET_POST_FAILURE,
-    MANAGE_EDIT_STORE_TITLE_DATA,
-    MANAGE_EDIT_STORE_PRICE_DATA,
+    MANAGE_EDIT_STORE_BOARD_DATA,
     MANAGE_EDIT_ADD_FILE_DATA,
     MANAGE_EDIT_DELETE_FILE_DATA,
-    MANAGE_EDIT_STORE_DESCRIPTION_DATA,
     MANAGE_EDIT_CREATE_POST_SUCCESS,
     MANAGE_EDIT_UPDATE_POST_SUCCESS,
     MANAGE_EDIT_CLICK_BOLD,
@@ -52,12 +50,14 @@ const InitialState = {
     isModified: false,                              // 수정된 지 여부
     editCategory: MARKET,                           // Edit 페이지 카테고리 정보 (market, networking, carpool)
     
-    editedTitle: '',                                // 작성한 제목 데이터
-    editedPrice: '',
-    editedFiles: [],                                // 업로드할 파일 데이터 리스트
-    deletedFileIDs: [],                             // 삭제할 파일의 id 리스트
-    editedDescription: '',                          // 작성한 설명 부분 데이터
     editSuccess: false,                             // 작성 완료
+    editBoardData: {
+        title: '',                                  // 작성한 제목 데이터
+        price: '',                                  // MARKET 게시글 가격 데이터
+        files: [],                                  // 업로드할 파일 데이터 리스트
+        deletedFileIDs: [],                         // 삭제할 파일의 id 리스트
+        description: '',                            // 작성한 설명 부분 데이터
+    },
 
     edit_spanStyle: {                               // BIUS style 선택된 유무
         bSelect: false,                             // Bold
@@ -142,10 +142,13 @@ export default function manage (state = InitialState, action) {
         case MANAGE_EDIT_INIT_PAGE:
             return {
                 ...state,
-                editedTitle: '',
-                editedPrice: '',
-                editedFiles: [],
-                editedDescription: '',
+                editBoardData: {
+                    title: '',                                  
+                    price: '',                                  
+                    files: [],                                  
+                    deletedFileIDs: [],                         
+                    description: '',                            
+                },
                 
                 editCategory: MARKET,
                 editSuccess: false,
@@ -163,8 +166,10 @@ export default function manage (state = InitialState, action) {
 
         /* 글 수정 시 요청한 GET 요청 액션으로 얻은 data 또는 err
            데이터는 글 수정 edit 페이지에 처음 로드 되는데 사용됨 */
-        case MANAGE_EDIT_GET_POST_SUCCESS:
-            let modifiedFileList = action.filelist.map(filedata => {
+        case MANAGE_EDIT_GET_POST_SUCCESS: {
+            const { title, price, filelist, description } = action
+
+            const modifiedFileList = filelist.map(filedata => {
                 const uid = `${-filedata.file_id - 1}`;
                 return {
                     uid: uid,
@@ -177,14 +182,15 @@ export default function manage (state = InitialState, action) {
 
             return {
                 ...state,
-                editedTitle: action.title,
-                editedPrice: action.price,
-                editedDescription: action.description,
-                editedFiles: modifiedFileList,
+                editBoardData: {
+                    title, price, description, 
+                    files: modifiedFileList,        
+                    deletedFileIDs: [],                   
+                },
                 isEditGetSuccess: true,
-
                 isEditInit: false,
             }
+        }
         
         case MANAGE_EDIT_GET_POST_FAILURE:
             return {
@@ -194,49 +200,44 @@ export default function manage (state = InitialState, action) {
             }
 
         /* Edit page에서 데이터 입력 시, 앱 state로 저장하는 액션들 */
-        case MANAGE_EDIT_STORE_TITLE_DATA:
-            return {
-                ...state,
-                editedTitle: action.editedTitle,
-                isModified: true,
+        case MANAGE_EDIT_STORE_BOARD_DATA:
+            for ( let key in state.editBoardData ) {
+                if ( key === action.data_key ){
+                    state.editBoardData[key] = action.data_value;
+                }
             }
+            return { ...state }
 
-        case MANAGE_EDIT_STORE_PRICE_DATA:
-            return {
-                ...state,
-                editedPrice: action.editedPrice,
-                isModified: true,
-            }
 
-        case MANAGE_EDIT_STORE_DESCRIPTION_DATA:
-            return {
-                ...state,
-                editedDescription: action.editedDescription,
-                isModified: true,
-            }
-        
         case MANAGE_EDIT_ADD_FILE_DATA:
             return {
                 ...state,
-                editedFiles: [...state.editedFiles, action.file],
+                editBoardData: {
+                    ...state.editBoardData,
+                    files: [...state.editBoardData.files, action.file]
+                },
                 isModified: true,
             }
 
         case MANAGE_EDIT_DELETE_FILE_DATA:
-            const index = state.editedFiles.indexOf(action.file);
-            const newFileList = state.editedFiles.slice();
+            const index = state.editBoardData.files.indexOf(action.file);
+            let newFileList = state.editBoardData.files.slice();
             newFileList.splice(index, 1);
 
             /* 기존에 있던 (수정 전) 사진의 경우, deletedFileIDs 리스트에 해당 사진의 id를 저장 */
             if( !action.isNew ) {
-                state.deletedFileIDs = [...state.deletedFileIDs, action.file.del_id]
+                state.editBoardData.deletedFileIDs = [...state.editBoardData.deletedFileIDs, action.file.del_id]
             }
 
             return {
                 ...state,
-                editedFiles: newFileList,
+                editBoardData: {
+                    ...state.editBoardData,
+                    files: newFileList,
+                },
                 isModified: true,
             }
+
 
         /* 작성 성공 되었음을 알리는 액션들 */
         case MANAGE_EDIT_CREATE_POST_SUCCESS:
@@ -306,7 +307,7 @@ export default function manage (state = InitialState, action) {
                     state.carpool_RoomInfoData[key] = action.data_value;
                 }
             }
-            return state
+            return { ...state }
 
         case MANAGE_EDIT_CARPOOL_POST_SUCCESS:
             return {

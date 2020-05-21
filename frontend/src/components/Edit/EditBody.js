@@ -47,18 +47,13 @@ class EditBody extends Component {
         const {
             editCategory,
 
-            title,
-            price,
-            files,
-            description,
+            editBoardData,
             selectedDate,
             eventsObj,
 
-            storeTitleData,
-            storePriceData,
+            storeBoardData,
             addFileData,
             deleteFileData,
-            storeDescriptionData,
             initCalenderEvents,
             selectDate,
             storeCarpoolData
@@ -78,10 +73,9 @@ class EditBody extends Component {
                 
                 <EditBoard minHeight={windowHeight}
                     editCategory={editCategory}
-                    title={title} storeTitleData={storeTitleData}
-                    price={price} storePriceData={storePriceData}
-                    files={files} addFileData={addFileData} deleteFileData={deleteFileData}
-                    description={description} storeDescriptionData={storeDescriptionData}
+                    editBoardData={editBoardData} 
+                    addFileData={addFileData} deleteFileData={deleteFileData}
+                    storeBoardData={storeBoardData}
                 />
             }
             </BackGround>
@@ -92,20 +86,15 @@ class EditBody extends Component {
 EditBody.propTypes = {
     editCategory: PropTypes.string.isRequired,          // Edit Category
     
-    title: PropTypes.string,                            // Edit 페이지에서 작성한 Title 데이터
-    price: PropTypes.string,
-    files: PropTypes.array,                             // Edit 페이지에서 업로드한 사진 데이터
-    description: PropTypes.string,                      // Eidt 페이지에서 작성한 Description 데이터
+    editBoardData: PropTypes.object.isRequired,         // Edit Board Data
 
     selectedDate: PropTypes.object,                     // Carpool 탭에서 선택된 날짜 데이터
     eventsObj: PropTypes.object.isRequired,             // 카풀 탭의 캘린더에 띄울 일정 데이터 객체
 
     /* Methods */
-    storeTitleData: PropTypes.func.isRequired,          // Title 데이터를 App State로 저장하는 함수
-    storePriceData: PropTypes.func.isRequired,
+    storeBoardData: PropTypes.func.isRequired,          // Edit Board 데이터를 App State로 저장하는 함수
     addFileData: PropTypes.func.isRequired,             // Files 데이터를 App State로 저장하는 함수
     deleteFileData: PropTypes.func.isRequired,          // App State에 있는 파일 데이터 중 해당 파일을 지우는 함수
-    storeDescriptionData: PropTypes.func.isRequired,    // Description 데이터를 App State로 저장하는 함수
 
     initCalenderEvents: PropTypes.func.isRequired,      // 캘린더 첫 화면에서 띄울 events를 받는 액션
     selectDate: PropTypes.func.isRequired,              // Carpool 탭에서 날짜를 선택하는 메서드
@@ -113,11 +102,6 @@ EditBody.propTypes = {
 }
 
 EditBody.defaultProps = {
-    title: '', 
-    price: '',                           
-    files: [],                             
-    description: '',
-
     selectedDate: {},
 }
 

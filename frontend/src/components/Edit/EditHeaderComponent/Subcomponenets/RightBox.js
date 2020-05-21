@@ -43,16 +43,14 @@ class RightBox extends Component {
         const { 
             id, editCategory, isCarpool,
 
-            title, description,
-            price,
-            files, deletedFileIDs,
-            
+            editBoardData,
             selectedDate, roomInfoData,
 
             EditPostRequest,
             postCarpoolEvent,
         } = this.props;
 
+        /* 카풀 일정 등록 */
         if ( isCarpool ) {
             const carpoolData = { ...roomInfoData, start_date: selectedDate }
 
@@ -68,7 +66,15 @@ class RightBox extends Component {
             postCarpoolEvent(carpoolData);
         }
 
+        /* Board 게시글 작성 */
         else {
+            const {
+                title, files, price, description, deletedFileIDs
+            } = editBoardData;
+
+            /* 제목이 없는 경우 경고 메시지를 띄움 */
+            if (!title) { message.error('제목을 입력해주세요.'); return; }
+
             /* 업로드로 넘겨주는 file 데이터는 이미 업로드 되어 있지 않은 사진들
                (url 프로퍼티를 갖지 않는 파일들) 만으로 구성한다. */
             const uploadFiles = files.filter( file => !file.url )
@@ -138,11 +144,7 @@ RightBox.propTypes = {
     editCategory: PropTypes.string.isRequired,      // 선택된 카테고리 데이터
 
     /* 글 내용에 대한 데이터 */
-    title: PropTypes.string.isRequired,             // Title Data
-    price: PropTypes.string.isRequired,
-    files: PropTypes.array.isRequired,              // Files Data
-    deletedFileIDs: PropTypes.array.isRequired,     // 수정 시, 삭제할 사진 id 리스트
-    description: PropTypes.string.isRequired,       // Description Data
+    editBoardData: PropTypes.object.isRequired,     // Edit Board Data
 
     /* Carpool 탭 데이터 */
     selectedDate: PropTypes.object,                 // Carpool 탭에서 선택된 날짜 데이터

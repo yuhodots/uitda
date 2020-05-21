@@ -5,6 +5,9 @@ import styled from 'styled-components';
 import { Input } from 'antd';
 import PropTypes from 'prop-types';
 
+import { TITLE } from "../../../../../constants/edit_Input_Data_Keys";
+
+
 /* Styled Components */
 const TitleTextArea = styled(Input.TextArea)`
     margin-bottom: 3rem;
@@ -24,13 +27,13 @@ const TitleTextArea = styled(Input.TextArea)`
 `
 
 /* React Component */
-const EditTitle = ({title, storeTitleData}) => {
+const EditTitle = ({title, storeBoardData}) => {
     return (
         <TitleTextArea
             defaultValue={title}
             placeholder="제목을 입력 하세요."
             autoSize={true}
-            onChange={(e) => storeTitleData(e.target.value)}
+            onChange={(e) => storeBoardData(TITLE, e.target.value)}
         />
     )
 }
@@ -38,7 +41,7 @@ const EditTitle = ({title, storeTitleData}) => {
 
 EditTitle.propTypes = {
     title: PropTypes.string,
-    storeTitleData: PropTypes.func.isRequired
+    storeBoardData: PropTypes.func.isRequired
 }
 
 EditTitle.defaultProps = {

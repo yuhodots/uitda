@@ -13,7 +13,7 @@ import {
 } from './Subcomponents';
 import { colors } from '../../../../styles/variables'
 import { MANAGE } from "../../../../constants/categories";
-import { CONTACT, MEETING_PALCE } from "../../../../constants/edit_RoomInfo_DataKeys";
+import { CONTACT, MEETING_PALCE } from "../../../../constants/edit_Input_Data_Keys";
 
 
 /* Styled Components */
