@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 import basicImg from './img/Basic_img.jpg';
 
@@ -181,8 +182,8 @@ class PhotoBox extends Component {
                     // 사진 넘기기 버튼
                     // filelist.length > 1 &&
                     <ButtonContainer isHover={isHover} posTop={`${buttonPosTop}px`} >
-                        <PrevButton isButtonOn={isPrevButtonOn} onClick={_ClickPrevButton} />
-                        <NextButton isButtonOn={isNextButtonOn} onClick={_ClickNextButton} />
+                        <PrevButton isButtonOn={isPrevButtonOn} onClick={_ClickPrevButton}> <LeftOutlined /> </PrevButton>
+                        <NextButton isButtonOn={isNextButtonOn} onClick={_ClickNextButton}> <RightOutlined /> </NextButton>
                     </ButtonContainer> 
                 }
                 {
