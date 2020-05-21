@@ -17,7 +17,7 @@ class EditHeader extends Component {
             isNew, id,
             editSuccess,
 
-            title, price, files, deletedFileIDs, description,
+            editBoardData,
             selectedDate, roomInfoData,
 
             selectEditCategory,
@@ -31,9 +31,7 @@ class EditHeader extends Component {
                 isNew={isNew} id={id}
                 editSuccess={editSuccess}
             
-                title={title} price={price} files={files}
-                deletedFileIDs={deletedFileIDs}
-                description={description}
+                editBoardData={editBoardData}
 
                 selectedDate={selectedDate}
                 roomInfoData={roomInfoData}
@@ -64,11 +62,7 @@ EditHeader.propTypes = {
     id: PropTypes.number.isRequired,                // Update의 경우 해당 글의 id
     editSuccess: PropTypes.bool.isRequired,         // Edit이 완료되었음을 알리는 데이터
 
-    title: PropTypes.string,                        // Edit 페이지에서 작성한 Title 데이터
-    price: PropTypes.string,
-    files: PropTypes.array,                         // Edit 페이지에서 업로드한 사진 데이터
-    deletedFileIDs: PropTypes.array,                // 수정 시, 삭제할 사진 id 리스트
-    description: PropTypes.string,                  // Edit 페이지에서 작성한 Description 데이터
+    editBoardData: PropTypes.object.isRequired,     // Edit Board Data
 
     selectedDate: PropTypes.object,                 // Carpool 탭에서 선택된 날짜 데이터
     roomInfoData: PropTypes.object,                 // 카풀 방 정보
@@ -81,12 +75,6 @@ EditHeader.propTypes = {
 }
 
 EditHeader.defaultProps = {
-    title: '',
-    price: '',
-    files: [],
-    deletedFileIDs: [],
-    description: '',
-
     selectedDate: new Date(),
     roomInfoData: {},
 }

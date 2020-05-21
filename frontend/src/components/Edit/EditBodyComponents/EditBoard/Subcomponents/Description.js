@@ -1,44 +1,42 @@
 
 
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Input } from 'antd';
 import PropTypes from 'prop-types';
 
 import { colors } from '../../../../../styles/variables'
+import { UitdaTextArea } from "../../../../Structure/CommonComponents";
+import { DESCRIPTION } from "../../../../../constants/edit_Input_Data_Keys";
+
 
 /* Styled Components */
 const DescriptionBox = styled.div`
+    width: 100%;
     border-top: 0.75px solid ${colors.gray_line};
 `
 
-const DescriptionTextArea = styled(Input.TextArea)`
-    padding-top: 3rem;
-    min-height: 10rem !important;
-    width: 100%;
+    const DescriptionStyle = css`
+        padding-top: 3rem;
+        min-height: 15rem !important;
 
-    font-size: 1rem;
+        font-size: 1rem;
+    `;
 
-    /* TextArea 속성 */
-    resize: none;
-    border: none;
-    outline: 0;
-
-    :focus {
-        border: none;
-        box-shadow: none;
-    }
-`
 
 /* React Component */
-const Description = ({description, storeDescriptionData}) => {
+const Description = ({description, storeBoardData}) => {
     return (
         <DescriptionBox>
-            <DescriptionTextArea
-                defaultValue={description}
-                placeholder="설명을 입력 하세요."
-                autoSize={true}
-                onChange={(e) => storeDescriptionData(e.target.value)}
+            <UitdaTextArea 
+                size='100%'
+                defaultText={description}
+                placeHolder="설명을 입력 하세요."
+                isUnderLine={false}
+                isFullHeight={true}
+                data_key={DESCRIPTION}
+                storeDataFunc={storeBoardData}
+                customCSS={DescriptionStyle}
             />
         </DescriptionBox>
     )
@@ -46,7 +44,7 @@ const Description = ({description, storeDescriptionData}) => {
 
 Description.propTypes = {
     description: PropTypes.string,
-    storeDescriptionData: PropTypes.func.isRequired,   // Description 데이터를 App State로 저장하는 함수
+    storeBoardData: PropTypes.func.isRequired,   // Description 데이터를 App State로 저장하는 함수
 }
 
 Description.defaultProps = {

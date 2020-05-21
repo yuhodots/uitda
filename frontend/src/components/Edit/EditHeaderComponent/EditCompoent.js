@@ -116,11 +116,7 @@ class EditComponent extends Component {
             editCategory,
             editSuccess,
 
-            title,
-            price,
-            files,
-            deletedFileIDs,
-            description,
+            editBoardData,
 
             // spanStyle,
             // textAlign,
@@ -250,11 +246,7 @@ class EditComponent extends Component {
                     id={id}
                     editCategory={editCategory}
 
-                    title={title}
-                    price={price}
-                    files={files}
-                    deletedFileIDs={deletedFileIDs}
-                    description={description}
+                    editBoardData={editBoardData}
 
                     selectedDate={selectedDate}
                     roomInfoData={roomInfoData}
@@ -276,11 +268,7 @@ EditComponent.propTypes = {
     editSuccess: PropTypes.bool.isRequired,         // 작성 완료를 알리는 데이터
 
     /* 글 내용에 대한 데이터 */
-    title: PropTypes.string.isRequired,             // Title Data
-    price: PropTypes.string.isRequired,
-    files: PropTypes.array.isRequired,              // Files Data
-    deletedFileIDs: PropTypes.array.isRequired,     // 수정 시, 삭제할 사진 id 리스트
-    description: PropTypes.string.isRequired,       // Description Data
+    editBoardData: PropTypes.object.isRequired,     // Edit Board Data
 
     spanStyle: PropTypes.object.isRequired,         // BIUS 스타일 선택 정보
     textAlign: PropTypes.string.isRequired,         // p태그 text align 속성 값

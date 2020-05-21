@@ -3,9 +3,8 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
-import { Input } from "antd";
 
-import { DESCRIPTION } from "../../../../../constants/edit_RoomInfo_DataKeys";
+import { DESCRIPTION } from "../../../../../constants/edit_Input_Data_Keys";
 import { colors } from "../../../../../styles/variables";
 import { UitdaTextArea } from "../../../../Structure/CommonComponents";
 

@@ -1,7 +1,12 @@
+
+
 import React from 'react';
 import styled from 'styled-components';
 import { Input, Radio } from 'antd';
 import PropTypes from 'prop-types';
+
+import { PRICE } from "../../../../../constants/edit_Input_Data_Keys";
+
 
 /* Styled Components */
 const PriceTextArea = styled(Input.TextArea)`
@@ -51,7 +56,7 @@ class EditPrice extends React.Component {
 
     render() {
 
-        const { price, storePriceData } = this.props;
+        const { price, storeBoardData } = this.props;
         const { disabled, value } = this.state;
 
         return (
@@ -66,7 +71,7 @@ class EditPrice extends React.Component {
                         defaultValue={price}
                         placeholder="가격을 입력하세요."
                         autoSize={true}
-                        onChange={(e) => storePriceData(e.target.value)}
+                        onChange={(e) => storeBoardData(PRICE, e.target.value)}
                         disabled={disabled}
                     />:
                     <PriceTextArea
@@ -86,7 +91,7 @@ class EditPrice extends React.Component {
 
 EditPrice.propTypes = {
     price: PropTypes.string,
-    storePriceData: PropTypes.func.isRequired
+    storeBoardData: PropTypes.func.isRequired
 }
 
 EditPrice.defaultProps = {

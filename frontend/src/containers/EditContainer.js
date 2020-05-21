@@ -14,11 +14,9 @@ import {
     selectEditCategory,
     getUpdatePostRequest,
     EditPostRequest,
-    storeEditTitleData,
-    storeEditPriceData,
+    storeBoardData,
     addFileData,
     deleteFileData,
-    storeEditDescriptionData,
     editClickB,
     editClickI,
     editClickU,
@@ -152,11 +150,7 @@ class EditContainer extends Component {
             isEditGetSuccess,
             editCategory,
 
-            title,
-            price,
-            files,
-            deletedFileIDs,
-            description,
+            editBoardData,
             editSuccess,
             edit_spanStyle,
             edit_textAlign,
@@ -167,11 +161,9 @@ class EditContainer extends Component {
             /* App Methods */
             EditPostRequest,
             selectEditCategory,
-            storeEditTitleData,
-            storeEditPriceData,
+            storeBoardData,
             addFileData,
             deleteFileData,
-            storeEditDescriptionData,
             editClickB,
             editClickI,
             editClickU,
@@ -201,11 +193,7 @@ class EditContainer extends Component {
                         editCategory={editCategory}         // 카테고리 선택 박스에 들어갈 게시판 정보 (default로도 사용됨)
                         id={id}                             // Update의 경우 해당 글의 id
 
-                        title={title}                       // Edit 페이지에서 작성한 Title 데이터
-                        price={price}
-                        files={files}                       // Edit 페이지에서 업로드한 사진 데이터
-                        deletedFileIDs={deletedFileIDs}     // 수정 시, 삭제할 사진 id 리스트
-                        description={description}           // Eidt 페이지에서 작성한 Description 데이터
+                        editBoardData={editBoardData}       // Edit Board Data
                         editSuccess={editSuccess}           // Edit이 완료되었음을 알리는 데이터
 
                         edit_spanStyle={edit_spanStyle}     // BIUS 스타일 선택 정보
@@ -229,20 +217,15 @@ class EditContainer extends Component {
                         editCategory={editCategory}                         // Edit 카테고리
 
                         /* property */
-                        title={title}                                       // Edit 페이지에서 작성한 Title 데이터
-                        price={price}
-                        files={files}                                       // Edit 페이지에서 업로드한 사진 데이터
-                        description={description}                           // Edit 페이지에서 작성한 Description 데이터
+                        editBoardData={editBoardData}                       // Edit Board Data
 
                         eventsObj={eventsToRenderObj}                       // 카풀 탭의 캘린더에 띄울 일정 데이터 객체
                         selectedDate={selectedDate}                         // Carpool 탭에서 선택된 날짜 데이터
 
                         /* methods */
-                        storeTitleData={storeEditTitleData}
-                        storePriceData={storeEditPriceData}
+                        storeBoardData={storeBoardData}
                         addFileData={addFileData}
                         deleteFileData={deleteFileData}
-                        storeDescriptionData={storeEditDescriptionData}
 
                         initCalenderEvents={initCalenderEvents}             // 캘린더 첫 화면에서 띄울 events를 받는 액션
                         selectDate={selectDate}                             // Carpool 탭에서 날짜를 선택하는 메서드
@@ -278,11 +261,7 @@ const mapStateToProps = (state) => {
         editSuccess: state.manage.editSuccess,              // 작성 완료 정보
         editCategory: state.manage.editCategory,            // edit 카테고리 정보 (market, networking, carpool)
 
-        title: state.manage.editedTitle,                    // Title Data
-        price: state.manage.editedPrice,
-        files: state.manage.editedFiles,                    // File List Data
-        deletedFileIDs: state.manage.deletedFileIDs,        // 삭제할 파일 ID 리스트
-        description: state.manage.editedDescription,        // Description Data
+        editBoardData: state.manage.editBoardData,      // Edit Board Data
         
         edit_spanStyle: state.manage.edit_spanStyle,        // BUIS 스타일 선택 데이터
         edit_textAlign: state.manage.edit_textAlign,        // p태그 text align 속성 값
@@ -304,13 +283,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         getPostRequest: (board, id) => dispatch(getUpdatePostRequest(board, id)),
 
-        storeEditTitleData: (title) => dispatch(storeEditTitleData(title)),
-        storeEditPriceData: (price) => dispatch(storeEditPriceData(price)),
+        storeBoardData: (data_key, data_value) => dispatch(storeBoardData(data_key, data_value)),
         addFileData: (file) => dispatch(addFileData(file)),
         deleteFileData: (file) => dispatch(deleteFileData(file)),
-        storeEditDescriptionData: (description) => {
-            dispatch(storeEditDescriptionData(description))
-        },
 
         editClickB: () => dispatch(editClickB()),
         editClickI: () => dispatch(editClickI()),

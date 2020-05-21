@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 import Subtitle from "./RoomSubtitle";
 import { UitdaTimePicker } from "../../../../Structure/CommonComponents";
-import { START_TIME } from "../../../../../constants/edit_RoomInfo_DataKeys";
+import { START_TIME } from "../../../../../constants/edit_Input_Data_Keys";
 
 /* Styled Components */
 const WholeBox = styled.div`

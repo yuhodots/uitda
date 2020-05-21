@@ -17,11 +17,9 @@ import {
     MANAGE_EDIT_CREATE_POST_FAILURE,
     MANAGE_EDIT_UPDATE_POST_SUCCESS,
     MANAGE_EDIT_UPDATE_POST_FAILURE,
-    MANAGE_EDIT_STORE_TITLE_DATA,
-    MANAGE_EDIT_STORE_PRICE_DATA,
+    MANAGE_EDIT_STORE_BOARD_DATA,
     MANAGE_EDIT_ADD_FILE_DATA,
     MANAGE_EDIT_DELETE_FILE_DATA,
-    MANAGE_EDIT_STORE_DESCRIPTION_DATA,
     MANAGE_DELETE_POST_SUCCESS,
     MANAGE_DELETE_POST_FAILURE,
     MANAGE_EDIT_CLICK_BOLD,
@@ -301,17 +299,10 @@ export function updatePostFailure (err) {
 }
 
 /* Edit 페이지에서 작성 내용을 앱 state에 기록하는 함수들 */
-export function storeEditTitleData (editedTitle) {
+export function storeBoardData (data_key, data_value) {
     return {
-        type: MANAGE_EDIT_STORE_TITLE_DATA,
-        editedTitle
-    }
-}
-
-export function storeEditPriceData (editedPrice) {
-    return {
-        type: MANAGE_EDIT_STORE_PRICE_DATA,
-        editedPrice
+        type: MANAGE_EDIT_STORE_BOARD_DATA,
+        data_key, data_value
     }
 }
 
@@ -327,13 +318,6 @@ export function deleteFileData (file, isNew) {
         type: MANAGE_EDIT_DELETE_FILE_DATA,
         file,
         isNew
-    }
-}
-
-export function storeEditDescriptionData (editedDescription) {
-    return {
-        type: MANAGE_EDIT_STORE_DESCRIPTION_DATA,
-        editedDescription
     }
 }
 

@@ -27,47 +27,38 @@ const EditPaper = styled(PaperTemplate)`
 
 /* React Component */
 
-const EditBoard = ({ minHeight, editCategory, title, storeTitleData,
-                     price, storePriceData,
-                     files, addFileData, deleteFileData,
-                     description, storeDescriptionData }) => {
+const EditBoard = (props) => {
 
-    if(editCategory === MARKET){
-        return (
-            <EditPaper minHeight={minHeight} >
-                <EditTitle title={title} storeTitleData={storeTitleData} />
-                <EditPrice price={price} storePriceData={storePriceData} />
-                <DropZone files={files} addFileData={addFileData} deleteFileData={deleteFileData} />
-                <Description description={description} storeDescriptionData={storeDescriptionData} />
-            </EditPaper>
-        )
-    }
-    else{
-        return (
-            <EditPaper minHeight={minHeight} >
-                <EditTitle title={title} storeTitleData={storeTitleData} />
-                <DropZone files={files} addFileData={addFileData} deleteFileData={deleteFileData} />
-                <Description description={description} storeDescriptionData={storeDescriptionData} />
-            </EditPaper>
-        )
-    }
+    const { 
+        minHeight, editCategory, 
+        editBoardData, 
+        storeBoardData,
+        addFileData, deleteFileData 
+    } = props;
+
+    const { title, price, files, description } = editBoardData
+
+    return (
+        <EditPaper minHeight={minHeight} >
+            <EditTitle title={title} storeBoardData={storeBoardData} />
+            {
+                editCategory === MARKET &&
+                <EditPrice price={price} storeBoardData={storeBoardData} />
+            }
+            <DropZone files={files} addFileData={addFileData} deleteFileData={deleteFileData} />
+            <Description description={description} storeBoardData={storeBoardData} />
+        </EditPaper>
+    )
 }
 
 EditBoard.propTypes = {
     minHeight: PropTypes.number.isRequired,             // Edit Paper의 최소 높이 값
-
     editCategory: PropTypes.string.isRequired,          // Edit Category
+    editBoardData: PropTypes.object.isRequired,         // Edit Board Data
 
-    title: PropTypes.string.isRequired,                 // Edit 페이지에서 작성한 Title 데이터
-    price: PropTypes.string.isRequired,
-    files: PropTypes.array.isRequired,                  // Edit 페이지에서 업로드한 사진 데이터
-    description: PropTypes.string.isRequired,           // Eidt 페이지에서 작성한 Description 데이터
-
-    storeTitleData: PropTypes.func.isRequired,          // Title 데이터를 App State로 저장하는 함수
-    storePriceData: PropTypes.func.isRequired,
+    storeBoardData: PropTypes.func.isRequired,          // Edit Board 데이터를 App State로 저장하는 함수
     addFileData: PropTypes.func.isRequired,             // Files 데이터를 App State로 저장하는 함수
     deleteFileData: PropTypes.func.isRequired,          // App State에 있는 파일 데이터 중 해당 파일을 지우는 함수
-    storeDescriptionData: PropTypes.func.isRequired,    // Description 데이터를 App State로 저장하는 함수
 }
 
 export default EditBoard;

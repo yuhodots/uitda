@@ -43,10 +43,7 @@ class RightBox extends Component {
         const { 
             id, editCategory, isCarpool,
 
-            title, description,
-            price,
-            files, deletedFileIDs,
-            
+            editBoardData,
             selectedDate, roomInfoData,
 
             EditPostRequest,
@@ -71,6 +68,10 @@ class RightBox extends Component {
 
         /* Board 게시글 작성 */
         else {
+            const {
+                title, files, price, description, deletedFileIDs
+            } = editBoardData;
+
             /* 제목이 없는 경우 경고 메시지를 띄움 */
             if (!title) { message.error('제목을 입력해주세요.'); return; }
 
@@ -143,11 +144,7 @@ RightBox.propTypes = {
     editCategory: PropTypes.string.isRequired,      // 선택된 카테고리 데이터
 
     /* 글 내용에 대한 데이터 */
-    title: PropTypes.string.isRequired,             // Title Data
-    price: PropTypes.string.isRequired,
-    files: PropTypes.array.isRequired,              // Files Data
-    deletedFileIDs: PropTypes.array.isRequired,     // 수정 시, 삭제할 사진 id 리스트
-    description: PropTypes.string.isRequired,       // Description Data
+    editBoardData: PropTypes.object.isRequired,     // Edit Board Data
 
     /* Carpool 탭 데이터 */
     selectedDate: PropTypes.object,                 // Carpool 탭에서 선택된 날짜 데이터
