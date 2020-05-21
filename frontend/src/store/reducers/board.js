@@ -17,21 +17,16 @@ import {
 
 
 const InitialState = {
-    // /* 공통 state */
-    // isGetSuccess: false,    // GET 요청이 성공했는 지 여부
-    // err: '',                // 에러
-    
     /* Board 게시판 state */
     isHeaderOn: true,               // 게시판 페이지 헤더의 On Off 여부
 
     isFirstBoardGetSuccess: false,  // 게시판 페이지 데이터 get 완료 여부
+    isLoading: false,               // Scroll GET 대기 여부
+    isLast: false,                  // 마지막 요소인 지
 
     postlist: [],                   // postlist 데이터
     scroll: 0,                      // 스크롤 횟수 (데이터를 받은 횟수)
     search: '',                     // 검색어 데이터
-
-    isLoading: false,               // Scroll GET 대기 여부
-    isLast: false,                  // 마지막 요소인 지
 
     /* Board detail state */
     isDetailGetSuccess: false,      // Detail 페이지 데이터 get 완료 여부

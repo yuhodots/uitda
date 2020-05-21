@@ -54,26 +54,33 @@ class BoardContainer extends Component {
     }
 
     _handleScroll = (e) => {
-        let { isHeaderOn, boardName, scroll, search } = this.props;
+        const { 
+            isHeaderOn, 
+            isLast, isLoading, isFirstBoardGetSuccess,
+            boardName, scroll, search,
 
-        let scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
-        let scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
-        let clientHeight = document.documentElement.clientHeight;
+            headerOff, headerOn,
+            getBoardRequestByScroll,
+        } = this.props;
+
+        /* Scroll Heigth: 스크롤 영역 전체의 Height
+           Scroll Top: 현재 스크롤 top이 위치한 위치 값
+           Client Height: 브라우저 창의 Height 값 */
+        const scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+        const scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
+        const clientHeight = document.documentElement.clientHeight;
 
         // Header On/Off 관련
-        if (isHeaderOn) {
-            if(scrollTop > 64){
-                this.props.headerOff();
-            }
-        }
-        else if (scrollTop <= 64) {
-            this.props.headerOn();
-        }
+        if (isHeaderOn) { if(scrollTop > 64) { headerOff() } }
+        else if (scrollTop <= 64) { headerOn() }
 
-        // 무한 스크롤
-        if (scrollTop + clientHeight > scrollHeight - 64) {
-            if( !this.props.isLast && !this.props.isLoading ){
-                this.props.getBoardRequestByScroll( boardName, scroll, search );
+        /* 무한 스크롤 핸들링
+           스크롤 하단의 위치가 전체 height보다 64px 위쪽에 위치해 있을 때,
+           첫 GET 요청 이후이고, 스크롤 GET요청이 loading 상태가 아니고, isLast가 false이면
+           스크롤 GET 요청을 보낸다.  */
+        if ( (scrollTop + clientHeight) > (scrollHeight - 64) ) {
+            if( isFirstBoardGetSuccess && !isLast && !isLoading ) {
+                getBoardRequestByScroll( boardName, scroll, search );
             }
         }
     }
@@ -88,7 +95,7 @@ class BoardContainer extends Component {
 
 
     render() {
-        let {
+        const {
             // properties
             curUser,
             isGetStatusDone,
