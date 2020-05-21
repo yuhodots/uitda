@@ -53,6 +53,7 @@ class RightBox extends Component {
             postCarpoolEvent,
         } = this.props;
 
+        /* 카풀 일정 등록 */
         if ( isCarpool ) {
             const carpoolData = { ...roomInfoData, start_date: selectedDate }
 
@@ -68,7 +69,11 @@ class RightBox extends Component {
             postCarpoolEvent(carpoolData);
         }
 
+        /* Board 게시글 작성 */
         else {
+            /* 제목이 없는 경우 경고 메시지를 띄움 */
+            if (!title) { message.error('제목을 입력해주세요.'); return; }
+
             /* 업로드로 넘겨주는 file 데이터는 이미 업로드 되어 있지 않은 사진들
                (url 프로퍼티를 갖지 않는 파일들) 만으로 구성한다. */
             const uploadFiles = files.filter( file => !file.url )
