@@ -578,8 +578,15 @@
 ### 5. 21 (목)
 
 * Board 무한 스크롤 점검 (처음 render할 때, 가끔 2번 씩 get 요청이 되던 오류 해결)
-
-
+* Board Header를 Base Header 사용하는 코드로 리펙토링 
+* Base Header 일부 수정
+  * isHeaderOn 효과 추가
+  * 현재 사용하지 않는 Icon 주석처리
+  * User Icon에 cursor pointer
+* Comment Item에 username 추가, 줄바꿈 적용
+* Edit Board 제목을 입력 안 한 경우, 경고 메시지를 띄움
+* Edit Board Store Data 리팩토링
+* Manage Footer 링크 추가
 
 
 
@@ -593,17 +600,13 @@
 
 #### Board FrontEnd
 
-* 디테일 페이지에서 뒤로가기 했을 때, render가 안되는 오류
-* 무한 스크롤 islast 점검 (간혹 2번 요청이 가는 경우가 있음)
 * 첫 get 요청 후 Render 되기 전에 Board Loading 페이지 제작
 
 
 
 * 배경 컴포넌트를 BackgroundTemplate로 코드 리펙토링
-* Header를 BaseHeader로 코드 리펙토링
 * 로딩 바 css 스타일 다듬기
 * 검색창에 자동완성 기능 추가
-* postlist 초기화 및 중복 요청 제거
 * 상세 페이지에서 다시 돌아올때는 초기화 X
 * 검색 창 띄우기 아이콘이 안 보일 때 위치에 갖다대면 cursor 모양으로 바뀌는 에러
 
@@ -611,21 +614,17 @@
 
 #### Detail FrontEnd
 
-* socket.io를 이용해 클라이언트의 데이터 실시간 업데이트 되도록 하기
 * 사진 Ant Design의 Carousel Component 검토
-* 
 
 
 
 * 가로 길이가 많이 줄어들면, 좌측 탭이 사라지는 대신 상단의 헤더로 이동하기
-* CommonComponents의 UserPhoto와 MoreButton을 이용하기
 * 가끔 댓글 전체가 안담기는 에러가 있음. 백엔드 문제인지 프론트 문제인지 확인 필요
 * 배경 컴포넌트를 BackgroundTemplate로 코드 리펙토링
 
 
 
 * 댓글 수정 시 (수정 됨) 을 추가하기
-* 댓글 create, delete시 뜨는 proxy 에러 원인 찾기 -> reload를 실행해서 그러함. socket.io를 이용한다면 해결될 문제.
 * console 창에 뜨는 props 타입 관련 에러 메시지 -> type script로 변경하지 않는 이상 해결되지 않을 것 같음. (혹은 콘솔 에러 메시지를 없애기 위해 지저분한 코드를 만들어야 함.)
   기능상에 문제는 전혀 없기 때문에 넘어갑시다.
 
@@ -635,63 +634,19 @@
 
 
 
-
-#### Login FrontEnd
-
-* Outlook 로그아웃 한 상태로, 데스크탑으로 Login 기능 확인
-* 첫 로그인 시, outlook을 통해 회원가입 되었습니다. 메시지 뜨기
-
-
-
-
-
 #### Manage FrontEnd
-
-* edit carpool 페이지 mount 될 때, init시키기
-* edit carpool에서 필수 데이터 입력 안 했을 시, post request하기 전에 경고 띄우기
-* edit carpool Room Info Box 스타일링
-* '/manage' 로 시작하는 URL을 브라우저 창에 입력하고 enter를 누르면 강제로 '/board/market'으로 리다이렉트 되는 에러
-  Redirect 문제 (포스트 delete 시, '/board/market'으로 이동)
-  reload (새로고침) 하는데 왜 '/board/market' 으로 이동할까 ?
-  예상 -> manage container의 user가 없는 경우 auth/login 가고 auth/login에서 /로 갈 듯
-* Manage Profile - 글 작성 => 더보기 버튼
-
-
-
-* Manage Board 사진 부분 확인하기
-
-
 
 * Manage Carpool Calendar의 경우, 옛날 날짜를 선택하는 경우 경고 메시지 띄우기
   * 1) 날짜 누를 때 방지 2) 등록하기 버튼을 누를 때 날짜를 확인하세요라고 경고
-* store/manage에 있는 selectDate 액션 및 selectedDate는 Carpool로 통일해도 좋을 듯 
 * edit board 앱 데이터 및 저장 액션 리펙토링
-* carpool 수정 UX/UI 고려
-* carpool room input style 코드 리팩토링
-* edit 상단바 funcbox 코드 리펙토링
-* edit 상단바가 스크롤 내리면 위에 tooltip 생기는 거 고치기
+* edit board header funcbox 
 * Edit Page 나가기 전에 '나가시겠습니까 묻기'
 * edit carpool 작성 완료 시 카풀 페이지 나왔을 때 바로 카풀 이벤트가 뜨지 않음 (시간이 필요함)
-* 다판다, 잉력시장 글 관리 서로 넘어갈 때, 로딩 페이지로 부드럽게 넘어가도록
-* Header를 BaseHeader로 코드 리펙토링
 * 배경 컴포넌트를 BackgroundTemplate로 코드 리펙토링
 
 
 
-* 글 쓰기로 edit 페이지 들어갈 때, undefined가 들어가서 렌더링 안되는 오류 (/manage/posts/undefined)
-
-* edit 페이지에서 뒤로가기로 manage로 이동했을 때 흰색 화면 에러
-DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e918.hot-update.js.map
-  
-  
-  
-* 작성하다가 삭제를 했을 때, DropZone 미리보기와 실제 업로드 되는 사진이 다른 오류 (현재 발견되지 않음)
-
 * DropZone PhotoList의 width값 고정된거 없애기
-
-* Edit Page 상단 바 디자인
-
-* Edit 상단 아이콘 기능 구현
 
 * Edit 스타일을 지닌 태그들을 어떻게 저장할 것인지 구상
 
@@ -699,7 +654,6 @@ DevTools failed to parse SourceMap: http://localhost:4000/main.8ae3c3b0b675dda1e
 
 * 사진 순서 변경 기능 (백앤드 작업 이후)
 
-* 내용이 없이 create 했을 때, 경고 메시지 창 띄우기
 
 
 
