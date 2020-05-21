@@ -398,13 +398,47 @@ module.exports = {
                     callback(null);
             },
 
-            /* 이미 guest인 유저의 요청인지 확인 */
-
+            /* owner가 아닌지 확인 */
             function (callback) {
-
-                callback(null);
+                cal_events.findOne({ where: { id: event_id } })
+                .then(function (event) {
+                    if(req.user.email == event.email){
+                        console.log("YOU ARE OWNER\n")
+                        res.end();
+                    }
+                    else{
+                        callback(null);
+                    }
+                })
             },
 
+            /* 이미 guest인 유저의 요청인지 확인 */
+            function (callback) {
+
+                let temp_counter = 0;
+
+                guest.findAll({ where: { event_id: event_id } })
+                .then(function (guestlist) {
+                    if (guestlist){
+                        console.log(guestlist);
+                        for (let i = 0; i < guestlist.length; i++){
+                            if (req.user.email == guestlist[i]['email']) {
+                                res.end();
+                                break;
+                            }
+                            temp_counter = temp_counter+1;
+
+                            if(temp_counter == guestlist.length){
+                                callback(null);
+                            }
+                        }
+                        console.log("\nHI2\n");
+                    }
+                    else{
+                        callback(null);
+                    }
+                })
+            },
 
             /* guest 생성 */
             function (callback) {
