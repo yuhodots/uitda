@@ -34,20 +34,20 @@ const StyledTextArea = styled(Input.TextArea)`
     font-size: 1rem;
 
     /* 노트북 사이즈 */
-    @media (max-width: 1500px) {
+    /* @media (max-width: 1500px) {
         font-size: 0.875rem;
-    }
+    } */
 
-    ${props => props.customCSS};
+    ${props => props.customCSS}
 `;
 
 
 /* React Component */
 const UitdaTextArea = forwardRef( (props, ref) => {
 
-    const {
+    let {
         data_key, storeDataFunc, 
-        size, 
+        size, disabled,
         defaultText, 
         placeHolder, 
         isUnderLine, letFocus, isFullHeight,
@@ -66,6 +66,7 @@ const UitdaTextArea = forwardRef( (props, ref) => {
     return(
         <StyledTextArea 
             ref={textAreaRef}
+            disabled={disabled}
             value={value}
             customCSS={customCSS}
             size={size}
@@ -83,6 +84,7 @@ const UitdaTextArea = forwardRef( (props, ref) => {
 })
 
 UitdaTextArea.propTypes = {
+    disabled: PropTypes.bool,                       // 비활성화 여부
     size: PropTypes.oneOfType([                     // 가로 길이
         PropTypes.string,
         PropTypes.number,
@@ -99,6 +101,7 @@ UitdaTextArea.propTypes = {
 }
 
 UitdaTextArea.defaultProps = {
+    disabled: false,
     customCSS: '',
     size: 160,
     defaultText: '',

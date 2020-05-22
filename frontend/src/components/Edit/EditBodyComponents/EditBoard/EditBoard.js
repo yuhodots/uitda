@@ -40,7 +40,7 @@ const EditBoard = (props) => {
 
     return (
         <EditPaper minHeight={minHeight} >
-            <EditTitle title={title} storeBoardData={storeBoardData} />
+            <EditTitle title={title} storeBoardData={storeBoardData} isMarket={editCategory === MARKET} />
             {
                 editCategory === MARKET &&
                 <EditPrice price={price} storeBoardData={storeBoardData} />
