@@ -17,7 +17,7 @@ import {
     boardHeaderOff,
 } from '../store/actions/board'
 import { topicSelect } from "../store/actions/topic";
-import { getStatusRequest, logoutRequest } from "../store/actions/auth";
+import { getStatusRequest, localLogoutRequest, outlookLogoutRequest } from "../store/actions/auth";
 
 class BoardContainer extends Component {    
 
@@ -110,7 +110,8 @@ class BoardContainer extends Component {
 
             // methods
             headerOn,
-            logoutRequest,
+            localLogoutRequest,
+            outlookLogoutRequest,
             getBoardRequest
         } = this.props;
 
@@ -130,7 +131,8 @@ class BoardContainer extends Component {
                         board={boardName}
                         
                         getBoardRequest={getBoardRequest} 
-                        logoutRequest={logoutRequest}
+                        localLogoutRequest={localLogoutRequest}
+                        outlookLogoutRequest={outlookLogoutRequest}
                     />
                     
                     {
@@ -182,7 +184,8 @@ const mapDispatchToProps = (dispatch) => {
         headerOff: () => {dispatch(boardHeaderOff())},                  // 헤더를 사라지게 하는 메서드
 
         getStatusRequest: () => dispatch(getStatusRequest()),           // 현재 로그인 된 유저 정보 요청 액션   
-        logoutRequest: () => dispatch(logoutRequest()),                 // 로그아웃 메서드
+        localLogoutRequest: () => dispatch(localLogoutRequest()),       // 로그아웃 메서드
+        outlookLogoutRequest: () => dispatch(outlookLogoutRequest()),   // 아웃룩 로그아웃 메서드
 
         initiateBoard: () => {dispatch(initiateBoard())},               // 보드 초기화 메서드 
         getBoardRequest: (boardName, scroll, search) => {               // 보드 GET 요청 메서드

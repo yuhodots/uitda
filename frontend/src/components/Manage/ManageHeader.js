@@ -23,7 +23,7 @@ const _renderComponent = () => {
 }
 
 /* react component */
-const ManageHeader = ({curUser, logoutRequest}) => {
+const ManageHeader = ({curUser, localLogoutRequest, outlookLogoutRequest}) => {
 
     return (
         <BaseHeader 
@@ -31,14 +31,16 @@ const ManageHeader = ({curUser, logoutRequest}) => {
             isBGWhite={true}
             MiddleComponent = {_renderComponent}
         
-            logoutRequest={logoutRequest}
+            localLogoutRequest={localLogoutRequest}
+            outlookLogoutRequest={outlookLogoutRequest}
         />
     )
 }
 
 ManageHeader.propTypes = {
-    curUser: PropTypes.object.isRequired,       // 유저 정보
-    logoutRequest: PropTypes.func.isRequired,   // 로그아웃 매서드
+    curUser: PropTypes.object.isRequired,               // 유저 정보
+    localLogoutRequest: PropTypes.func.isRequired,      // 로그아웃 매서드
+    outlookLogoutRequest: PropTypes.func.isRequired,    // 아웃룩 로그아웃 메서드
 }
 
 ManageHeader.defaultProps = {}

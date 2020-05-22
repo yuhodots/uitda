@@ -72,7 +72,8 @@ const BaseHeader = (props) => {
         MiddleComponent,
         doesNeedUserBadge,
 
-        logoutRequest,
+        localLogoutRequest,
+        outlookLogoutRequest,
     } = props;
 
     return (
@@ -83,7 +84,11 @@ const BaseHeader = (props) => {
                 <MiddleComponent />
                 {
                     doesNeedUserBadge ?
-                    <UserBadgeBox curUser={curUser} logoutRequest={logoutRequest} /> :
+                    <UserBadgeBox 
+                        curUser={curUser} 
+                        localLogoutRequest={localLogoutRequest} 
+                        outlookLogoutRequest={outlookLogoutRequest}    
+                    /> :
                     ''
                 }
             </ContentBox>
@@ -99,7 +104,8 @@ BaseHeader.propTypes = {
     MiddleComponent: PropTypes.func.isRequired,         // Header의 가운데에 위치할 컴포넌트
     doesNeedUserBadge: PropTypes.bool,                  // 유저 뱃지 박스가 필요한 지 여부
 
-    logoutRequest: PropTypes.func.isRequired,           // 로그아웃 액션
+    localLogoutRequest: PropTypes.func.isRequired,           // 로그아웃 액션
+    outlookLogoutRequest: PropTypes.func.isRequired,    // 아웃룩 로그아웃 메서드
 }
 
 BaseHeader.defaultProps = {

@@ -22,7 +22,7 @@ import {
     postProfileCreateRequest,
     postProfileDeleteRequest,
 } from '../store/actions/manage'
-import { getStatusRequest, logoutRequest } from '../store/actions/auth'
+import { getStatusRequest, localLogoutRequest, outlookLogoutRequest } from '../store/actions/auth'
 
 /* Constants */
 import {
@@ -125,7 +125,8 @@ class ManageContainer extends Component {
 
             postList,
 
-            logoutRequest,
+            localLogoutRequest,
+            outlookLogoutRequest,
             deletePostRequest,
             updatePostConditionRequest,
             uploadProfileImage,
@@ -149,7 +150,8 @@ class ManageContainer extends Component {
                     <div style={{position: 'relative'}} >
                         <ManageHeader
                             curUser={curUser}
-                            logoutRequest={logoutRequest}
+                            localLogoutRequest={localLogoutRequest}
+                            outlookLogoutRequest={outlookLogoutRequest}
                         />
                         <ManageBody 
                             curUser={curUser}
@@ -203,7 +205,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getStatusRequest: () => {dispatch(getStatusRequest())},                         // 접속된 유저 정보를 요청하는 액션
-        logoutRequest: () => dispatch(logoutRequest()),                                 // 로그아웃 액션
+        localLogoutRequest: () => dispatch(localLogoutRequest()),                       // 로그아웃 액션
+        outlookLogoutRequest: () => dispatch(outlookLogoutRequest()),                   // 아웃룩 로그아웃 메서드
 
         getMyProfile: () => dispatch(getMyProfileRequest()),
         uploadProfileImage: (file) => dispatch(uploadProfileImage(file)),               // 사진 업로드 액션

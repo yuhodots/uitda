@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import { PoweroffOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons'
 
 import { UserPhoto, UitdaPopover } from "../CommonComponents";
 import IconBadge from "./subComponents/IconBadge";
@@ -36,7 +37,7 @@ class UserBadgeBox extends Component {
     state = {}
 
     _getUserPopoverContent = () => {
-        const { logoutRequest } = this.props;
+        const { localLogoutRequest, outlookLogoutRequest } = this.props;
         
         return [
             {
@@ -45,14 +46,24 @@ class UserBadgeBox extends Component {
                     this.setState({
                         gotoManage: true
                     })
-                }
+                },
+                icon: <UserOutlined />,
             },
             {
-                text: '로그아웃',
+                text: '유잇다 로그아웃',
                 clickMethod: () => {
-                    logoutRequest();
+                    localLogoutRequest();
                     window.location.reload();
                 },
+                icon: <LogoutOutlined />
+            },
+            {
+                text: '아웃룩 로그아웃',
+                clickMethod: () => {
+                    outlookLogoutRequest();
+                    window.location.reload();
+                },
+                icon: <PoweroffOutlined />
             }
         ]
     }
@@ -86,7 +97,8 @@ class UserBadgeBox extends Component {
 UserBadgeBox.propTypes = {
     curUser: PropTypes.object,                          // 로그인된 유저 데이터
 
-    logoutRequest: PropTypes.func.isRequired,           // 로그아웃 액션
+    localLogoutRequest: PropTypes.func.isRequired,           // 로그아웃 액션
+    outlookLogoutRequest: PropTypes.func.isRequired,    // 아웃룩 로그아웃 메서드
 }
 
 

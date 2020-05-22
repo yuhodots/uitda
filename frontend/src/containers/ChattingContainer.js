@@ -7,7 +7,7 @@ import SocketIo from 'socket.io-client';
 import { Redirect } from 'react-router-dom';
 import { withLastLocation } from 'react-router-last-location';
 
-import { getStatusRequest, logoutRequest } from "../store/actions/auth";
+import { getStatusRequest, localLogoutRequest, outlookLogoutRequest } from "../store/actions/auth";
 import ChattingHeader from "../components/Chatting/ChattingHeader";
 import ChattingBody from "../components/Chatting/ChattingBody";
 import {
@@ -79,7 +79,8 @@ class ChattingContainer extends Component {
             currentRoom,
             chatInputData,
         
-            logoutRequest,
+            localLogoutRequest,
+            outlookLogoutRequest,
             getChatDataRequest,
             storeChatInputData,
         } = this.props;
@@ -99,7 +100,8 @@ class ChattingContainer extends Component {
                     <div style={{height: '100%', width: '100%'}}>
                         <ChattingHeader 
                             curUser={curUser}
-                            logoutRequest={logoutRequest}
+                            localLogoutRequest={localLogoutRequest}
+                            outlookLogoutRequest={outlookLogoutRequest}
                         />
                         <ChattingBody 
                             isIndex={isIndex} 
@@ -150,7 +152,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getStatusRequest: () => dispatch(getStatusRequest()),                   // 현재 유저 정보를 불러오는 request 액션
-        logoutRequest: () => dispatch(logoutRequest()),                         // 로그아웃 GET request 액션
+        localLogoutRequest: () => dispatch(localLogoutRequest()),               // 로그아웃 GET request 액션
+        outlookLogoutRequest: () => dispatch(outlookLogoutRequest()),           // 아웃룩 로그아웃 메서드
         
         getChatDataRequest: (opntID) => {                                       // 첫 Chatting 페이지 띄울 때의 데이터를 요청하는 액션
             dispatch(getChatDataRequest(opntID))

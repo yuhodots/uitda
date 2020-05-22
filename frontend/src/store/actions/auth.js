@@ -32,10 +32,18 @@ export function getStatusFailure(err) {
 
 
 // 로그아웃 액션 생성자
-
-export function logoutRequest() {
+export function localLogoutRequest() {
     return (dispatch) => {
         return axios.get('/api/logout/local')
+        .then((res) => {
+            dispatch(logout());
+        });
+    };
+}
+
+export function outlookLogoutRequest() {
+    return (dispatch) => {
+        return axios.get('/api/logout/outlook')
         .then((res) => {
             dispatch(logout());
         });
