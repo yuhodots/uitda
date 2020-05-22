@@ -30,7 +30,8 @@ const BoardHeader = (props) => {
         board,
         curUser,
 
-        logoutRequest,
+        localLogoutRequest,
+        outlookLogoutRequest,
         getBoardRequest
     } = props;
 
@@ -53,20 +54,22 @@ const BoardHeader = (props) => {
             doesNeedUserBadge={true}
             MiddleComponent={renderSearchBarComponent}
 
-            logoutRequest={logoutRequest}
+            localLogoutRequest={localLogoutRequest}
+            outlookLogoutRequest={outlookLogoutRequest}
         />
     )
 }
 
 BoardHeader.propTypes = {
     // Properties
-    isHeaderOn: PropTypes.bool.isRequired,      // Header가 나타나는 지,
-    curUser: PropTypes.object.isRequired,       // 유저 객체
-    board: PropTypes.string.isRequired,         // 무슨 topic 인지 
+    isHeaderOn: PropTypes.bool.isRequired,              // Header가 나타나는 지,
+    curUser: PropTypes.object.isRequired,               // 유저 객체
+    board: PropTypes.string.isRequired,                 // 무슨 topic 인지 
 
     // Methods
-    logoutRequest: PropTypes.func.isRequired,    // 로그아웃 메서드
-    getBoardRequest: PropTypes.func.isRequired, // board에서 검색 시, get 요청을 하는 매서드 
+    localLogoutRequest: PropTypes.func.isRequired,      // 로그아웃 메서드
+    outlookLogoutRequest: PropTypes.func.isRequired,    // 아웃룩 로그아웃 메서드
+    getBoardRequest: PropTypes.func.isRequired,         // board에서 검색 시, get 요청을 하는 매서드 
 }
 
 export default BoardHeader;

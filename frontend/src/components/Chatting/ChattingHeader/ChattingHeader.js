@@ -26,7 +26,7 @@ class ChattingHeader extends Component {
 
     render() {
 
-        const { curUser, logoutRequest } = this.props
+        const { curUser, localLogoutRequest, outlookLogoutRequest } = this.props
 
         return(
             <BaseHeader 
@@ -34,15 +34,17 @@ class ChattingHeader extends Component {
                 isBGWhite={true} 
                 MiddleComponent={this._renderMiddleComponent} 
             
-                logoutRequest={logoutRequest}
+                localLogoutRequest={localLogoutRequest}
+                outlookLogoutRequest={outlookLogoutRequest}
             />
         )
     }
 }
 
 ChattingHeader.propTypes = {
-    curUser: PropTypes.object.isRequired,           // 유저 정보
-    logoutRequest: PropTypes.func.isRequired,       // 로그아웃 액션
+    curUser: PropTypes.object.isRequired,               // 유저 정보
+    localLogoutRequest: PropTypes.func.isRequired,      // 로그아웃 액션
+    outlookLogoutRequest: PropTypes.func.isRequired,    // 아웃룩 로그아웃 메서드
 }
 
 export default ChattingHeader
