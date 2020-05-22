@@ -19,7 +19,6 @@ import outlook from './img/outlook.png';
 import mp1 from './img/market_preview1.png';
 import mp2 from './img/market_preview2.png';
 import np1 from './img/networking_preview1.png';
-import np2 from './img/networking_preview2.png';
 import cp1 from './img/carpool_preview1.png';
 import cp2 from './img/carpool_preview2.png';
 
@@ -72,7 +71,7 @@ class Login extends Component {
   networkingClick = () => { 
     this.setState({
        visible: true,
-       previewImageList: [np1,np2]
+       previewImageList: [np1]
     }); 
   };
 
