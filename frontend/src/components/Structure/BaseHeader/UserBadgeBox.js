@@ -58,11 +58,9 @@ class UserBadgeBox extends Component {
                 icon: <LogoutOutlined />
             },
             {
+                type: 'a',
+                url: '/api/logout/outlook',
                 text: '아웃룩 로그아웃',
-                clickMethod: () => {
-                    outlookLogoutRequest();
-                    window.location.reload();
-                },
                 icon: <PoweroffOutlined />
             }
         ]
