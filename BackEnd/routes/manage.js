@@ -24,7 +24,14 @@ router.get('/market', function (req, res) {
     (auth.hasPost(req, 'market_board', 'email') === 0) ?
       res.json({ postlist: undefined, user: req.user ? req.user : 0 }) :
       market_board.findAll({  where: { email: req.user.email }, order: [[ 'id','DESC' ]] })
-      .then(result => { res.json({ postlist: result, user: req.user ? req.user : 0 }); })
+      .then(result => { 
+
+        for(var i = 0; i < result.length; i++){
+          result[i].created = moment(result[i].created, 'YYYY년MM월DD일HH시mm분ss초');
+        }
+
+        res.json({ postlist: result, user: req.user ? req.user : 0 }); 
+      })
       .catch(function (err) { throw err; });
 });
 
@@ -35,7 +42,14 @@ router.get('/networking', function (req, res) {
     (auth.hasPost(req, 'networking_board', 'email') === 0) ?
       res.json({ postlist: undefined, user: req.user ? req.user : 0 }) :
       networking_board.findAll({ where: { email: req.user.email }, order: [[ 'id','DESC' ]] })
-      .then(function (result) { res.json({ postlist: result, user: req.user ? req.user : 0 }); })
+      .then(result => { 
+
+        for(var i = 0; i < result.length; i++){
+          result[i].created = moment(result[i].created, 'YYYY년MM월DD일HH시mm분ss초');
+        }
+
+        res.json({ postlist: result, user: req.user ? req.user : 0 }); 
+      })
       .catch(function (err) { throw err; });
 });
 
