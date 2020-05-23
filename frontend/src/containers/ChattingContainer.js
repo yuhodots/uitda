@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import SocketIo from 'socket.io-client';
+// import SocketIo from 'socket.io-client';
 import { Redirect } from 'react-router-dom';
 import { withLastLocation } from 'react-router-last-location';
 
@@ -17,7 +17,7 @@ import {
 
 class ChattingContainer extends Component {
 
-    chatSocket = SocketIo.connect('/chatting');
+    // chatSocket = SocketIo.connect('/chatting');
 
     componentDidMount() {
         const { 
@@ -25,7 +25,7 @@ class ChattingContainer extends Component {
             
             getStatusRequest,
             getChatDataRequest,
-            socketOnChatMessage,
+            // socketOnChatMessage,
         } = this.props;
         
         const opntID = match.params.userID;     // opponent ID. 대화 상대 ID (index 페이지의 경우 undefined)
@@ -33,37 +33,37 @@ class ChattingContainer extends Component {
         getStatusRequest();
         getChatDataRequest(opntID);
 
-        this.chatSocket.on('chat message', (data) => { 
-            console.log('socket on')
-            socketOnChatMessage(data)
-        });
+        // this.chatSocket.on('chat message', (data) => { 
+        //     console.log('socket on')
+        //     socketOnChatMessage(data)
+        // });
     }
 
-    componentWillUpdate (nextProps) {
-        const { getChatDataRequest, rootSocket } = this.props;
-        const { currentRoom, curUser } = nextProps;
+    // componentWillUpdate (nextProps) {
+    //     const { getChatDataRequest, rootSocket } = this.props;
+    //     const { currentRoom, curUser } = nextProps;
         
-        /* User State를 받았을 때에만 (전체 페이지 중 처음으로 컨테이너가 실행될 때만) socket_id 를 emit 함 */
-        const curStatusDone = this.props.isGetStatusDone;
-        const nextStatusDone = nextProps.isGetStatusDone;
-        if ( curStatusDone === false && nextStatusDone === true ) { 
-            rootSocket.emit('socket_id', {email: curUser.email});
-        }
+    //     /* User State를 받았을 때에만 (전체 페이지 중 처음으로 컨테이너가 실행될 때만) socket_id 를 emit 함 */
+    //     const curStatusDone = this.props.isGetStatusDone;
+    //     const nextStatusDone = nextProps.isGetStatusDone;
+    //     if ( curStatusDone === false && nextStatusDone === true ) { 
+    //         rootSocket.emit('socket_id', {email: curUser.email});
+    //     }
 
-        /* url의 params가 바뀔 때에만 방 데이터를 받는 요청을 보냄 */
-        const curOpntID = this.props.match.params.userID;
-        const nextOpntID = nextProps.match.params.userID;
-        if ( curOpntID !== nextOpntID ) { getChatDataRequest(nextOpntID); }
+    //     /* url의 params가 바뀔 때에만 방 데이터를 받는 요청을 보냄 */
+    //     const curOpntID = this.props.match.params.userID;
+    //     const nextOpntID = nextProps.match.params.userID;
+    //     if ( curOpntID !== nextOpntID ) { getChatDataRequest(nextOpntID); }
 
-        /* 새로운 방의 데이터를 받았을 때에만 room in이 실행됨 */
-        const curChatDataGetDone = this.props.isChatDataGetDone;
-        const nextChatDataGetDone = nextProps.isChatDataGetDone;
-        if ( curChatDataGetDone === false && nextChatDataGetDone === true ) {
-            const { id } = currentRoom;
-            const { email } = curUser;
-            if ( Number(id) !== 0 ) { this.chatSocket.emit('room in', { room_id: id, email }) }
-        }
-    }
+    //     /* 새로운 방의 데이터를 받았을 때에만 room in이 실행됨 */
+    //     const curChatDataGetDone = this.props.isChatDataGetDone;
+    //     const nextChatDataGetDone = nextProps.isChatDataGetDone;
+    //     if ( curChatDataGetDone === false && nextChatDataGetDone === true ) {
+    //         const { id } = currentRoom;
+    //         const { email } = curUser;
+    //         if ( Number(id) !== 0 ) { this.chatSocket.emit('room in', { room_id: id, email }) }
+    //     }
+    // }
 
 
     render() {

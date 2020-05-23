@@ -54,6 +54,11 @@ const ContentArea = styled.div`
         const ChatRoomBoxArea = styled.div`
             flex: 1;
             height: 100%;
+
+            /* 임시 속성 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         `;
 
 
@@ -61,64 +66,79 @@ const ContentArea = styled.div`
 class ChattingBody extends Component {
 
 
-    _renderContent = () => {
-
-        const { 
-            isIndex, curUser, opntID, chatSocket,
-            
-            isChatDataGetDone,
-            roomList,
-            currentRoom,
-            chatInputData,
-
-            getChatData,
-            storeChatInputData,
-        } = this.props;
-
-        return(
+    _tempContent = () => {
+        
+        return (
             <ContentArea>
                 <ContentBox>
-                    <ContectListBoxArea >
-                        <ContectListBox 
-                            chatSocket={chatSocket}
-                            opntID={opntID} 
-                            roomList={roomList} 
-                            currentRoom={currentRoom}
-                            isChatDataGetDone={isChatDataGetDone}
-                            
-                            getChatData={getChatData}
-                        />
-                    </ContectListBoxArea>
-                    
+                    <ContectListBoxArea />
                     <ChatRoomBoxArea>
-                    {
-                        isChatDataGetDone ?
-
-                            isIndex ?
-                            <IndexChatRoomBox /> :
-                            <ChatRoomBox 
-                                chatSocket={chatSocket}
-                                curUser={curUser}
-                                currentRoom={currentRoom} 
-                                chatInputData={chatInputData} 
-
-                                storeChatInputData={storeChatInputData}
-                            /> :
-
-                        'loading'
-                    }
+                        준비중입니다...
                     </ChatRoomBoxArea>
                 </ContentBox>
             </ContentArea>
         )
     }
 
+    // _renderContent = () => {
+
+    //     const { 
+    //         isIndex, curUser, opntID, chatSocket,
+            
+    //         isChatDataGetDone,
+    //         roomList,
+    //         currentRoom,
+    //         chatInputData,
+
+    //         getChatData,
+    //         storeChatInputData,
+    //     } = this.props;
+
+    //     return(
+    //         <ContentArea>
+    //             <ContentBox>
+    //                 <ContectListBoxArea >
+    //                     <ContectListBox 
+    //                         chatSocket={chatSocket}
+    //                         opntID={opntID} 
+    //                         roomList={roomList} 
+    //                         currentRoom={currentRoom}
+    //                         isChatDataGetDone={isChatDataGetDone}
+                            
+    //                         getChatData={getChatData}
+    //                     />
+    //                 </ContectListBoxArea>
+                    
+    //                 <ChatRoomBoxArea>
+    //                 {
+    //                     isChatDataGetDone ?
+
+    //                         isIndex ?
+    //                         <IndexChatRoomBox /> :
+    //                         <ChatRoomBox 
+    //                             chatSocket={chatSocket}
+    //                             curUser={curUser}
+    //                             currentRoom={currentRoom} 
+    //                             chatInputData={chatInputData} 
+
+    //                             storeChatInputData={storeChatInputData}
+    //                         /> :
+
+    //                     'loading'
+    //                 }
+    //                 </ChatRoomBoxArea>
+    //             </ContentBox>
+    //         </ContentArea>
+    //     )
+    // }
+
     render() {
 
         return (
             <BackgroundTemplate 
                 doesHaveHeader={true}
-                ContentComponent={this._renderContent} 
+                // ContentComponent={this._renderContent} 
+                ContentComponent={this._tempContent} 
             />
         )
     }
