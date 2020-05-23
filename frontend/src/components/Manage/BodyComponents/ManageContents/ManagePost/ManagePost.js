@@ -14,6 +14,8 @@ import {
     PostManageButtonStyle,
     BoxTemplate,
  } from '../../../../../styles/templates/manage'
+ import { formatDateStrToFullDateTime } from "../../../../RefactoringFuncs";
+
 
 /* Styled Components */
 /* 전체 포스팅 관리 박스 영역 */
@@ -179,29 +181,35 @@ class ManagePost extends Component{
         return postList.map((post, idx) => {
             // console.log(post);
 
+            const { id, postId, title, created, condition } = post;
+
             /* posting 게시글 URL */
-            const postURL = `/board/${board}/${post.id}`;
+            const postURL = `/board/${board}/${id}`;
 
             /* 해당 포스팅 edit 페이지 URL */
-            const editURL = `/manage/edit/${board}/${post.id}`;
+            const editURL = `/manage/edit/${board}/${id}`;
+
+            const formatCreated = formatDateStrToFullDateTime(created);
+
+            console.log(formatCreated)
 
             return (
                 <PostItem isLast={(idx + 1) === postList.length} key={idx}>
-                    <PostID>{post.postId}</PostID>
+                    <PostID>{postId}</PostID>
                     
                     <TextBox>
-                        <PostTitle> <TitleLink to={postURL} >{post.title}</TitleLink> </PostTitle>
-                        <PostSubInfo> {post.created} </PostSubInfo>
+                        <PostTitle> <TitleLink to={postURL} >{title}</TitleLink> </PostTitle>
+                        <PostSubInfo> {formatCreated} </PostSubInfo>
                     </TextBox>
                     
                     {/* 수정, 삭제, 상태변경 버튼 */}
                     <ButtonBox>
                         <PostManageButton href={editURL} >수정</PostManageButton>
-                        <PostManageButton onClick={() => this._handleDelete(board, post.id)} isDelete={true} >삭제</PostManageButton>
+                        <PostManageButton onClick={() => this._handleDelete(board, id)} isDelete={true} >삭제</PostManageButton>
                         <ConditionSelector 
                             board={board} 
-                            post_id={post.id}
-                            originCondition={post.condition} 
+                            post_id={id}
+                            originCondition={condition} 
                             updatePostCondition={updatePostCondition} 
                         />
                     </ButtonBox>
