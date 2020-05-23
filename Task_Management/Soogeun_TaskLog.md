@@ -613,7 +613,18 @@
 ### 5.22 (금)
 
 * 아웃룩 로그아웃 추가하기
-*  
+
+
+
+### 5.23 (토)
+
+* 무한 스크롤 오류 해결
+* Edit Price 완료
+* Manage Footer Link => a
+* Manage Post DateStr => Format
+* Chatting Temp Component 생성
+
+
 
 
 
