@@ -2,7 +2,6 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { Divider } from "antd";
 
 import { colors } from "../../styles/variables";
@@ -33,7 +32,7 @@ const FooterBox = styled.div`
     `;
 
         /* Link Style */
-        const FooterLink = styled(Link)`
+        const FooterLink = styled.a`
             color: ${colors.font_gray};
 
             :hover {
@@ -49,9 +48,9 @@ const ManageFooter = () => {
     return (
         <FooterBox>
             <FooterContentBox>
-                <FooterLink to='/policy.pdf' >개인정보처리방침</FooterLink>
+                <FooterLink href='/policy.pdf' >개인정보처리방침</FooterLink>
                 <Divider type='vertical' />
-                <FooterLink to='/service.pdf' >서비스이용약관</FooterLink>
+                <FooterLink href='/service.pdf' >서비스이용약관</FooterLink>
             </FooterContentBox>
         </FooterBox>
     )

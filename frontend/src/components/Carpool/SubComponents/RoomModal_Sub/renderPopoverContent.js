@@ -45,7 +45,8 @@ const renderCarpoolModalPopoverContent = ( curUser, selectedEvent, clickMethods 
             icon: <MessageOutlined />,
             text: '메시지 보내기',
             type: 'link',
-            url: `/chatting/t/${user.id}`
+            // url: `/chatting/t/${user.id}`
+            url: `/chatting/index`
         }
     ]
 
@@ -79,7 +80,7 @@ const renderCarpoolModalPopoverContent = ( curUser, selectedEvent, clickMethods 
                     icon: <CloseCircleOutlined  />,
                     text: '내 일정에서 제외하기',
                     clickMethod: () => {
-                        const foundedGuest = guestlist.filter(guest => guest.email === curUser.email);
+                        const foundedGuest = guestlist.find(guest => guest.email === curUser.email);
                         cancleJoinEvent(foundedGuest.id);
                     }
                 },

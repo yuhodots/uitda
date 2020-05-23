@@ -30,11 +30,6 @@ const PopoverListItemStyle = css`
     :hover {
         background-color: ${colors.gray_bg};
     }
-`;
-
-/* default type의 List Item */
-const PopoverListItem = styled.div`
-    ${PopoverListItemStyle}
 
     ${props => {
         switch (props.theme) {
@@ -47,6 +42,11 @@ const PopoverListItem = styled.div`
     }}
 `;
 
+/* default type의 List Item */
+const PopoverListItem = styled.div`
+    ${PopoverListItemStyle}
+`;
+
 /* Link type의 List Item */
 const PopoverListItemLink = styled(Link)`
     ${PopoverListItemStyle}
@@ -56,6 +56,16 @@ const PopoverListItemLink = styled(Link)`
         color: ${colors.font_default};
     }
 `;
+
+const PopoverListItemAtag = styled.a`
+    ${PopoverListItemStyle}
+
+    color: ${colors.font_default};
+    :hover {
+        color: ${colors.font_default};
+    }
+`;
+
 
     /* Content Item의 Icon 스타일 */
     const PopoverListItemIcon = styled.div`
@@ -88,28 +98,46 @@ class UitdaPopover extends Component {
             
             const { text, icon, clickMethod, type, url, theme } = contentData
 
-            return type === 'link' ?
-            
+            switch (type) {
                 /* link type인 경우, Link 태그를 render */
-                <PopoverListItemLink to={url} key={idx} >
-                    {
-                        icon ?
-                        <PopoverListItemIcon>{icon}</PopoverListItemIcon> :
-                        ''
-                    }
-                    {text}
-                </PopoverListItemLink> :
+                case 'link':
+                    return (
+                        <PopoverListItemLink to={url} key={idx} >
+                            {
+                                icon ?
+                                <PopoverListItemIcon>{icon}</PopoverListItemIcon> :
+                                ''
+                            }
+                            {text}
+                        </PopoverListItemLink> 
+                    )
+
+                case 'a':
+                    return (
+                        <PopoverListItemAtag href={url} key={idx} >
+                            {
+                                icon ?
+                                <PopoverListItemIcon>{icon}</PopoverListItemIcon> :
+                                ''
+                            }
+                            {text}
+                        </PopoverListItemAtag> 
+                    )
 
                 /* default type인 경우, clickMethod를 실행하는 div 태그를 render */
-                <PopoverListItem onClick={() => this._handleContentClick(clickMethod)} key={idx} theme={theme} >
-                    {
-                        icon ?
-                        <PopoverListItemIcon>{icon}</PopoverListItemIcon> :
-                        ''
-                    }
-                    {text}
-                </PopoverListItem>
-            
+                default:
+                    return (
+                        <PopoverListItem onClick={() => this._handleContentClick(clickMethod)} key={idx} theme={theme} >
+                            {
+                                icon ?
+                                <PopoverListItemIcon>{icon}</PopoverListItemIcon> :
+                                ''
+                            }
+                            {text}
+                        </PopoverListItem>
+                    )
+            }            
+
         });
     }
 
