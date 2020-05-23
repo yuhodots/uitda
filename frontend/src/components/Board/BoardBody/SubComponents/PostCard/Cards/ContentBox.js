@@ -179,6 +179,8 @@ const ContentBox = ({isPhotoCard, boardName, postId, title, user, created, condi
     const { username, pic_location } = user;
     const labelColor = _getLabelColor(condition);
 
+    const displayWon = price !== '가격 미정' && price !== '무료 나눔';
+
     return (
         <ContentBoxDiv>
             <ContentHead>
@@ -198,7 +200,7 @@ const ContentBox = ({isPhotoCard, boardName, postId, title, user, created, condi
                 <TitleLink to={postURL} > {title} </TitleLink>
                 {
                     boardName === MARKET &&
-                    <PriceBox>{price}원</PriceBox>
+                    <PriceBox>{price} {displayWon && '원'}</PriceBox>
                 }
             </ContentHead>
             <DescriptionBox isPhotoCard={isPhotoCard} >

@@ -1,16 +1,16 @@
 
 
 import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
-import { Radio, InputNumber } from 'antd';
+import styled from 'styled-components';
+import { Radio, Input } from 'antd';
 import PropTypes from 'prop-types';
 
 import { PRICE } from "../../../../../constants/edit_Input_Data_Keys";
-import { UitdaTextArea } from "../../../../Structure/CommonComponents";
 
 
 /* Styled Components */
 const WholeBox = styled.div`
+    position: relative;
     margin-bottom: 2rem;
 
     display: flex;
@@ -22,12 +22,34 @@ const WholeBox = styled.div`
         margin-bottom: 1rem;
     `;
 
-    const PriceInputCSS = css`
-        padding-right: 2rem;
+    const PriceInputTextArea = styled(Input)`
+        padding-right: ${props => props.displayWon? '1.75rem' : '0' };
+        width: 200px;
 
+        /* TextArea 속성 */
+        resize: none;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
+        outline: 0;
+        background-color: inherit;
+
+        :focus {
+            box-shadow: none;
+        }
+
+        font-size: 1.25rem;
         text-align: right;
+    `;
+
+    const WonMark = styled.span`
+        position: absolute;
+        top: 2.675rem;
+        
         font-size: 1.25rem;
     `;
+
 
 
 /* React Component */
@@ -36,96 +58,49 @@ const EditPrice = ({price, storeBoardData}) => {
     const defaultCondition = price === '가격 미정' || price === '무료 나눔' ? price : '가격 입력';
 
     const [ inputCondition, setInputCondition ] = useState(defaultCondition);
+    const [ priceValue, setPriceValue ] = useState(price);
 
     const options = [
         { label: '가격 입력', value: '가격 입력' },
         { label: '가격 미정', value: '가격 미정' },
         { label: '무료 나눔', value: '무료 나눔' },
     ];
-
+    
     const handleRadioChange = e => {
         setInputCondition(e.target.value);
+        if ( e.target.value === '가격 입력' ) { setPriceValue('') }   
+        else { 
+            setPriceValue(e.target.value) 
+            storeBoardData(PRICE, e.target.value);
+        } 
     }
+
+    const isdisabled = !(inputCondition === '가격 입력');
+    const displayWon = !isdisabled && priceValue;
 
     return (
         <WholeBox>
             <RadioContainer>
                 <Radio.Group options={options} onChange={handleRadioChange} value={inputCondition}/>
             </RadioContainer>
-            <UitdaTextArea 
-                disabled={ !(inputCondition === '가격 입력') }
-                
-                customCSS={PriceInputCSS}
-                size={200}
-                defaultText={price}
-                placeHolder="가격을 입력하세요."
-                isUnderLine={true}
-                data_key={PRICE}
-                storeDataFunc={storeBoardData}
+            <PriceInputTextArea 
+                displayWon={displayWon}
+                disabled={isdisabled}
+                defaultValue={price}
+                placeholder="가격을 입력하세요."
+                value={priceValue}
+                onChange={(e) => {
+                    setPriceValue(e.target.value);
+                    storeBoardData(PRICE, e.target.value)
+                }}
             />
-            {/* <InputNumber
-                formatter={value => `${value} 원`}
-            /> */}
+            {
+                displayWon &&
+                <WonMark>원</WonMark>
+            }
         </WholeBox>
     )
 }
-
-
-
-
-// class EditPrice extends React.Component {
-  
-//     state = { disabled: false, value: '가격 입력' };
-
-//     onChange = e => { 
-//         this.setState({ value: e.target.value })
-//         if (e.target.value == '가격 미정' || e.target.value == '무료 나눔'){
-//             this.setState({ disabled: true  })
-//         }
-//         else {
-//             this.setState({ disabled: false })
-//         }
-//     };
-
-//     componentDidUpdate(prevProps, prevState) {
-//         if(this.state.value != '가격 입력'){
-//             this.props.storePriceData(this.state.value);
-//         }
-//     }
-
-//     render() {
-
-//         const { price, storeBoardData } = this.props;
-//         const { disabled, value } = this.state;
-
-//         return (
-//             <div style={{display:'flex', flexDirection: 'column', flexWrap: 'nowrap', alignItems: 'flex-end'}}>
-//                 <div style={{marginTop:'-3rem', marginBottom: '1rem'}}>
-//                     <Radio.Group options={options} onChange={this.onChange} value={value}/>
-//                 </div>
-//                 <div style={{marginBottom: '2rem'}}>
-//                 {(value == '가격 입력')?
-//                     <PriceTextArea
-//                         style={{textAlign: "right"}}
-//                         defaultValue={price}
-//                         placeholder="가격을 입력하세요."
-//                         autoSize={true}
-//                         onChange={(e) => storeBoardData(PRICE, e.target.value)}
-//                         disabled={disabled}
-//                     />:
-//                     <PriceTextArea
-//                         style={{textAlign: "center"}}
-//                         defaultValue={price}
-//                         placeholder={value}
-//                         autoSize={true}
-//                         disabled={disabled}
-//                     /> 
-//                 }
-//                 </div>
-//             </div>
-//         );
-//   }
-// }
 
 
 EditPrice.propTypes = {

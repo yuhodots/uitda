@@ -70,6 +70,8 @@ const HeaderBox = ({postId, board, isPhoto, isOwner, title, user, created, condi
 
     const { username, pic_location } = user;
 
+    const displayWon = price !== '가격 미정' && price !== '무료 나눔';
+
     return (
         <HeaderArea isPhoto={isPhoto} >
             <InfoBox>
@@ -84,7 +86,7 @@ const HeaderBox = ({postId, board, isPhoto, isOwner, title, user, created, condi
                 />
             </InfoBox>
             <Title>{title}</Title>
-            { board === MARKET && <Price>{price} 원</Price> } 
+            { board === MARKET && <Price>{price} { displayWon && '원' } </Price> } 
         </HeaderArea>
     )
 }
