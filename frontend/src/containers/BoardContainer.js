@@ -105,7 +105,7 @@ class BoardContainer extends Component {
             search,
 
             isHeaderOn,
-            doesRenderOK,
+            isFirstBoardGetSuccess,
             isLoading,
 
             // methods
@@ -136,7 +136,7 @@ class BoardContainer extends Component {
                     />
                     
                     {
-                        doesRenderOK ?
+                        isFirstBoardGetSuccess ?
 
                         <BoardBody 
                             boardName={boardName} 
@@ -165,16 +165,16 @@ class BoardContainer extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        curUser: state.auth.user,                               // 현재 로그인 된 유저 정보
-        isGetStatusDone: state.auth.isGetStatusDone,            // get status 요청 완료 여부
+        curUser: state.auth.user,                                   // 현재 로그인 된 유저 정보
+        isGetStatusDone: state.auth.isGetStatusDone,                // get status 요청 완료 여부
         
-        doesRenderOK: state.board.isFirstBoardGetSuccess,       // 첫 번째 GET 요청이 성공했는 지 여부 = Render할 준비가 되었는 지
-        postlist: state.board.postlist,                         // postlist 데이터
-        scroll: state.board.scroll,                             // 스크롤 횟수 (데이터를 받은 횟수)
-        search: state.board.search,                             // 검색어 데이터
-        isLoading: state.board.isLoading,                       // Scroll GET 대기 여부
-        isLast: state.board.isLast,                             // 요소가 마지막인 지 여부
-        isHeaderOn: state.board.isHeaderOn,                     // 헤더가 On 인지
+        isFirstBoardGetSuccess: state.board.isFirstBoardGetSuccess, // 첫 번째 GET 요청이 성공했는 지 여부 = Render할 준비가 되었는 지
+        postlist: state.board.postlist,                             // postlist 데이터
+        scroll: state.board.scroll,                                 // 스크롤 횟수 (데이터를 받은 횟수)
+        search: state.board.search,                                 // 검색어 데이터
+        isLoading: state.board.isLoading,                           // Scroll GET 대기 여부
+        isLast: state.board.isLast,                                 // 요소가 마지막인 지 여부
+        isHeaderOn: state.board.isHeaderOn,                         // 헤더가 On 인지
     }
 }
 
