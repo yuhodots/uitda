@@ -17,6 +17,8 @@ import {
     CARPOOL_POST_EVENT_CANCLE_OR_CLOSE_SUCCESS
 } from "./ActionTypes";
 
+import { x_www_PostRequestFuction } from "./RefactoringFuncs";
+
 
 /* 캘린더의 날짜를 선택하는 액션 */
 export function selectDate (category, selectedDate) {
@@ -29,7 +31,6 @@ export function selectDate (category, selectedDate) {
 /* 카풀 탭의 전체 Event 데이터 GET 요청 액션 */
 export function getCarpoolEvents () {
     return (dispatch) => {
-
         /* GET 요청을 보낼 url */
         const GETurl = '/api/carpool';
 
@@ -41,6 +42,7 @@ export function getCarpoolEvents () {
 }
 
 export function getCarpoolEventsSuccess (events) {
+    console.log(events)
     return {
         type: CARPOOL_GET_EVENTS_SUCCESS,
         events,
@@ -168,7 +170,7 @@ export function postJoinEventRequest ( eventID ) {
     /* POST Request Body Data */
     const reqBody = { event_id: eventID };
 
-    return postRequestFuction(POSTurl, reqBody, postJoinEventSuccess);
+    return x_www_PostRequestFuction(POSTurl, reqBody, postJoinEventSuccess);
 }
 
 export function postJoinEventSuccess () {
