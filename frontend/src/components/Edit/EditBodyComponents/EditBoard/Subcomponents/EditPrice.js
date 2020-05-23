@@ -23,7 +23,7 @@ const WholeBox = styled.div`
     `;
 
     const PriceInputTextArea = styled(Input)`
-        padding-right: ${props => props.displayWon? '1.75rem' : '0' };
+        padding-right: ${props => props.displayWon? '1.75rem' : '0.75rem' };
         width: 200px;
 
         /* TextArea 속성 */
