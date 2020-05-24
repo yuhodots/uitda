@@ -403,7 +403,7 @@ module.exports = {
                 cal_events.findOne({ where: { id: event_id } })
                 .then(function (event) {
                     if(req.user.email == event.email){
-                        console.log("YOU ARE OWNER\n")
+                        console.log("[guest_create] Already owner\n")
                         res.end();
                     }
                     else{
@@ -415,22 +415,11 @@ module.exports = {
             /* 이미 guest인 유저의 요청인지 확인 */
             function (callback) {
 
-                let temp_counter = 0;
-
-                guest.findAll({ where: { event_id: event_id } })
-                .then(function (guestlist) {
-                    if (guestlist){
-                        for (let i = 0; i < guestlist.length; i++){
-                            if (req.user.email == guestlist[i]['email']) {
-                                res.end();
-                                break;
-                            }
-                            temp_counter = temp_counter+1;
-
-                            if(temp_counter == guestlist.length){
-                                callback(null);
-                            }
-                        }
+                guest.findAll({ where: { event_id: event_id, email: req.user.email} })
+                .then(function (result) {
+                    if (result[0]){
+                        console.log("[guest_create] Already guest\n")
+                        res.end();
                     }
                     else{
                         callback(null);
@@ -441,7 +430,10 @@ module.exports = {
             /* guest 생성 */
             function (callback) {
                 guest.create({ event_id : event_id, username : username, email : email, created : created })
-                .then(function(){ callback(null); })
+                .then(function(){ 
+                    console.log("[guest_create] Success\n")
+                    callback(null); 
+                })
                 .catch(function(err){throw err;});
             },
 
