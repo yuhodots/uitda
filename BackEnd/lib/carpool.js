@@ -238,7 +238,7 @@ module.exports = {
                 meeting_place = req.body.meeting_place;
                 contact = req.body.contact;
                 description = req.body.description;
-                created = moment().format('YYYY년MM월DD일HH시mm분ss초');
+                created = moment().format();
                 condition = req.body.condition;
                 callback(null);
             },
@@ -420,7 +420,6 @@ module.exports = {
                 guest.findAll({ where: { event_id: event_id } })
                 .then(function (guestlist) {
                     if (guestlist){
-                        console.log(guestlist);
                         for (let i = 0; i < guestlist.length; i++){
                             if (req.user.email == guestlist[i]['email']) {
                                 res.end();
@@ -432,7 +431,6 @@ module.exports = {
                                 callback(null);
                             }
                         }
-                        console.log("\nHI2\n");
                     }
                     else{
                         callback(null);
