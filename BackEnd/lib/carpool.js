@@ -196,7 +196,7 @@ module.exports = {
                     .then(function (guestlist) {
                         events_response[i] = make_event_ob(events_db[i].id, events_db[i].departure, events_db[i].destination,
                             events_db[i].start, events_db[i].meeting_place, events_db[i].contact, events_db[i].description,
-                            events_db[i].created, user_ob, label, guestlist);
+                            events_db[i].created, req.uesr, label, guestlist);
                     })
                     .then(function () {
                         if (counter == events_db.length){
@@ -280,6 +280,10 @@ module.exports = {
         let contact;
         let description;
         let condition;
+        let created;
+
+        let label;
+        let overdue;
 
         async.waterfall([
 
@@ -306,6 +310,43 @@ module.exports = {
             /* 작성자인지 확인 */
             function (callback) {
                 cal_events.findOne({ where: { id: id } }).then(function (content) {
+
+                    /* ovedue 값 설정 */
+                    overdue = false;
+                    let date = new Date(content['start']);
+                    let date_today = new Date();
+                    let diffHour = (date.getTime() - date_today.getTime()) / (1000*60*60);
+                    if (diffHour < 8){
+                        overdue = true;
+                    }
+
+                    /* label 값 설정 */
+                    
+                    if( req.user.email == content['email']){
+                        if ( content['condition'] == '마감' || overdue ){
+                            label = 'owner_closed';
+                        }
+                        else{
+                            label = 'owner'
+                        }
+                    }
+                    else if( is_guest[i] ){
+                        if ( content['condition'] == '마감' || overdue ){
+                            label = 'guest_closed';
+                        }
+                        else{
+                            label = 'guest'
+                        }
+                    }
+                    else if( content['condition'] == '마감' || overdue ){
+                        label = 'closed';
+                    }
+                    else{
+                        label = 'active';
+                    }
+
+                    created = content.created;
+
                     (auth.sameOwner(req, content.email) === 0) ?
                         res.json({ user: req.user ? req.user : 0 }) :
                         callback(null);
@@ -323,8 +364,19 @@ module.exports = {
 
             /* 응답완료 */
             function (callback) {
-                res.end();
-                callback(null);
+
+                let events_response;
+
+                guest.findAll({ where: { event_id: id } })
+                .then(function (guestlist) {
+                    events_response = make_event_ob(id, departure, destination,
+                        start, meeting_place, contact, description,
+                        created, req.user, label, guestlist)
+                })
+                .then(function(){  
+                    res.json({ events: events_response, user: req.user ? req.user : 0 });
+                    callback(null);
+                })
             }
 
         ], function (err) {
@@ -439,7 +491,7 @@ module.exports = {
 
             /* 응답 완료 */
             function (callback) {
-                res.end();
+                res.json({ event_id: event_id });
                 callback(null);
             }
 
@@ -501,6 +553,7 @@ module.exports = {
 
         /* 변수 선언 */
         let id;
+        let event_id;
 
         async.waterfall([
 
@@ -520,6 +573,7 @@ module.exports = {
             /* 작성자인지 확인 */
             function (callback) {
                 guest.findOne({ where: { id: id } }).then(function (result) {
+                    event_id = result['event_id'];
                     (auth.sameOwner(req, result.email) === 0) ?
                         res.json({ user: req.user ? req.user : 0 }) :
                         callback(null);
@@ -535,7 +589,7 @@ module.exports = {
 
             /* 응답 완료 */
             function (callback) {
-                res.end();
+                res.json({ event_id: event_id });
                 callback(null);
             }
 
