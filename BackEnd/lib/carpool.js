@@ -85,21 +85,21 @@ module.exports = {
                                 pic_location: result.dataValues.pic_location
                             };
                         })
-                        .catch(function (err) { throw err; });
-
-                        guest.findAll({ where: { event_id: events_db[i].id } })
-                        .then(function (guestlist) {
-                            events_response[i] = make_event_ob(events_db[i].id, events_db[i].departure, events_db[i].destination,
-                                events_db[i].start, events_db[i].meeting_place, events_db[i].contact, events_db[i].description,
-                                events_db[i].created, user_ob, label, guestlist);
-                        })
-                        .then(function () {
-                            if (counter == events_db.length){
-                                res.json({ events: events_response, user: req.user ? req.user : 0 });
-                            }
-                            else{
-                                counter++;
-                            }
+                        .then(()=>{
+                            guest.findAll({ where: { event_id: events_db[i].id } })
+                            .then(function (guestlist) {
+                                events_response[i] = make_event_ob(events_db[i].id, events_db[i].departure, events_db[i].destination,
+                                    events_db[i].start, events_db[i].meeting_place, events_db[i].contact, events_db[i].description,
+                                    events_db[i].created, user_ob, label, guestlist);
+                            })
+                            .then(function () {
+                                if (counter == events_db.length){
+                                    res.json({ events: events_response, user: req.user ? req.user : 0 });
+                                }
+                                else{
+                                    counter++;
+                                }
+                            })
                         })
                     }
                 }
@@ -190,22 +190,23 @@ module.exports = {
                             pic_location: result.dataValues.pic_location
                         };
                     })
+                    .then(function(){
+                        guest.findAll({ where: { event_id: events_db[i].id } })
+                        .then(function (guestlist) {
+                            events_response[i] = make_event_ob(events_db[i].id, events_db[i].departure, events_db[i].destination,
+                                events_db[i].start, events_db[i].meeting_place, events_db[i].contact, events_db[i].description,
+                                events_db[i].created, req.uesr, label, guestlist);
+                        })
+                        .then(function () {
+                            if (counter == events_db.length){
+                                res.json({ events: events_response, user: req.user ? req.user : 0 });
+                            }
+                            else{
+                                counter++;
+                            }
+                        })
+                    })
                     .catch(function (err) { throw err; });
-
-                    guest.findAll({ where: { event_id: events_db[i].id } })
-                    .then(function (guestlist) {
-                        events_response[i] = make_event_ob(events_db[i].id, events_db[i].departure, events_db[i].destination,
-                            events_db[i].start, events_db[i].meeting_place, events_db[i].contact, events_db[i].description,
-                            events_db[i].created, req.uesr, label, guestlist);
-                    })
-                    .then(function () {
-                        if (counter == events_db.length){
-                            res.json({ events: events_response, user: req.user ? req.user : 0 });
-                        }
-                        else{
-                            counter++;
-                        }
-                    })
                 }
                 callback(null);
             }
