@@ -195,7 +195,7 @@ module.exports = {
                         .then(function (guestlist) {
                             events_response[i] = make_event_ob(events_db[i].id, events_db[i].departure, events_db[i].destination,
                                 events_db[i].start, events_db[i].meeting_place, events_db[i].contact, events_db[i].description,
-                                events_db[i].created, req.uesr, label, guestlist);
+                                events_db[i].created, user_ob, label, guestlist);
                         })
                         .then(function () {
                             if (counter == events_db.length){
