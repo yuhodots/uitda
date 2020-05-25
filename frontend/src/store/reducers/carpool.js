@@ -1,4 +1,5 @@
 import { 
+    CARPOOL_INITATE_STATE,
     CARPOOL_SELECT_DATE, 
     CARPOOL_GET_EVENTS_SUCCESS,
     INITIATE_CALENDER_EVENTS,
@@ -50,6 +51,11 @@ export default function carpool (state = InitialState, action) {
 
 
     switch (action.type) {
+
+        case CARPOOL_INITATE_STATE: 
+            return {
+                ...InitialState
+            }
 
         /* 캘린더의 날짜를 선택하는 액션 */
         case CARPOOL_SELECT_DATE: {
