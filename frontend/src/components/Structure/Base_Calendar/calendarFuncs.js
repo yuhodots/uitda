@@ -7,7 +7,7 @@ import { colors } from "../../../styles/variables";
 
 
 /* 백엔드에서 받은 이벤트 객체를 calendar render view 데이터로 변형하는 함수 */
-export const dataObjToviewObjList = (eventsObj, totalOrMyOption) => {
+export const dataObjToViewObjList = (eventsObj, totalOrMyOption) => {
     /* C,A,O,G로 구분된 객체를 하나의 array로 변환 */
     const eventList = [...eventsObj.C, ...eventsObj.A, ...eventsObj.O, ...eventsObj.G];
 

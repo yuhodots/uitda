@@ -10,7 +10,7 @@ import { OWNER, OWNER_CLOSED, GUEST, GUEST_CLOSED } from "../../../../constants/
 
 const renderCarpoolModalPopoverContent = ( curUser, selectedEvent, clickMethods ) => {
 
-    const { id, label, guestlist, user } = selectedEvent;
+    const { id, label, guestlist } = selectedEvent;
     const { 
         deleteEvent, changeModeToUpdate,
         closeOrCancleEvent,

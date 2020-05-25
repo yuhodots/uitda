@@ -9,6 +9,7 @@ import { Redirect } from 'react-router-dom';
 import SideBar from "../components/Structure/SideBar";
 import CarpoolBoard from "../components/Carpool";
 import { 
+    initiateCarpoolState,
     selectDate,
     getCarpoolEvents,
     initCalenderEvents, changeClosedEvents,
@@ -26,8 +27,9 @@ import { CARPOOL } from "../constants/categories";
 class CarpoolContainer extends Component {    
 
     componentDidMount() {
-        const { topicSelect, getCarpoolEvents, getStatusRequest } = this.props;
+        const { initiateCarpoolState, topicSelect, getCarpoolEvents, getStatusRequest } = this.props;
 
+        initiateCarpoolState();
         topicSelect(CARPOOL);
         getCarpoolEvents();
         getStatusRequest();
@@ -127,6 +129,7 @@ const mapDispatchToProps = (dispatch) => {
 
         getCarpoolEvents: () => dispatch(getCarpoolEvents()),                               // 카풀 전체 이벤트를 get 요청하는 액션
 
+        initiateCarpoolState: () => dispatch(initiateCarpoolState()),                       // carpool state 초기화
         initCalenderEvents: (category) => dispatch(initCalenderEvents(category)),           // 캘린더 첫 화면에서 띄울 events를 받는 액션
         renderTotalEvents: () => {dispatch(renderTotalEvents())},                           // 전체 이벤트를 띄우는 액션
         renderMyEvents: () => dispatch(renderMyEvents()),                                   // 내 일정만 보기 액션
