@@ -256,7 +256,7 @@ class ManagePost extends Component{
         let maxOrder = Math.ceil(postsNum / MAX_ITEM);
 
         /* 게시판 상단의 텍스트 내용 */
-        const title = (board === 'market') ? '다판다 글 관리' : '잉력시장 글 관리';
+        const title = (board === 'market') ? '유니마켓 글 관리' : '네트워킹 글 관리';
         const subInfo = `${postsNum} 개`;
 
         /* 게시판 페이지에 해당되는 리스트만 뽑은 리스트 */

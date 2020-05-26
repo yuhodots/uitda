@@ -42,9 +42,9 @@ class CategorySelectBox extends Component {
 
         return (
             <StyledSelect {...props} >
-                <Option value={MARKET} >다판다</Option>
-                <Option value={NETWORKING} >잉력시장</Option>
-                <Option value={CARPOOL} >카풀</Option>
+                <Option value={MARKET} >유니마켓</Option>
+                <Option value={NETWORKING} >네트워킹</Option>
+                <Option value={CARPOOL} >택시카풀</Option>
             </StyledSelect>
         )
     }

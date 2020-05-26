@@ -13,9 +13,9 @@ class ChattingHeader extends Component {
     _renderMiddleComponent = () => {
 
         const categoryDatas = [
-            { url: '/board/market', text: '다판다' },
-            { url: '/board/networking', text: '잉력시장' },
-            { url: '/carpool', text: '카풀' },
+            { url: '/board/market', text: '유니마켓' },
+            { url: '/board/networking', text: '네트워킹' },
+            { url: '/carpool', text: '택시카풀' },
             { url: '/manage', text: '글 관리' },
         ]
     

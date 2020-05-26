@@ -11,9 +11,9 @@ import LinkCategory from "../Structure/BaseHeader/LinkCategory_MidComp";
 /* 헤더의 가운데 컴포넌트를 render하는 함수 */
 const _renderComponent = () => {
     const categoryDatas = [
-        { url: '/board/market', text: '다판다' },
-        { url: '/board/networking', text: '잉력시장' },
-        { url: '/carpool', text: '카풀' },
+        { url: '/board/market', text: '유니마켓' },
+        { url: '/board/networking', text: '네트워킹' },
+        { url: '/carpool', text: '택시카풀' },
         { url: '/chatting/index', text: '채팅방'},
     ]
 

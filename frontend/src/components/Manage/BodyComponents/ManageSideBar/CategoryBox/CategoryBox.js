@@ -124,13 +124,13 @@ const CategoryBox = ({kind}) => {
                     to='/manage/posts/market'
                     color={kind === MANAGE_POSTS_MARKET ? hightLightColor : defaultSubColor}
                 >
-                    다판다 글 관리
+                    유니마켓 글 관리
                 </SubLink>
                 <SubLink 
                     to='/manage/posts/networking'
                     color={kind === MANAGE_POSTS_NETWORKING ? hightLightColor : defaultSubColor}
                 >
-                    잉력시장 글 관리
+                    네트워킹 글 관리
                 </SubLink>
             </SubGroup>
             
