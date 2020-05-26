@@ -24,6 +24,9 @@ import {
     MANAGE_EDIT_CARPOOL_STORE_DATA,
     MANAGE_EDIT_CARPOOL_POST_SUCCESS,
     MANAGE_EDIT_CARPOOL_POST_FAILURE,
+    MANAGE_POST_FEEDBACK_SUCCESS,
+    MANAGE_STORE_FEEDBACK_DATA,
+    MANAGE_INIT_FEEDBACK,
 } from '../actions/ActionTypes'
 
 import { MARKET } from '../../constants/categories'
@@ -41,8 +44,13 @@ const InitialState = {
     uploadedProfileImage: '',                       // 업로드한 사진
     isDeleteProfileImage: false,                    // 프로필 이미지를 지웠는지 여부
 
-    /* 'posts' states */
     postList: [],                                   // 포스팅 데이터 리스트
+
+    feedbackData: {                                 // 피드백 작성 데이터
+        title: '',                                  // 제목
+        description: ''                             // 상세 내용
+    },
+    postFeedbackDone: false,                        // 피드백 보내기 제출 완료 여부
 
     /* 'edit' states */
     isEditInit: false,                              // Edit 페이지 초기화 여부
@@ -136,6 +144,33 @@ export default function manage (state = InitialState, action) {
                 isGetManageItemsDone: false,
                 err: action.err,
             }
+
+        
+        /* Manage Feedback */
+        case MANAGE_INIT_FEEDBACK:
+            return {
+                ...state,
+                isGetManageItemsDone: true,
+                isManageItemsLoading: false,
+                postFeedbackDone: false,
+            }
+
+        case MANAGE_STORE_FEEDBACK_DATA:
+            for ( let key in state.feedbackData ) {
+                if ( key === action.data_key ){
+                    state.feedbackData[key] = action.data_value;
+                }
+            }    
+            return {
+                ...state,
+            }
+
+        case MANAGE_POST_FEEDBACK_SUCCESS:
+            return {
+                ...state,
+                postFeedbackDone: true
+            }
+
 
 
         /* Edit page 초기화 액션 */
@@ -317,6 +352,18 @@ export default function manage (state = InitialState, action) {
 
         case MANAGE_EDIT_CARPOOL_POST_FAILURE:
             return state
+
+
+
+
+
+        /* 임시 */
+        case 'MANAGE_TEMP_FUNC':
+            return {
+                ...state,
+                isGetManageItemsDone: true,
+                isManageItemsLoading: false,
+            }
 
         default:
             return state

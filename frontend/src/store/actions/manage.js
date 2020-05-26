@@ -30,6 +30,9 @@ import {
     MANAGE_EDIT_CARPOOL_STORE_DATA,
     MANAGE_EDIT_CARPOOL_POST_SUCCESS,
     MANAGE_EDIT_CARPOOL_POST_FAILURE,
+    MANAGE_STORE_FEEDBACK_DATA,
+    MANAGE_POST_FEEDBACK_SUCCESS,
+    MANAGE_INIT_FEEDBACK,
 } from './ActionTypes';
 
 
@@ -171,6 +174,34 @@ export function updatePostConditionRequest (board, id, condition) {
 /////////////////////////////////////////////////////////////////
 // Manage board 끝 //
 
+
+/* 피드백 작성 페이지 초기화 */
+export const initFeedbackPage = () => {
+    return {
+        type: MANAGE_INIT_FEEDBACK,
+    }
+}
+
+/* Feedback 데이터 저장 메서드 */
+export const storeFeedbackData = ( data_key, data_value ) => {
+    return {
+        type: MANAGE_STORE_FEEDBACK_DATA,
+        data_key, data_value
+    }
+}
+
+/* Feedback 데이터를 POST 하는 메서드 */
+export const postFeedBackRequest = ( {title, description} ) => {
+    const POSTurl = `/api/proposal/create`;
+    const requestBody = { title, description }
+    return x_www_PostRequestFuction(POSTurl, requestBody, postFeedBackSuccess)
+}
+
+export const postFeedBackSuccess = () => {
+    return {
+        type: MANAGE_POST_FEEDBACK_SUCCESS
+    }
+}
 
 
 // Manage Edit 시작 //
@@ -392,5 +423,26 @@ export function postCarpoolEventSuccess () {
 export function postCarpoolEventFailure () {
     return {
         type: MANAGE_EDIT_CARPOOL_POST_FAILURE
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////
+export function tempFunc() {
+    return {
+        type: 'MANAGE_TEMP_FUNC'
     }
 }
