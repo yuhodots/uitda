@@ -18,10 +18,10 @@ const StyledTextArea = styled(Input.TextArea)`
 
     /* TextArea 속성 */
     resize: none;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: ${props => !props.isUnderLine && 'none'};
+    border-top: ${props => !props.isFullBorder && 'none'};
+    border-left: ${props => !props.isFullBorder && 'none'};
+    border-right: ${props => !props.isFullBorder && 'none'};
+    border-bottom: ${props => (!props.isFullBorder && !props.isUnderLine) && 'none'};
     border-radius: 0;
     outline: 0;
     background-color: inherit;
@@ -47,10 +47,9 @@ const UitdaTextArea = forwardRef( (props, ref) => {
 
     let {
         data_key, storeDataFunc, 
-        size, disabled,
-        defaultText, 
-        placeHolder, 
-        isUnderLine, letFocus, isFullHeight,
+        size, disabled, letFocus,
+        defaultText, placeHolder, 
+        isUnderLine, isFullBorder, isFullHeight,
         customCSS,
     } = props;
 
@@ -73,6 +72,7 @@ const UitdaTextArea = forwardRef( (props, ref) => {
             defaultValue={defaultText}
             placeholder={placeHolder}
             isUnderLine={isUnderLine}
+            isFullBorder={isFullBorder}
             isFullHeight={isFullHeight}
             autoSize={true}
             onChange={(e) => {
@@ -93,6 +93,7 @@ UitdaTextArea.propTypes = {
     defaultText: PropTypes.string,                  // default Vaule
     placeHolder: PropTypes.string,                  // place holder
     isUnderLine: PropTypes.bool,                    // Under Line 스타일 여부
+    isFullBorder: PropTypes.bool,                   // 전체 테두리 스타일 여부
     isFullHeight: PropTypes.bool,                   // Text Area가 부모의 height 사이즈를 갖는지 여부
     letFocus: PropTypes.bool,                       // 첫 render시 focus 시킬지 여부
     data_key: PropTypes.string,                     // 인풋 데이터 키
@@ -109,6 +110,7 @@ UitdaTextArea.defaultProps = {
     letFocus: false,
     isFullHeight: false,
     isUnderLine: true,
+    isFullBorder: false,
     data_key: '',
 }
 
