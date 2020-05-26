@@ -7,7 +7,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
 import { MANAGE } from "../../../constants/categories";
-import { dataObjToviewObjList, dateToStr } from "./calendarFuncs";
+import { dataObjToViewObjList, dateToStr } from "./calendarFuncs";
 
 import '@fullcalendar/core/main.css';
 import '@fullcalendar/daygrid/main.css';
@@ -146,7 +146,7 @@ class Calendar extends Component {
             totalOrMyOption
         } = this.props;
 
-        const events = dataObjToviewObjList(eventsObj, totalOrMyOption);
+        const events = dataObjToViewObjList(eventsObj, totalOrMyOption);
 
         let props = ( category === MANAGE ?
         /* Manage Calendar Properties */

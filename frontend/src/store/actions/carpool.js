@@ -2,6 +2,7 @@ import axios from "axios";
 import qs from 'qs';
 
 import { 
+    CARPOOL_INITATE_STATE,
     CARPOOL_SELECT_DATE,
     CARPOOL_GET_EVENTS_SUCCESS,
     CARPOOL_GET_EVENTS_FAILURE,
@@ -18,6 +19,13 @@ import {
 } from "./ActionTypes";
 
 import { x_www_PostRequestFuction } from "./RefactoringFuncs";
+
+
+export const initiateCarpoolState = () => {
+    return {
+        type: CARPOOL_INITATE_STATE
+    }
+}
 
 
 /* 캘린더의 날짜를 선택하는 액션 */
@@ -42,7 +50,6 @@ export function getCarpoolEvents () {
 }
 
 export function getCarpoolEventsSuccess (events) {
-    console.log(events)
     return {
         type: CARPOOL_GET_EVENTS_SUCCESS,
         events,
@@ -173,9 +180,11 @@ export function postJoinEventRequest ( eventID ) {
     return x_www_PostRequestFuction(POSTurl, reqBody, postJoinEventSuccess);
 }
 
-export function postJoinEventSuccess () {
+export function postJoinEventSuccess (res) {
+    const eventID = Number(res.data.event_id)
     return {
-        type: CARPOOL_JOIN_EVENT_SUCCESS
+        type: CARPOOL_JOIN_EVENT_SUCCESS,
+        eventID
     }
 }
 
@@ -185,13 +194,15 @@ export function postCancleJoinEventRequest ( guestID ) {
     return (dispatch) => {
         const POSTurl = `/api/carpool/guest/delete/${guestID}`;
         axios.post(POSTurl)
-        .then(res => dispatch(postCancleJoinEventSuccess()))
+        .then(res => dispatch(postCancleJoinEventSuccess(res)))
     }
 }
 
-export function postCancleJoinEventSuccess () {
+export function postCancleJoinEventSuccess (res) {
+    const eventID = Number(res.data.event_id)
     return {
-        type: CARPOOL_CANCLE_JOIN_EVENT_SUCCESS
+        type: CARPOOL_CANCLE_JOIN_EVENT_SUCCESS,
+        eventID
     }
 }
 
