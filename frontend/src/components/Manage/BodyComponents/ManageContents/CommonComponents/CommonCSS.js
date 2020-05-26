@@ -11,3 +11,9 @@ export const ContentBoxStyle = css`
     display: flex;
     flex-flow: column nowrap;
 `;
+
+/* 박스 안의 subtitle 스타일 */
+export const BoxSubtitleStyle = css`
+    margin-bottom: 0.25rem;
+    font-size: 1.125rem;
+`;

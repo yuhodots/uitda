@@ -7,7 +7,7 @@ import { Divider } from "antd";
 
 import { PhotoEditBox, UsageHistoryBox } from './Subcomponents'
 import { ContentHeader } from "../CommonComponents";
-import { ContentBoxStyle } from '../CommonComponents/CommonCSS'
+import { ContentBoxStyle, BoxSubtitleStyle } from '../CommonComponents/CommonCSS'
 import { BorderBoxStyle } from '../../../../../styles/CommonCSS';
 
 
@@ -33,8 +33,7 @@ const WholeBox = styled.div`
     `;
 
     export const ProfileBoxSubTitle = styled.div`
-        margin-bottom: 0.25rem;
-        font-size: 1.125rem;
+        ${BoxSubtitleStyle}
     `;
 
 
