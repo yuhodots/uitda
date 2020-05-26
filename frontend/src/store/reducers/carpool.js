@@ -9,6 +9,8 @@ import {
     CARPOOL_CLICK_EVENT,
     CARPOOL_STORE_EVENT_UPDATE_DATA,
     CARPOOL_POST_EVENT_UPDATE_SUCCESS,
+    CARPOOL_JOIN_EVENT_SUCCESS,
+    CARPOOL_CANCLE_JOIN_EVENT_SUCCESS,
 } from "../actions/ActionTypes";
 
 import { CARPOOL } from "../../constants/categories";
@@ -129,41 +131,25 @@ export default function carpool (state = InitialState, action) {
         /* 전체 일정 보기
            A, O, G는 모두 받기 고정
            closed Hidden이면 C는 빈 리스트, 아닌 경우 받아오기 */
-        case RENDER_TOTAL_CALENDER_EVENTS:
+        case RENDER_TOTAL_CALENDER_EVENTS:{
+            const { isClosedHidden, activeEvents, closedEvents, ownerEvents, guestEvents } = state;
+
             return {
                 ...state,
                 totalOrMyOption: TOTAL,
-                eventsToRenderObj: {
-                    C: state.isClosedHidden ? [] : state.closedEvents,
-                    A: state.activeEvents,
-                    O: state.ownerEvents,
-                    G: state.guestEvents
-                }
+                eventsToRenderObj: updateEventsToRenderObj( TOTAL, isClosedHidden, {activeEvents, closedEvents, ownerEvents, guestEvents} )
             }
+        }
 
         /* 내 일정 보기
            C와 A는 모두 제외하고, O와 G는 closed Hidden 여부에 따라 filtering 한다. */
         case RENDER_MY_CALENDER_EVENTS: {
             const { isClosedHidden, ownerEvents, guestEvents } = state;
-            
-            let ownerEventsToRender = ownerEvents;
-            let guestEventsToRender = guestEvents;
-
-            if ( isClosedHidden ) {
-                ownerEventsToRender = ownerEvents.filter( event => event.label === OWNER );
-                guestEventsToRender = guestEvents.filter( event => event.label === GUEST );
-            }
-
 
             return {
                 ...state,
                 totalOrMyOption: MY,
-                eventsToRenderObj: {
-                    C: [],
-                    A: [],
-                    O: ownerEventsToRender,
-                    G: guestEventsToRender 
-                }
+                eventsToRenderObj: updateEventsToRenderObj(MY, isClosedHidden, {ownerEvents, guestEvents})
             }
         }
 
@@ -233,10 +219,71 @@ export default function carpool (state = InitialState, action) {
             }
         }
 
+        case CARPOOL_JOIN_EVENT_SUCCESS: {
+            const { 
+                totalOrMyOption, isClosedHidden, 
+                closedEvents, activeEvents, ownerEvents, guestEvents 
+            } = state;
+            const { eventID } = action;
+            let isActiveEvent = true;
+
+            let IdxOfEventToReplace = activeEvents.findIndex( event => event.id === eventID )
+            if (IdxOfEventToReplace === -1) {
+                IdxOfEventToReplace = closedEvents.findIndex( event => event.id === eventID );
+                isActiveEvent = false;
+            }
+            const eventToReplace = isActiveEvent ? activeEvents[IdxOfEventToReplace] : closedEvents[IdxOfEventToReplace];
+            eventToReplace.label = isActiveEvent ? GUEST : GUEST_CLOSED;
+
+            const modifiedActiveEvents = isActiveEvent ? [...activeEvents.slice(0, IdxOfEventToReplace), ...activeEvents.slice(IdxOfEventToReplace + 1)] : activeEvents;
+            const modifiedClosedEvents = isActiveEvent ? closedEvents : [...closedEvents.slice(0, IdxOfEventToReplace), ...closedEvents.slice(IdxOfEventToReplace + 1)];
+            const modifiedGuestEvents = [...guestEvents, eventToReplace];
+
+            return {
+                ...state,
+                eventsToRenderObj: updateEventsToRenderObj( totalOrMyOption, isClosedHidden, {
+                    closedEvents: modifiedClosedEvents, activeEvents: modifiedActiveEvents,
+                    guestEvents: modifiedGuestEvents, ownerEvents
+                } ),
+                closedEvents: modifiedClosedEvents,
+                activeEvents: modifiedActiveEvents,
+                guestEvents: modifiedGuestEvents,
+            }
+        }
+
+        case CARPOOL_CANCLE_JOIN_EVENT_SUCCESS: {
+            const { 
+                totalOrMyOption, isClosedHidden, 
+                closedEvents, activeEvents, ownerEvents, guestEvents 
+            } = state;
+            const { eventID } = action;
+            
+            let IdxOfEventToReplace = guestEvents.findIndex( event => event.id === eventID )
+            const eventToReplace = guestEvents[IdxOfEventToReplace];
+            const isActiveEvent = eventToReplace.label === GUEST;
+            eventToReplace.label = isActiveEvent ? ACTIVE : CLOSED;
+            
+            const modifiedClosedEvents = isActiveEvent ? closedEvents : [...closedEvents, eventToReplace];
+            const modifiedActiveEvents = isActiveEvent ? [...activeEvents, eventToReplace] : activeEvents;
+            const modifiedGuestEvents = [...guestEvents.slice(0, IdxOfEventToReplace), ...guestEvents.slice(IdxOfEventToReplace + 1)];
+
+            return {
+                ...state,
+                eventsToRenderObj: updateEventsToRenderObj( totalOrMyOption, isClosedHidden, {
+                    closedEvents: modifiedClosedEvents, activeEvents: modifiedActiveEvents,
+                    ownerEvents, guestEvents: modifiedGuestEvents
+                } ),
+                closedEvents: modifiedClosedEvents,
+                activeEvents: modifiedActiveEvents,
+                guestEvents: modifiedGuestEvents,
+            }
+        }
+
         default:
             return state;
     }
 }
+
 
 /* Owner, Guest 이벤트 리스트에서 closed hidden 여부에 따라 각각의 closed 이벤트를 filter하는 함수 */
 const filterOwnerGuestEvents = (ownerEvents, guestEvents, isClosedHidden) => {
@@ -253,5 +300,35 @@ const filterOwnerGuestEvents = (ownerEvents, guestEvents, isClosedHidden) => {
 
     return {
         ownerEventsToRender, guestEventsToRender
+    }
+}
+
+
+/* eventsToRenderObj 객체를 update하는 함수 */
+const updateEventsToRenderObj = (option, isClosedHidden, {closedEvents, activeEvents, ownerEvents, guestEvents}) => {
+    if ( option === TOTAL ) {
+        return {
+            C: isClosedHidden ? [] : closedEvents,
+            A: activeEvents,
+            O: ownerEvents,
+            G: guestEvents
+        }
+    } 
+
+    else {
+        const ownerEventsToRender = ownerEvents;
+        const guestEventsToRender = guestEvents;
+
+        if ( isClosedHidden ) {
+            ownerEventsToRender = ownerEvents.filter( event => event.label === OWNER );
+            guestEventsToRender = guestEvents.filter( event => event.label === GUEST );
+        }
+
+        return {
+            C: [],
+            A: [],
+            O: ownerEventsToRender,
+            G: guestEventsToRender 
+        }
     }
 }

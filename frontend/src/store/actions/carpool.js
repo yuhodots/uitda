@@ -180,9 +180,11 @@ export function postJoinEventRequest ( eventID ) {
     return x_www_PostRequestFuction(POSTurl, reqBody, postJoinEventSuccess);
 }
 
-export function postJoinEventSuccess () {
+export function postJoinEventSuccess (res) {
+    const eventID = Number(res.data.event_id)
     return {
-        type: CARPOOL_JOIN_EVENT_SUCCESS
+        type: CARPOOL_JOIN_EVENT_SUCCESS,
+        eventID
     }
 }
 
@@ -192,13 +194,15 @@ export function postCancleJoinEventRequest ( guestID ) {
     return (dispatch) => {
         const POSTurl = `/api/carpool/guest/delete/${guestID}`;
         axios.post(POSTurl)
-        .then(res => dispatch(postCancleJoinEventSuccess()))
+        .then(res => dispatch(postCancleJoinEventSuccess(res)))
     }
 }
 
-export function postCancleJoinEventSuccess () {
+export function postCancleJoinEventSuccess (res) {
+    const eventID = Number(res.data.event_id)
     return {
-        type: CARPOOL_CANCLE_JOIN_EVENT_SUCCESS
+        type: CARPOOL_CANCLE_JOIN_EVENT_SUCCESS,
+        eventID
     }
 }
 
