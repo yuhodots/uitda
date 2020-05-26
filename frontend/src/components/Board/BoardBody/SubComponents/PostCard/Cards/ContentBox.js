@@ -121,7 +121,10 @@ const ContentHead = styled.div`
     /* 게시글 제목 + 해당 페이지로 넘어가는 Link */
     const TitleLink = styled(Link)`
         margin-bottom: 1rem;
-        
+
+        word-wrap: break-word;
+        word-break: break-all;
+
         color: ${colors.black};
         text-decoration: none;
         font-size: 1.5rem;
