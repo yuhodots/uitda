@@ -636,6 +636,26 @@
 
 
 
+### 5. 26 (화)
+
+* Board 에서 Post Card의 제목 부분이 아주 긴 단어로 되어있을 때, 자동 줄바꿈이 되지 않아서 카드의 가로 길이를 증가시키는 오류 해결
+
+  word-break: break-all;
+
+* 문의하기 => 피드백 보내기
+
+* UitdaTextArea에 전체 테두리 스타일 추가
+
+* 피드백 관련 manage store 작업
+
+* 피드백 보내기 페이지 작업
+
+* BoxSubtitleStyle 리팩토링
+
+* 카테고리명 통일
+
+
+
 
 
 
