@@ -432,12 +432,13 @@ module.exports = {
         let event_id;
         let email;
         let created;
+        let id;
 
         async.waterfall([
 
             /* 변수 값 할당 */
             function (callback) {
-                event_id = req.body.event_id;
+                event_id = req.params.event_id;
                 username = req.user.username;
                 email = req.user.email;
                 created = moment().format('YYYY년MM월DD일HH시mm분ss초');
@@ -490,9 +491,21 @@ module.exports = {
                 .catch(function(err){throw err;});
             },
 
+            /* 생성된 guest 다시 확인 */
+            function (callback) {
+                guest.findOne({ where : { email : email, event_id : event_id } })
+                .then(function(result){ 
+                    id = result.id;
+                })
+                .then(function(){ 
+                    callback(null); 
+                })
+                .catch(function(err){throw err;});
+            },
+
             /* 응답 완료 */
             function (callback) {
-                res.json({ event_id: event_id });
+                res.json({ id: id, event_id: event_id });
                 callback(null);
             }
 
@@ -560,7 +573,7 @@ module.exports = {
 
             /* 변수 값 할당 */
             function (callback) {
-                id = req.params.id;
+                event_id = req.params.event_id;
                 callback(null);
             },
 
@@ -571,14 +584,23 @@ module.exports = {
                     callback(null);
             },
 
-            /* 작성자인지 확인 */
+            /* 해당 events에 유저가 존재하는지 확인 */
             function (callback) {
-                guest.findOne({ where: { id: id } }).then(function (result) {
-                    event_id = result['event_id'];
-                    (auth.sameOwner(req, result.email) === 0) ?
-                        res.json({ user: req.user ? req.user : 0 }) :
-                        callback(null);
-                }).catch(function (err) { throw err; });
+                guest.findAll({ where: { event_id: event_id } }).then(function (results) {
+                    for(let i = 0; i < results.length; i++){
+
+                        if (results[i].dataValues.email == req.user.email){
+                            id = results[i].dataValues.id;
+                            break;
+                        }
+                    }
+                })
+                .then(function(){
+                    (id)?
+                        callback(null):
+                        res.json({ user: req.user ? req.user : 0 });
+                })
+                .catch(function (err) { throw err; });
             },
 
             /* guest 삭제 */

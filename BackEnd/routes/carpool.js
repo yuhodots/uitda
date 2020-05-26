@@ -23,17 +23,16 @@ router.post('/delete/:id', function (req, res) {
 });
 
 /* Carpool: guests */
-router.post('/guest/create', function (req, res) {
-  /* 요청으로 보내줘야 하는 값: event_id */
+router.post('/guest/create/:event_id', function (req, res) {
   carpool.guest_create(req, res);
 });
 
-router.post('/guest/update/:id', function (req, res) {
+// router.post('/guest/update/:id', function (req, res) {
   /* 요청으로 보내줘야 하는 값: condition */
-  carpool.guest_update(req, res);
-});
+//   carpool.guest_update(req, res);
+// });
 
-router.post('/guest/delete/:id', function (req, res) {
+router.post('/guest/delete/:event_id', function (req, res) {
   carpool.guest_delete(req, res);
 });
 
