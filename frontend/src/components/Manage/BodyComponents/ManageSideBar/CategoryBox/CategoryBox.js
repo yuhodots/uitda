@@ -157,7 +157,7 @@ const CategoryBox = ({kind}) => {
                     to='/manage/contact'
                     color={kind === MANAGE_CONTACT ? hightLightColor : defaultTitleColor}
                 >
-                    문의하기
+                    피드백 보내기
                 </TitleLink>
             </SubGroup>
         </BoxArea>
