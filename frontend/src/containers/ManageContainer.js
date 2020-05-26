@@ -21,6 +21,11 @@ import {
     postProfileUpdateRequest,
     postProfileCreateRequest,
     postProfileDeleteRequest,
+    initFeedbackPage,
+    storeFeedbackData,
+    postFeedBackRequest,
+    /* 임시 */
+    tempFunc,
 } from '../store/actions/manage'
 import { getStatusRequest, localLogoutRequest, outlookLogoutRequest } from '../store/actions/auth'
 
@@ -48,7 +53,11 @@ class ManageContainer extends Component {
             kind,
             getStatusRequest,
             getMyProfile,
-            getMyPostRequest
+            getMyPostRequest,
+            initFeedbackPage,
+
+            /* 임시 */
+            tempFunc,
         } = this.props
 
         let board;
@@ -69,26 +78,26 @@ class ManageContainer extends Component {
             case MANAGE_POSTS_NETWORKING:
                 board = board ? MARKET : NETWORKING;
 
-                // console.log(`posts/${board}`);
                 getMyPostRequest(board);
-                break;
-
-            /* 댓글단 게시글 보기 */
-            case MANAGE_COMMENTS:
-                // console.log('comment category');
-                break;
-
-            /* 좋아요 표시한 게시글 */
-            case MANAGE_LIKEPOSTS:
-                // console.log('likeposts category');
                 break;
 
             /* 내 카풀 일정 */
             case MANAGE_CONTACT:
+                initFeedbackPage();
                 break;
+
+            /* 댓글단 게시글 보기 */
+            case MANAGE_COMMENTS:
+                // eslint-disable-next-line
+
+            /* 좋아요 표시한 게시글 */
+            case MANAGE_LIKEPOSTS:
+                // eslint-disable-next-line
+
 
             /* kind가 post인 경우 */
             default:
+                tempFunc()
                 break;
         }
 
@@ -125,6 +134,9 @@ class ManageContainer extends Component {
 
             postList,
 
+            postFeedbackDone,
+            feedbackData,
+
             localLogoutRequest,
             outlookLogoutRequest,
             deletePostRequest,
@@ -135,6 +147,8 @@ class ManageContainer extends Component {
             postProfileUpdateRequest,
             postProfileCreateRequest,
             postProfileDeleteRequest,
+            storeFeedbackData,
+            postFeedBack,
         } = this.props;
     
         const { windowHeight } = this.state;
@@ -161,6 +175,8 @@ class ManageContainer extends Component {
                             uploadedProfileImage={uploadedProfileImage}
                             isDeleteProfileImage={isDeleteProfileImage}
                             postList={postList}
+                            postFeedbackDone={postFeedbackDone}
+                            feedbackData={feedbackData}
 
                             deletePost={deletePostRequest}
                             updatePostCondition={updatePostConditionRequest}
@@ -170,6 +186,8 @@ class ManageContainer extends Component {
                             postProfileUpdateRequest={postProfileUpdateRequest}
                             postProfileCreateRequest={postProfileCreateRequest}
                             postProfileDeleteRequest={postProfileDeleteRequest}
+                            storeFeedbackData={storeFeedbackData}
+                            postFeedBack={postFeedBack}
                         /> 
                         <ManageFooter />
                     </div> :
@@ -199,6 +217,9 @@ const mapStateToProps = (state) => {
         isDeleteProfileImage: state.manage.isDeleteProfileImage,    // 프로필 사진을 delete 했는 지 여부
 
         postList: state.manage.postList,                            // Posts GET 요청을 통해 얻은 post list
+
+        feedbackData: state.manage.feedbackData,                    // 피드백 데이터
+        postFeedbackDone: state.manage.postFeedbackDone,            // 피드백 데이터 POST 요청 완료 여부
     }
 }
 
@@ -220,7 +241,16 @@ const mapDispatchToProps = (dispatch) => {
         deletePostRequest: (board, id) => {dispatch(deletePostRequest(board, id))},     // Post Delete POST request 함수
         updatePostConditionRequest: (board, id, condition) => {                         // 포스팅의 상태 변경 POST request 메서드
             dispatch(updatePostConditionRequest(board, id, condition))
-        }
+        },
+
+        initFeedbackPage: () => dispatch(initFeedbackPage()),                           // 피드백 보내기 페이지 초기화
+        storeFeedbackData: (data_key, data_value) => {                                  // 피드백 데이터 저장 메서드
+            dispatch( storeFeedbackData(data_key, data_value) )
+        },
+        postFeedBack: (feedbackData) => dispatch(postFeedBackRequest(feedbackData)),    // 피드백 데이터 POST 요청 메서드
+
+        /* 임시 */
+        tempFunc: () => dispatch(tempFunc()),
     }
 }
 

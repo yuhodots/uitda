@@ -8,6 +8,7 @@ import {
     ErrorPage,
     ManagePost,
     ManageProfile,
+    SendFeedback,
 } from '../ManageContents';
 import {
     MANAGE_PROFILE,
@@ -15,7 +16,7 @@ import {
     MANAGE_POSTS_NETWORKING,
     // MANAGE_COMMENTS,
     // MANAGE_LIKEPOSTS,
-    // MANAGE_CONTACT,
+    MANAGE_CONTACT,
 } from '../../../../constants/manage_category'
 import { MARKET, NETWORKING} from '../../../../constants/categories'
 
@@ -52,9 +53,15 @@ class ManageContentArea extends Component {
             /* Posts */
             postList,
             deletePost,
-            updatePostCondition
+            updatePostCondition,
+
+            /* Feedback */
+            postFeedbackDone,
+            feedbackData,
+            storeFeedbackData,
+            postFeedBack,
         } = this.props;
-        
+
         let board;          // Market or Networking
         
         switch (kind) {
@@ -83,6 +90,16 @@ class ManageContentArea extends Component {
                         postList={postList}
                         deletePost={deletePost}
                         updatePostCondition={updatePostCondition}
+                    />
+                )
+
+            case MANAGE_CONTACT: 
+                return (
+                    <SendFeedback 
+                        feedbackData={feedbackData}
+                        postFeedbackDone={postFeedbackDone}
+                        postFeedBack={postFeedBack}
+                        storeFeedbackData={storeFeedbackData}
                     />
                 )
 
@@ -121,6 +138,8 @@ ManageContentArea.propTypes = {
     ]),
     isDeleteProfileImage: PropTypes.bool.isRequired,        // 프로필 사진을 delete 했는 지 여부
     postList: PropTypes.array,                              // Posts 데이터 리스트
+    postFeedbackDone: PropTypes.bool.isRequired,            // 피드백 데이터 POST 요청 완료 여부
+    feedbackData: PropTypes.object.isRequired,              // 피드백 데이터
     
     uploadProfileImage: PropTypes.func.isRequired,          // 사진 업로드 액션
     deleteUploadedProfileImage: PropTypes.func.isRequired,  // 업로드 된 사진을 지우는 액션
@@ -130,6 +149,8 @@ ManageContentArea.propTypes = {
     postProfileDeleteRequest: PropTypes.func.isRequired,    // 프로필 사진 삭제 POST 요청 메서드
     deletePost: PropTypes.func.isRequired,                  // Post를 지우는 함수
     updatePostCondition: PropTypes.func.isRequired,         // 포스팅의 상태 변경 메서드
+    storeFeedbackData: PropTypes.func.isRequired,           // 피드백 데이터 저장 메서드
+    postFeedBack: PropTypes.func.isRequired,                // 피드백 데이터 POST 요청 메서드
 }
 
 export default ManageContentArea;
