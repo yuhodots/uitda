@@ -9,7 +9,7 @@ import { Modal } from "antd";
 
 import BaseCalendar from "../Structure/Base_Calendar";
 import { MenuBox, DateInfoBox, RoomModalBox } from "./SubComponents";
-import { colors } from "../../styles/variables";
+import { colors, Screen_Size } from "../../styles/variables";
 import { CARPOOL } from "../../constants/categories";
 
 /* Styled Components */
@@ -23,6 +23,10 @@ const BackGroundDiv = styled.div`
     background-color: ${colors.gray_bg};
 
     display: flex;
+
+    @media (max-width: ${Screen_Size.pad_portrait}) {
+        padding-left: 12rem;
+    }
 `;
 
 /* 전체 모든 Box들의 영역을 나타내는 div 태그 */

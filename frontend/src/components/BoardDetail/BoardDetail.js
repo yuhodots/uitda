@@ -11,7 +11,7 @@ import {
     CommentBox,
 } from "./subcomponents";
 
-import { colors } from "../../styles/variables";
+import { colors, Screen_Size } from "../../styles/variables";
 
 
 /* Styled Components */
@@ -21,6 +21,10 @@ const BackgroundDiv = styled.div`
     width: 100%;
     padding-left: 15rem;
     background-color: ${colors.gray_bg};
+
+    @media (max-width: ${Screen_Size.pad_portrait}) {
+        padding-left: 12rem;
+    }
 `;
 
 /*  내용물들을 담을 컨테이너 div 태그

@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import { LoadingBar, PostCard, SearchIcon } from "./SubComponents";
-import { colors } from '../../../styles/variables'
+import { colors, Screen_Size } from '../../../styles/variables'
 
 
 /* Styled Components */
@@ -22,6 +22,10 @@ const BoardArea = styled.div`
     padding-top: 4rem;
     padding-left: 15rem;
     background-color: ${colors.gray_bg};
+
+    @media (max-width: ${Screen_Size.pad_portrait}) {
+        padding-left: 12rem;
+    }
 `;
 
 /* 카드 렌더할 Board (felx box) */

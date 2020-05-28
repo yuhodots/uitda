@@ -15,7 +15,7 @@ import {
 import { 
     MARKET, NETWORKING, CARPOOL, MANAGE, CHATTING
 } from "../../../../constants/categories";
-import { colors } from "../../../../styles/variables";
+import { colors, Screen_Size } from "../../../../styles/variables";
 
 
 /* Styled Components */
@@ -38,25 +38,29 @@ const MenuItemLinkBox = styled(Link)`
     :hover {
         background-color: #F4F4F4;
     }
+
+    @media (max-width: ${Screen_Size.pad_portrait}) {
+        padding-left: 2.25rem;
+    }
 `;
 
-/* Menu의 Icon 이미지를 담는 div 태그 */
-const MenuIconImg = styled.div`
-    margin-right: 0.75rem;
-    height: 1.5rem;
-    width: 1.5rem;
+    /* Menu의 Icon 이미지를 담는 div 태그 */
+    const MenuIconImg = styled.div`
+        margin-right: 0.75rem;
+        height: 1.5rem;
+        width: 1.5rem;
 
-    background-image: ${props => `url(${props.imgURL})`};
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: contain;
-`;
+        background-image: ${props => `url(${props.imgURL})`};
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: contain;
+    `;
 
-/* Menu의 텍스트 스타일 */
-const MenuText = styled.div`
-    color: ${colors.black};
-    font-size: 1.15rem;
-`;
+    /* Menu의 텍스트 스타일 */
+    const MenuText = styled.div`
+        color: ${colors.black};
+        font-size: 1.15rem;
+    `;
 
 
 /* Custom Functions */

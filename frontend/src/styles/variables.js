@@ -30,3 +30,16 @@ export const colors = {
     owner_yellow: '#FFAF2F',
     guest_green: '#18CE0F',
 }
+
+
+export const Screen_Size = {
+    /* max_width */
+    // desktop                  // 1500 +
+    labtop: '1500px',           // 1250 ~ 1500
+    pad_landScape: '1250px',    // 900 ~ 1250
+    pad_portrait: '900px',      // 600 ~ 900
+    mobile : '600px',           // 0 ~ 600
+
+    header_link_comp_max: '1024px',
+    header_link_comp_min: '865px',
+}
