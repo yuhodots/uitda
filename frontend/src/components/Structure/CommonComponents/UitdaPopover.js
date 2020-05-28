@@ -25,6 +25,8 @@ const PopoverListItemStyle = css`
     flex-flow: row nowrap;
     align-items: center;
 
+    white-space: nowrap;
+
     cursor: pointer;
 
     :hover {

@@ -11,7 +11,7 @@ import {
     CommentBox,
 } from "./subcomponents";
 
-import { colors } from "../../styles/variables";
+import { colors, Screen_Size } from "../../styles/variables";
 
 
 /* Styled Components */
@@ -21,6 +21,10 @@ const BackgroundDiv = styled.div`
     width: 100%;
     padding-left: 15rem;
     background-color: ${colors.gray_bg};
+
+    @media (max-width: ${Screen_Size.pad_portrait}) {
+        padding-left: 12rem;
+    }
 `;
 
 /*  내용물들을 담을 컨테이너 div 태그
@@ -38,12 +42,15 @@ const ContainerDiv = styled.div`
 
     /* 그림자 효과 */
     box-shadow: 0 0 12px rgba(80,80,80,.1);
-    /* border-left: 2px solid ${colors.gray_bg};
-    border-right: 2px solid ${colors.gray_bg}; */
 
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
+
+    @media (max-width: ${Screen_Size.board_detail_screen}) {
+        width: 100%;
+        min-width: 0;
+    }
 `;
 
     const PostingBox = styled.div`

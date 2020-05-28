@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import { LoadingBar, PostCard, SearchIcon } from "./SubComponents";
-import { colors } from '../../../styles/variables'
+import { colors, Screen_Size } from '../../../styles/variables'
 
 
 /* Styled Components */
@@ -22,6 +22,10 @@ const BoardArea = styled.div`
     padding-top: 4rem;
     padding-left: 15rem;
     background-color: ${colors.gray_bg};
+
+    @media (max-width: ${Screen_Size.pad_portrait}) {
+        padding-left: 12rem;
+    }
 `;
 
 /* 카드 렌더할 Board (felx box) */
@@ -52,9 +56,10 @@ class Board extends Component {
         // 반응형 기능을 아직 구현 안함
 
         const { windowWidth } = this.props;
-        const flexBasisOfCard = 320 + 24;
+        const flexBasisOfCard = 286 + 24;
         const boardWidth = windowWidth - 240;
-        const cardNumsPerOneLine = parseInt( ( boardWidth - 24 ) / flexBasisOfCard )
+        let cardNumsPerOneLine = parseInt( ( boardWidth - 24 ) / flexBasisOfCard )
+        if (cardNumsPerOneLine > 4 ) { cardNumsPerOneLine = 4; }
 
         let standardList = [];
 

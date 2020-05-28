@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'
 
-import { colors } from '../../../styles/variables'
+import { colors, Screen_Size } from '../../../styles/variables'
 
 
 /* Styled Compoents */
@@ -22,31 +22,58 @@ const ComponentArea = styled.div`
 
     color: ${colors.font_darkgray};
     font-size: 0.9375rem;
+    white-space: nowrap;
+
+    @media (max-width: ${Screen_Size.pad_portrait}) {
+        padding: 0;
+    }
 `; 
 
-/* 세로 구분 선 */
-const VirticleLine = styled.div`
-    height: 2rem;
-    width: 1px;
-    background-color: ${colors.gray_line};
+    const Subtitle = styled.span`
+        margin-right: 3rem;
+        display: inline;
 
-    margin-left: 3rem;
-`;
+        @media (max-width: ${Screen_Size.header_link_comp_max}) {
+            display: none;
+        }
+    `
 
-/* 카테고리 이동 링크 텍스트 */
-const CategoryLink = styled(Link)`
-    margin-left: 3rem;
-    
-    text-decoration: none;
-    color: ${colors.font_darkgray};
-`;
+    /* 세로 구분 선 */
+    const VirticleLine = styled.div`
+        margin-right: 3rem;
+        height: 2rem;
+        width: 1px;
+
+        background-color: ${colors.gray_line};
+
+        display: block;
+
+        @media (max-width: ${Screen_Size.header_link_comp_max}) {
+            display: none;
+        }
+    `;
+
+    /* 카테고리 이동 링크 텍스트 */
+    const CategoryLink = styled(Link)`
+        margin-right: 3rem;
+        :last-child {
+            margin-right: 0;
+        }
+
+        text-decoration: none;
+        color: ${colors.font_darkgray};
+
+        @media (max-width: ${Screen_Size.pad_portrait}) {
+            margin-right: 2rem;
+        }
+    `;
 
 
 /* react component */
 const LinkCategory = ({categoryDatas}) => {
     return (
         <ComponentArea>
-            게시판 이동
+            <Subtitle>게시판 이동</Subtitle>
             <VirticleLine />
             {
                 categoryDatas.map((data, idx) => {

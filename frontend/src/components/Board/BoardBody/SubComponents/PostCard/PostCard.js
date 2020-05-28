@@ -14,8 +14,9 @@ import { MARKET } from "../../../../../constants/categories";
 /* Styled Components */
 const PostCardArea = styled.div`
     margin: 1.5rem .75rem;
-    flex-grow: 1;
-    flex-basis: 20rem; 
+    flex: 1 1 17.875rem;
+    min-width: 21%;
+    max-width: 30rem;
     
     background-color: ${colors.white};
     box-shadow: 0 0 10px rgba(0,0,0,.1);

@@ -18,7 +18,8 @@ import IconBadge from "./subComponents/IconBadge";
 /* Styled Components */
 const WholeBox = styled.div`
     margin-right: 3rem;
-    flex: 0 0 7.5rem;
+    /* flex: 0 0 7.5rem; */
+    flex: 0 0 4.5rem;
 
     display: flex;
     flex-flow: row nowrap;
@@ -37,7 +38,7 @@ class UserBadgeBox extends Component {
     state = {}
 
     _getUserPopoverContent = () => {
-        const { localLogoutRequest, outlookLogoutRequest } = this.props;
+        const { localLogoutRequest } = this.props;
         
         return [
             {
@@ -95,8 +96,7 @@ class UserBadgeBox extends Component {
 UserBadgeBox.propTypes = {
     curUser: PropTypes.object,                          // 로그인된 유저 데이터
 
-    localLogoutRequest: PropTypes.func.isRequired,           // 로그아웃 액션
-    outlookLogoutRequest: PropTypes.func.isRequired,    // 아웃룩 로그아웃 메서드
+    localLogoutRequest: PropTypes.func.isRequired,      // 로그아웃 액션
 }
 
 

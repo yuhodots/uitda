@@ -8,7 +8,7 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { colors } from "../../../styles/variables";
+import { colors, Screen_Size } from "../../../styles/variables";
 import topicData from "./topics.json";
 import Logo from "../CommonComponents/Logo";
 import Menu from "./Menu";
@@ -29,33 +29,37 @@ const SidebarBox = styled.div`
 
     display: flex;
     flex-flow: column nowrap;
+
+    @media (max-width: ${Screen_Size.pad_portrait}) {
+        width: 12rem;
+    }
 `;
 
-/* Logo를 담는 영역 */
-const LogoContainer = styled.div`
-    flex: 0 4rem;
+    /* Logo를 담는 영역 */
+    const LogoContainer = styled.div`
+        flex: 0 4rem;
 
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-    align-items: center;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        align-items: center;
 
-    border-bottom: 2px solid ${colors.gray_bg};
-`;
+        border-bottom: 2px solid ${colors.gray_bg};
+    `;
 
-/* 위 카테고리 박스 (다판다, 잉력시장, 카풀) */
-const TopCategoryBox = styled.div`
-    margin-top: 2.5rem;
-`;
+    /* 위 카테고리 박스 (다판다, 잉력시장, 카풀) */
+    const TopCategoryBox = styled.div`
+        margin-top: 2.5rem;
+    `;
 
-/* 아래 카테고리 박스 (Manage, Chatting) */
-const BottomCategoryBox = styled.div`
-    position: absolute;
-    bottom: 2rem;
-    width: 100%;
-    padding-top: 2rem;
-    border-top: 2px solid ${colors.gray_bg};
-`;
+    /* 아래 카테고리 박스 (Manage, Chatting) */
+    const BottomCategoryBox = styled.div`
+        position: absolute;
+        bottom: 2rem;
+        width: 100%;
+        padding-top: 2rem;
+        border-top: 2px solid ${colors.gray_bg};
+    `;
 
 
 /* React Component */
