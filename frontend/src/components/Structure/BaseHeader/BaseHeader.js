@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 
 import UserBadgeBox from "./UserBadgeBox";
 import { Logo } from '../CommonComponents';
-import { colors } from '../../../styles/variables'
+import { colors, Screen_Size } from '../../../styles/variables'
 
 
 /* Styled Compoents */
@@ -48,6 +48,10 @@ const HeaderBox = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
+
+        @media (max-width: ${Screen_Size.pad_portrait}) {
+            flex-basis: 12rem;
+        }
     `
 
     /* 로고 영역 제외한 오른쪽 전체를 차지하는 영역 div 태그 

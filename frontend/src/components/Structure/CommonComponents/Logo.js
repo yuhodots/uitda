@@ -10,6 +10,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { LogoColor, LogoWhite } from '../../../styles/images';
+import { Screen_Size } from "../../../styles/variables";
+
 
 /* Styled Components */
 const HomeLink = styled(Link)`
@@ -22,6 +24,10 @@ const HomeLink = styled(Link)`
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain;
+
+    @media (max-width: ${Screen_Size.pad_portrait}) {
+        margin: 0 2.5rem;
+    }
 `
 
 /* React Component */
