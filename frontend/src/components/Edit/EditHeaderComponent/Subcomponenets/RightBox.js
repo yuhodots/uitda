@@ -73,7 +73,9 @@ class RightBox extends Component {
             } = editBoardData;
 
             /* 제목이 없는 경우 경고 메시지를 띄움 */
-            if (!title) { message.error('제목을 입력해주세요.'); return; }
+            if ( !title ) { message.error('제목을 입력해주세요.'); return; }
+            /* 사진 업로드 개수 초과 시 */
+            if ( files.length > 6 ) { message.error('사진은 최대 6개까지 업로드할 수 있습니다.'); return; }
 
             /* 업로드로 넘겨주는 file 데이터는 이미 업로드 되어 있지 않은 사진들
                (url 프로퍼티를 갖지 않는 파일들) 만으로 구성한다. */
