@@ -11,7 +11,7 @@ import {
     SubInfoInputBox,
     DescriptionBox,
 } from './Subcomponents';
-import { colors } from '../../../../styles/variables'
+import { colors, Screen_Size } from '../../../../styles/variables'
 import { MANAGE } from "../../../../constants/categories";
 import { CONTACT, MEETING_PALCE } from "../../../../constants/edit_Input_Data_Keys";
 
@@ -21,51 +21,68 @@ import { CONTACT, MEETING_PALCE } from "../../../../constants/edit_Input_Data_Ke
 /* Header 영역을 제외한 영역을 나타내는 div 태그 */
 const WholeArea = styled.div`
     min-height: ${props => props.windowHeight - 64}px;
+    padding: 2rem;
 
     display: flex;
     flex-flow: row nowrap;
-    justify-content: center;
     align-items: center;
+
+    @media (max-width: ${Screen_Size.labtop}) {
+        padding: 1rem;
+    }
 `;
 
-    /* Calendar Box와 RoomInfo Box의 공통 속성 */
-    const ContentBoxTemplate = styled.div`
-        margin: 0 2rem;
-        height: ${props => props.boxHeight}px;
-        min-height: 553px;  /* 최소 높이는 1377 x 768 해상도 모니터의 브라우저 크기를 기준 */
-        padding: 2rem;
+    const ContentContainer = styled.div`
+        margin: 0 auto;
         
-        /* 노트북 기준의 padding margin 값 */
-        @media (max-width: 1500px) {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+    `;
+
+        /* Calendar Box와 RoomInfo Box의 공통 속성 */
+        const ContentBoxTemplate = styled.div`
             margin: 0 1rem;
-            padding: 1rem;
-        }
+            height: ${props => props.boxHeight}px;
+            min-height: 553px;  /* 최소 높이는 1377 x 768 해상도 모니터의 브라우저 크기를 기준 */
+            padding: 2rem;
+            
+            background-color: ${colors.white};
+            
+            display: flex;
+            flex-flow: column nowrap;
+            
+            /* 노트북 기준의 padding margin 값 */
+            @media (max-width: ${Screen_Size.labtop}) {
+                margin: 0 0.5rem;
+                padding: 1rem;
+            }
 
-        background-color: ${colors.white};
+            /* @media (max-width: ${Screen_Size.pad_landScape}) {
+                margin: 0 auto;
+            } */
+        `;
 
-        display: flex;
-        flex-flow: column nowrap;
-    `;
+        /* 캘린더 영역 div 태그 */
+        const CalendarBox = styled(ContentBoxTemplate)`
+            min-width: 35rem;
+            width: ${props => props.boxHeight * 1.43 }px;
+        `;
 
-    /* 캘린더 영역 div 태그 */
-    const CalendarBox = styled(ContentBoxTemplate)`
-        min-width: 50rem;
-        width: ${props => props.boxHeight * 1.43 }px;
-    `;
+            /* ContentBox의 padding값을 제외한 높이를 전달하기 위해 씌운 div태그 */
+            const CalendarContainer = styled.div`
+                flex: 1;
+                height: 100%;
+            `
 
-        /* ContentBox의 padding값을 제외한 높이를 전달하기 위해 씌운 div태그 */
-        const CalendarContainer = styled.div`
-            flex: 1;
-        `
+        /* 카풀 방 정보를 입력하는 div 태그 */
+        const RoomInfoBox = styled(ContentBoxTemplate)`
+            min-width: 17rem;
+            width: ${props => props.boxHeight * 0.73 }px;
 
-    /* 카풀 방 정보를 입력하는 div 태그 */
-    const RoomInfoBox = styled(ContentBoxTemplate)`
-        min-width: 24rem;
-        width: ${props => props.boxHeight * 0.73 }px;
-
-        display: flex;
-        flex-flow: column nowrap;
-    `;
+            display: flex;
+            flex-flow: column nowrap;
+        `;
 
 
 /* React Component */
@@ -97,27 +114,29 @@ class EditCarpool extends Component {
 
         return ( isLoaded ?
             <WholeArea windowHeight={windowHeight} >
-                <CalendarBox boxHeight={height} >    
-                    <CalendarContainer>
-                        <BaseCalendar 
-                            category={MANAGE}
+                <ContentContainer>
+                    <CalendarBox boxHeight={height} >    
+                        <CalendarContainer>
+                            <BaseCalendar 
+                                category={MANAGE}
 
-                            eventsObj={eventsObj}
-                            selectedDate={selectedDate}
+                                eventsObj={eventsObj}
+                                selectedDate={selectedDate}
 
-                            initCalenderEvents={initCalenderEvents}
-                            selectDate={selectDate}
-                        />
-                    </CalendarContainer>
-                </CalendarBox>
+                                initCalenderEvents={initCalenderEvents}
+                                selectDate={selectDate}
+                            />
+                        </CalendarContainer>
+                    </CalendarBox>
 
-                <RoomInfoBox boxHeight={height} >
-                    <PlaceInputBox storeCarpoolData={storeCarpoolData} />
-                    <TimePickerBox storeCarpoolData={storeCarpoolData} />
-                    <SubInfoInputBox dataKey={MEETING_PALCE} storeCarpoolData={storeCarpoolData} />
-                    <SubInfoInputBox dataKey={CONTACT} storeCarpoolData={storeCarpoolData} />
-                    <DescriptionBox storeCarpoolData={storeCarpoolData} />
-                </RoomInfoBox>
+                    <RoomInfoBox boxHeight={height} >
+                        <PlaceInputBox storeCarpoolData={storeCarpoolData} />
+                        <TimePickerBox storeCarpoolData={storeCarpoolData} />
+                        <SubInfoInputBox dataKey={MEETING_PALCE} storeCarpoolData={storeCarpoolData} />
+                        <SubInfoInputBox dataKey={CONTACT} storeCarpoolData={storeCarpoolData} />
+                        <DescriptionBox storeCarpoolData={storeCarpoolData} />
+                    </RoomInfoBox>
+                </ContentContainer>
             </WholeArea> :
             ''
         )
