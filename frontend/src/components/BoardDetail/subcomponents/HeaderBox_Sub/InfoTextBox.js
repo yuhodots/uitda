@@ -52,6 +52,8 @@ const WholeBox = styled.div`
         const StatusBox = styled.div`
             margin-right: 1rem;
             
+            white-space: nowrap;
+
             display: flex;
             flex-flow: row nowrap;
             align-items: center;

@@ -42,12 +42,15 @@ const ContainerDiv = styled.div`
 
     /* 그림자 효과 */
     box-shadow: 0 0 12px rgba(80,80,80,.1);
-    /* border-left: 2px solid ${colors.gray_bg};
-    border-right: 2px solid ${colors.gray_bg}; */
 
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
+
+    @media (max-width: ${Screen_Size.board_detail_screen}) {
+        width: 100%;
+        min-width: 0;
+    }
 `;
 
     const PostingBox = styled.div`

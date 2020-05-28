@@ -44,7 +44,7 @@ const HeaderArea = styled.div`
             border: ${colors.light_gray_line} solid 2px;
 
             margin-right: 1rem;
-            flex: 0, 4.5rem;
+            flex: 0 0 4.5rem;
         `;
 
     /* 제목 */
@@ -53,6 +53,9 @@ const HeaderArea = styled.div`
         margin-top: 2rem;
 
         font-size: 2rem;
+
+        word-wrap: break-word;
+        word-break: break-all;
     `
 
     /* 가격 */

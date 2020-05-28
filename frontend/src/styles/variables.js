@@ -40,6 +40,8 @@ export const Screen_Size = {
     pad_portrait: '900px',      // 600 ~ 900
     mobile : '600px',           // 0 ~ 600
 
+    board_detail_screen: '1040px',
+
     header_link_comp_max: '1024px',
     header_link_comp_min: '865px',
 }
