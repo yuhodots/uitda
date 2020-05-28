@@ -161,7 +161,7 @@ class ManageContainer extends Component {
                 isLoaded ?
                 
                     curUser ? 
-                    <div style={{position: 'relative'}} >
+                    <div style={{ minWidth:'1230px', position: 'relative' }} >
                         <ManageHeader
                             curUser={curUser}
                             localLogoutRequest={localLogoutRequest}
