@@ -663,6 +663,8 @@
 * Manage Footer 스타일 요류 해결
 * Board Detail 패드 스타일 고려
 * popover 글자 깨지는 오류 해결
+* Edit Board 패드 사이즈 스타일링
+* Edit Board 사진 개수 6개 초과 시 에러 메시지
 
 
 
