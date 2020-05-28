@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { InboxOutlined } from '@ant-design/icons';
-import { Upload, Modal } from 'antd';
+import { Upload, Modal, message } from 'antd';
 
 import { colors } from '../../../../../styles/variables'
 
@@ -28,6 +28,7 @@ const getBase64 = file => {
 const Container = styled.div`
     margin-bottom: 3rem;
     padding: 2rem;
+    width: 100%;
 
     border: 2px dashed ${colors.gray_line};
     border-radius: 12px;
@@ -42,7 +43,7 @@ const DropArea = styled(Dragger)`
     margin: 1rem auto;
 
     height: 15rem !important;
-    width: 40rem !important;
+    /* width: 100% !important; */
 `
 
 
@@ -81,6 +82,8 @@ class DropZone extends Component {
             addFileData, 
             deleteFileData 
         } = this.props;
+
+        
 
         /* Dropzone의 기능을 정의하는 props 데이터 */
         const props = {

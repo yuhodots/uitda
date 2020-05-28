@@ -42,6 +42,8 @@ export const Screen_Size = {
 
     board_detail_screen: '1040px',
 
+    edit_paper_max_width: '880px',
+
     header_link_comp_max: '1024px',
     header_link_comp_min: '865px',
 }

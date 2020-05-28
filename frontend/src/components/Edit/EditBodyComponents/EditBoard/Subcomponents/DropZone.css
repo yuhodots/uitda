@@ -7,3 +7,19 @@
     flex-flow: row nowrap;
     justify-content: flex-start;
 }
+
+.photo-list-box span {
+    width: 100%;
+}
+
+.ant-upload-list-picture-card .ant-upload-list-item-actions {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.photo-list-box .ant-upload-list {
+    max-width: 100%;
+    overflow: auto;
+}

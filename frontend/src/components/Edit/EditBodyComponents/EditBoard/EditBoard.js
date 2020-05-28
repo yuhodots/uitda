@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import { PaperTemplate } from "../../../../styles/templates/manage";
 import { EditTitle, EditPrice, DropZone, Description } from './Subcomponents'
 import { MARKET } from '../../../../constants/categories';
+import { Screen_Size } from "../../../../styles/variables";
+
 
 /* Styled Components */
 
@@ -23,6 +25,11 @@ const EditPaper = styled(PaperTemplate)`
 
     display: flex;
     flex-flow: column nowrap;
+
+    @media (max-width: ${Screen_Size.edit_paper_max_width}) {
+        width: 100%;
+        min-width: 40rem;
+    }
 `;
 
 /* React Component */
