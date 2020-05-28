@@ -56,9 +56,10 @@ class Board extends Component {
         // 반응형 기능을 아직 구현 안함
 
         const { windowWidth } = this.props;
-        const flexBasisOfCard = 320 + 24;
+        const flexBasisOfCard = 286 + 24;
         const boardWidth = windowWidth - 240;
-        const cardNumsPerOneLine = parseInt( ( boardWidth - 24 ) / flexBasisOfCard )
+        let cardNumsPerOneLine = parseInt( ( boardWidth - 24 ) / flexBasisOfCard )
+        if (cardNumsPerOneLine > 4 ) { cardNumsPerOneLine = 4; }
 
         let standardList = [];
 
