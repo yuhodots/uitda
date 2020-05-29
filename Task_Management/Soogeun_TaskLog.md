@@ -673,6 +673,8 @@
 * Enter Page 코드 작업 완료
 * 피드백 작성 완료 컴포넌트 제작 완료
 * preview 사진 변경
+* Carpool 모달창 description 줄바꿈 작동하도록
+* 
 
 
 
