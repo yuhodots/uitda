@@ -11,6 +11,7 @@ import {
     DEPARTURE, DESTINATION, START_DATE, START_TIME, 
     MEETING_PLACE, CONTACT, DESCRIPTION
 } from "../../../../constants/calendar_consts";
+import { addLineToString } from "../../../RefactoringFuncs";
 
 
 /* Styled Components */
@@ -137,7 +138,7 @@ class RoomInfoBox extends Component {
                         onChange={(e) => storeEventUpdateData(DESCRIPTION, e.target.value)}
                     /> :
                     
-                    description ? description :
+                    description ? addLineToString(description) :
                     contact ?
                     '연락처로 직접 연락 주시길 바랍니다.' :
                     '메시지 부탁드립니다.'
