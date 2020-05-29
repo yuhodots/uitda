@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Button, message } from "antd";
 
-import { colors } from "../../../../styles/variables";
+import { colors, Screen_Size } from "../../../../styles/variables";
 
 /* Styled Components */
 
@@ -20,6 +20,10 @@ const Container = styled.div`
     const DateBox = styled.div`
         font-weight: bold;
         margin-right: 1rem;
+
+        @media (max-width: ${Screen_Size.pad_portrait}) {
+            display: none;
+        }
     `;
 
     /* 글 생성 / 수정 버튼 */
