@@ -21,7 +21,7 @@ class HomeContainer extends Component {
         const { curUser, isGetStatusDone } = this.props;
 
         return isGetStatusDone ?
-            <div>
+            <div style={{height: '100%'}} >
             {
                 curUser ?
                 <Redirect to='/board/market' /> :
