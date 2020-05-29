@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { Divider, Button } from 'antd';
 
 import { colors } from "../../../../../styles/variables";
+import { FeedbackSubmitImg } from "../../../../../styles/images";
 import { ContentBoxStyle, BoxSubtitleStyle } from "../CommonComponents/CommonCSS";
 import { ContentHeader } from "../CommonComponents";
 import { BorderBoxStyle } from '../../../../../styles/CommonCSS';
@@ -55,6 +56,29 @@ const WholeBox = styled.div`
             align-self: flex-end;
         `
 
+    const AfterSubmitBox = styled(EditFeedbackBox)`
+        padding: 3rem;
+    `;
+
+        const AfterSubmitTitle = styled.div`
+            margin-bottom: 1.25rem;
+            font-size: 2rem;
+        `;
+
+            const HighLightText= styled.span`
+                color: ${colors.blue};
+            `;
+
+        const AfterSubmitDescription = styled.div`
+            font-size: 1.25rem;
+            font-weight: lighter;
+        `;
+
+        const AfterSubmitImg = styled.img`
+            margin-top: 3rem;
+            width: 15rem;
+            align-self: center;
+        `;
 
 
 /* React Component */
@@ -76,11 +100,18 @@ const SendFeedback = (props) => {
                 postFeedbackDone ?
                 // true ?
                 
-                <EditFeedbackBox>
-                    피드백 제출이 완료되었습니다 :)
-                    소중한 의견 반영하여 더나은 유잇다를 만들어 가겠습니다 !
-                </EditFeedbackBox> :
+                /* 제출 완료 */
+                <AfterSubmitBox>
+                    <AfterSubmitTitle> 
+                        <HighLightText>피드백 제출</HighLightText>이 <HighLightText>완료</HighLightText>되었습니다
+                    </AfterSubmitTitle>
+                    
+                    <AfterSubmitDescription>소중한 의견 반영하여 더나은 유잇다를 만들어 가겠습니다 !</AfterSubmitDescription>
+                    
+                    <AfterSubmitImg src={FeedbackSubmitImg} alt='' />
+                </AfterSubmitBox> :
                 
+                /* 피드백 작성 */
                 <EditFeedbackBox>
                     <BoxInfoHeader>유잇다 서비스 이용에 대한 피드백을 보내주세요.</BoxInfoHeader>
                     
