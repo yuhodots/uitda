@@ -108,10 +108,10 @@ class RoomInfoHeaderBox extends Component {
         switch (label) {
             case CLOSED: return {labelColor: colors.closed_gray, labelText: '마감'};
             case ACTIVE: return {labelColor: colors.active_blue, labelText: '모집 중'};
-            case OWNER: 
-            case OWNER_CLOSED:  return {labelColor: colors.owner_yellow, labelText: '방장'};
-            case GUEST: 
-            case GUEST_CLOSED:  return {labelColor: colors.guest_green, labelText: '신청'};
+            case OWNER: return {labelColor: colors.owner_yellow, labelText: '방장'};
+            case OWNER_CLOSED: return {labelColor: colors.owner_yellow, labelText: '모집 종료'};
+            case GUEST: // eslint-disable-next-line
+            case GUEST_CLOSED: return {labelColor: colors.guest_green, labelText: '신청'};
             default:  return {labelColor: colors.closed_gray, labelText: '마감'}
         }
     }
