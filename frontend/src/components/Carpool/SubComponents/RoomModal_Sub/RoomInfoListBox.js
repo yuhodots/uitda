@@ -74,7 +74,7 @@ const RoomInfoListBox = ({isUpdateMode, selectedEvent, storeEventUpdateData}) =>
 
     const startStr = _formatDateStr(start);
 
-    const defaultTime = moment(start).utc()
+    const defaultTime = moment(start).utc();
 
     return ( isUpdateMode ?
         <InfoListBox>
