@@ -1,0 +1,7 @@
+export { default as cpi1 } from './carpool_info_1.jpg'
+export { default as cpi2 } from './carpool_info_2.jpg'
+export { default as cpi3 } from './carpool_info_3.jpg'
+export { default as cpi4 } from './carpool_info_4.jpg'
+export { default as cpi5 } from './carpool_info_5.jpg'
+export { default as cpi6 } from './carpool_info_6.jpg'
+export { default as cpi7 } from './carpool_info_7.jpg'
