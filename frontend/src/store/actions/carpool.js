@@ -163,13 +163,14 @@ export function postCloseOrCancleEventRequest (eventID, condition) {
     /* POST Request Body Data */
     const reqBody = { condition }
 
-    return x_www_PostRequestFuction(POSTurl, reqBody)
+    return x_www_PostRequestFuction(POSTurl, reqBody, postCloseOrCancleEventSuccess)
 }
 
-export function postCloseOrCancleEventSuccess (condition) {
+export function postCloseOrCancleEventSuccess (res) {
+    const eventID = Number(res.data.events.id);
     return {
         type: CARPOOL_POST_EVENT_CANCLE_OR_CLOSE_SUCCESS,
-        condition
+        eventID
     }
 }
 

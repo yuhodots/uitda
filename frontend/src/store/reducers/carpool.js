@@ -11,6 +11,7 @@ import {
     CARPOOL_POST_EVENT_UPDATE_SUCCESS,
     CARPOOL_JOIN_EVENT_SUCCESS,
     CARPOOL_CANCLE_JOIN_EVENT_SUCCESS,
+    CARPOOL_POST_EVENT_CANCLE_OR_CLOSE_SUCCESS,
 } from "../actions/ActionTypes";
 
 import { CARPOOL } from "../../constants/categories";
@@ -219,6 +220,35 @@ export default function carpool (state = InitialState, action) {
                 } ),
                 ownerEvents: modifiedOwnerEvents,
                 selectedEvent: updatedEvent,
+            }
+        }
+
+        /* 이벤트 마감 또는 마감 취소 */
+        case CARPOOL_POST_EVENT_CANCLE_OR_CLOSE_SUCCESS: {
+            const { 
+                totalOrMyOption, isClosedHidden, 
+                closedEvents, activeEvents, ownerEvents, guestEvents 
+            } = state;
+            const { eventID } = action;
+
+            /* 변경할 이벤트 찾기 */
+            const IdxOfEventToUpdate = ownerEvents.findIndex( event => event.id === eventID )
+            const EventToUpdate = ownerEvents[IdxOfEventToUpdate]
+
+            /* 해당 이벤트의 라벨 값 변경 */
+            if ( EventToUpdate.label === OWNER ) { EventToUpdate.label = OWNER_CLOSED }
+            else { EventToUpdate.label = OWNER }
+
+            /* 수정된 ownerEvents Array 객체 생성 */
+            const modifiedOwnerEvents = [ ...ownerEvents.slice(0, IdxOfEventToUpdate), EventToUpdate, ...ownerEvents.slice(IdxOfEventToUpdate + 1) ]
+
+            return {
+                ...state,
+                eventsToRenderObj: updateEventsToRenderObj( totalOrMyOption, isClosedHidden, {
+                    closedEvents, activeEvents, guestEvents, ownerEvents: modifiedOwnerEvents
+                } ),
+                ownerEvents: modifiedOwnerEvents,
+                selectedEvent: EventToUpdate,
             }
         }
 
