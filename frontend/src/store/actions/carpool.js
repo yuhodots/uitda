@@ -178,10 +178,10 @@ export function postCloseOrCancleEventSuccess (res) {
 /* 카풀방 참가 신청 POST 요청 액션 */
 export function postJoinEventRequest ( eventID ) {
     /* POST 요청 시 사용되는 url */
-    const POSTurl = '/api/carpool/guest/create';
+    const POSTurl = `/api/carpool/guest/create/${eventID}`;
 
     /* POST Request Body Data */
-    const reqBody = { event_id: eventID };
+    const reqBody = {};
 
     return x_www_PostRequestFuction(POSTurl, reqBody, postJoinEventSuccess);
 }
@@ -196,9 +196,9 @@ export function postJoinEventSuccess (res) {
 
 
 /* 카풀방 참가 신청 취소 POST 요청 액션 */
-export function postCancleJoinEventRequest ( guestID ) {
+export function postCancleJoinEventRequest ( eventID ) {
     return (dispatch) => {
-        const POSTurl = `/api/carpool/guest/delete/${guestID}`;
+        const POSTurl = `/api/carpool/guest/delete/${eventID}`;
         axios.post(POSTurl)
         .then(res => dispatch(postCancleJoinEventSuccess(res)))
     }

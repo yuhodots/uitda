@@ -79,10 +79,7 @@ const renderCarpoolModalPopoverContent = ( curUser, selectedEvent, clickMethods 
                 {
                     icon: <CloseCircleOutlined  />,
                     text: '내 일정에서 제외하기',
-                    clickMethod: () => {
-                        const foundedGuest = guestlist.find(guest => guest.email === curUser.email);
-                        cancleJoinEvent(foundedGuest.id);
-                    }
+                    clickMethod: () => { cancleJoinEvent(id) }
                 },
                 ...guestContentList
             ]
