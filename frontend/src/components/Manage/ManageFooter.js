@@ -3,6 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Divider } from "antd";
+import { GithubOutlined } from "@ant-design/icons";
 
 import { colors } from "../../styles/variables";
 
@@ -29,17 +30,34 @@ const FooterBox = styled.div`
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
+        justify-content: space-between;
     `;
 
-        /* Link Style */
-        const FooterLink = styled.a`
-            color: ${colors.font_gray};
-
-            :hover {
-                color: ${colors.font_gray};
-                text-decoration: underline;
-            }
+        const LeftBox = styled.div`
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
         `;
+
+        const RightBox = styled.div`
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+        `;
+
+            /* Link Style */
+            const FooterLink = styled.a`
+                color: ${colors.font_gray};
+
+                :hover {
+                    color: ${colors.font_gray};
+                    text-decoration: underline;
+                }
+            `;
+
+            const GithubIcon = styled(GithubOutlined)`
+                margin-right: 0.5rem;
+            `;
 
 
 /* React Component */
@@ -48,9 +66,16 @@ const ManageFooter = () => {
     return (
         <FooterBox>
             <FooterContentBox>
-                <FooterLink href='/policy.pdf' >개인정보처리방침</FooterLink>
-                <Divider type='vertical' />
-                <FooterLink href='/service.pdf' >서비스이용약관</FooterLink>
+                <LeftBox>
+                    <FooterLink href='/policy.pdf' >개인정보처리방침</FooterLink>
+                    <Divider type='vertical' />
+                    <FooterLink href='/service.pdf' >서비스이용약관</FooterLink>
+                </LeftBox>
+
+                <RightBox>
+                    <GithubIcon />
+                    <FooterLink href='https://github.com/bwmelon97/Uitda_Distribution' >유잇다 Github 링크</FooterLink>
+                </RightBox>
             </FooterContentBox>
         </FooterBox>
     )
