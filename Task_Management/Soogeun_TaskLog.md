@@ -692,6 +692,7 @@
 * 카풀 신청 / 신청 취소 정상 기능
 * 카풀 이용안내 등록
 * UitdaPhotoCarousel 생성
+* Manage Footer에 유잇다 깃헙 링크 등록
 
 
 
