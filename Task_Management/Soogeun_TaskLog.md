@@ -674,11 +674,24 @@
 * 피드백 작성 완료 컴포넌트 제작 완료
 * preview 사진 변경
 * Carpool 모달창 description 줄바꿈 작동하도록
-* 
 
 
 
+### 5.30 (토)
 
+* Body에 배경색 입력
+
+
+
+### 6.7 (일)
+
+* carpool 수정시 시각 UTC 오류 해결
+* carpool POST update 시 변경되는 reducer 작업 완료
+* 방장 마감 시 '모집 종료'
+* 카풀 마감 신청 / 취소
+* 카풀 신청 / 신청 취소 정상 기능
+* 카풀 이용안내 등록
+* UitdaPhotoCarousel 생성
 
 
 
@@ -709,7 +722,7 @@
 
 
 * 가로 길이가 많이 줄어들면, 좌측 탭이 사라지는 대신 상단의 헤더로 이동하기
-* 가끔 댓글 전체가 안담기는 에러가 있음. 백엔드 문제인지 프론트 문제인지 확인 필요
+* 가끔 댓글 전체가 안담기는 에러가 있음. 백엔드 문제인지 프론트 문제인지 확인 필요 ( 현재 발견 X )
 * 배경 컴포넌트를 BackgroundTemplate로 코드 리펙토링
 
 
@@ -728,10 +741,8 @@
 
 * Manage Carpool Calendar의 경우, 옛날 날짜를 선택하는 경우 경고 메시지 띄우기
   * 1) 날짜 누를 때 방지 2) 등록하기 버튼을 누를 때 날짜를 확인하세요라고 경고
-* edit board 앱 데이터 및 저장 액션 리펙토링
 * edit board header funcbox 
 * Edit Page 나가기 전에 '나가시겠습니까 묻기'
-* edit carpool 작성 완료 시 카풀 페이지 나왔을 때 바로 카풀 이벤트가 뜨지 않음 (시간이 필요함)
 * 배경 컴포넌트를 BackgroundTemplate로 코드 리펙토링
 
 
@@ -739,8 +750,6 @@
 * DropZone PhotoList의 width값 고정된거 없애기
 
 * Edit 스타일을 지닌 태그들을 어떻게 저장할 것인지 구상
-
-* 사진 업로드 최대 개수 (현재 6개)
 
 * 사진 순서 변경 기능 (백앤드 작업 이후)
 
@@ -750,18 +759,15 @@
 #### Carpool FrontEnd
 
 * 카풀 일정 업데이트 시에는 modal이 닫히지 않도록 할 것
-* 카풀 데이터 하나도 없을 때에도 화면이 뜰 수 있도록
 
 
 
 * socket을 적용할 때, selected event id를 저장하고, modal 액션 (이벤트 수정, 마감, 참가 상태 변경) 으로 해당 이벤트가 변할 때, 띄어진 모달 창의 데이터가 변할 수 있도록 작업하기
 * 카풀 일정 삭제하기 클릭 시, 경고창 띄우기
-* manage에서 작성 이후 carpool로 redirect될 때, carpool 이벤트가 DB에 담기기 전에 get 요청을 함
 * 화면의 높이를 줄일때 캘린더 높이가 변화되지 않음
 * manage 캘린더에 이벤트 띄우고 없애는 버튼 만들기
 * 모달의 참가신청 UI를 구현한 이후, 시간이 지난 일정에 대해서는 방장의 UI에서 마감 버튼 disabled
   마찬가지로, 참여자 입장에서는 마감된 후에는 참가 신청 비활성화
-* 카풀 이용 안내 모달 창 만들기
 * 배경 컴포넌트를 BackgroundTemplate로 코드 리펙토링
 * Calendar의 이벤트로 인해 생기는 skeleton때문에 빈칸에서 배경색의 hover 효과가 나타나지 않음
 * container의 isloaded에 들어간 isCarpoolGet을 carpoolbody로 가져와서 sidebar는 먼저 띄워질 수 있도록 하기
