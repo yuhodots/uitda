@@ -133,18 +133,24 @@ export function postUpdateEventRequest (id, eventData) {
 
     /* POST Request Body Data */
     const { departure, destination, start_date, start_time, meeting_place, contact, description } = eventData;
-    let start = start_date;
-    start.setHours(start_time.getHours());
-    start.setMinutes(start_time.getMinutes());
-    start.setSeconds(0);
+
+    start_date.setUTCHours(0);
+    start_date.setUTCMinutes(0);
+
+    const DateToTime = start_date.getTime();
+    const HoursToTime = start_time.getUTCHours() * 60 * 60 * 1000;
+    const MinutesToTime = start_time.getUTCMinutes() * 60 * 1000;
+    const start = new Date(DateToTime + HoursToTime + MinutesToTime);
+
     const reqBody = { departure, destination, start, meeting_place, contact, description }
 
-    return postRequestFuction(POSTurl, reqBody, postUpdateEventSuccess)
+    return x_www_PostRequestFuction(POSTurl, reqBody, postUpdateEventSuccess)
 }
 
-export function postUpdateEventSuccess () {
+export function postUpdateEventSuccess (res) {
     return {
-        type: CARPOOL_POST_EVENT_UPDATE_SUCCESS
+        type: CARPOOL_POST_EVENT_UPDATE_SUCCESS,
+        updatedEvent: res.data.events
     }
 }
 
@@ -157,14 +163,14 @@ export function postCloseOrCancleEventRequest (eventID, condition) {
     /* POST Request Body Data */
     const reqBody = { condition }
 
-    // return postRequestFuction(POSTurl, reqBody, ()=>{postCloseOrCancleEventSuccess(condition)} );
-    return postRequestFuction(POSTurl, reqBody);
+    return x_www_PostRequestFuction(POSTurl, reqBody, postCloseOrCancleEventSuccess)
 }
 
-export function postCloseOrCancleEventSuccess (condition) {
+export function postCloseOrCancleEventSuccess (res) {
+    const eventID = Number(res.data.events.id);
     return {
         type: CARPOOL_POST_EVENT_CANCLE_OR_CLOSE_SUCCESS,
-        condition
+        eventID
     }
 }
 
@@ -172,10 +178,10 @@ export function postCloseOrCancleEventSuccess (condition) {
 /* 카풀방 참가 신청 POST 요청 액션 */
 export function postJoinEventRequest ( eventID ) {
     /* POST 요청 시 사용되는 url */
-    const POSTurl = '/api/carpool/guest/create';
+    const POSTurl = `/api/carpool/guest/create/${eventID}`;
 
     /* POST Request Body Data */
-    const reqBody = { event_id: eventID };
+    const reqBody = {};
 
     return x_www_PostRequestFuction(POSTurl, reqBody, postJoinEventSuccess);
 }
@@ -190,9 +196,9 @@ export function postJoinEventSuccess (res) {
 
 
 /* 카풀방 참가 신청 취소 POST 요청 액션 */
-export function postCancleJoinEventRequest ( guestID ) {
+export function postCancleJoinEventRequest ( eventID ) {
     return (dispatch) => {
-        const POSTurl = `/api/carpool/guest/delete/${guestID}`;
+        const POSTurl = `/api/carpool/guest/delete/${eventID}`;
         axios.post(POSTurl)
         .then(res => dispatch(postCancleJoinEventSuccess(res)))
     }
@@ -203,22 +209,5 @@ export function postCancleJoinEventSuccess (res) {
     return {
         type: CARPOOL_CANCLE_JOIN_EVENT_SUCCESS,
         eventID
-    }
-}
-
-
-
-/* 리펙토링 한 코드 함수 */
-/* POST Request 액션의 공통부분을 뽑아낸 함수 */
-const postRequestFuction = ( POSTurl, reqBody, successAction = undefined ) => {
-    return (dispatch) => {
-        /* POST Request config Data */
-        const config = {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        }
-
-        /* POST Request */
-        return axios.post(POSTurl, qs.stringify(reqBody), config)
-        .then(res => { if (successAction) { dispatch( successAction(res) ) } })
     }
 }

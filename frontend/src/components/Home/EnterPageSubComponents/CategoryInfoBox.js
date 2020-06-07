@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { Modal } from 'antd';
 
 import { PhotoListBox } from "./";
+import { UitdaPhotoCarousel } from "../../Structure/CommonComponents";
 import { colors, Screen_Size } from "../../../styles/variables";
 import { MarketIcon, NetworkingIcon, CarpoolIcon } from "../../../styles/images/Menu_Icon_Image";
 import { notice, mp1, mp2, np1, cp1, cp2 } from "../../../styles/images/EnterPage_Images";
@@ -139,7 +140,7 @@ const CategoryInfoBox = ({clientHeight}) => {
                 footer={null} 
                 onCancel={handleCancel}
             >
-                <PhotoListBox 
+                <UitdaPhotoCarousel 
                     filelist={infoImageList}
                     clientHeight={clientHeight}
                 />

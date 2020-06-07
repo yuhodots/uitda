@@ -4,3 +4,4 @@ export { default as UitdaPopover } from './UitdaPopover';
 export { default as UitdaTextArea } from './UitdaTextArea';
 export { default as UitdaTimePicker } from './UitdaTimePicker';
 export { default as BackgroundTemplate } from './BackgroundTemplate';
+export { default as UitdaPhotoCarousel } from './UitdaPhotoCarousel'

@@ -11,6 +11,7 @@ import {
     CARPOOL_POST_EVENT_UPDATE_SUCCESS,
     CARPOOL_JOIN_EVENT_SUCCESS,
     CARPOOL_CANCLE_JOIN_EVENT_SUCCESS,
+    CARPOOL_POST_EVENT_CANCLE_OR_CLOSE_SUCCESS,
 } from "../actions/ActionTypes";
 
 import { CARPOOL } from "../../constants/categories";
@@ -201,24 +202,57 @@ export default function carpool (state = InitialState, action) {
         /* 수정 요청 완료 시, 모달에 곧바로 변경을 주기 위해 
            eventDataToUpdate 데이터를 selectedEvent로 저장 */
         case CARPOOL_POST_EVENT_UPDATE_SUCCESS:{
-            const {
-                departure, destination, start_date, start_time, meeting_place, contact, description
-            } = state.eventDataToUpdate
+            const { 
+                totalOrMyOption, isClosedHidden, 
+                closedEvents, activeEvents, ownerEvents, guestEvents 
+            } = state;
+            const { updatedEvent } = action;
+            updatedEvent.id = Number(updatedEvent.id)
 
-            let start = start_date;
-            start.setHours(start_time.getHours());
-            start.setMinutes(start_time.getMinutes());
-            start.setSeconds(0);
+            /* Update할 이벤트를 찾아서 ownerEvents 리스트의 해당 이벤트를 변경 */
+            const IdxOfEventToUpdate = ownerEvents.findIndex( event => event.id === updatedEvent.id )
+            const modifiedOwnerEvents = [ ...ownerEvents.slice(0, IdxOfEventToUpdate), updatedEvent, ...ownerEvents.slice(IdxOfEventToUpdate + 1) ]
 
             return {
                 ...state,
-                selectedEvent: {
-                    ...state.selectedEvent,
-                    departure, destination, start, meeting_place, contact, description
-                }
+                eventsToRenderObj: updateEventsToRenderObj( totalOrMyOption, isClosedHidden, {
+                    closedEvents, activeEvents, guestEvents, ownerEvents: modifiedOwnerEvents
+                } ),
+                ownerEvents: modifiedOwnerEvents,
+                selectedEvent: updatedEvent,
             }
         }
 
+        /* 이벤트 마감 또는 마감 취소 */
+        case CARPOOL_POST_EVENT_CANCLE_OR_CLOSE_SUCCESS: {
+            const { 
+                totalOrMyOption, isClosedHidden, 
+                closedEvents, activeEvents, ownerEvents, guestEvents 
+            } = state;
+            const { eventID } = action;
+
+            /* 변경할 이벤트 찾기 */
+            const IdxOfEventToUpdate = ownerEvents.findIndex( event => event.id === eventID )
+            const EventToUpdate = ownerEvents[IdxOfEventToUpdate]
+
+            /* 해당 이벤트의 라벨 값 변경 */
+            if ( EventToUpdate.label === OWNER ) { EventToUpdate.label = OWNER_CLOSED }
+            else { EventToUpdate.label = OWNER }
+
+            /* 수정된 ownerEvents Array 객체 생성 */
+            const modifiedOwnerEvents = [ ...ownerEvents.slice(0, IdxOfEventToUpdate), EventToUpdate, ...ownerEvents.slice(IdxOfEventToUpdate + 1) ]
+
+            return {
+                ...state,
+                eventsToRenderObj: updateEventsToRenderObj( totalOrMyOption, isClosedHidden, {
+                    closedEvents, activeEvents, guestEvents, ownerEvents: modifiedOwnerEvents
+                } ),
+                ownerEvents: modifiedOwnerEvents,
+                selectedEvent: EventToUpdate,
+            }
+        }
+
+        /* 참가 신청 완료 성공 시 리듀서 */
         case CARPOOL_JOIN_EVENT_SUCCESS: {
             const { 
                 totalOrMyOption, isClosedHidden, 
@@ -227,14 +261,17 @@ export default function carpool (state = InitialState, action) {
             const { eventID } = action;
             let isActiveEvent = true;
 
+            /* active 또는 closed 리스트에서 수정할 이벤트 객체를 찾기 */
             let IdxOfEventToReplace = activeEvents.findIndex( event => event.id === eventID )
             if (IdxOfEventToReplace === -1) {
                 IdxOfEventToReplace = closedEvents.findIndex( event => event.id === eventID );
                 isActiveEvent = false;
             }
+            /* 해당 이벤트의 라벨 값을 변경 */
             const eventToReplace = isActiveEvent ? activeEvents[IdxOfEventToReplace] : closedEvents[IdxOfEventToReplace];
             eventToReplace.label = isActiveEvent ? GUEST : GUEST_CLOSED;
 
+            /* 수정된 카풀 이벤트 객체들을 담은 리스트 */
             const modifiedActiveEvents = isActiveEvent ? [...activeEvents.slice(0, IdxOfEventToReplace), ...activeEvents.slice(IdxOfEventToReplace + 1)] : activeEvents;
             const modifiedClosedEvents = isActiveEvent ? closedEvents : [...closedEvents.slice(0, IdxOfEventToReplace), ...closedEvents.slice(IdxOfEventToReplace + 1)];
             const modifiedGuestEvents = [...guestEvents, eventToReplace];
@@ -251,6 +288,7 @@ export default function carpool (state = InitialState, action) {
             }
         }
 
+        /* 참가 신청 취소 요청 성공 리듀서 */
         case CARPOOL_CANCLE_JOIN_EVENT_SUCCESS: {
             const { 
                 totalOrMyOption, isClosedHidden, 
@@ -258,11 +296,15 @@ export default function carpool (state = InitialState, action) {
             } = state;
             const { eventID } = action;
             
-            let IdxOfEventToReplace = guestEvents.findIndex( event => event.id === eventID )
+            /* 참가 신청 취소한 이벤트 찾기 */
+            const IdxOfEventToReplace = guestEvents.findIndex( event => event.id === eventID )
             const eventToReplace = guestEvents[IdxOfEventToReplace];
+            
+            /* 참가 신청 취소한 이벤트의 label 값 변경 */
             const isActiveEvent = eventToReplace.label === GUEST;
             eventToReplace.label = isActiveEvent ? ACTIVE : CLOSED;
             
+            /* 수정된 카풀 이벤트 객체들을 담은 리스트 */
             const modifiedClosedEvents = isActiveEvent ? closedEvents : [...closedEvents, eventToReplace];
             const modifiedActiveEvents = isActiveEvent ? [...activeEvents, eventToReplace] : activeEvents;
             const modifiedGuestEvents = [...guestEvents.slice(0, IdxOfEventToReplace), ...guestEvents.slice(IdxOfEventToReplace + 1)];

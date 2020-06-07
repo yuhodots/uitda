@@ -84,7 +84,7 @@ const WholeArea = styled.div`
 
 
 /* React Component */
-const PhotoListBox = ({filelist, clientHeight}) => {
+const UitdaPhotoCarousel = ({filelist, clientHeight}) => {
 
     const carouselRef = useRef();
 
@@ -111,9 +111,13 @@ const PhotoListBox = ({filelist, clientHeight}) => {
     )
 }
 
-PhotoListBox.propTypes = {
+UitdaPhotoCarousel.propTypes = {
     filelist: PropTypes.array.isRequired,
-    clientHeight: PropTypes.number.isRequired,
+    clientHeight: PropTypes.number,             // Modal Component 인 경우
 }
 
-export default PhotoListBox;
+UitdaPhotoCarousel.defaultProps = {
+    clientHeight: 0,
+}
+
+export default UitdaPhotoCarousel;

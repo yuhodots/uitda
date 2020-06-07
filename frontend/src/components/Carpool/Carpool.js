@@ -181,6 +181,7 @@ class CarpoolBoard extends Component {
                         </CalendarBox>
                         
                         <DateInfoBox 
+                            clientHeight={windowHeight}
                             selectedDate={selectedDate}
                             totalOrMyOption={totalOrMyOption}
                             eventsOnSelectedDate={eventsOnSelectedDate}
@@ -218,7 +219,7 @@ class CarpoolBoard extends Component {
 }
 
 CarpoolBoard.propTypes = {
-    curUser: PropTypes.oneOfType([                         // 현재 유저 정보
+    curUser: PropTypes.oneOfType([                      // 현재 유저 정보
         PropTypes.number, PropTypes.object
     ]).isRequired,
     totalOrMyOption: PropTypes.string.isRequired,       // 전체 일정 or 내 일정

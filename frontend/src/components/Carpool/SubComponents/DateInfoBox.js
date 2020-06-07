@@ -9,6 +9,8 @@ import { Divider, Modal } from "antd";
 import { colors } from "../../../styles/variables";
 import EventListItem from "./DateInfo_Sub/EventListItem";
 import { ACTIVE, GUEST, OWNER, CLOSED } from '../../../constants/calendar_consts';
+import { UitdaPhotoCarousel } from "../../Structure/CommonComponents";
+import { cpi1, cpi2, cpi3, cpi4, cpi5, cpi6, cpi7 } from "../../../styles/images/carpool_Info_Images";
 
 
 /* Styled Components */
@@ -179,9 +181,11 @@ class DateInfoBox extends Component {
     render() {
 
         const { modalVisible } = this.state;
-        const { selectedDate, eventsOnSelectedDate } = this.props;
+        const { clientHeight, selectedDate, eventsOnSelectedDate } = this.props;
 
         const dateStr = this._dateToStr(selectedDate)
+
+        const infoImageList = [ cpi1, cpi2, cpi3, cpi4, cpi5, cpi6, cpi7 ];
 
         return (
             <WholeBoxArea>
@@ -209,12 +213,13 @@ class DateInfoBox extends Component {
                             카풀 이용 안내
                         </UsingInfo>
                         <Modal
-                                visible={modalVisible}
-                                onCancel={this._cancleInfoModal}
-                                footer={null}
-                                maskClosable={true}
-                            >
-                            hi
+                            width="70%" 
+                            visible={modalVisible}
+                            onCancel={this._cancleInfoModal}
+                            footer={null}
+                            maskClosable={true}
+                        >
+                            <UitdaPhotoCarousel filelist={infoImageList} clientHeight={clientHeight} />
                         </Modal>
                     </InfoList>
                 </InfomationBox>
@@ -224,6 +229,7 @@ class DateInfoBox extends Component {
 }
 
 DateInfoBox.propTypes = {
+    clientHeight: PropTypes.number.isRequired,          // 브라우저 화면 세로 높이
     totalOrMyOption: PropTypes.string.isRequired,       // 전체 일정 or 내 일정
 
     selectedDate: PropTypes.object.isRequired,          // 선택된 날짜
