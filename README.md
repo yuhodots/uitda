@@ -1,8 +1,8 @@
 ## uitda nginx server information
 
-###nginx 
+### nginx 
 
-####nginx.conf
+#### nginx.conf
 
 ~~~
 /etc/nginx/nginx.conf
@@ -48,7 +48,7 @@ http {
 }
 ~~~
 
-####sites-enabled/myapp.conf
+#### sites-enabled/myapp.conf
 
 ~~~
 /etc/nginx/sites-enabled/myapp.conf
