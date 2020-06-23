@@ -1,6 +1,8 @@
 ## uitda nginx server information
 
-### nginx.conf
+###nginx 
+
+####nginx.conf
 
 ~~~
 /etc/nginx/nginx.conf
@@ -46,7 +48,7 @@ http {
 }
 ~~~
 
-### sites-enabled/myapp.conf
+####sites-enabled/myapp.conf
 
 ~~~
 /etc/nginx/sites-enabled/myapp.conf
@@ -86,4 +88,10 @@ server {
   }
 }
 ~~~
+
+### aws
+
+#### security group
+
+![img](./img/security-group.png)
 
